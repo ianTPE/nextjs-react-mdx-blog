@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { BlogMetadata } from '../types/blog';
 
 interface BlogPostContentProps {
@@ -10,11 +11,16 @@ export default function BlogPostContent({ metadata, children }: BlogPostContentP
     <article className="max-w-4xl mx-auto px-4 py-8">
       <header className="mb-8">
         {metadata.coverImage && (
-          <img 
-            src={metadata.coverImage} 
-            alt={metadata.title}
-            className="w-full h-96 object-cover rounded-lg mb-6"
-          />
+          <div className="relative w-full h-96 mb-6">
+            <Image 
+              src={metadata.coverImage} 
+              alt={metadata.title}
+              fill
+              className="object-cover rounded-lg"
+              sizes="(max-width: 768px) 100vw, 800px"
+              priority
+            />
+          </div>
         )}
         <h1 className="text-4xl font-bold mb-4">{metadata.title}</h1>
         <div className="flex items-center gap-4 text-gray-600 mb-4">

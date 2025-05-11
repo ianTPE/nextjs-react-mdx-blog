@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { BlogPost } from '../types/blog';
 
 interface BlogCardProps {
@@ -9,11 +10,15 @@ export default function BlogCard({ post }: BlogCardProps) {
   return (
     <article className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
       {post.coverImage && (
-        <img 
-          src={post.coverImage} 
-          alt={post.title}
-          className="w-full h-48 object-cover"
-        />
+        <div className="relative w-full h-48">
+          <Image 
+            src={post.coverImage} 
+            alt={post.title}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+        </div>
       )}
       <div className="p-6">
         <h2 className="text-2xl font-bold mb-2">

@@ -1,8 +1,7 @@
 import { notFound } from 'next/navigation';
 import { getPostBySlug, getAllPosts } from '@/lib/mdx';
-import { serialize } from 'next-mdx-remote/serialize';
-import MDXContent from '@/app/components/MDXContent';
 import BlogPostContent from '@/app/components/BlogPostContent';
+import ClientMDXContent from './ClientMDXContent';
 
 export async function generateStaticParams() {
   const posts = getAllPosts();
@@ -11,18 +10,17 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function BlogPostPage({ params }: { params: { slug: string } }) {
-  const post = getPostBySlug(params.slug);
+export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+  const resolvedParams = await params;
+  const post = getPostBySlug(resolvedParams.slug);
   
   if (!post) {
     notFound();
   }
 
-  const mdxSource = await serialize(post.content);
-
   return (
     <BlogPostContent metadata={post.metadata}>
-      <MDXContent source={mdxSource} />
+      <ClientMDXContent content={post.content} />
     </BlogPostContent>
   );
 }
