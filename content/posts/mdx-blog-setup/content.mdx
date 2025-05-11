@@ -1,0 +1,239 @@
+# 使用 MDX 建立部落格
+
+MDX 是一個強大的格式，它允許你在 Markdown 文件中直接使用 JSX。這使得創建互動式的文檔和部落格文章變得非常容易。在這篇文章中，我們將學習如何在 Next.js 專案中設置 MDX。
+
+## 什麼是 MDX？
+
+MDX 結合了 Markdown 的簡潔性和 React 組件的強大功能。你可以：
+
+- 在 Markdown 中導入和使用 React 組件
+- 創建互動式的文檔
+- 自定義 Markdown 元素的渲染方式
+
+## 設置 MDX
+
+### 1. 安裝必要的套件
+
+```bash
+npm install @next/mdx @mdx-js/loader @mdx-js/react
+```
+
+### 2. 配置 Next.js
+
+更新 `next.config.js`：
+
+```javascript
+const withMDX = require('@next/mdx')({
+  extension: /\.mdx?$/,
+  options: {
+    // MDX 相關設定
+  }
+})
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
+}
+
+module.exports = withMDX(nextConfig)
+```
+
+### 3. 更新 Tailwind 配置
+
+確保 Tailwind 能處理 MDX 檔案：
+
+```javascript
+module.exports = {
+  content: [
+    './app/**/*.{js,ts,jsx,tsx,md,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,md,mdx}',
+  ],
+  // ...
+}
+```
+
+## 創建 MDX 內容
+
+### 基本範例
+
+創建一個 `example.mdx` 檔案：
+
+```mdx
+# 歡迎使用 MDX
+
+這是一段普通的 Markdown 內容。
+
+<div className="bg-blue-100 p-4 rounded">
+  這是一個 React 組件！
+</div>
+```
+
+### 使用自定義組件
+
+```mdx
+import CustomButton from '../components/CustomButton'
+
+# 互動式內容
+
+點擊下面的按鈕：
+
+<CustomButton onClick={() => alert('Hello MDX!')}>
+  點我
+</CustomButton>
+```
+
+## 進階用法
+
+### 1. 自定義組件映射
+
+你可以覆寫默認的 Markdown 元素：
+
+```tsx
+const components = {
+  h1: (props) => <h1 className="text-4xl font-bold" {...props} />,
+  p: (props) => <p className="my-4" {...props} />,
+  code: (props) => <code className="bg-gray-100 p-1" {...props} />,
+}
+
+export default function MDXPage() {
+  return (
+    <MDXProvider components={components}>
+      <YourMDXContent />
+    </MDXProvider>
+  )
+}
+```
+
+### 2. Front Matter 支援
+
+使用 gray-matter 解析 MDX 的元資料：
+
+```typescript
+import matter from 'gray-matter'
+import fs from 'fs'
+
+export function getPostData(slug: string) {
+  const fullPath = path.join(postsDirectory, `${slug}.mdx`)
+  const fileContents = fs.readFileSync(fullPath, 'utf8')
+  const { data, content } = matter(fileContents)
+  
+  return {
+    slug,
+    metadata: data,
+    content,
+  }
+}
+```
+
+### 3. 程式碼高亮
+
+整合 Prism.js 或 highlight.js：
+
+```bash
+npm install @mapbox/rehype-prism
+```
+
+```javascript
+const withMDX = require('@next/mdx')({
+  options: {
+    rehypePlugins: [require('@mapbox/rehype-prism')],
+  },
+})
+```
+
+## 建立部落格結構
+
+### 1. 檔案組織
+
+```
+content/
+  posts/
+    getting-started.mdx
+    advanced-features.mdx
+app/
+  blog/
+    [slug]/
+      page.tsx
+    page.tsx
+```
+
+### 2. 動態路由
+
+```tsx
+// app/blog/[slug]/page.tsx
+import { getPostData } from '@/lib/posts'
+
+export default async function Post({ params }) {
+  const post = await getPostData(params.slug)
+  
+  return (
+    <article>
+      <h1>{post.metadata.title}</h1>
+      <MDXContent content={post.content} />
+    </article>
+  )
+}
+```
+
+## 優化建議
+
+1. **圖片優化**：使用 Next.js Image 組件
+2. **SEO**：設置適當的 metadata
+3. **效能**：實施適當的快取策略
+4. **可訪問性**：確保所有互動元素都是可訪問的
+
+```tsx
+import Image from 'next/image'
+
+export const components = {
+  img: (props) => (
+    <Image
+      {...props}
+      width={800}
+      height={400}
+      className="rounded-lg"
+    />
+  ),
+}
+```
+
+## 部署考量
+
+### Vercel
+
+Vercel 原生支援 MDX，無需額外配置：
+
+```bash
+vercel deploy
+```
+
+### 其他平台
+
+確保構建過程包含所有必要的依賴：
+
+```json
+{
+  "scripts": {
+    "build": "next build",
+    "postbuild": "next-sitemap"
+  }
+}
+```
+
+## 結論
+
+MDX 為 Next.js 部落格提供了無限的可能性。通過結合 Markdown 的簡潔性和 React 的強大功能，你可以創建真正獨特和互動的內容體驗。
+
+記住要：
+- 保持內容的可讀性
+- 適度使用互動元素
+- 確保良好的性能和 SEO
+
+現在，開始創建你的 MDX 驅動的部落格吧！
+
+---
+
+**延伸閱讀：**
+- [MDX 官方文檔](https://mdxjs.com/)
+- [Next.js MDX 指南](https://nextjs.org/docs/pages/building-your-application/configuring/mdx)
+- [Contentlayer](https://www.contentlayer.dev/) - 更進階的內容管理方案

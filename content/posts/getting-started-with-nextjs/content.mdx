@@ -1,0 +1,129 @@
+# 開始使用 Next.js 14
+
+Next.js 14 帶來了許多令人興奮的新功能，讓開發現代化的 React 應用程式變得更加容易。在這篇文章中，我們將探索 Next.js 14 的主要特性，並學習如何開始使用它。
+
+## 什麼是 Next.js？
+
+Next.js 是一個建立在 React 之上的全端框架，它提供了許多開箱即用的功能，包括：
+
+- **伺服器端渲染 (SSR)**：提升首次載入速度和 SEO 優化
+- **靜態網站生成 (SSG)**：預先生成頁面以獲得最佳性能
+- **API 路由**：輕鬆建立後端 API 端點
+- **檔案系統路由**：基於檔案結構自動生成路由
+
+## Next.js 14 的新功能
+
+### 1. App Router
+
+App Router 是 Next.js 13 引入的新路由系統，在 14 版本中變得更加穩定。它提供了：
+
+- 嵌套路由
+- 佈局系統
+- 錯誤處理
+- 載入狀態
+
+```tsx
+// app/layout.tsx
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="zh-TW">
+      <body>{children}</body>
+    </html>
+  )
+}
+```
+
+### 2. Server Components
+
+Server Components 允許你在伺服器端渲染組件，減少客戶端的 JavaScript 負載：
+
+```tsx
+// 這是一個 Server Component
+async function PostList() {
+  const posts = await getPosts() // 直接在伺服器端獲取資料
+  
+  return (
+    <ul>
+      {posts.map(post => (
+        <li key={post.id}>{post.title}</li>
+      ))}
+    </ul>
+  )
+}
+```
+
+### 3. Turbopack (Beta)
+
+Turbopack 是 Next.js 的新構建工具，提供更快的開發體驗：
+
+```bash
+next dev --turbo
+```
+
+## 開始使用 Next.js 14
+
+### 安裝
+
+使用 create-next-app 創建新專案：
+
+```bash
+npx create-next-app@latest my-app --typescript --tailwind --app
+```
+
+### 基本結構
+
+```
+my-app/
+├── app/
+│   ├── layout.tsx
+│   ├── page.tsx
+│   └── globals.css
+├── public/
+├── package.json
+└── next.config.js
+```
+
+### 創建第一個頁面
+
+在 `app/page.tsx` 中：
+
+```tsx
+export default function Home() {
+  return (
+    <main>
+      <h1>歡迎使用 Next.js 14!</h1>
+    </main>
+  )
+}
+```
+
+## 最佳實踐
+
+1. **使用 TypeScript**：獲得更好的類型安全和開發體驗
+2. **優化圖片**：使用 Next.js 的 Image 組件
+3. **環境變數**：使用 `.env.local` 管理敏感資訊
+4. **SEO 優化**：使用 metadata API
+
+```tsx
+export const metadata = {
+  title: '我的網站',
+  description: '這是我的網站描述',
+}
+```
+
+## 結論
+
+Next.js 14 提供了強大的功能來構建現代化的網路應用程式。透過 App Router、Server Components 和其他新功能，開發者可以創建高性能、SEO 友好的應用程式。
+
+在下一篇文章中，我們將深入探討如何使用 MDX 來增強你的 Next.js 部落格。
+
+---
+
+**相關資源：**
+- [Next.js 官方文檔](https://nextjs.org/docs)
+- [React Server Components 解釋](https://react.dev/blog/2023/03/22/react-labs-what-we-have-been-working-on-march-2023#react-server-components)
+- [Vercel 部署指南](https://vercel.com/docs)

@@ -1,0 +1,276 @@
+# TypeScript 最佳實踐
+
+TypeScript 已經成為現代 JavaScript 開發的標準選擇。它提供了強大的類型系統，幫助我們寫出更安全、更易維護的程式碼。在這篇文章中，我們將探索一些 TypeScript 開發的最佳實踐。
+
+## 1. 充分利用類型推斷
+
+TypeScript 有優秀的類型推斷能力，不需要為每個變數都明確指定類型：
+
+```typescript
+// 不好
+const message: string = "Hello World";
+const count: number = 42;
+
+// 好
+const message = "Hello World"; // 推斷為 string
+const count = 42; // 推斷為 number
+```
+
+但在函數參數、返回值等地方，明確的類型定義還是很重要的：
+
+```typescript
+// 好：明確的函數簽名
+function greet(name: string): string {
+  return `Hello, ${name}!`;
+}
+
+// 好：使用箭頭函數
+const add = (a: number, b: number): number => a + b;
+```
+
+## 2. 使用 Interface 而非 Type Alias（當適合時）
+
+對於物件形狀，Interface 提供了更好的擴展性：
+
+```typescript
+// 推薦使用 interface
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
+// 可以擴展
+interface AdminUser extends User {
+  permissions: string[];
+}
+
+// Type alias 也可以，但語法不同
+type UserType = {
+  id: number;
+  name: string;
+  email: string;
+}
+
+// 擴展 type 需要使用交集類型
+type AdminUserType = UserType & {
+  permissions: string[];
+}
+```
+
+## 3. 善用 Union Types 和 Type Guards
+
+Union Types 允許一個值可以是幾種類型之一：
+
+```typescript
+type Status = 'loading' | 'success' | 'error';
+
+interface ApiResponse<T> {
+  status: Status;
+  data?: T;
+  error?: string;
+}
+
+// Type Guard
+function isErrorResponse<T>(response: ApiResponse<T>): response is ApiResponse<T> & { error: string } {
+  return response.status === 'error' && response.error !== undefined;
+}
+
+// 使用
+function handleResponse<T>(response: ApiResponse<T>) {
+  if (isErrorResponse(response)) {
+    console.error(response.error); // TypeScript 知道這裡有 error
+  } else if (response.status === 'success' && response.data) {
+    console.log(response.data); // TypeScript 知道這裡有 data
+  }
+}
+```
+
+## 4. 使用泛型提高程式碼復用性
+
+泛型讓我們能夠寫出更通用的程式碼：
+
+```typescript
+// 通用的 API 請求函數
+async function fetchData<T>(url: string): Promise<T> {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  return response.json() as Promise<T>;
+}
+
+// 使用
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+}
+
+const products = await fetchData<Product[]>('/api/products');
+```
+
+## 5. 使用 Const Assertion 確保類型安全
+
+```typescript
+// 使用 as const 創建只讀的字面量類型
+const CONFIG = {
+  API_URL: 'https://api.example.com',
+  TIMEOUT: 5000,
+  RETRY_COUNT: 3,
+} as const;
+
+// CONFIG.API_URL 的類型是 'https://api.example.com'，而不是 string
+// CONFIG.TIMEOUT = 10000; // 錯誤：無法賦值給只讀屬性
+```
+
+## 6. 避免使用 any，優先使用 unknown
+
+```typescript
+// 避免
+function processData(data: any) {
+  // 可以對 data 做任何操作，沒有類型檢查
+  console.log(data.someProperty); // 不會報錯，即使 someProperty 不存在
+}
+
+// 推薦
+function processData(data: unknown) {
+  // 需要進行類型檢查
+  if (typeof data === 'object' && data !== null && 'someProperty' in data) {
+    console.log((data as { someProperty: unknown }).someProperty);
+  }
+}
+```
+
+## 7. 使用 Utility Types
+
+TypeScript 提供了許多有用的工具類型：
+
+```typescript
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  createdAt: Date;
+}
+
+// Partial<T>：使所有屬性可選
+type PartialUser = Partial<User>;
+
+// Pick<T, K>：選擇特定屬性
+type UserPreview = Pick<User, 'id' | 'name'>;
+
+// Omit<T, K>：排除特定屬性
+type UserWithoutTimestamp = Omit<User, 'createdAt'>;
+
+// Readonly<T>：使所有屬性只讀
+type ReadonlyUser = Readonly<User>;
+
+// Record<K, T>：構建物件類型
+type UserRoles = Record<string, string[]>;
+```
+
+## 8. 設定嚴格的 TypeScript 配置
+
+在 `tsconfig.json` 中啟用嚴格模式：
+
+```json
+{
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    // 其他有用的選項
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true
+  }
+}
+```
+
+## 9. 使用 Type Predicates 改善類型縮小
+
+```typescript
+interface Circle {
+  kind: 'circle';
+  radius: number;
+}
+
+interface Rectangle {
+  kind: 'rectangle';
+  width: number;
+  height: number;
+}
+
+type Shape = Circle | Rectangle;
+
+// Type Predicate
+function isCircle(shape: Shape): shape is Circle {
+  return shape.kind === 'circle';
+}
+
+function calculateArea(shape: Shape): number {
+  if (isCircle(shape)) {
+    return Math.PI * shape.radius ** 2;
+  } else {
+    return shape.width * shape.height;
+  }
+}
+```
+
+## 10. 模組化你的類型定義
+
+將類型定義組織在單獨的檔案中：
+
+```typescript
+// types/user.ts
+export interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
+export type UserRole = 'admin' | 'user' | 'guest';
+
+// types/api.ts
+export interface ApiResponse<T> {
+  data: T;
+  status: number;
+  message?: string;
+}
+
+// 使用
+import { User } from './types/user';
+import { ApiResponse } from './types/api';
+
+const userResponse: ApiResponse<User> = {
+  data: { id: 1, name: 'John', email: 'john@example.com' },
+  status: 200
+};
+```
+
+## 結論
+
+這些 TypeScript 最佳實踐能幫助你寫出更安全、更易維護的程式碼。記住：
+
+1. 充分利用類型推斷，但在需要時明確定義類型
+2. 優先使用 interface 定義物件形狀
+3. 使用 union types 和 type guards 處理多態情況
+4. 善用泛型提高程式碼復用性
+5. 避免使用 any，優先使用 unknown
+6. 充分利用 TypeScript 的工具類型
+7. 保持嚴格的編譯器設定
+
+隨著你對 TypeScript 的深入使用，你會發現它不僅能捕獲錯誤，還能改善程式碼的設計和架構。
+
+---
+
+**相關資源：**
+- [TypeScript 官方文檔](https://www.typescriptlang.org/docs/)
+- [TypeScript Deep Dive](https://basarat.gitbook.io/typescript/)
+- [TypeScript Playground](https://www.typescriptlang.org/play)

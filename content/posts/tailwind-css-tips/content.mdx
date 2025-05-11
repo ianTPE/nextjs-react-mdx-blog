@@ -1,0 +1,348 @@
+# Tailwind CSS 進階技巧
+
+Tailwind CSS 徹底改變了我們編寫 CSS 的方式。透過實用優先（utility-first）的方法，我們可以快速構建美觀的介面。本文將分享一些進階的 Tailwind CSS 技巧，幫助你更有效地使用這個強大的框架。
+
+## 1. 自定義顏色系統
+
+建立一致的顏色系統是設計的關鍵。Tailwind 允許你輕鬆自定義調色板：
+
+```javascript
+// tailwind.config.js
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        brand: {
+          50: '#f0f9ff',
+          100: '#e0f2fe',
+          200: '#bae6fd',
+          300: '#7dd3fc',
+          400: '#38bdf8',
+          500: '#0ea5e9',
+          600: '#0284c7',
+          700: '#0369a1',
+          800: '#075985',
+          900: '#0c4a6e',
+        },
+        // 語義化顏色
+        primary: '#0ea5e9',
+        secondary: '#64748b',
+        success: '#10b981',
+        warning: '#f59e0b',
+        danger: '#ef4444',
+      }
+    }
+  }
+}
+```
+
+使用自定義顏色：
+
+```jsx
+<button className="bg-brand-500 hover:bg-brand-600 text-white px-4 py-2 rounded">
+  品牌按鈕
+</button>
+
+<div className="bg-primary text-white p-4">
+  主要內容區域
+</div>
+```
+
+## 2. 組件化重複的樣式
+
+雖然 Tailwind 是實用優先的，但重複的樣式組合還是應該抽取出來：
+
+```css
+/* styles/components.css */
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded font-medium transition-colors;
+  }
+  
+  .btn-primary {
+    @apply bg-blue-500 text-white hover:bg-blue-600;
+  }
+  
+  .btn-secondary {
+    @apply bg-gray-200 text-gray-800 hover:bg-gray-300;
+  }
+  
+  .card {
+    @apply bg-white rounded-lg shadow-md p-6;
+  }
+  
+  .input {
+    @apply border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500;
+  }
+}
+```
+
+## 3. 響應式設計模式
+
+Tailwind 的響應式設計非常直觀：
+
+```jsx
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+  {/* 在小螢幕上單列，中等螢幕雙列，大螢幕三列 */}
+</div>
+
+<div className="text-sm md:text-base lg:text-lg">
+  {/* 文字大小隨螢幕尺寸增加 */}
+</div>
+
+<div className="hidden md:block">
+  {/* 只在中等螢幕及以上顯示 */}
+</div>
+
+<div className="md:hidden">
+  {/* 只在小螢幕顯示 */}
+</div>
+```
+
+## 4. 使用容器查詢 (Container Queries)
+
+Tailwind CSS 支援容器查詢，這是一個強大的功能：
+
+```html
+<div className="@container">
+  <div className="@lg:flex @lg:gap-4">
+    <div className="@lg:w-1/3">側邊欄</div>
+    <div className="@lg:w-2/3">主要內容</div>
+  </div>
+</div>
+```
+
+設定容器查詢：
+
+```javascript
+// tailwind.config.js
+module.exports = {
+  plugins: [
+    require('@tailwindcss/container-queries'),
+  ],
+}
+```
+
+## 5. 動畫和過渡效果
+
+創建平滑的動畫：
+
+```jsx
+// 簡單的懸停效果
+<button className="transform transition hover:scale-105 active:scale-95">
+  按鈕
+</button>
+
+// 自定義動畫
+<div className="animate-pulse">載入中...</div>
+
+// 延遲和持續時間
+<div className="transition-all duration-300 delay-150">
+  動畫元素
+</div>
+```
+
+自定義動畫：
+
+```javascript
+// tailwind.config.js
+module.exports = {
+  theme: {
+    extend: {
+      animation: {
+        'spin-slow': 'spin 3s linear infinite',
+        'bounce-slow': 'bounce 2s infinite',
+      },
+      keyframes: {
+        wiggle: {
+          '0%, 100%': { transform: 'rotate(-3deg)' },
+          '50%': { transform: 'rotate(3deg)' },
+        }
+      }
+    }
+  }
+}
+```
+
+## 6. Dark Mode 支援
+
+實現深色模式：
+
+```jsx
+// 基於系統偏好
+<div className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
+  自動切換深色模式
+</div>
+
+// 手動控制
+<div className="dark:bg-gray-800">
+  手動深色模式
+</div>
+```
+
+配置深色模式：
+
+```javascript
+// tailwind.config.js
+module.exports = {
+  darkMode: 'class', // 或 'media' 用於系統偏好
+  // ...
+}
+```
+
+## 7. 使用 JIT 模式的任意值
+
+JIT 模式允許使用任意值：
+
+```jsx
+<div className="top-[117px] left-[calc(50%-4rem)]">
+  精確定位
+</div>
+
+<div className="bg-[#1da1f2] text-[22px]">
+  自定義顏色和大小
+</div>
+
+<div className="grid grid-cols-[1fr_500px_2fr]">
+  自定義網格佈局
+</div>
+```
+
+## 8. 狀態變體和群組
+
+處理複雜的互動狀態：
+
+```jsx
+// 群組懸停
+<div className="group">
+  <h3 className="group-hover:text-blue-500">標題</h3>
+  <p className="group-hover:underline">內容</p>
+</div>
+
+// Peer 修飾符
+<input type="checkbox" className="peer" />
+<div className="hidden peer-checked:block">
+  勾選時顯示
+</div>
+
+// 焦點內狀態
+<div className="has-[:focus]:ring-2 has-[:focus]:ring-blue-500">
+  <input type="text" />
+</div>
+```
+
+## 9. 效能優化
+
+### PurgeCSS 配置
+
+確保正確配置 content 選項：
+
+```javascript
+// tailwind.config.js
+module.exports = {
+  content: [
+    './src/**/*.{js,jsx,ts,tsx,mdx}',
+    './components/**/*.{js,jsx,ts,tsx}',
+    // 包含所有使用 Tailwind 類的檔案
+  ],
+  // ...
+}
+```
+
+### 避免動態類名
+
+```jsx
+// 不好
+<div className={`text-${color}-500`}>文字</div>
+
+// 好
+const colorClasses = {
+  red: 'text-red-500',
+  blue: 'text-blue-500',
+  green: 'text-green-500',
+}
+<div className={colorClasses[color]}>文字</div>
+```
+
+## 10. 實用的設計模式
+
+### 卡片佈局
+
+```jsx
+<div className="max-w-sm rounded overflow-hidden shadow-lg">
+  <img className="w-full" src="/img/card-top.jpg" alt="圖片" />
+  <div className="px-6 py-4">
+    <div className="font-bold text-xl mb-2">標題</div>
+    <p className="text-gray-700 text-base">
+      內容描述...
+    </p>
+  </div>
+  <div className="px-6 pt-4 pb-2">
+    <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+      #標籤1
+    </span>
+  </div>
+</div>
+```
+
+### 表單設計
+
+```jsx
+<form className="w-full max-w-lg">
+  <div className="flex flex-wrap -mx-3 mb-6">
+    <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+      <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+        姓名
+      </label>
+      <input 
+        className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" 
+        type="text" 
+        placeholder="Jane"
+      />
+    </div>
+  </div>
+</form>
+```
+
+### 導航列
+
+```jsx
+<nav className="flex items-center justify-between flex-wrap bg-teal-500 p-6">
+  <div className="flex items-center flex-shrink-0 text-white mr-6">
+    <span className="font-semibold text-xl tracking-tight">Logo</span>
+  </div>
+  <div className="block lg:hidden">
+    <button className="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white">
+      <svg className="fill-current h-3 w-3" viewBox="0 0 20 20">
+        <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/>
+      </svg>
+    </button>
+  </div>
+  <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+    <div className="text-sm lg:flex-grow">
+      <a href="#" className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+        文檔
+      </a>
+    </div>
+  </div>
+</nav>
+```
+
+## 結論
+
+Tailwind CSS 不僅是一個 CSS 框架，更是一種思考介面設計的新方式。通過掌握這些進階技巧，你可以：
+
+1. 建立一致的設計系統
+2. 提高開發效率
+3. 保持程式碼的可維護性
+4. 實現複雜的設計需求
+
+記住，Tailwind 的真正力量在於它的可定制性和靈活性。不要害怕根據專案需求進行調整和擴展。
+
+---
+
+**相關資源：**
+- [Tailwind CSS 官方文檔](https://tailwindcss.com/docs)
+- [Tailwind UI](https://tailwindui.com/)
+- [Headless UI](https://headlessui.com/)
+- [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)
