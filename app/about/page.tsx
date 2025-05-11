@@ -1,10 +1,41 @@
+import Image from 'next/image';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "關於我 | My Blog",
+  description: "我是 Ian Chen，一位熱愛技術的全端開發者。專注於 React、Next.js、TypeScript 等現代前端技術。",
+  openGraph: {
+    title: "關於我 | My Blog",
+    description: "我是 Ian Chen，一位熱愛技術的全端開發者。專注於 React、Next.js、TypeScript 等現代前端技術。",
+    type: "profile",
+    images: [{
+      url: "/images/author.png", // 使用作者照片作為關於頁面的 OG 圖片
+      width: 1200,
+      height: 1200,
+      alt: "Ian Chen"
+    }]
+  },
+};
+
 export default function AboutPage() {
   return (
     <div className="container mx-auto px-4 py-12">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-4xl font-bold text-gray-900 mb-8">關於我</h1>
         
-        <div className="prose prose-lg">
+        <div className="flex flex-col md:flex-row items-center md:items-start gap-8 mb-8">
+          <div className="w-48 h-48 relative rounded-full overflow-hidden flex-shrink-0">
+            <Image 
+              src="/images/author.png" 
+              alt="Ian Chen" 
+              fill 
+              sizes="(max-width: 768px) 192px, 192px"
+              className="object-cover"
+              priority
+            />
+          </div>
+          
+          <div className="prose prose-lg">
           <p className="mb-6">
             歡迎來到我的部落格！我是 Ian Chen，一位熱愛技術的全端開發者。
             專注於 React、Next.js、TypeScript 等現代前端技術，同時也對後端開發和系統設計有濃厚興趣。
@@ -46,6 +77,7 @@ export default function AboutPage() {
           <p className="mb-6">
             感謝你的閱讀，希望這個部落格能為你帶來價值！
           </p>
+          </div>
         </div>
       </div>
     </div>

@@ -1,5 +1,22 @@
 import BlogCard from '../components/BlogCard';
 import { getAllPosts } from '@/lib/mdx';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "所有文章 | My Blog",
+  description: "瀏覽我的所有技術文章，包含 Next.js、React、TypeScript、Tailwind CSS 等主題。",
+  openGraph: {
+    title: "所有文章 | My Blog",
+    description: "瀏覽我的所有技術文章，包含 Next.js、React、TypeScript、Tailwind CSS 等主題。",
+    type: "website",
+    images: [{
+      url: "/images/default-og-image.png",
+      width: 1200,
+      height: 630,
+      alt: "My Blog - 所有文章"
+    }]
+  },
+};
 
 export default function BlogPage() {
   const posts = getAllPosts();

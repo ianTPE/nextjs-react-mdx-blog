@@ -26,8 +26,19 @@ export default function BlogCard({ post }: BlogCardProps) {
             {post.title}
           </Link>
         </h2>
-        <div className="text-gray-600 text-sm mb-4">
-          <span>{post.author}</span>
+        <div className="text-gray-600 text-sm mb-4 flex items-center">
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 relative rounded-full overflow-hidden">
+              <Image 
+                src="/images/author.png" 
+                alt={post.author}
+                fill
+                sizes="24px"
+                className="object-cover"
+              />
+            </div>
+            <span>{post.author}</span>
+          </div>
           <span className="mx-2">•</span>
           <time dateTime={post.date}>
             {new Date(post.date).toLocaleDateString('zh-TW', {

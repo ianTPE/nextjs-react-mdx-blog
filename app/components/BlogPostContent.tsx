@@ -24,7 +24,18 @@ export default function BlogPostContent({ metadata, children }: BlogPostContentP
         )}
         <h1 className="text-4xl font-bold mb-4">{metadata.title}</h1>
         <div className="flex items-center gap-4 text-gray-600 mb-4">
-          <span>{metadata.author}</span>
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 relative rounded-full overflow-hidden">
+              <Image 
+                src="/images/author.png" 
+                alt={metadata.author}
+                fill
+                sizes="32px"
+                className="object-cover"
+              />
+            </div>
+            <span>{metadata.author}</span>
+          </div>
           <span>•</span>
           <time dateTime={metadata.date}>
             {new Date(metadata.date).toLocaleDateString('zh-TW', {
