@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { BlogMetadata } from '../types/blog';
+import { motion } from 'framer-motion';
 
 interface BlogPostContentProps {
   metadata: BlogMetadata;
@@ -12,7 +13,13 @@ export default function BlogPostContent({ metadata, children }: BlogPostContentP
       <header className="mb-8">
         <h1 className="text-4xl font-bold mb-4">{metadata.title}</h1>
         {metadata.coverImage && (
-          <div className="relative w-full h-72 mb-6 rounded-lg overflow-hidden">
+          <motion.div
+            className="relative w-full h-72 mb-6 rounded-lg overflow-hidden"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            whileHover={{ scale: 1.02 }}
+          >
             <Image 
               src={metadata.coverImage} 
               alt={metadata.title}
@@ -21,7 +28,7 @@ export default function BlogPostContent({ metadata, children }: BlogPostContentP
               sizes="(max-width: 768px) 100vw, 800px"
               priority
             />
-          </div>
+          </motion.div>
         )}
         <div className="flex items-center gap-4 text-gray-600 mb-4">
           <div className="flex items-center gap-2">
