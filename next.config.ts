@@ -3,6 +3,11 @@ import createMDX from '@next/mdx';
 import path from 'path';
 import type { Node } from 'unist';
 
+// Define a more specific node type that includes children
+interface MdxNode extends Node {
+  children?: Array<{ type: string; value: string }>;
+}
+
 const withMDX = createMDX({
   extension: /\.mdx?$/,
   options: {
@@ -11,7 +16,7 @@ const withMDX = createMDX({
     remarkPlugins: [
       () => (tree: any) => {
         // 行號格式化
-        const onVisitLine = (node: Node) => {
+        const onVisitLine = (node: MdxNode) => {
           // 防止空行被移除
           if (node.children && node.children.length === 0) {
             node.children = [{ type: 'text', value: ' ' }];
