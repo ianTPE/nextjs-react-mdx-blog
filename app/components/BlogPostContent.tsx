@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 import { BlogMetadata } from '../types/blog';
 import { motion } from 'framer-motion';
