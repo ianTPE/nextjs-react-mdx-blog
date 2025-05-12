@@ -10,6 +10,7 @@ export default function BlogPostContent({ metadata, children }: BlogPostContentP
   return (
     <article className="max-w-4xl mx-auto px-4 py-8">
       <header className="mb-8">
+        <h1 className="text-4xl font-bold mb-4">{metadata.title}</h1>
         {metadata.coverImage && (
           <div className="relative w-full h-96 mb-6">
             <Image 
@@ -22,7 +23,6 @@ export default function BlogPostContent({ metadata, children }: BlogPostContentP
             />
           </div>
         )}
-        <h1 className="text-4xl font-bold mb-4">{metadata.title}</h1>
         <div className="flex items-center gap-4 text-gray-600 mb-4">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 relative rounded-full overflow-hidden">
