@@ -36,38 +36,52 @@ const CodeBlock = ({ children, className }: CodeBlockProps) => {
   };
   
   return (
-    <Highlight 
-      theme={themes.vsDark}
-      code={content.trim()}
-      language={language || 'jsx'}
-    >
-      {({ className: highlightClassName, style, tokens, getLineProps, getTokenProps }) => (
-        <pre className={`${highlightClassName} rounded-lg overflow-auto my-6 relative`} style={{ ...style }}>
-          {/* Header with language tag and copy button */}
-          <div className="flex justify-between items-center px-4 py-2 text-xs text-gray-400 border-b border-gray-700">
-            <span className="font-bold uppercase tracking-wider">{language}</span>
-            <button 
-              onClick={handleCopy}
-              className="bg-gray-700 hover:bg-gray-600 text-gray-200 px-2 py-1 rounded text-xs transition-colors"
-              aria-label="Copy code"
-            >
-              {copied ? 'Copied!' : 'Copy'}
-            </button>
-          </div>
-          
-          {/* Code content - without line numbers */}
-          <div className="p-4">
-            {tokens.map((line, i) => (
-              <div key={i} {...getLineProps({ line, key: i })}>
-                {line.map((token, key) => (
-                  <span key={key} {...getTokenProps({ token, key })} />
-                ))}
-              </div>
-            ))}
-          </div>
-        </pre>
-      )}
-    </Highlight>
+    // Added max-w-full to ensure code block doesn't exceed container width
+    <div className="relative max-w-full">
+      <Highlight 
+        theme={themes.vsDark}
+        code={content.trim()}
+        language={language || 'jsx'}
+      >
+        {({ className: highlightClassName, style, tokens, getLineProps, getTokenProps }) => (
+          <pre 
+            className={`${highlightClassName} rounded-lg overflow-x-auto my-6 w-full`} 
+            style={{ 
+              ...style,
+              // Ensure text doesn't wrap and scrollbar appears instead
+              overflowX: 'auto',
+              // Prevent extending beyond container
+              maxWidth: '100%',
+              // Add some padding bottom to ensure scrollbar doesn't overlap code
+              paddingBottom: '0.5rem'
+            }}
+          >
+            {/* Header with language tag and copy button */}
+            <div className="sticky left-0 flex justify-between items-center px-4 py-2 text-xs text-gray-400 border-b border-gray-700 bg-inherit">
+              <span className="font-bold uppercase tracking-wider">{language}</span>
+              <button 
+                onClick={handleCopy}
+                className="bg-gray-700 hover:bg-gray-600 text-gray-200 px-2 py-1 rounded text-xs transition-colors"
+                aria-label="複製代碼"
+              >
+                {copied ? '已複製！' : '複製'}
+              </button>
+            </div>
+            
+            {/* Code content - without line numbers */}
+            <div className="p-4 overflow-x-auto">
+              {tokens.map((line, i) => (
+                <div key={i} {...getLineProps({ line, key: i })}>
+                  {line.map((token, key) => (
+                    <span key={key} {...getTokenProps({ token, key })} />
+                  ))}
+                </div>
+              ))}
+            </div>
+          </pre>
+        )}
+      </Highlight>
+    </div>
   );
 };
 
