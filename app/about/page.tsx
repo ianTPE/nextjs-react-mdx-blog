@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
-import AboutHero from '../../components/AboutHero';
+import AboutHero from '../components/AboutHero';
 
 export const metadata: Metadata = {
   title: '關於 | 我的 Next.js 部落格',
