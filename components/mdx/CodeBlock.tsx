@@ -1,3 +1,5 @@
+'use client';
+
 import React, { ReactNode, useState } from 'react';
 import { Highlight, themes } from 'prism-react-renderer';
 
