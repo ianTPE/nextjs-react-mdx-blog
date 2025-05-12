@@ -54,7 +54,7 @@ export default function Home() {
           功能特色
         </h2>
         <div className="grid md:grid-cols-3 gap-8">
-          <Link href="/blog/mdx-blog-setup" className="block bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 ease-in-out">
+          <Link href="/blog/mdx-blog-setup" className="block bg-white rounded-lg shadow-md overflow-hidden feature-card">
             <div className="relative w-full h-48">
               <Image 
                 src="/images/mdx-blog-setup.jpg" 
@@ -69,10 +69,10 @@ export default function Home() {
               <p className="text-gray-600 mb-4">
                 在 Markdown 中直接使用 React 組件，創造更豐富的內容體驗。
               </p>
-              <span className="text-blue-600 font-medium">瞭解更多 →</span>
+              <span className="text-blue-600 font-medium"><span className="card-arrow">瞭解更多 →</span></span>
             </div>
           </Link>
-          <Link href="/blog/typescript-best-practices" className="block bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 ease-in-out">
+          <Link href="/blog/typescript-best-practices" className="block bg-white rounded-lg shadow-md overflow-hidden feature-card">
             <div className="relative w-full h-48">
               <Image 
                 src="/images/typescript-best-practices.jpg" 
@@ -87,10 +87,10 @@ export default function Home() {
               <p className="text-gray-600 mb-4">
                 完整的類型定義，提供更好的開發體驗和程式碼品質。
               </p>
-              <span className="text-blue-600 font-medium">瞭解更多 →</span>
+              <span className="text-blue-600 font-medium"><span className="card-arrow">瞭解更多 →</span></span>
             </div>
           </Link>
-          <Link href="/blog/tailwind-css-tips" className="block bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 ease-in-out">
+          <Link href="/blog/tailwind-css-tips" className="block bg-white rounded-lg shadow-md overflow-hidden feature-card">
             <div className="relative w-full h-48">
               <Image 
                 src="/images/tailwind-css-tips.jpg" 
@@ -105,7 +105,7 @@ export default function Home() {
               <p className="text-gray-600 mb-4">
                 使用 Tailwind CSS 快速構建美觀的響應式界面。
               </p>
-              <span className="text-blue-600 font-medium">瞭解更多 →</span>
+              <span className="text-blue-600 font-medium"><span className="card-arrow">瞭解更多 →</span></span>
             </div>
           </Link>
         </div>

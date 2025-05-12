@@ -1,6 +1,24 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/* 功能特色卡片 */
+.feature-card {
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+}
+
+.feature-card:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  transform: translateY(-5px);
+}
+
+.feature-card:hover .card-arrow {
+  transform: translateX(5px);
+}
+
+.card-arrow {
+  transition: transform 0.3s ease;
+}
+
 
 :root {
   --background: #ffffff;
