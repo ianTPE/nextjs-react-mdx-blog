@@ -2,9 +2,9 @@ import { BlogMetadata } from '@/app/types/blog';
 
 export const postsMetadata: Record<string, BlogMetadata> = {
   'getting-started-with-nextjs': {
-    title: '開始使用 Next.js 14',
-    date: '2024-05-10',
-    excerpt: '學習如何使用 Next.js 14 建立現代化的 React 應用程式，包含 App Router、Server Components 等最新功能。',
+    title: '開始使用 Next.js 15',
+    date: '2025-05-10',
+    excerpt: '學習如何使用 Next.js 15 建立現代化的 React 應用程式，包含 App Router、Server Components 等最新功能。',
     author: 'Ian Chen',
     tags: ['Next.js', 'React', 'TypeScript'],
     coverImage: '/images/getting-started-with-nextjs.jpg'
@@ -81,7 +81,8 @@ export const postsMetadata: Record<string, BlogMetadata> = {
     author: 'Ian Chen',
     tags: ['Tailwind CSS', 'CSS', 'Frontend'],
     coverImage: '/images/tailwind-css-tips.jpg'
-  },
+  }
+};
 
 // 獲取所有文章的 slugs
 export const getAllPostSlugs = (): string[] => {
