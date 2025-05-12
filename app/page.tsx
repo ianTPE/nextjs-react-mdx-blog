@@ -5,17 +5,17 @@ import BlogCard from './components/BlogCard';
 import { getAllPosts } from '@/lib/mdx';
 
 export const metadata: Metadata = {
-  title: "首頁 | My Blog",
-  description: "分享技術心得、開發經驗，以及生活中的點點滴滴。使用 Next.js 14、React 和 MDX 構建的現代化部落格。",
+  title: "Ian&apos;s Vibe Coding Blog",
+  description: "分享技術心得、開發經驗，以及生活中的點點滴滴。使用 Next.js 15、React 和 MDX 構建的現代化部落格。",
   openGraph: {
-    title: "首頁 | My Blog",
+    title: "Ian&apos;s Vibe Coding Blog",
     description: "分享技術心得、開發經驗，以及生活中的點點滴滴。",
     type: "website",
     images: [{
       url: "/images/default-og-image.png",
       width: 1200,
       height: 630,
-      alt: "My Blog - 首頁"
+      alt: "Ian&apos;s Vibe Coding Blog - 首頁"
     }]
   },
 };
@@ -26,7 +26,7 @@ export default function Home() {
   
   return (
     <div className="container mx-auto px-4 py-0">
-      <section className="relative mb-16 py-24 -mx-4 overflow-hidden">
+      <section className="relative mb-16 py-24 max-w-4xl mx-auto overflow-hidden">
         <div className="absolute inset-0 w-full h-full z-0">
           <Image
             src="/images/hero-background.jpg"
@@ -43,7 +43,7 @@ export default function Home() {
           </h1>
           <p className="text-xl text-white mb-8 max-w-2xl mx-auto drop-shadow-md">
             分享技術心得、開發經驗，以及生活中的點點滴滴。
-            使用 Next.js 14、React 和 MDX 構建的現代化部落格。
+            使用 Next.js 15、React 和 MDX 構建的現代化部落格。
           </p>
           <Link
             href="/blog"

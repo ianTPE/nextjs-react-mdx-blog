@@ -15,25 +15,25 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "My Blog - Next.js MDX Blog",
-  description: "A modern blog built with Next.js, React, and MDX",
+  title: "Ian&apos;s Vibe Coding Blog",
+  description: "分享技術心得、開發經驗，以及生活中的點點滴滴。使用 Next.js 15、React 和 MDX 構建的現代化部落格。",
   openGraph: {
-    title: "My Blog - Next.js MDX Blog",
-    description: "A modern blog built with Next.js, React, and MDX",
+    title: "Ian&apos;s Vibe Coding Blog",
+    description: "分享技術心得、開發經驗，以及生活中的點點滴滴。",
     type: "website",
-    siteName: "My Blog",
+    siteName: "Ian&apos;s Vibe Coding Blog",
     locale: "zh_TW",
     images: [{
       url: "/images/default-og-image.png",
       width: 1200,
       height: 630,
-      alt: "My Blog"
+      alt: "Ian&apos;s Vibe Coding Blog"
     }]
   },
   twitter: {
     card: "summary_large_image",
-    title: "My Blog - Next.js MDX Blog",
-    description: "A modern blog built with Next.js, React, and MDX",
+    title: "Ian&apos;s Vibe Coding Blog",
+    description: "分享技術心得、開發經驗，以及生活中的點點滴滴。",
     images: ["/images/default-og-image.png"]
   }
 };
