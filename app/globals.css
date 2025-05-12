@@ -52,9 +52,8 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* 確保文章內容不會超出容器 */
-article, .prose, main {
-  max-width: 100%;
+/* 確保內容元素不會產生水平溢出但保留其布局寬度 */
+.prose, main {
   overflow-x: hidden;
 }
 
@@ -100,7 +99,6 @@ pre[class*="language-"] {
 /* Remove default styling from pre blocks because CodeBlock handles the styling */
 .prose pre {
   @apply p-0 m-0 bg-transparent;
-  max-width: 100%;
   overflow-x: auto;
 }
 

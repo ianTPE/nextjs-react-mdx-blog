@@ -36,8 +36,8 @@ const CodeBlock = ({ children, className }: CodeBlockProps) => {
   };
   
   return (
-    // Added max-w-full to ensure code block doesn't exceed container width
-    <div className="relative max-w-full">
+    // Use relative positioning but avoid setting width constraints that could affect parent layout
+    <div className="relative">
       <Highlight 
         theme={themes.vsDark}
         code={content.trim()}
@@ -45,13 +45,11 @@ const CodeBlock = ({ children, className }: CodeBlockProps) => {
       >
         {({ className: highlightClassName, style, tokens, getLineProps, getTokenProps }) => (
           <pre 
-            className={`${highlightClassName} rounded-lg overflow-x-auto my-6 w-full`} 
+            className={`${highlightClassName} rounded-lg overflow-x-auto my-6`} 
             style={{ 
               ...style,
               // Ensure text doesn't wrap and scrollbar appears instead
               overflowX: 'auto',
-              // Prevent extending beyond container
-              maxWidth: '100%',
               // Add some padding bottom to ensure scrollbar doesn't overlap code
               paddingBottom: '0.5rem'
             }}
@@ -62,9 +60,9 @@ const CodeBlock = ({ children, className }: CodeBlockProps) => {
               <button 
                 onClick={handleCopy}
                 className="bg-gray-700 hover:bg-gray-600 text-gray-200 px-2 py-1 rounded text-xs transition-colors"
-                aria-label="Copy code"
+                aria-label="複製代碼"
               >
-                {copied ? 'Copied!' : 'Copy'}
+                {copied ? '已複製！' : '複製'}
               </button>
             </div>
             

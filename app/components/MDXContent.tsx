@@ -20,7 +20,7 @@ const components = {
   h1: (props: ComponentPropsWithoutRef<'h1'>) => <h1 className="text-4xl font-bold mb-6 mt-8" {...props} />,
   h2: (props: ComponentPropsWithoutRef<'h2'>) => <h2 className="text-3xl font-bold mb-4 mt-6" {...props} />,
   h3: (props: ComponentPropsWithoutRef<'h3'>) => <h3 className="text-2xl font-bold mb-3 mt-4" {...props} />,
-  p: (props: ComponentPropsWithoutRef<'p'>) => <p className="mb-6 max-w-full overflow-hidden" {...props} />,
+  p: (props: ComponentPropsWithoutRef<'p'>) => <p className="mb-6 overflow-hidden" {...props} />,
   ul: (props: ComponentPropsWithoutRef<'ul'>) => <ul className="list-disc list-inside mb-6" {...props} />,
   ol: (props: ComponentPropsWithoutRef<'ol'>) => <ol className="list-decimal list-inside mb-6" {...props} />,
   li: (props: ComponentPropsWithoutRef<'li'>) => <li className="mb-2" {...props} />,
@@ -43,15 +43,15 @@ const components = {
   
   // We need minimal pre styling since CodeBlock handles most of it
   pre: (props: ComponentPropsWithoutRef<'pre'>) => (
-    <div className="max-w-full overflow-x-hidden">
-      <pre className="m-0 p-0 bg-transparent max-w-full" {...props} />
+    <div className="overflow-x-hidden">
+      <pre className="m-0 p-0 bg-transparent" {...props} />
     </div>
   ),
 };
 
 export default function MDXContent({ source }: MDXContentProps) {
   return (
-    <div className="max-w-full overflow-hidden">
+    <div className="overflow-hidden">
       <MDXRemote {...source} components={components} />
     </div>
   );
