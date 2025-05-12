@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import { getPostBySlug, getAllPosts } from '@/lib/mdx';
 import BlogPostContent from '@/app/components/BlogPostContent';
 import ClientMDXContent from './ClientMDXContent';
-import { Metadata, ResolvingMetadata } from 'next';
+import { Metadata } from 'next';
 
 export async function generateStaticParams() {
   const posts = getAllPosts();
@@ -13,13 +13,9 @@ export async function generateStaticParams() {
 
 type Props = {
   params: { slug: string }
-  searchParams: { [key: string]: string | string[] | undefined }
 };
 
-export async function generateMetadata(
-  { params }: Props,
-  _parent: ResolvingMetadata
-): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = getPostBySlug(params.slug);
   
   if (!post) {
