@@ -1,6 +1,35 @@
-# 開始使用 Next.js 14
+# 開始使用 Next.js 15
 
-Next.js 14 帶來了許多令人興奮的新功能，讓開發現代化的 React 應用程式變得更加容易。在這篇文章中，我們將探索 Next.js 14 的主要特性，並學習如何開始使用它。
+Next.js 15 正式登場，帶來更強大、更高效、更現代化的 React 全端開發體驗！本篇將帶你快速了解 Next.js 15 的最新特性、安裝方式與最佳實踐，並詳細解析 15 版相較於過去的重大優勢。
+
+## Next.js 15 的重大優勢與新特性
+
+Next.js 15 在原有 App Router、Server Components、Edge Rendering 等基礎上，進一步強化了開發效率、效能與 DX（Developer Experience）。主要亮點如下：
+
+- **穩定的 Partial Prerendering（PPR）**：支援頁面局部預渲染，讓動態內容與靜態內容完美結合，極速首屏、即時互動。
+- **更快的 Turbopack**：Turbopack 編譯器正式進入穩定版，開發啟動與熱更新速度大幅提升。
+- **Edge Runtime 強化**：API 路由、Middleware、Server Actions 全面支援 Edge Runtime，延遲更低、可擴展性更強。
+- **Server Actions 正式版**：支援直接在伺服器端執行 mutation/action，簡化表單、資料提交與安全性管理。
+- **MDX 2.0 支援**：原生支援 MDX 2.0，React 組件與 Markdown 深度融合。
+- **更簡潔的 Metadata API**：SEO 與 Open Graph 設定更簡單。
+- **升級 React 19 支援**：自帶最新 React 19，享受更佳 Concurrent Features。
+- **開發體驗提升**：錯誤提示、型別推斷、文件生成等 DX 全面升級。
+
+---
+
+## 什麼是 Next.js？
+
+Next.js 是一個建立在 React 之上的全端框架，它提供了許多開箱即用的功能，包括：
+
+- **伺服器端渲染 (SSR)**：提升首次載入速度和 SEO 優化
+- **靜態網站生成 (SSG)**：預先生成頁面以獲得最佳性能
+- **API 路由**：輕鬆建立後端 API 端點
+- **檔案系統路由**：基於檔案結構自動生成路由
+- **Edge Functions**：極速、全球分布式執行
+- **Server/Client Components 混用**：最佳化效能與互動性
+
+---
+
 
 ## 什麼是 Next.js？
 
@@ -11,46 +40,75 @@ Next.js 是一個建立在 React 之上的全端框架，它提供了許多開�
 - **API 路由**：輕鬆建立後端 API 端點
 - **檔案系統路由**：基於檔案結構自動生成路由
 
-## Next.js 14 的新功能
+## Next.js 15 的新功能與範例
 
-### 1. App Router
+### 1. Partial Prerendering（PPR）
 
-App Router 是 Next.js 13 引入的新路由系統，在 14 版本中變得更加穩定。它提供了：
-
-- 嵌套路由
-- 佈局系統
-- 錯誤處理
-- 載入狀態
+Next.js 15 最大亮點之一是 Partial Prerendering。你可以在同一頁面靜態渲染大部分內容，僅針對個別區塊（如登入狀態、推薦內容）動態渲染，實現極速首屏與動態互動兼得。
 
 ```tsx
-// app/layout.tsx
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+// app/page.tsx
+import { Suspense } from 'react';
+import { UserPanel } from './UserPanel';
+
+export default function Home() {
   return (
-    <html lang="zh-TW">
-      <body>{children}</body>
-    </html>
+    <main>
+      <h1>歡迎來到 Next.js 15！</h1>
+      <Suspense fallback={<div>載入中...</div>}>
+        <UserPanel /> {/* 僅這區塊動態渲染，其餘靜態 */}
+      </Suspense>
+    </main>
   )
 }
 ```
 
-### 2. Server Components
+### 2. Server Actions
 
-Server Components 允許你在伺服器端渲染組件，減少客戶端的 JavaScript 負載：
+Server Actions 讓你直接在伺服器端執行 mutation（如表單送出、資料寫入），無需額外 API Route，安全又簡單。
 
 ```tsx
-// 這是一個 Server Component
-async function PostList() {
-  const posts = await getPosts() // 直接在伺服器端獲取資料
-  
+// app/actions.ts
+'use server';
+
+export async function submitForm(data: FormData) {
+  // 伺服器端處理資料
+  await saveToDB(data);
+}
+```
+
+```tsx
+// app/page.tsx
+import { submitForm } from './actions';
+
+export default function ContactPage() {
   return (
-    <ul>
-      {posts.map(post => (
-        <li key={post.id}>{post.title}</li>
-      ))}
+    <form action={submitForm}>
+      <input name="email" type="email" />
+      <button type="submit">送出</button>
+    </form>
+  );
+}
+```
+
+### 3. Turbopack 穩定版
+
+Turbopack 取代 Webpack，正式進入穩定版。開發啟動、熱更新速度遠超以往，專案越大效益越明顯。
+
+```bash
+next dev --turbo
+```
+
+### 4. Edge API 與 Middleware 強化
+
+API Route、Middleware、Server Actions 全面支援 Edge Runtime，讓你的 API 具備全球分布式、極低延遲特性。
+
+### 5. MDX 2.0 原生支援
+
+Next.js 15 內建 MDX 2.0，React 組件與 Markdown 可無縫混用，內容與互動高度整合。
+
+---
+
     </ul>
   )
 }
@@ -64,17 +122,17 @@ Turbopack 是 Next.js 的新構建工具，提供更快的開發體驗：
 next dev --turbo
 ```
 
-## 開始使用 Next.js 14
+## 開始使用 Next.js 15
 
 ### 安裝
 
-使用 create-next-app 創建新專案：
+用最新版 create-next-app 快速建立專案：
 
 ```bash
 npx create-next-app@latest my-app --typescript --tailwind --app
 ```
 
-### 基本結構
+### 專案結構
 
 ```
 my-app/
@@ -87,43 +145,48 @@ my-app/
 └── next.config.js
 ```
 
-### 創建第一個頁面
+### 建立你的第一個頁面
 
-在 `app/page.tsx` 中：
+在 `app/page.tsx`：
 
 ```tsx
 export default function Home() {
   return (
     <main>
-      <h1>歡迎使用 Next.js 14!</h1>
+      <h1>歡迎使用 Next.js 15！</h1>
     </main>
   )
 }
 ```
 
-## 最佳實踐
+### 最佳實踐
 
-1. **使用 TypeScript**：獲得更好的類型安全和開發體驗
-2. **優化圖片**：使用 Next.js 的 Image 組件
-3. **環境變數**：使用 `.env.local` 管理敏感資訊
-4. **SEO 優化**：使用 metadata API
+1. **全面 TypeScript**：提升類型安全與 DX
+2. **圖片優化**：用 Next.js Image 組件自動壓縮與 lazy load
+3. **環境變數管理**：建議用 `.env.local`
+4. **SEO 設定**：用新版 metadata API，支援 Open Graph/SEO/社群分享
 
 ```tsx
+// app/layout.tsx
 export const metadata = {
   title: '我的網站',
   description: '這是我的網站描述',
-}
+};
 ```
 
-## 結論
+---
 
-Next.js 14 提供了強大的功能來構建現代化的網路應用程式。透過 App Router、Server Components 和其他新功能，開發者可以創建高性能、SEO 友好的應用程式。
+## 總結
 
-在下一篇文章中，我們將深入探討如何使用 MDX 來增強你的 Next.js 部落格。
+Next.js 15 以更快的開發體驗、更彈性的渲染模式與更強的全端能力，持續領先 React 生態圈。無論你是要做部落格、SaaS、企業網站或 AI 應用，15 版都能讓你寫得更快、跑得更穩、維護更輕鬆。
+
+下一篇文章將深入介紹如何用 MDX 2.0 與 Next.js 15 打造內容驅動的現代網站。
 
 ---
 
 **相關資源：**
 - [Next.js 官方文檔](https://nextjs.org/docs)
-- [React Server Components 解釋](https://react.dev/blog/2023/03/22/react-labs-what-we-have-been-working-on-march-2023#react-server-components)
+- [Partial Prerendering 官方說明](https://nextjs.org/docs/app/building-your-application/optimizing/partial-prerendering)
+- [Server Actions 實作教學](https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions)
+- [MDX 2.0 官方文檔](https://mdxjs.com/)
 - [Vercel 部署指南](https://vercel.com/docs)
