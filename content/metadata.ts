@@ -11,6 +11,16 @@ export const postsMetadata: Record<string, BlogMetadata> = {
   },
 
 
+  'blog-exploring-react-workflow-contentlayer-tinacms': {
+    title: 'React 開發日誌：從 Contentlayer 到 TinaCMS 的實用工作流程探索',
+    date: '2025-04-11',
+    excerpt: '在這篇技術探索日誌中，我深入研究了 React 開發生態系統中的 Contentlayer 和 TinaCMS 工具，解析它們的本質及應用場景。從 Contentlayer 的解析器功能到 TinaCMS 的實用性，我紀錄了在建立部落格過程中遇到的各種技術挑戰，包括 MDX 編輯困境、元件整合問題，以及與 AI 工具合作的經驗。這篇文章特別適合正在尋找理想前端開發工作流程的開發者，分享了我在多個 React 框架中的實際體驗和問題解決策略，讓讀者能從我的嘗試中獲取寶貴經驗。',
+    author: 'Ian Chen',
+    tags: ['Contentlayer', 'TinaCMS', 'React'],
+    coverImage: '/images/posts/blog-exploring-react-workflow-contentlayer-tinacms.png'
+  },
+
+
 
   'automating-deployment-docusaurus-github-vercel-netlify': {
     title: 'Docusaurus與框架選擇實戰：2025年全棧開發者的深夜探索之旅',
@@ -20,7 +30,6 @@ export const postsMetadata: Record<string, BlogMetadata> = {
     tags: ['Docusaurus', 'React', 'TypeScript'],
     coverImage: '/images/posts/automating-deployment-docusaurus-github-vercel-netlify.png'
   },
-
   'ai-powered-website-automation-claude-mcp-server-guide': {
     title: 'AI 驅動網站自動化建置全攻略：Claude MCP Server 實戰體驗與最佳實踐',
     date: '2025-04-10',
@@ -29,9 +38,6 @@ export const postsMetadata: Record<string, BlogMetadata> = {
     tags: ['Claude MCP Server', 'React', 'TypeScript'],
     coverImage: '/images/posts/ai-powered-website-automation-claude-mcp-server-guide.png'
   },
-
-
-
   'mdx-blog-setup': {
     title: '使用 MDX 建立部落格',
     date: '2024-05-11',
