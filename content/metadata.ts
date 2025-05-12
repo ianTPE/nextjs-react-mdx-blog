@@ -55,6 +55,16 @@ export const postsMetadata: Record<string, BlogMetadata> = {
     tags: ['MDX', 'Next.js', 'Blog'],
     coverImage: '/images/mdx-blog-setup.jpg'
   },
+
+  'framer-motion-intro-guide': {
+    title: 'Framer Motion 動畫入門與實戰指南',
+    date: '2025-05-12',
+    excerpt: '全面介紹 Framer Motion 動畫函式庫的優勢、基礎用法、進階互動與 Next.js 整合實戰技巧，適合現代 React/Next.js 開發者。',
+    author: 'Ian Chen',
+    tags: ['Framer Motion', 'React', 'Next.js', '動畫', '前端'],
+    coverImage: '/images/framer-motion-intro-guide.jpg'
+  },
+
   'typescript-best-practices': {
     title: 'TypeScript 最佳實踐',
     date: '2024-05-12',
@@ -63,6 +73,7 @@ export const postsMetadata: Record<string, BlogMetadata> = {
     tags: ['TypeScript', 'JavaScript', 'Best Practices'],
     coverImage: '/images/typescript-best-practices.jpg'
   },
+
   'tailwind-css-tips': {
     title: 'Tailwind CSS 進階技巧',
     date: '2024-05-13',
@@ -70,8 +81,7 @@ export const postsMetadata: Record<string, BlogMetadata> = {
     author: 'Ian Chen',
     tags: ['Tailwind CSS', 'CSS', 'Frontend'],
     coverImage: '/images/tailwind-css-tips.jpg'
-  }
-};
+  },
 
 // 獲取所有文章的 slugs
 export const getAllPostSlugs = (): string[] => {
