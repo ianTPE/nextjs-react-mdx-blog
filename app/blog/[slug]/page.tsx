@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import { getPostBySlug, getAllPosts } from '@/lib/mdx';
 import BlogPostContent from '@/app/components/BlogPostContent';
 import ClientMDXContent from './ClientMDXContent';
-import { Metadata } from 'next';
+import { Metadata, ResolvingMetadata } from 'next';
 
 export async function generateStaticParams() {
   const posts = getAllPosts();
@@ -11,7 +11,15 @@ export async function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+type Props = {
+  params: { slug: string }
+  searchParams: { [key: string]: string | string[] | undefined }
+};
+
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
   const post = getPostBySlug(params.slug);
   
   if (!post) {
@@ -47,7 +55,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default async function BlogPostPage({ params }: { params: { slug: string } }) {
+export default async function BlogPostPage(
+  { params }: Props
+) {
   const post = getPostBySlug(params.slug);
   
   if (!post) {
