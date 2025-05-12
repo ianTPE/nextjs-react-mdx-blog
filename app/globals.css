@@ -52,6 +52,12 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* 關於頁面特定樣式 */
+.about-page {
+  position: relative;
+  isolation: isolate; /* 創建新的堆疊上下文 */
+}
+
 /* 確保內容元素不會產生水平溢出但保留其布局寬度 */
 .prose, main {
   overflow-x: hidden;
