@@ -7,6 +7,59 @@ type CodeBlockProps = {
   className?: string;
 };
 
+// Define some simple syntax highlighting classes
+const getTokenStyle = (token: string, language: string): string => {
+  // Simple highlighting for keywords in various languages
+  if (language === 'javascript' || language === 'jsx' || language === 'typescript' || language === 'tsx') {
+    if (/\b(const|let|var|function|return|import|export|from|class|extends|if|else|for|while|switch|case|default|break|continue|try|catch|finally|throw|async|await)\b/.test(token)) {
+      return 'text-purple-400'; // keywords
+    } else if (/^(["'`]).*\1$/.test(token)) {
+      return 'text-green-400'; // strings
+    } else if (/\b(true|false|null|undefined|NaN|Infinity)\b/.test(token)) {
+      return 'text-yellow-400'; // literals
+    } else if (/\b(console|Math|Date|document|window|Array|Object|String|Number|Boolean)\b/.test(token)) {
+      return 'text-blue-400'; // built-ins
+    } else if (/\b\d+\b/.test(token)) {
+      return 'text-orange-400'; // numbers
+    } else if (/^\s*\/\/.*$/.test(token)) {
+      return 'text-gray-500'; // comments
+    }
+  } else if (language === 'html' || language === 'xml') {
+    if (/<\/?[a-zA-Z][\w-]*/.test(token)) {
+      return 'text-red-400'; // tags
+    } else if (/\b[a-zA-Z][\w-]*=/.test(token)) {
+      return 'text-yellow-400'; // attributes
+    } else if (/^(["'`]).*\1$/.test(token)) {
+      return 'text-green-400'; // strings
+    }
+  } else if (language === 'css') {
+    if (/^[.#][a-zA-Z][\w-]*/.test(token)) {
+      return 'text-yellow-400'; // selectors
+    } else if (/^[a-zA-Z][\w-]*:/.test(token)) {
+      return 'text-blue-400'; // properties
+    } else if (/^#[0-9a-fA-F]{3,6}$/.test(token)) {
+      return 'text-orange-400'; // hex colors
+    }
+  }
+  
+  return ''; // default, no specific styling
+};
+
+// Function to create simple highlighted tokens
+const highlightCode = (code: string, language: string): ReactNode[] => {
+  // Split by spaces and new lines while preserving them
+  const tokens = code.split(/(\s+)/g);
+  
+  return tokens.map((token, index) => {
+    const style = getTokenStyle(token, language);
+    return (
+      <span key={index} className={style}>
+        {token}
+      </span>
+    );
+  });
+};
+
 const CodeBlock = ({ children, className }: CodeBlockProps) => {
   // State for showing "Copied!" feedback
   const [copied, setCopied] = useState(false);
@@ -60,11 +113,11 @@ const CodeBlock = ({ children, className }: CodeBlockProps) => {
           </button>
         </div>
         
-        {/* Code content - without fancy highlighting */}
+        {/* Code content with simple token-based highlighting */}
         <div className="p-4 overflow-x-auto font-mono">
           {content.split('\n').map((line, i) => (
             <div key={i} className="whitespace-pre">
-              {line}
+              {highlightCode(line, language)}
             </div>
           ))}
         </div>
