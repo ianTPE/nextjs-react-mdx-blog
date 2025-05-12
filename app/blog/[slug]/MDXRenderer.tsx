@@ -14,6 +14,8 @@ export default function MDXRenderer({ source, components }: MDXRendererProps) {
   const [mdxSource, setMdxSource] = useState<MDXRemoteSerializeResult | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  console.log('MDXRenderer receiving components:', Object.keys(components));
+
   useEffect(() => {
     const processMDX = async () => {
       try {

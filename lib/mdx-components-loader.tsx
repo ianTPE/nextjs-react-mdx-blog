@@ -1,13 +1,13 @@
-'use server';
-
 /**
  * 動態加載特定博客文章的MDX組件
  * 這個文件實現了一個系統，可以根據文章slug動態加載該文章的自定義組件
  */
 
+import React from 'react';
 import path from 'path';
 import fs from 'fs';
 import { cache } from 'react';
+import { createFallbackComponent } from './fallback-component';
 
 // 默認MDX全局組件，當找不到特定組件時使用
 import * as globalComponents from '@/components/mdx/global-components';
@@ -45,15 +45,7 @@ export function getComponentByName(name: string, components: Record<string, any>
   if (!Component) {
     console.warn(`Component '${name}' not found, using fallback`);
     // 返回一個警告組件作為後備
-    return function FallbackComponent(props: any) {
-      return (
-        <div className="p-4 border border-yellow-500 bg-yellow-50 rounded">
-          <p className="text-yellow-700">
-            組件 "{name}" 未找到。請確保該組件已正確導出。
-          </p>
-        </div>
-      );
-    };
+    return createFallbackComponent(name);
   }
   
   return Component;

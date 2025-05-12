@@ -26,6 +26,22 @@ const nextConfig: NextConfig = {
       '@content': path.join(process.cwd(), 'content'),
     };
     
+    // 確保 .tsx 文件被正確處理
+    const oneOf = config.module.rules.find(
+      (rule) => rule.oneOf
+    )?.oneOf;
+    if (oneOf) {
+      const tsxRule = oneOf.find(
+        (rule) => rule.test && rule.test.toString().includes('tsx')
+      );
+      if (tsxRule) {
+        tsxRule.include = [
+          ...(Array.isArray(tsxRule.include) ? tsxRule.include : [tsxRule.include]),
+          path.join(process.cwd(), 'lib'),
+        ];
+      }
+    }
+    
     return config;
   },
 };
