@@ -74,27 +74,34 @@ export default function Home() {
 
       {/* 功能特色區塊 */}
       <section className="max-w-4xl mx-auto mb-16">
-        <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
-          功能特色
+        <h2 className="text-3xl font-bold text-gray-900 mb-8 text-left">
+          技術棧
         </h2>
-        <div className="grid md:grid-cols-3 gap-8">
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-bold mb-3">MDX 支援</h3>
-            <p className="text-gray-600">
-              在 Markdown 中直接使用 React 組件，創造更豐富的內容體驗。
-            </p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+          <div className="bg-white rounded-lg shadow p-4 flex flex-col items-center border">
+            <span className="text-3xl mb-2">🔄</span>
+            <span className="font-semibold">Next.js</span>
+            <span className="text-gray-500 text-sm mt-1">v15.3.2</span>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-bold mb-3">TypeScript</h3>
-            <p className="text-gray-600">
-              完整的類型定義，提供更好的開發體驗和程式碼品質。
-            </p>
+          <div className="bg-white rounded-lg shadow p-4 flex flex-col items-center border">
+            <span className="text-3xl mb-2">⚛️</span>
+            <span className="font-semibold">React</span>
+            <span className="text-gray-500 text-sm mt-1">v19.0.0</span>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-bold mb-3">Tailwind CSS</h3>
-            <p className="text-gray-600">
-              使用 Tailwind CSS 快速構建美觀的響應式界面。
-            </p>
+          <div className="bg-white rounded-lg shadow p-4 flex flex-col items-center border">
+            <span className="text-3xl mb-2">🅣</span>
+            <span className="font-semibold">TypeScript</span>
+            <span className="text-gray-500 text-sm mt-1">v5.0+</span>
+          </div>
+          <div className="bg-white rounded-lg shadow p-4 flex flex-col items-center border">
+            <span className="text-3xl mb-2">💨</span>
+            <span className="font-semibold">Tailwind CSS</span>
+            <span className="text-gray-500 text-sm mt-1">v4.0+</span>
+          </div>
+          <div className="bg-white rounded-lg shadow p-4 flex flex-col items-center border">
+            <span className="text-3xl mb-2">📄</span>
+            <span className="font-semibold">MDX</span>
+            <span className="text-gray-500 text-sm mt-1">v3.1.0</span>
           </div>
         </div>
       </section>
