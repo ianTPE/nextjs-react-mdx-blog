@@ -49,9 +49,9 @@ const CodeBlock = ({ children, className }: CodeBlockProps) => {
             <button 
               onClick={handleCopy}
               className="bg-gray-700 hover:bg-gray-600 text-gray-200 px-2 py-1 rounded text-xs transition-colors"
-              aria-label="複製代碼"
+              aria-label="Copy code"
             >
-              {copied ? '已複製！' : '複製'}
+              {copied ? 'Copied!' : 'Copy'}
             </button>
           </div>
           
