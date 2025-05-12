@@ -9,12 +9,12 @@ export const metadata: Metadata = {
 
 export default function About() {
   return (
-    <div className="about-page">
+    <div className="container mx-auto px-4 about-page">
       {/* Hero section */}
       <AboutHero />
 
       {/* Blog bilingual summary section */}
-      <section className="mb-12 p-8 bg-gradient-to-br from-sky-50 to-indigo-50 rounded-xl shadow-sm">
+      <section className="max-w-4xl mx-auto mb-12 p-8 bg-gradient-to-br from-sky-50 to-indigo-50 rounded-xl shadow-sm">
         <h2 className="text-2xl font-bold mb-4">部落格概述 | Blog Overview</h2>
         <div className="space-y-4">
           <p className="text-lg">
