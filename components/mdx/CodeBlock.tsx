@@ -36,20 +36,13 @@ const CodeBlock = ({ children, className }: CodeBlockProps) => {
             <span className="font-bold uppercase tracking-wider">{language}</span>
           </div>
           
-          {/* Code content */}
+          {/* Code content - removed line numbers */}
           <div className="p-4">
             {tokens.map((line, i) => (
-              <div key={i} {...getLineProps({ line, key: i })} className="flex">
-                {/* Line number */}
-                <span className="inline-block w-8 text-right mr-4 text-gray-500 select-none">
-                  {i + 1}
-                </span>
-                {/* Actual code */}
-                <span className="flex-1">
-                  {line.map((token, key) => (
-                    <span key={key} {...getTokenProps({ token, key })} />
-                  ))}
-                </span>
+              <div key={i} {...getLineProps({ line, key: i })}>
+                {line.map((token, key) => (
+                  <span key={key} {...getTokenProps({ token, key })} />
+                ))}
               </div>
             ))}
           </div>
