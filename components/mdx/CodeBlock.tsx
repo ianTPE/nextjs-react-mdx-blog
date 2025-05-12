@@ -1,7 +1,6 @@
 'use client';
 
 import React, { ReactNode, useState } from 'react';
-import { Highlight, themes } from 'prism-react-renderer';
 
 type CodeBlockProps = {
   children: ReactNode;
@@ -40,47 +39,36 @@ const CodeBlock = ({ children, className }: CodeBlockProps) => {
   return (
     // Use relative positioning but avoid setting width constraints that could affect parent layout
     <div className="relative">
-      <Highlight 
-        theme={themes.vsDark}
-        code={content.trim()}
-        language={language || 'jsx'}
+      <pre 
+        className={`language-${language} rounded-lg overflow-x-auto my-6 bg-gray-900 text-gray-100`}
+        style={{ 
+          // Ensure text doesn't wrap and scrollbar appears instead
+          overflowX: 'auto',
+          // Add some padding bottom to ensure scrollbar doesn't overlap code
+          paddingBottom: '0.5rem'
+        }}
       >
-        {({ className: highlightClassName, style, tokens, getLineProps, getTokenProps }) => (
-          <pre 
-            className={`${highlightClassName} rounded-lg overflow-x-auto my-6`} 
-            style={{ 
-              ...style,
-              // Ensure text doesn't wrap and scrollbar appears instead
-              overflowX: 'auto',
-              // Add some padding bottom to ensure scrollbar doesn't overlap code
-              paddingBottom: '0.5rem'
-            }}
+        {/* Header with language tag and copy button */}
+        <div className="sticky left-0 flex justify-between items-center px-4 py-2 text-xs text-gray-400 border-b border-gray-700 bg-inherit">
+          <span className="font-bold uppercase tracking-wider">{language}</span>
+          <button 
+            onClick={handleCopy}
+            className="bg-gray-700 hover:bg-gray-600 text-gray-200 px-2 py-1 rounded text-xs transition-colors"
+            aria-label="Copy code"
           >
-            {/* Header with language tag and copy button */}
-            <div className="sticky left-0 flex justify-between items-center px-4 py-2 text-xs text-gray-400 border-b border-gray-700 bg-inherit">
-              <span className="font-bold uppercase tracking-wider">{language}</span>
-              <button 
-                onClick={handleCopy}
-                className="bg-gray-700 hover:bg-gray-600 text-gray-200 px-2 py-1 rounded text-xs transition-colors"
-                aria-label="Copy code"
-              >
-                {copied ? 'Copied!' : 'Copy'}
-              </button>
+            {copied ? 'Copied!' : 'Copy'}
+          </button>
+        </div>
+        
+        {/* Code content - without fancy highlighting */}
+        <div className="p-4 overflow-x-auto font-mono">
+          {content.split('\n').map((line, i) => (
+            <div key={i} className="whitespace-pre">
+              {line}
             </div>
-            
-            {/* Code content - without line numbers */}
-            <div className="p-4 overflow-x-auto">
-              {tokens.map((line, i) => (
-                <div key={i} {...getLineProps({ line, key: i })}>
-                  {line.map((token, key) => (
-                    <span key={key} {...getTokenProps({ token, key })} />
-                  ))}
-                </div>
-              ))}
-            </div>
-          </pre>
-        )}
-      </Highlight>
+          ))}
+        </div>
+      </pre>
     </div>
   );
 };
