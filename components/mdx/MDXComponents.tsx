@@ -3,8 +3,8 @@ import { MDXProvider } from '@mdx-js/react';
 import CodeBlock from './CodeBlock';
 
 const MDXComponents = {
-  // Override pre tags by just passing along props
-  pre: (props: React.HTMLAttributes<HTMLPreElement>) => <div {...props} />,
+  // Keep the pre element but add any custom styling
+  pre: (props: React.ComponentPropsWithoutRef<'pre'>) => <pre {...props} />,
   
   // Override code tags with our custom CodeBlock
   code: CodeBlock,
