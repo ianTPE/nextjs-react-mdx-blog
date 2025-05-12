@@ -1,6 +1,35 @@
-# TypeScript 最佳實踐
+# TypeScript 最佳實踐（2025 v5.5 升級）
 
-TypeScript 已經成為現代 JavaScript 開發的標準選擇。它提供了強大的類型系統，幫助我們寫出更安全、更易維護的程式碼。在這篇文章中，我們將探索一些 TypeScript 開發的最佳實踐。
+TypeScript 已經成為現代 JavaScript 開發的標準選擇。它提供了強大的類型系統，幫助我們寫出更安全、更易維護的程式碼。這篇文章已同步 TypeScript 5.5 最新特性與最佳實踐。
+
+---
+
+## TypeScript 5.5 亮點與升級須知
+
+2024 年 6 月 TypeScript 5.5 正式發佈，帶來以下重要新功能與變更：
+
+- **Inferred Type Predicates**：函數型別推斷更聰明，減少顯式 as 語法。
+- **RegExp 語法檢查**：型別系統內建正則表達式語法檢查，減少 typo。
+- **Set 新方法支援**：完整支援 ECMAScript Set 新 API，如 .intersection、.difference 等。
+- **JSDoc @import 標籤**：JSDoc 註解可直接導入型別。
+- **性能與可靠性提升**：編譯/IDE 體驗更快、更穩定。
+- **嚴格模式變更**：Decorator 語法更嚴格，undefined 不再可作型別名稱。
+- **lib.d.ts/型別定義優化**：部分舊 API 型別更嚴謹。
+
+### 升級建議與常見坑
+- **升級指令**：
+  ```bash
+  npm install -D typescript@latest
+  ```
+- **檢查 tsconfig.json**：善用 `strict`、`noUncheckedIndexedAccess`、`exactOptionalPropertyTypes` 等嚴格選項。
+- **Decorator 需調整**：若用到 Decorator，請依照新語法修正。
+- **undefined 關鍵字**：不可再作為型別名稱，請用 `type X = undefined` 取代。
+- **JSDoc 型別引用**：推薦用 @import，減少全域污染。
+- **Set/Map API**：如有 polyfill，確認新版 API 是否支援。
+
+[官方 5.5 發佈說明](https://devblogs.microsoft.com/typescript/announcing-typescript-5-5/)
+
+---
 
 ## 1. 充分利用類型推斷
 

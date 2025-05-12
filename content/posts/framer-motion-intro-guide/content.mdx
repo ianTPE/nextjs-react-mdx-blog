@@ -1,0 +1,128 @@
+# Framer Motion 動畫入門與實戰指南
+
+Framer Motion 是 React 生態圈最受歡迎的動畫函式庫之一，擁有直覺 API、強大功能與極佳效能。2025 年 Framer Motion 持續進化，支援 React 18、Next.js 15，並優化效能與 TypeScript 型別體驗。本文帶你快速上手 Framer Motion，並分享在 Next.js 專案中的實戰技巧。
+
+---
+
+## 為什麼選擇 Framer Motion？（2025 版優勢）
+- **簡單易用**：幾行程式碼即可做出平滑動畫。
+- **元件化思維**：動畫就是 React 元件，容易組合與重用。
+- **強大功能**：支援拖曳、彈性過渡、動畫序列、共享動畫狀態、layoutId 等。
+- **效能優化**：底層用 requestAnimationFrame，效能極佳。
+- **TypeScript 支援完整**：型別安全、開發體驗佳。
+- **SSR 友善**：可安全用於 Next.js App Router。
+
+---
+
+## 安裝與基本用法
+
+```bash
+npm install framer-motion
+```
+
+最簡單的動畫範例：
+
+```jsx
+import { motion } from 'framer-motion';
+
+export default function Example() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      className="p-8 bg-white rounded shadow"
+    >
+      Hello, Framer Motion!
+    </motion.div>
+  );
+}
+```
+
+---
+
+## AnimatePresence：進場/離場動畫
+
+AnimatePresence 讓你能為元件進場與離場設計動畫，常用於 Modal、頁面切換等場景。
+
+```jsx
+import { AnimatePresence, motion } from 'framer-motion';
+
+function Modal({ isOpen, onClose }) {
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          className="fixed inset-0 bg-black/50 flex items-center justify-center"
+          onClick={onClose}
+        >
+          <motion.div
+            initial={{ scale: 0.8 }}
+            animate={{ scale: 1 }}
+            exit={{ scale: 0.8 }}
+            transition={{ duration: 0.3 }}
+            className="bg-white rounded p-6"
+            onClick={e => e.stopPropagation()}
+          >
+            這是彈窗內容
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+```
+
+---
+
+## 拖曳互動（drag）
+
+只要加上 `drag` 屬性，任何元素都能變成可拖曳：
+
+```jsx
+<motion.div drag className="w-32 h-32 bg-blue-500 rounded cursor-move" />
+```
+
+---
+
+## Variants：動畫序列與狀態切換
+
+Variants 讓你定義多組動畫狀態，並輕鬆切換：
+
+```jsx
+const boxVariants = {
+  hidden: { opacity: 0, x: -100 },
+  visible: { opacity: 1, x: 0, transition: { type: 'spring', stiffness: 120 } }
+};
+
+<motion.div
+  variants={boxVariants}
+  initial="hidden"
+  animate="visible"
+  className="w-32 h-32 bg-green-400 rounded"
+/>
+```
+
+---
+
+## 與 Next.js 結合的最佳實踐
+- **SSR 支援佳**：Framer Motion 可安全用於 Next.js App Router。
+- **Tailwind 結合**：className 可直接用 Tailwind 分離動畫與樣式。
+- **頁面切換動畫**：用 AnimatePresence 包裹 page 元件，實現 route 動畫。
+- **效能最佳化**：大量動畫時建議用 layoutId、useReducedMotion 等技巧。
+- **TypeScript 型別安全**：建議專案全程開啟 TypeScript，享受 IDE 智慧提示。
+
+---
+
+## 進階資源
+- [Framer Motion 官方文件](https://www.framer.com/motion/)
+- [Framer Motion + Next.js 深入教學](https://www.framer.com/motion/examples/)
+- [動畫設計最佳實踐](https://uxdesign.cc/animation-principles-in-ui-design-6c2f3d6bcdfb)
+
+---
+
+Framer Motion 讓 React 動畫變得簡單又強大，無論是微互動還是大型動畫專案，都能輕鬆駕馭。快把它用在你的下個 Next.js 部落格專案吧！
