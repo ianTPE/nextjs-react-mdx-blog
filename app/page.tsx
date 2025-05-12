@@ -73,7 +73,7 @@ export default function Home() {
       </section>
 
       {/* 功能特色區塊 */}
-      <section className="mb-12">
+      <section className="max-w-4xl mx-auto mb-12">
         <h2 className="text-2xl font-bold mb-6 pb-2 border-b border-gray-200">技術棧</h2>
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
           <div className="bg-white p-6 rounded-lg shadow-sm text-center hover:shadow-md transition-shadow">
