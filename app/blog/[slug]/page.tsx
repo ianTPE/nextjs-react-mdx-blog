@@ -1,8 +1,9 @@
 import { notFound } from 'next/navigation';
 import { getPostBySlug, getAllPosts } from '@/lib/mdx';
 import BlogPostContentStatic from '@/app/components/BlogPostContent.static';
-import ClientMDXContent from './ClientMDXContent';
+import MDXRenderer from './MDXRenderer';
 import { Metadata } from 'next';
+import { getPostComponents } from '@/lib/mdx-components-loader';
 
 export async function generateStaticParams() {
   const posts = getAllPosts();
@@ -56,9 +57,15 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     notFound();
   }
 
+  // 獲取該文章的自定義組件
+  const components = await getPostComponents(resolvedParams.slug);
+
   return (
     <BlogPostContentStatic metadata={post.metadata}>
-      <ClientMDXContent content={post.content} slug={resolvedParams.slug} />
+      <MDXRenderer 
+        source={post.content} 
+        components={components}
+      />
     </BlogPostContentStatic>
   );
 }

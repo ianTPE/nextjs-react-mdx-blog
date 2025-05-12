@@ -5,6 +5,8 @@ import { serialize } from 'next-mdx-remote/serialize';
 import { MDXRemoteSerializeResult } from 'next-mdx-remote';
 import MDXContent from '@/app/components/MDXContent';
 import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
 
 interface ClientMDXContentProps {
   content: string;
@@ -16,19 +18,19 @@ export default function ClientMDXContent({ content, slug }: ClientMDXContentProp
 
   useEffect(() => {
     const processMDX = async () => {
-      // 啟用 MDX 文件中的 import 語句
-      const serialized = await serialize(content, {
-        // 啟用 mdx 導入
-        parseFrontmatter: true,
-        mdxOptions: {
-          development: process.env.NODE_ENV === 'development',
-          // 告訴 MDX 可能從當前 slug 目錄中導入組件
-          ...((slug && process.env.NODE_ENV === 'development') ? {
-            baseDirectory: path.join(process.cwd(), 'content/posts', slug)
-          } : {})
-        },
-      });
-      setMdxSource(serialized);
+      try {
+        console.log('Processing MDX for slug:', slug);
+        
+        // 嘗試一個更簡單的方法，不使用複雜的 mdxOptions
+        const serialized = await serialize(content, {
+          parseFrontmatter: true,
+        });
+        
+        console.log('MDX serialized successfully');
+        setMdxSource(serialized);
+      } catch (error) {
+        console.error('Error processing MDX:', error);
+      }
     };
     
     processMDX();
