@@ -4,6 +4,7 @@ import { MDXRemote } from 'next-mdx-remote';
 import { MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { ComponentPropsWithoutRef, ReactNode } from 'react';
 import CodeBlock from '@/components/mdx/CodeBlock';
+import VersionComparisonTable from '@/components/mdx/VersionComparisonTable';
 
 interface MDXContentProps {
   source: MDXRemoteSerializeResult;
@@ -27,6 +28,9 @@ const components = {
   blockquote: (props: ComponentPropsWithoutRef<'blockquote'>) => (
     <blockquote className="border-l-4 border-gray-300 pl-4 italic text-gray-700 mb-6" {...props} />
   ),
+  
+  // Custom MDX components
+  VersionComparisonTable: VersionComparisonTable,
   
   // For both code blocks and inline code
   code: (props: CodeProps) => {

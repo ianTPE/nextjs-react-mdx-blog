@@ -1,6 +1,7 @@
 import React from 'react';
 import { MDXProvider } from '@mdx-js/react';
 import CodeBlock from './CodeBlock';
+import VersionComparisonTable from './VersionComparisonTable';
 
 const MDXComponents = {
   // Keep the pre element but add any custom styling
@@ -9,7 +10,8 @@ const MDXComponents = {
   // Override code tags with our custom CodeBlock
   code: CodeBlock,
   
-  // You can add more custom components for MDX here
+  // Custom components for MDX
+  VersionComparisonTable: VersionComparisonTable,
 };
 
 export default MDXComponents;
