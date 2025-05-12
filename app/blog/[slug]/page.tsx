@@ -58,7 +58,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   return (
     <BlogPostContentStatic metadata={post.metadata}>
-      <ClientMDXContent content={post.content} />
+      <ClientMDXContent content={post.content} slug={resolvedParams.slug} />
     </BlogPostContentStatic>
   );
 }

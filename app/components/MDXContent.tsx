@@ -4,7 +4,6 @@ import { MDXRemote } from 'next-mdx-remote';
 import { MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { ComponentPropsWithoutRef, ReactNode } from 'react';
 import CodeBlock from '@/components/mdx/CodeBlock';
-import VersionComparisonTable from '@/components/mdx/VersionComparisonTable';
 
 interface MDXContentProps {
   source: MDXRemoteSerializeResult;
@@ -30,7 +29,7 @@ const components = {
   ),
   
   // Custom MDX components
-  VersionComparisonTable: VersionComparisonTable,
+  // 自定義組件可以在全局添加，或者由 MDX 文件局部導入
   
   // For both code blocks and inline code
   code: (props: CodeProps) => {

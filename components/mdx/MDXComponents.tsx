@@ -1,7 +1,6 @@
 import React from 'react';
 import { MDXProvider } from '@mdx-js/react';
 import CodeBlock from './CodeBlock';
-import VersionComparisonTable from './VersionComparisonTable';
 
 const MDXComponents = {
   // Keep the pre element but add any custom styling
@@ -10,8 +9,7 @@ const MDXComponents = {
   // Override code tags with our custom CodeBlock
   code: CodeBlock,
   
-  // Custom components for MDX
-  VersionComparisonTable: VersionComparisonTable,
+  // 自定義組件可以在全局添加，或者由 MDX 文件局部導入
 };
 
 export default MDXComponents;
