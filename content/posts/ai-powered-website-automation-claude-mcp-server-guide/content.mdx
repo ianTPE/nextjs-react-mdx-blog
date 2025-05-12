@@ -1,0 +1,119 @@
+今天帶大家踏上一場充滿驚喜與挫折的 AI 建站冒險！作為一個對 React 和現代前端技術略知一二的探索者，我決定讓 AI 助手 Claude 接管我的開發環境，看看它能否完成從零到上線的全自動建站過程。這場實驗既令人振奮又引人深思，讓我們一起來看看這場"人機協作"的過程吧！
+
+## 前言：現代前端的魔法世界
+
+對我而言，React 的魅力不僅在於它能減輕網路負擔（無需每次下載完整網頁），還有它優雅的程式碼結構。最近我還發現了 plasmic、builder.io、teleportHQ、quarkly 和 weweb 等工具，它們能生成 JSX 代碼並導入到 MDX 文件中。帶著這些初步理解，我開始了我的 Vercel MCP Server 探索之旅。
+
+## 搜尋方式的轉變
+
+有趣的是，我發現自己越來越少使用傳統的 Google 搜尋了。今天要安裝 Vercel MCP Server 時，我的第一反應是打開 ChatGPT search、Perplexity、Felo 和秘塔搜索。Perplexity 迅速給出了如何在 Claude desktop 中配置 MCP Server 的答案：
+
+```json
+{
+  "mcpServers": {
+    "vercel": {
+      "command": "npx",
+      "args": [
+        "--package",
+        "@vercel/sdk",
+        "mcp",
+        "start",
+        "--bearer-token",
+        "<YOUR_BEARER_TOKEN>"
+      ]
+    }
+  }
+}
+```
+
+## Vercel MCP Server：AI 建站的第一步
+
+申請並配置好 bearer token 後，Claude desktop 順利加入了 MCP Server，系統顯示綠燈，一切正常運行！🚀
+
+Vercel MCP Server 啟動後，我讓它自動部署一個 Next.js AI chatbot。只見 Claude desktop 開始自動行動，在 Vercel 中創建項目，雖然它無法自動連接 GitHub（需要我手動操作），但這已經令人印象深刻。
+
+我平時習慣在 Vercel 中一氣呵成地完成項目部署和 GitHub 倉庫建立，所以仔細檢查了設置，但找不出問題所在。我猜想這可能是出於安全考慮的限制。
+
+## GitHub MCP Server：出乎意料的順利
+
+我原本擔心 GitHub 加入 MCP Server 會很困難（畢竟微軟有自家的 Copilot），但事實證明我想錯了！Git 生態系統仍然相當開放，第三方開發者已經為此做好了準備。
+
+這個 MCP Server 需要在 Docker 中啟動，於是我安裝了 Docker desktop 並配置了相應的 Token：
+
+```json
+{
+  "mcpServers": {
+    "github": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "GITHUB_PERSONAL_ACCESS_TOKEN=<YOUR_TOKEN>",
+        "ghcr.io/github/github-mcp-server"
+      ]
+    }
+  }
+}
+```
+
+GitHub MCP Server 順利啟動了！✨
+
+## AI 驅動的 Chatbot 修改
+
+接下來，我讓 Claude desktop 繼續完善那個 Next.js AI chatbot。它預設使用 xAI 啟動，我讓 Claude 將其改為使用 Claude API，並添加了我的 Claude Token。經過幾次調整後，chatbot 開始正常工作。
+
+這一刻實在太神奇了！Claude 自動完成了大量工作，我只需看著它刷刷刷地執行操作，最終完成了整個 chatbot 網站。而且因為部署在 Vercel 和 GitHub 上，我甚至不需要支付額外費用。整個過程宛如魔法，充滿科技感！🧙‍♂️
+
+## 換個方向：從 GitHub 到 Vercel
+
+下午四點，我決定換個方向再試一次：這次從 GitHub 出發，再到 Vercel，看能否一次性建好網站。不過我還缺少一個步驟—在本地電腦上 clone GitHub 倉庫，這樣才能實現從部署到本地修改的完整流程。
+
+我讓 Claude 開始工作，給了它一個範例，它立即將其 fork 到我的帳戶中。一切仍然是自動的！Vercel 那邊也建立了相應的項目。Claude 甚至可以直接調整 GitHub 中的配置文件。
+
+但有一點小遺憾：它沒有在本地電腦上建立目錄。它只是告訴我如何手動創建，而我當然不想手動操作。
+
+## 最後一塊拼圖：CLI Exec Server
+
+經過調查，我找到了解決方案—需要添加 CLI Exec Server：
+
+```json
+{
+  "mcpServers": {
+    "mcp-cli-exec": {
+      "command": "npx",
+      "args": ["-y", "mcp-cli-exec"]
+    }
+  }
+}
+```
+
+加上這個配置後，Claude 終於可以自動控制 git clone 了，它成功地在本地建立了目錄。
+
+## 美夢與現實的碰撞
+
+此時，一切看起來都那麼完美！我心中的美夢——AI 自動完成全部工作——似乎即將實現。我估計整個建站工作已完成了約 70%。
+
+然而，接下來情況開始走調...🙃
+
+我讓 Claude 調整 Vercel 網站顯示。它調整了半小時，網站確實啟動了，但顯示的內容不完整。
+
+我猜想可能有其他原因，於是讓 Claude 開始調整本地文件。它繼續努力工作，整整一小時。由於它工作速度飛快，我難以跟上它修改的內容。但因為它擁有全部權限，它可以自行調整配置、代碼，調整任何東西。一旦發現錯誤，它就開始自行修正。
+
+然而，一小時後，我發現 Claude desktop 開始變得不穩定，時常顯示錯誤信息，感覺它快要"崩潰"了。
+
+最終，這個網站沒能正常運行起來。但看著 Claude 高效地完成前端和後端的工作，仍然令人印象深刻。Claude 真的很厲害！👏
+
+## 經驗與反思
+
+經過這次實驗，我得出了一些結論：
+
+1. 如果使用 Vercel 的模板建站，還是手動部署更為可靠，不需要 MCP 控制 Vercel。
+2. 對於特定需求的建站項目，只需在 GitHub 上工作即可。Vercel 的部署不需要 MCP 介入，本地克隆也可以通過 GitHub desktop 一鍵完成。
+3. 完全交給 Claude 自動化雖然感覺很爽，但成功率存在不確定性。多次嘗試或許能成功，但這很耗時間。
+4. 最重要的是，長時間運行後（可能是上下文長度的問題），Claude 變得不穩定。
+
+今天的嘗試讓我學到很多，也對架站有了更多信心。接下來，我打算深入了解 MDX 中的 JSX，探索技術大神們如何創造出那些神奇的博客！
+
+希望我的探索之旅能給大家帶來一些啟發。AI 工具確實強大，但人類的判斷和指導仍然不可或缺。期待在下次分享中與大家再見！🚀
