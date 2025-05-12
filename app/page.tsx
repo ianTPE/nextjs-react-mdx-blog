@@ -3,10 +3,10 @@ import Image from 'next/image';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "首頁 | Ian's Vibe Coding Blog",
+  title: "Ian's Vibe Coding Blog",
   description: "分享技術心得、開發經驗，以及生活中的點點滴滴。使用 Next.js 15、React 和 MDX 構建的現代化部落格。",
   openGraph: {
-    title: "首頁 | Ian's Vibe Coding Blog",
+    title: "Ian's Vibe Coding Blog",
     description: "分享技術心得、開發經驗，以及生活中的點點滴滴。",
     type: "website",
     images: [{
