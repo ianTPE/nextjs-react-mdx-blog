@@ -7,17 +7,17 @@ import MotionCard from '@/components/animation/MotionCard';
 import MotionContainer from '@/components/animation/MotionContainer';
 
 export const metadata: Metadata = {
-  title: "首頁 | My Blog",
-  description: "分享技術心得、開發經驗，以及生活中的點點滴滴。使用 Next.js 14、React 和 MDX 構建的現代化部落格。",
+  title: "Ian's Vibe Coding Blog",
+  description: "分享技術心得、開發經驗，以及生活中的點點滴滴。使用 Next.js 15、React 和 MDX 構建的現代化部落格。",
   openGraph: {
-    title: "首頁 | My Blog",
+    title: "Ian's Vibe Coding Blog",
     description: "分享技術心得、開發經驗，以及生活中的點點滴滴。",
     type: "website",
     images: [{
       url: "/images/default-og-image.png",
       width: 1200,
       height: 630,
-      alt: "My Blog - 首頁"
+      alt: "Ian's Vibe Coding Blog"
     }]
   },
 };
@@ -45,7 +45,7 @@ export default function Home() {
           </h1>
           <p className="text-xl text-white mb-8 max-w-2xl mx-auto drop-shadow-md">
             分享技術心得、開發經驗，以及生活中的點點滴滴。
-            使用 Next.js 14、React 和 MDX 構建的現代化部落格。
+            使用 Next.js 15、React 和 MDX 構建的現代化部落格。
           </p>
           <Link
             href="/blog"
