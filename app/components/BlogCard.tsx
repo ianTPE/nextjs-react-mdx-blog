@@ -11,8 +11,8 @@ interface BlogCardProps {
 
 export default function BlogCard({ post }: BlogCardProps) {
   return (
-    <MotionCard>
-      <article className="bg-white rounded-lg shadow-md overflow-hidden">
+    <MotionCard className="h-full">
+      <article className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col h-full">
         {post.coverImage && (
           <div className="relative w-full h-48">
             <Image 
@@ -24,7 +24,7 @@ export default function BlogCard({ post }: BlogCardProps) {
             />
           </div>
         )}
-        <div className="p-6">
+        <div className="p-6 flex flex-col flex-grow">
           <h2 className="text-2xl font-bold mb-2">
             <Link href={`/blog/${post.slug}`} className="hover:text-blue-600">
               {post.title}
@@ -52,7 +52,7 @@ export default function BlogCard({ post }: BlogCardProps) {
               })}
             </time>
           </div>
-          <p className="text-gray-700 mb-4 line-clamp-3">{post.excerpt}</p>
+          <p className="text-gray-700 mb-4 line-clamp-3 flex-grow">{post.excerpt}</p>
           <div className="flex gap-2 flex-wrap">
             {post.tags.map((tag) => (
               <span
@@ -63,12 +63,14 @@ export default function BlogCard({ post }: BlogCardProps) {
               </span>
             ))}
           </div>
-          <Link 
-            href={`/blog/${post.slug}`}
-            className="inline-block mt-4 text-blue-600 hover:text-blue-800 font-medium"
-          >
-            閱讀更多 →
-          </Link>
+          <div className="mt-auto pt-4">
+            <Link 
+              href={`/blog/${post.slug}`}
+              className="inline-block text-blue-600 hover:text-blue-800 font-medium"
+            >
+              閱讀更多 →
+            </Link>
+          </div>
         </div>
       </article>
     </MotionCard>

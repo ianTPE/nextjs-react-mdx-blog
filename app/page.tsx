@@ -28,7 +28,7 @@ export default function Home() {
   
   return (
     <div className="container mx-auto px-4 py-0">
-      <section className="relative mb-16 py-24 -mx-4 overflow-hidden">
+     <section className="relative mb-16 py-24 max-w-4xl mx-auto overflow-hidden">
         <div className="absolute inset-0 w-full h-full z-0">
           <Image
             src="/images/hero-background.jpg"
@@ -82,7 +82,7 @@ export default function Home() {
             <div className="bg-white p-6 rounded-lg shadow-sm text-center">
               <div className="text-blue-500 text-3xl mb-2">⟲</div>
               <div className="font-semibold">Next.js</div>
-              <div className="text-gray-500 text-sm">v14</div>
+              <div className="text-gray-500 text-sm">v15.3.2</div>
             </div>
           </MotionCard>
           
@@ -96,9 +96,9 @@ export default function Home() {
           
           <MotionCard>
             <div className="bg-white p-6 rounded-lg shadow-sm text-center">
-              <div className="text-blue-500 text-3xl mb-2">𝓣</div>
-              <div className="font-semibold">TypeScript</div>
-              <div className="text-gray-500 text-sm">v5</div>
+              <div className="text-blue-500 text-3xl mb-2">🎞️</div>
+              <div className="font-semibold">Framer Motion</div>
+              <div className="text-gray-500 text-sm">v12.10.5</div>
             </div>
           </MotionCard>
           
