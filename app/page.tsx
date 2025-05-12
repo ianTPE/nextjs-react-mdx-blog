@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <div className="container mx-auto px-4 py-0">
-      <section className="relative mb-16 py-24 -mx-4 overflow-hidden">
+      <section className="relative mb-16 py-24 max-w-4xl mx-auto overflow-hidden">
         <div className="absolute inset-0 w-full h-full z-0">
           <Image
             src="/images/hero-background.jpg"
