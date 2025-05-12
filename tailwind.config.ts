@@ -8,7 +8,12 @@ const config: Config = {
     './app/**/*.{js,ts,jsx,tsx,md,mdx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      transitionProperty: {
+        'height': 'height',
+        'spacing': 'margin, padding',
+      }
+    },
   },
   plugins: [],
 }

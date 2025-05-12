@@ -54,7 +54,7 @@ export default function Home() {
           功能特色
         </h2>
         <div className="grid md:grid-cols-3 gap-8">
-          <Link href="/blog/mdx-blog-setup" className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+          <Link href="/blog/mdx-blog-setup" className="block bg-white rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:shadow-xl hover:scale-105">
             <div className="relative w-full h-48">
               <Image 
                 src="/images/mdx-blog-setup.jpg" 
@@ -72,7 +72,7 @@ export default function Home() {
               <span className="text-blue-600 font-medium">瞭解更多 →</span>
             </div>
           </Link>
-          <Link href="/blog/typescript-best-practices" className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+          <Link href="/blog/typescript-best-practices" className="block bg-white rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:shadow-xl hover:scale-105">
             <div className="relative w-full h-48">
               <Image 
                 src="/images/typescript-best-practices.jpg" 
@@ -90,7 +90,7 @@ export default function Home() {
               <span className="text-blue-600 font-medium">瞭解更多 →</span>
             </div>
           </Link>
-          <Link href="/blog/tailwind-css-tips" className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+          <Link href="/blog/tailwind-css-tips" className="block bg-white rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:shadow-xl hover:scale-105">
             <div className="relative w-full h-48">
               <Image 
                 src="/images/tailwind-css-tips.jpg" 
