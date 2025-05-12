@@ -1,10 +1,38 @@
-# Tailwind CSS 進階技巧
+# Tailwind CSS 進階技巧（v4 全新升級）
 
-Tailwind CSS 徹底改變了我們編寫 CSS 的方式。透過實用優先（utility-first）的方法，我們可以快速構建美觀的介面。本文將分享一些進階的 Tailwind CSS 技巧，幫助你更有效地使用這個強大的框架。
+Tailwind CSS 徹底改變了我們編寫 CSS 的方式。透過實用優先（utility-first）的方法，我們可以快速構建美觀的介面。本文將分享 Tailwind CSS v4 的最新特性與進階技巧，幫助你更有效地使用這個強大的框架。
 
-## 1. 自定義顏色系統
+---
 
-建立一致的顏色系統是設計的關鍵。Tailwind 允許你輕鬆自定義調色板：
+## Tailwind CSS v4 亮點與升級須知
+
+2025 年最新版本 Tailwind CSS v4 已正式發布，帶來許多重大升級：
+
+- **Node.js 20+ 強制要求**：安裝 v4 前請升級 Node 至 20 以上。
+- **全新 CSS Layer 架構**：Tailwind v4 採用 CSS Layer，極大提升組件覆蓋與樣式隔離能力。
+- **預設色盤更新**：預設色彩更現代、更易用，色階更細緻。
+- **升級工具自動化**：官方提供 `npx @tailwindcss/upgrade`，一鍵升級 v3→v4。
+- **更快的建構效能**：更佳的 Purge/Tree-shaking，生產環境 CSS 更小。
+- **移除舊瀏覽器支援**：v4 僅支援 Safari 16.4+、Chrome 111+、Firefox 128+。
+
+### 升級建議與常見坑
+- **先備份再升級**，建議新建分支測試。
+- **執行升級工具**：
+  ```bash
+  npx @tailwindcss/upgrade
+  ```
+- **檢查 tailwind.config.js**：v4 配置更簡潔，部分舊選項已棄用。
+- **PostCSS Plugin 變更**：v4 的 PostCSS plugin 改為 `@tailwindcss/postcss`，移除 autoprefixer、postcss-import。
+- **自訂色彩需調整**：如有自訂色盤，請參考新版預設色系對應。
+- **瀏覽器支援**：如需支援舊瀏覽器，請暫留 v3.4。
+
+[官方升級指南](https://tailwindcss.com/docs/upgrade-guide)
+
+---
+
+## 1. 自定義顏色系統（v4 新色盤）
+
+建立一致的顏色系統是設計的關鍵。Tailwind v4 的預設色盤已全新升級，建議盡量沿用新版色彩，若需自訂可這樣擴充：
 
 ```javascript
 // tailwind.config.js
@@ -25,16 +53,18 @@ module.exports = {
           900: '#0c4a6e',
         },
         // 語義化顏色
-        primary: '#0ea5e9',
-        secondary: '#64748b',
-        success: '#10b981',
-        warning: '#f59e0b',
-        danger: '#ef4444',
+        primary: 'var(--color-primary, #0ea5e9)',
+        secondary: 'var(--color-secondary, #64748b)',
+        success: 'var(--color-success, #10b981)',
+        warning: 'var(--color-warning, #f59e0b)',
+        danger: 'var(--color-danger, #ef4444)',
       }
     }
   }
 }
 ```
+
+> v4 建議用 CSS 變數搭配 Tailwind，方便主題切換與動態色彩。
 
 使用自定義顏色：
 
@@ -48,9 +78,30 @@ module.exports = {
 </div>
 ```
 
-## 2. 組件化重複的樣式
+## 2. 組件化重複的樣式（@apply 與 @layer）
 
 雖然 Tailwind 是實用優先的，但重複的樣式組合還是應該抽取出來：
+
+```css
+/* styles.css */
+@layer components {
+  .btn-primary {
+    @apply bg-primary text-white px-4 py-2 rounded shadow hover:bg-primary/90;
+  }
+  .card {
+    @apply rounded-xl shadow p-6 bg-white border border-gray-100;
+  }
+}
+```
+
+直接在 JSX 使用：
+
+```jsx
+<button className="btn-primary">主要按鈕</button>
+<div className="card">內容卡片</div>
+```
+
+> v4 的 @layer 支援更強，能有效避免樣式覆蓋問題。
 
 ```css
 /* styles/components.css */
@@ -332,17 +383,16 @@ const colorClasses = {
 
 Tailwind CSS 不僅是一個 CSS 框架，更是一種思考介面設計的新方式。通過掌握這些進階技巧，你可以：
 
-1. 建立一致的設計系統
-2. 提高開發效率
-3. 保持程式碼的可維護性
-4. 實現複雜的設計需求
-
-記住，Tailwind 的真正力量在於它的可定制性和靈活性。不要害怕根據專案需求進行調整和擴展。
+- 多用 @layer 組件化樣式
+- 善用預設與自定義色盤
+- 結合動態 class、條件渲染
+- 注重無障礙（a11y）與性能最佳化
+- 定期升級並檢查官方升級指南
 
 ---
 
-**相關資源：**
-- [Tailwind CSS 官方文檔](https://tailwindcss.com/docs)
-- [Tailwind UI](https://tailwindui.com/)
-- [Headless UI](https://headlessui.com/)
+**延伸閱讀：**
+- [Tailwind CSS 官方文件](https://tailwindcss.com/docs)
+- [Tailwind CSS v4 升級指南](https://tailwindcss.com/docs/upgrade-guide)
+- [Tailwind UI](https://tailwindui.com/) - 官方元件庫
 - [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)

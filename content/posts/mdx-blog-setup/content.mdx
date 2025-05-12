@@ -220,14 +220,84 @@ vercel deploy
 }
 ```
 
+## 部落格實戰工作流程建議
+
+### 內容撰寫與協作
+- **善用 VS Code MDX 外掛**：支援語法高亮、Lint、即時預覽。
+- **標準化 Frontmatter**：每篇文章頂部都加上 YAML metadata（title, date, tags, excerpt, coverImage），方便自動化索引與 SEO。
+- **多人協作**：建議用 GitHub PR Flow，審稿時可預覽文章效果。
+- **內容審核**：可結合 lint-staged、markdownlint、spellcheck 工具，確保品質。
+
+### MDX 與 TypeScript 深度整合
+- **型別安全的組件導入**：自訂 MDX 組件時，建議導出明確的 props 型別，並在 MDXProvider 中型別標註，減少 runtime error。
+- **內容與 metadata 分離**：將 metadata 獨立於 TS/JS 檔案（如 `metadata.ts`），MDX 只負責內容，提升維護性與搜尋效率。
+- **自動化內容索引**：可用 Contentlayer、plop、自製 script，掃描所有 MDX，生成 sitemap、RSS、站內搜尋索引。
+
+### 進階功能與最佳實踐
+
+---
+
+## MDX 3 新版重點與升級須知
+
+隨著 2024 年底 MDX 3 正式釋出，建議所有新專案直接採用 MDX 3。以下為重點整理：
+
+### 主要新特性
+- **Node.js 16+ 強制要求**：MDX 3 僅支援 Node.js 16 或更高版本，請先升級你的 Node.js。
+- **ES2024 語法支援**：可在 MDX 檔案中直接使用最新 JavaScript 語法。
+- **await 支援**：只要你的框架允許（如 Next.js 15），可在 MDX 內容中用 `await` 處理異步資料。
+- **移除過時選項**：MDX 3 移除了部分舊有、已廢棄的設定選項，配置更簡單。
+- **向下相容 MDX 2**：大部分 MDX 2 寫法可直接升級。
+
+### 升級與遷移建議
+- **檢查 Node 版本**：務必用 `node -v` 確認 >=16。
+- **升級依賴**：
+  ```bash
+  npm install @mdx-js/loader@latest @mdx-js/react@latest @next/mdx@latest
+  ```
+- **檢查 MDX 設定**：移除已廢棄選項，參考 [MDX 3 官方公告](https://mdxjs.com/)。
+- **測試 await 支援**：
+  ```mdx
+  export async function getStaticProps() {
+    const data = await fetchData()
+    return { props: { data } }
+  }
+  # 動態內容
+  {data.title}
+  ```
+- **CI/CD 檢查**：升級後建議在分支測試所有文章、組件與自動化腳本。
+
+### 參考
+- [MDX 3 官方公告](https://mdxjs.com/)
+
+---
+- **程式碼區塊高亮與行號**：結合 rehype-prism-plus，支援多主題、複製按鈕、行號顯示。
+- **圖片自動優化**：MDX img 標籤自動轉換為 Next.js Image，支援 lazy loading、blur-up 效果。
+- **自訂短代碼（Shortcodes）**：如 <YouTube id="..." />、<Tweet id="..." />，提升內容互動性。
+- **動態組件載入**：用 dynamic import 載入重型互動組件，避免初次渲染負擔。
+- **SEO/OG 自動化**：根據 frontmatter 自動生成 metadata、Open Graph 標籤、JSON-LD。
+- **無障礙設計（Accessibility）**：所有互動組件、圖片、按鈕都應有 aria 標籤與 alt 文字。
+
+### 常見問題與排錯技巧
+- **MDX 編譯錯誤**：檢查是否混用 YAML frontmatter 與 TSX 組件，或 loader/plugin 順序錯誤。
+- **圖片路徑問題**：建議所有 coverImage 路徑統一放 public/images/posts/，metadata 路徑需正確對應。
+- **部署時失敗**：檢查 Vercel/Netlify 是否安裝所有 MDX 相關依賴，node 版本與本地一致。
+- **TSX/MDX 混用 bug**：避免將 frontmatter 寫在 .tsx，盡量只用 .mdx，型別錯誤時檢查 MDXProvider 型別定義。
+
+### 內容維護與升級建議
+- **自動化腳本**：定期檢查所有 MDX 檔案 metadata 是否齊全，避免漏標題、日期等。
+- **內容重構**：舊文章可批次升級為 MDX 2.0 語法，統一內容風格。
+- **版本升級**：Next.js、MDX、Contentlayer 等升級時，先在分支測試，確保組件與 loader 相容。
+
 ## 結論
 
 MDX 為 Next.js 部落格提供了無限的可能性。通過結合 Markdown 的簡潔性和 React 的強大功能，你可以創建真正獨特和互動的內容體驗。
 
 記住要：
-- 保持內容的可讀性
-- 適度使用互動元素
-- 確保良好的性能和 SEO
+- 保持內容的可讀性（結構清楚、適當分段）
+- 適度使用互動元素（避免過度複雜）
+- 確保良好的性能和 SEO（用 Image、metadata、自動化 sitemap、OG tag）
+- 注重可維護性與協作（metadata/內容分離、型別安全、CI 檢查）
+- 定期升級依賴與內容重構
 
 現在，開始創建你的 MDX 驅動的部落格吧！
 
@@ -237,3 +307,6 @@ MDX 為 Next.js 部落格提供了無限的可能性。通過結合 Markdown 的
 - [MDX 官方文檔](https://mdxjs.com/)
 - [Next.js MDX 指南](https://nextjs.org/docs/pages/building-your-application/configuring/mdx)
 - [Contentlayer](https://www.contentlayer.dev/) - 更進階的內容管理方案
+- [MDX 2.0 新特性](https://mdxjs.com/blog/v2/)
+- [Next.js 15 官方升級指南](https://nextjs.org/docs/upgrade-guide)
+- [MDX 與 TypeScript 型別安全實戰](https://dev.to/johndoe/mdx-typescript-best-practices)
