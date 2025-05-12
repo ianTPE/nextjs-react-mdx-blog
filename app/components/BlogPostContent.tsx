@@ -12,12 +12,12 @@ export default function BlogPostContent({ metadata, children }: BlogPostContentP
       <header className="mb-8">
         <h1 className="text-4xl font-bold mb-4">{metadata.title}</h1>
         {metadata.coverImage && (
-          <div className="relative w-full h-72 mb-6">
+          <div className="relative w-full h-72 mb-6 rounded-lg overflow-hidden">
             <Image 
               src={metadata.coverImage} 
               alt={metadata.title}
               fill
-              className="object-contain rounded-lg bg-white"
+              className="object-contain bg-white"
               sizes="(max-width: 768px) 100vw, 800px"
               priority
             />
