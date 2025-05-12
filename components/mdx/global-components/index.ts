@@ -6,6 +6,7 @@
 // 導出全局可用的組件
 export { default as Alert } from './Alert';
 export { default as Callout } from './Callout';
+export { default as Tweet } from './Tweet';
 
 // 導出 CodeBlock 組件
 export { default as CodeBlock } from '../CodeBlock';
