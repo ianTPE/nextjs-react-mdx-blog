@@ -83,7 +83,7 @@ export default function About() {
       </section>
       
       {/* About author section */}
-      <section className="mb-12 bg-white p-8 rounded-xl shadow-sm">
+      <section className="max-w-4xl mx-auto mb-12 bg-white p-8 rounded-xl shadow-sm">
         <div className="flex flex-col md:flex-row items-center gap-8">
           <div className="w-40 h-40 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
             {/* 作者照片 */}
@@ -121,7 +121,7 @@ export default function About() {
       </section>
       
       {/* Contact CTA section */}
-      <section className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-8 rounded-xl text-center">
+      <section className="max-w-4xl mx-auto bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-8 rounded-xl text-center">
         <h2 className="text-2xl font-bold mb-4">想了解更多？</h2>
         <p className="mb-6 max-w-2xl mx-auto">
           如果您對 vibe coding、React 開發或 AI 協作感興趣，或有任何問題，歡迎隨時與我聯繫！

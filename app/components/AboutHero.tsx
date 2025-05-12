@@ -12,10 +12,10 @@ export default function AboutHero() {
           alt="關於本站主圖"
           fill
           priority
-          className="object-cover brightness-75"
+          className="object-cover"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-0 bg-black/10" />
       </div>
       {/* Content */}
       <div className="relative z-10 text-center px-4">
