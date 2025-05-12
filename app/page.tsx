@@ -73,35 +73,33 @@ export default function Home() {
       </section>
 
       {/* 功能特色區塊 */}
-      <section className="max-w-4xl mx-auto mb-16">
-        <h2 className="text-3xl font-bold text-gray-900 mb-8 text-left">
-          技術棧
-        </h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-          <div className="bg-white rounded-lg shadow p-4 flex flex-col items-center border">
-            <span className="text-3xl mb-2">🔄</span>
-            <span className="font-semibold">Next.js</span>
-            <span className="text-gray-500 text-sm mt-1">v15.3.2</span>
+      <section className="mb-12">
+        <h2 className="text-2xl font-bold mb-6 pb-2 border-b border-gray-200">技術棧</h2>
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+          <div className="bg-white p-6 rounded-lg shadow-sm text-center hover:shadow-md transition-shadow">
+            <div className="text-blue-500 text-3xl mb-2">⟲</div>
+            <div className="font-semibold">Next.js</div>
+            <div className="text-gray-500 text-sm">v15.3.2</div>
           </div>
-          <div className="bg-white rounded-lg shadow p-4 flex flex-col items-center border">
-            <span className="text-3xl mb-2">⚛️</span>
-            <span className="font-semibold">React</span>
-            <span className="text-gray-500 text-sm mt-1">v19.0.0</span>
+          <div className="bg-white p-6 rounded-lg shadow-sm text-center hover:shadow-md transition-shadow">
+            <div className="text-blue-500 text-3xl mb-2">⚛</div>
+            <div className="font-semibold">React</div>
+            <div className="text-gray-500 text-sm">v19.0.0</div>
           </div>
-          <div className="bg-white rounded-lg shadow p-4 flex flex-col items-center border">
-            <span className="text-3xl mb-2">🅣</span>
-            <span className="font-semibold">TypeScript</span>
-            <span className="text-gray-500 text-sm mt-1">v5.0+</span>
+          <div className="bg-white p-6 rounded-lg shadow-sm text-center hover:shadow-md transition-shadow">
+            <div className="text-blue-500 text-3xl mb-2">𝓣</div>
+            <div className="font-semibold">TypeScript</div>
+            <div className="text-gray-500 text-sm">v5.0+</div>
           </div>
-          <div className="bg-white rounded-lg shadow p-4 flex flex-col items-center border">
-            <span className="text-3xl mb-2">💨</span>
-            <span className="font-semibold">Tailwind CSS</span>
-            <span className="text-gray-500 text-sm mt-1">v4.0+</span>
+          <div className="bg-white p-6 rounded-lg shadow-sm text-center hover:shadow-md transition-shadow">
+            <div className="text-blue-500 text-3xl mb-2">🌊</div>
+            <div className="font-semibold">Tailwind CSS</div>
+            <div className="text-gray-500 text-sm">v4.0+</div>
           </div>
-          <div className="bg-white rounded-lg shadow p-4 flex flex-col items-center border">
-            <span className="text-3xl mb-2">📄</span>
-            <span className="font-semibold">MDX</span>
-            <span className="text-gray-500 text-sm mt-1">v3.1.0</span>
+          <div className="bg-white p-6 rounded-lg shadow-sm text-center hover:shadow-md transition-shadow">
+            <div className="text-blue-500 text-3xl mb-2">📄</div>
+            <div className="font-semibold">MDX</div>
+            <div className="text-gray-500 text-sm">v3.1.0</div>
           </div>
         </div>
       </section>
