@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
+// 聲明字體並匯出變數
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -13,6 +14,9 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
+// 使字體類別更易讀
+const fontClasses = `${geistSans.variable} ${geistMono.variable} antialiased`;
 
 export const metadata: Metadata = {
   title: "Ian's Vibe Coding Blog",
@@ -46,7 +50,7 @@ export default function RootLayout({
   return (
     <html lang="zh-TW">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col bg-gray-50`}
+        className={`${fontClasses} min-h-screen flex flex-col bg-gray-50`}
       >
         <Header />
         <main className="flex-grow">
