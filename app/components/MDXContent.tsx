@@ -1,9 +1,10 @@
 'use client';
 
 import { MDXRemote } from 'next-mdx-remote';
-import { MDXRemoteSerializeResult } from 'next-mdx-remote';
-import { ComponentPropsWithoutRef, ReactNode } from 'react';
+import type { MDXRemoteSerializeResult } from 'next-mdx-remote';
+import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 import CodeBlock from '@/components/mdx/CodeBlock';
+import { Tweet } from 'react-tweet';
 
 interface MDXContentProps {
   source: MDXRemoteSerializeResult;
@@ -37,12 +38,15 @@ const components = {
     
     // If className exists, it's a code block, otherwise it's inline code
     if (className?.includes('language-')) {
-      return <CodeBlock className={className} children={children} />;
+      return <CodeBlock className={className}>{children}</CodeBlock>;
     }
     
     // Inline code styling
     return <code className="bg-gray-100 text-gray-800 px-2 py-1 rounded text-sm font-mono" {...rest}>{children}</code>;
   },
+  
+  // Add the Tweet component to the mapping
+  Tweet: (props) => <Tweet {...props} />,
   
   // We need minimal pre styling since CodeBlock handles most of it
   pre: (props: ComponentPropsWithoutRef<'pre'>) => (
