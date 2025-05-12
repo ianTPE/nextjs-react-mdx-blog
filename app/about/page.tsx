@@ -46,8 +46,8 @@ export default function About() {
               <li className="flex items-start">
                 <span className="text-blue-500 mr-2">✦</span>
                 <div>
-                  <p className="font-medium">極簡 vibe coding，幾乎不需要手動 coding</p>
-                  <p className="text-gray-600 text-sm">Minimal vibe coding, almost no manual coding required</p>
+                  <p className="font-medium">不使用 contentlayer, YAML frontmatter, 保持 MDX file 整淨，減少編譯器解析 frontmatter 或導出變量時的複雜度，降低錯誤風險。</p>
+                  <p className="text-gray-600 text-sm">Avoids contentlayer, YAML frontmatter to keep MDX files clean, reducing complexity and error risk during parsing of frontmatter or exported variables.</p>
                 </div>
               </li>
             </ul>
