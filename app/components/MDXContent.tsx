@@ -46,7 +46,7 @@ const components = {
   },
   
   // Add the Tweet component to the mapping
-  Tweet: (props) => <Tweet {...props} />,
+  Tweet: (props: ComponentPropsWithoutRef<typeof Tweet>) => <Tweet {...props} />,
   
   // We need minimal pre styling since CodeBlock handles most of it
   pre: (props: ComponentPropsWithoutRef<'pre'>) => (
