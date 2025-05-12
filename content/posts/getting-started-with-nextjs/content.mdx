@@ -1,61 +1,10 @@
-# 開始使用 Next.js 15
-
-Next.js 15 正式登場，帶來更強大、更高效、更現代化的 React 全端開發體驗！本篇將帶你快速了解 Next.js 15 的最新特性、安裝方式與最佳實踐，並詳細解析 15 版相較於 14 版的重大優勢。
+import VersionComparisonTable from './VersionComparisonTable';
 
 ## Next.js 15 與 14 版本的主要差異
 
 Next.js 15 在 14 版本的基礎上進行了多項重要改進和功能強化。以下是主要差異：
 
-<div className="my-8">
-  <div className="overflow-x-auto rounded-lg shadow">
-    <table className="min-w-full bg-white divide-y divide-gray-200">
-      <thead className="bg-gray-50">
-        <tr>
-          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">功能</th>
-          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Next.js 14</th>
-          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Next.js 15</th>
-        </tr>
-      </thead>
-      <tbody className="bg-white divide-y divide-gray-200">
-        <tr className="bg-white">
-          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Partial Prerendering (PPR)</td>
-          <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">實驗性階段</td>
-          <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">穩定版，生產可用</td>
-        </tr>
-        <tr className="bg-gray-50">
-          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Turbopack</td>
-          <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">Beta 階段</td>
-          <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">穩定版，完全取代 Webpack</td>
-        </tr>
-        <tr className="bg-white">
-          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">React 版本</td>
-          <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">React 18.x</td>
-          <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">React 19.x，支援最新並發功能</td>
-        </tr>
-        <tr className="bg-gray-50">
-          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Server Actions</td>
-          <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">預覽版</td>
-          <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">穩定版，額外安全強化</td>
-        </tr>
-        <tr className="bg-white">
-          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Next.js Compiler</td>
-          <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">基本優化</td>
-          <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">進階最佳化，大幅提升效能</td>
-        </tr>
-        <tr className="bg-gray-50">
-          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">MDX 支援</td>
-          <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">需額外配置</td>
-          <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">原生整合 MDX 2.0</td>
-        </tr>
-        <tr className="bg-white">
-          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Edge Runtime 支援</td>
-          <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">僅部分支援</td>
-          <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">全面支援 API 路由、中間件</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+<VersionComparisonTable />
 
 ## Next.js 15 的重大優勢與新特性
 
