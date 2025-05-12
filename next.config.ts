@@ -1,12 +1,26 @@
 import type { NextConfig } from "next";
 import createMDX from '@next/mdx';
 import path from 'path';
+import type { Node } from 'unist';
 
 const withMDX = createMDX({
   extension: /\.mdx?$/,
   options: {
     // 可以在這裡加入 MDX 的相關設定
     providerImportSource: '@mdx-js/react',
+    remarkPlugins: [
+      () => (tree: any) => {
+        // 行號格式化
+        const onVisitLine = (node: Node) => {
+          // 防止空行被移除
+          if (node.children && node.children.length === 0) {
+            node.children = [{ type: 'text', value: ' ' }];
+          }
+        };
+        
+        return tree;
+      }
+    ],
   }
 });
 
