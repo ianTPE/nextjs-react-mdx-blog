@@ -32,8 +32,8 @@ export default function About() {
               <li className="flex items-start">
                 <span className="text-blue-500 mr-2">✦</span>
                 <div>
-                  <p className="font-medium">純 React + TypeScript，未來也可能用 Vite 重構</p>
-                  <p className="text-gray-600 text-sm">Pure React + TypeScript; may use Vite in the future</p>
+                  <p className="font-medium">React + MDX，使用最新版本 Next.js，未來也可能用 TanStack 重構</p>
+                  <p className="text-gray-600 text-sm">React + MDX with the latest Next.js; may refactor with TanStack in the future</p>
                 </div>
               </li>
               <li className="flex items-start">
