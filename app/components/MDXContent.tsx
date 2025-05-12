@@ -2,11 +2,17 @@
 
 import { MDXRemote } from 'next-mdx-remote';
 import { MDXRemoteSerializeResult } from 'next-mdx-remote';
-import { ComponentPropsWithoutRef } from 'react';
+import { ComponentPropsWithoutRef, ReactNode } from 'react';
 import CodeBlock from '@/components/mdx/CodeBlock';
 
 interface MDXContentProps {
   source: MDXRemoteSerializeResult;
+}
+
+// Type for code element props (which can have className)
+interface CodeProps extends ComponentPropsWithoutRef<'code'> {
+  className?: string;
+  children?: ReactNode;
 }
 
 const components = {
@@ -22,21 +28,21 @@ const components = {
     <blockquote className="border-l-4 border-gray-300 pl-4 italic text-gray-700 mb-6" {...props} />
   ),
   
-  // For inline code (not in a pre block)
-  code: (props: ComponentPropsWithoutRef<'code'> & { className?: string }) => {
-    const { className, ...rest } = props;
+  // For both code blocks and inline code
+  code: (props: CodeProps) => {
+    const { className, children, ...rest } = props;
     
     // If className exists, it's a code block, otherwise it's inline code
-    if (className) {
-      return <CodeBlock className={className} {...rest} />;
+    if (className?.includes('language-')) {
+      return <CodeBlock className={className} children={children} />;
     }
     
     // Inline code styling
-    return <code className="bg-gray-100 text-gray-800 px-2 py-1 rounded text-sm font-mono" {...rest} />;
+    return <code className="bg-gray-100 text-gray-800 px-2 py-1 rounded text-sm font-mono" {...rest}>{children}</code>;
   },
   
-  // We don't need to style pre elements directly as CodeBlock handles that
-  pre: (props: ComponentPropsWithoutRef<'pre'>) => <pre {...props} />,
+  // We need minimal pre styling since CodeBlock handles most of it
+  pre: (props: ComponentPropsWithoutRef<'pre'>) => <pre className="m-0 p-0 bg-transparent" {...props} />,
 };
 
 export default function MDXContent({ source }: MDXContentProps) {
