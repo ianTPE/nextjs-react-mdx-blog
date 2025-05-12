@@ -3,15 +3,15 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { BlogPost } from '../types/blog';
-import MotionCardStatic from '@/components/animation/MotionCard.static';
+import MotionCard from '@/components/animation/MotionCard';
 
 interface BlogCardProps {
   post: BlogPost;
 }
 
-export default function BlogCard({ post }: BlogCardProps) {
+export default function BlogCardAnimated({ post }: BlogCardProps) {
   return (
-    <MotionCardStatic className="h-full">
+    <MotionCard className="h-full">
       <article className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col h-full">
         {post.coverImage && (
           <div className="relative w-full h-48">
@@ -73,6 +73,6 @@ export default function BlogCard({ post }: BlogCardProps) {
           </div>
         </div>
       </article>
-    </MotionCardStatic>
+    </MotionCard>
   );
 }

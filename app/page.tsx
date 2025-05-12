@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
-import BlogCard from './components/BlogCard';
+import BlogCardAnimated from './components/BlogCardAnimated';
 import { getAllPosts } from '@/lib/mdx';
 import MotionCard from '@/components/animation/MotionCard';
 import MotionContainer from '@/components/animation/MotionContainer';
@@ -41,7 +41,7 @@ export default function Home() {
         {recentPosts.length > 0 ? (
           <MotionContainer className="grid md:grid-cols-3 gap-8">
             {recentPosts.map((post) => (
-              <BlogCard key={post.slug} post={post} />
+              <BlogCardAnimated key={post.slug} post={post} />
             ))}
           </MotionContainer>
         ) : (

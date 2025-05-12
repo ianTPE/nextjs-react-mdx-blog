@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { getPostBySlug, getAllPosts } from '@/lib/mdx';
-import BlogPostContent from '@/app/components/BlogPostContent';
+import BlogPostContentStatic from '@/app/components/BlogPostContent.static';
 import ClientMDXContent from './ClientMDXContent';
 import { Metadata } from 'next';
 
@@ -57,8 +57,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   }
 
   return (
-    <BlogPostContent metadata={post.metadata}>
+    <BlogPostContentStatic metadata={post.metadata}>
       <ClientMDXContent content={post.content} />
-    </BlogPostContent>
+    </BlogPostContentStatic>
   );
 }
