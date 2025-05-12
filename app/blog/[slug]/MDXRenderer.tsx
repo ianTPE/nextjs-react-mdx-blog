@@ -14,18 +14,12 @@ export default function MDXRenderer({ source, components }: MDXRendererProps) {
   const [mdxSource, setMdxSource] = useState<MDXRemoteSerializeResult | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  console.log('MDXRenderer receiving components:', Object.keys(components));
-
   useEffect(() => {
     const processMDX = async () => {
       try {
-        console.log('Processing MDX with components:', Object.keys(components));
-        
+        // 嘗試使用最簡單的 MDX 序列化選項
         const serialized = await serialize(source, {
-          parseFrontmatter: true,
-          mdxOptions: {
-            development: process.env.NODE_ENV === 'development',
-          }
+          parseFrontmatter: true
         });
 
         setMdxSource(serialized);

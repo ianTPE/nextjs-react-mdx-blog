@@ -3,7 +3,7 @@ import { getPostBySlug, getAllPosts } from '@/lib/mdx';
 import BlogPostContentStatic from '@/app/components/BlogPostContent.static';
 import MDXRenderer from './MDXRenderer';
 import { Metadata } from 'next';
-import { getPostComponents } from '@/lib/mdx-components-loader';
+import { getPostComponents } from '@/lib/mdx-loader';
 
 export async function generateStaticParams() {
   const posts = getAllPosts();
