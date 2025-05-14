@@ -4,9 +4,7 @@ import { useEffect, useState } from 'react';
 import { serialize } from 'next-mdx-remote/serialize';
 import { MDXRemoteSerializeResult } from 'next-mdx-remote';
 import MDXContent from '@/app/components/MDXContent';
-import path from 'path';
-import fs from 'fs';
-import { fileURLToPath } from 'url';
+import mdxComponents from '@/components/mdx/MDXComponents';
 
 interface ClientMDXContentProps {
   content: string;
@@ -40,5 +38,5 @@ export default function ClientMDXContent({ content, slug }: ClientMDXContentProp
     return <div>載入中...</div>;
   }
 
-  return <MDXContent source={mdxSource} />;
+  return <MDXContent source={mdxSource} components={mdxComponents} />;
 }

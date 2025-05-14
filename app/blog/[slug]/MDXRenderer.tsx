@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { MDXRemote } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
 import type { MDXRemoteSerializeResult } from 'next-mdx-remote';
+import mdxComponents from '@/components/mdx/MDXComponents';
 
 interface MDXRendererProps {
   source: string;
@@ -52,9 +53,15 @@ export default function MDXRenderer({ source, components }: MDXRendererProps) {
     );
   }
 
+  // Merge the default MDX components with any custom components passed in
+  const mergedComponents = {
+    ...mdxComponents,
+    ...components
+  };
+
   return (
     <div className="mdx-content prose prose-lg dark:prose-invert max-w-none">
-      <MDXRemote {...mdxSource} components={components} />
+      <MDXRemote {...mdxSource} components={mergedComponents} />
     </div>
   );
 }

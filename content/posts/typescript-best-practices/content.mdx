@@ -1,37 +1,6 @@
-# TypeScript 最佳實踐（2025 v5.5 升級）
+# TypeScript 最佳實踐指南
 
-TypeScript 已經成為現代 JavaScript 開發的標準選擇。它提供了強大的類型系統，幫助我們寫出更安全、更易維護的程式碼。這篇文章已同步 TypeScript 5.5 最新特性與最佳實踐。
-
----
-
-## TypeScript 5.5 亮點與升級須知
-
-2024 年 6 月 TypeScript 5.5 正式發佈，帶來以下重要新功能與變更：
-
-- **Inferred Type Predicates**：函數型別推斷更聰明，減少顯式 as 語法。
-- **RegExp 語法檢查**：型別系統內建正則表達式語法檢查，減少 typo。
-- **Set 新方法支援**：完整支援 ECMAScript Set 新 API，如 .intersection、.difference 等。
-- **JSDoc @import 標籤**：JSDoc 註解可直接導入型別。
-- **性能與可靠性提升**：編譯/IDE 體驗更快、更穩定。
-- **嚴格模式變更**：Decorator 語法更嚴格，undefined 不再可作型別名稱。
-- **lib.d.ts/型別定義優化**：部分舊 API 型別更嚴謹。
-
-### 升級建議與常見坑
-- **升級指令**：
-  ```bash
-  npm install -D typescript@latest
-  ```
-- **檢查 tsconfig.json**：善用 `strict`、`noUncheckedIndexedAccess`、`exactOptionalPropertyTypes` 等嚴格選項。
-- **Decorator 需調整**：若用到 Decorator，請依照新語法修正。
-- **undefined 關鍵字**：不可再作為型別名稱，請用 `type X = undefined` 取代。
-- **JSDoc 型別引用**：推薦用 @import，減少全域污染。
-- **Set/Map API**：如有 polyfill，確認新版 API 是否支援。
-
-[官方 5.5 發佈說明](https://devblogs.microsoft.com/typescript/announcing-typescript-5-5/)
-
----
-
-## 1. 充分利用類型推斷
+## 使用類型推斷
 
 TypeScript 有優秀的類型推斷能力，不需要為每個變數都明確指定類型：
 
@@ -45,10 +14,10 @@ const message = "Hello World"; // 推斷為 string
 const count = 42; // 推斷為 number
 ```
 
-但在函數參數、返回值等地方，明確的類型定義還是很重要的：
+但在函數參數和返回值處，明確的類型定義是很重要的：
 
 ```typescript
-// 好：明確的函數簽名
+// 好：明確的函數參數和返回值
 function greet(name: string): string {
   return `Hello, ${name}!`;
 }
@@ -57,151 +26,161 @@ function greet(name: string): string {
 const add = (a: number, b: number): number => a + b;
 ```
 
-## 2. 使用 Interface 而非 Type Alias（當適合時）
+## 使用 Interface 而非 Type Alias（當適合時）
 
 對於物件形狀，Interface 提供了更好的擴展性：
 
 ```typescript
-// 推薦使用 interface
+// 使用 Interface 定義物件形狀
 interface User {
   id: number;
   name: string;
   email: string;
 }
 
-// 可以擴展
+// 擴展 Interface
 interface AdminUser extends User {
   permissions: string[];
 }
 
-// Type alias 也可以，但語法不同
-type UserType = {
+// 實現 Interface
+class UserImpl implements User {
   id: number;
   name: string;
   email: string;
-}
-
-// 擴展 type 需要使用交集類型
-type AdminUserType = UserType & {
-  permissions: string[];
-}
-```
-
-## 3. 善用 Union Types 和 Type Guards
-
-Union Types 允許一個值可以是幾種類型之一：
-
-```typescript
-type Status = 'loading' | 'success' | 'error';
-
-interface ApiResponse<T> {
-  status: Status;
-  data?: T;
-  error?: string;
-}
-
-// Type Guard
-function isErrorResponse<T>(response: ApiResponse<T>): response is ApiResponse<T> & { error: string } {
-  return response.status === 'error' && response.error !== undefined;
-}
-
-// 使用
-function handleResponse<T>(response: ApiResponse<T>) {
-  if (isErrorResponse(response)) {
-    console.error(response.error); // TypeScript 知道這裡有 error
-  } else if (response.status === 'success' && response.data) {
-    console.log(response.data); // TypeScript 知道這裡有 data
+  
+  constructor(id: number, name: string, email: string) {
+    this.id = id;
+    this.name = name;
+    this.email = email;
   }
 }
 ```
 
-## 4. 使用泛型提高程式碼復用性
+## 使用字面量類型和聯合類型
 
-泛型讓我們能夠寫出更通用的程式碼：
+TypeScript 的字面量類型和聯合類型可以創建更精確的類型定義：
 
 ```typescript
-// 通用的 API 請求函數
-async function fetchData<T>(url: string): Promise<T> {
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-  return response.json() as Promise<T>;
+// 使用字面量類型定義有限的可選值
+type Direction = 'up' | 'down' | 'left' | 'right';
+
+function move(direction: Direction, distance: number): void {
+  // 安全的使用 direction
+  console.log(`Moving ${direction} by ${distance} units`);
 }
 
-// 使用
-interface Product {
-  id: number;
+// 安全地調用
+move('up', 10);   // 正確
+move('north', 5); // 錯誤：'north' 不是有效的 Direction
+```
+
+## 善用泛型
+
+泛型可以創建可重用且類型安全的組件：
+
+```typescript
+// 泛型函數
+function identity<T>(arg: T): T {
+  return arg;
+}
+
+const num = identity(42);       // 推斷為 number
+const str = identity('hello');  // 推斷為 string
+
+// 泛型介面
+interface Box<T> {
+  value: T;
+}
+
+const numberBox: Box<number> = { value: 42 };
+const stringBox: Box<string> = { value: 'hello' };
+
+// 泛型類別
+class Queue<T> {
+  private items: T[] = [];
+  
+  enqueue(item: T): void {
+    this.items.push(item);
+  }
+  
+  dequeue(): T | undefined {
+    return this.items.shift();
+  }
+}
+
+const numberQueue = new Queue<number>();
+numberQueue.enqueue(1);
+numberQueue.enqueue(2);
+const item = numberQueue.dequeue();  // 推斷為 number | undefined
+```
+
+## 使用類型守衛進行安全的類型轉換
+
+類型守衛可以幫助我們安全地處理不同類型的值：
+
+```typescript
+// 使用自定義類型守衛
+function isString(value: unknown): value is string {
+  return typeof value === 'string';
+}
+
+function processValue(value: unknown): string {
+  if (isString(value)) {
+    // 在這個分支中，TypeScript 知道 value 是 string 類型
+    return value.toUpperCase();
+  }
+  
+  return String(value);
+}
+
+// 使用 instanceof 類型守衛
+class Animal {
   name: string;
-  price: number;
-}
-
-const products = await fetchData<Product[]>('/api/products');
-```
-
-## 5. 使用 Const Assertion 確保類型安全
-
-```typescript
-// 使用 as const 創建只讀的字面量類型
-const CONFIG = {
-  API_URL: 'https://api.example.com',
-  TIMEOUT: 5000,
-  RETRY_COUNT: 3,
-} as const;
-
-// CONFIG.API_URL 的類型是 'https://api.example.com'，而不是 string
-// CONFIG.TIMEOUT = 10000; // 錯誤：無法賦值給只讀屬性
-```
-
-## 6. 避免使用 any，優先使用 unknown
-
-```typescript
-// 避免
-function processData(data: any) {
-  // 可以對 data 做任何操作，沒有類型檢查
-  console.log(data.someProperty); // 不會報錯，即使 someProperty 不存在
-}
-
-// 推薦
-function processData(data: unknown) {
-  // 需要進行類型檢查
-  if (typeof data === 'object' && data !== null && 'someProperty' in data) {
-    console.log((data as { someProperty: unknown }).someProperty);
+  constructor(name: string) {
+    this.name = name;
   }
 }
-```
 
-## 7. 使用 Utility Types
-
-TypeScript 提供了許多有用的工具類型：
-
-```typescript
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  createdAt: Date;
+class Dog extends Animal {
+  bark(): void {
+    console.log('Woof!');
+  }
 }
 
-// Partial<T>：使所有屬性可選
-type PartialUser = Partial<User>;
+function makeNoise(animal: Animal): void {
+  if (animal instanceof Dog) {
+    // 在這個分支中，TypeScript 知道 animal 是 Dog 類型
+    animal.bark();
+  } else {
+    console.log('Some generic animal noise');
+  }
+}
 
-// Pick<T, K>：選擇特定屬性
-type UserPreview = Pick<User, 'id' | 'name'>;
+// 使用區分聯合（Discriminated Union）
+type Shape = 
+  | { kind: 'circle'; radius: number }
+  | { kind: 'rectangle'; width: number; height: number };
 
-// Omit<T, K>：排除特定屬性
-type UserWithoutTimestamp = Omit<User, 'createdAt'>;
+function calculateArea(shape: Shape): number {
+  switch (shape.kind) {
+    case 'circle':
+      return Math.PI * shape.radius ** 2;
+    case 'rectangle':
+      return shape.width * shape.height;
+  }
+}
 
-// Readonly<T>：使所有屬性只讀
-type ReadonlyUser = Readonly<User>;
+const circle: Shape = { kind: 'circle', radius: 5 };
+const rectangle: Shape = { kind: 'rectangle', width: 10, height: 20 };
 
-// Record<K, T>：構建物件類型
-type UserRoles = Record<string, string[]>;
+console.log(calculateArea(circle));     // 78.54...
+console.log(calculateArea(rectangle));  // 200
 ```
 
-## 8. 設定嚴格的 TypeScript 配置
+## 使用嚴格的編譯選項
 
-在 `tsconfig.json` 中啟用嚴格模式：
+在 `tsconfig.json` 中，建議啟用這些嚴格選項：
 
 ```json
 {
@@ -213,7 +192,6 @@ type UserRoles = Record<string, string[]>;
     "strictPropertyInitialization": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
-    // 其他有用的選項
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
@@ -222,84 +200,68 @@ type UserRoles = Record<string, string[]>;
 }
 ```
 
-## 9. 使用 Type Predicates 改善類型縮小
+## 避免使用 any 類型
+
+盡量避免使用 `any` 類型，這會繞過 TypeScript 的類型檢查：
 
 ```typescript
-interface Circle {
-  kind: 'circle';
-  radius: number;
+// 不好
+function processData(data: any): any {
+  return data.length > 10;
 }
 
-interface Rectangle {
-  kind: 'rectangle';
-  width: number;
-  height: number;
+// 好
+function processData(data: string | string[]): boolean {
+  return data.length > 10;
 }
 
-type Shape = Circle | Rectangle;
-
-// Type Predicate
-function isCircle(shape: Shape): shape is Circle {
-  return shape.kind === 'circle';
-}
-
-function calculateArea(shape: Shape): number {
-  if (isCircle(shape)) {
-    return Math.PI * shape.radius ** 2;
-  } else {
-    return shape.width * shape.height;
-  }
+// 更好：使用泛型和約束
+function processData<T extends { length: number }>(data: T): boolean {
+  return data.length > 10;
 }
 ```
 
-## 10. 模組化你的類型定義
+## 善用工具類型
 
-將類型定義組織在單獨的檔案中：
+TypeScript 提供了多種有用的工具類型：
 
 ```typescript
-// types/user.ts
-export interface User {
+// Partial - 使所有屬性變為可選
+interface User {
   id: number;
   name: string;
   email: string;
 }
 
-export type UserRole = 'admin' | 'user' | 'guest';
-
-// types/api.ts
-export interface ApiResponse<T> {
-  data: T;
-  status: number;
-  message?: string;
+function updateUser(id: number, userUpdate: Partial<User>): void {
+  // userUpdate 的所有字段都是可選的
 }
 
-// 使用
-import { User } from './types/user';
-import { ApiResponse } from './types/api';
+updateUser(1, { name: 'New Name' });  // 有效，只更新了一個字段
 
-const userResponse: ApiResponse<User> = {
-  data: { id: 1, name: 'John', email: 'john@example.com' },
-  status: 200
+// Pick - 從類型中選擇特定屬性
+type UserCredentials = Pick<User, 'email' | 'id'>;
+
+// Omit - 排除特定屬性
+type UserWithoutEmail = Omit<User, 'email'>;
+
+// Record - 創建鍵值對類型
+type UserRoles = Record<number, 'admin' | 'user' | 'guest'>;
+
+const roles: UserRoles = {
+  1: 'admin',
+  2: 'user',
+  3: 'guest'
 };
+
+// ReturnType - 獲取函數返回類型
+function createUser(name: string, email: string): User {
+  return { id: Date.now(), name, email };
+}
+
+type CreatedUser = ReturnType<typeof createUser>;  // 等同於 User 類型
 ```
 
-## 結論
+## 結語
 
-這些 TypeScript 最佳實踐能幫助你寫出更安全、更易維護的程式碼。記住：
-
-1. 充分利用類型推斷，但在需要時明確定義類型
-2. 優先使用 interface 定義物件形狀
-3. 使用 union types 和 type guards 處理多態情況
-4. 善用泛型提高程式碼復用性
-5. 避免使用 any，優先使用 unknown
-6. 充分利用 TypeScript 的工具類型
-7. 保持嚴格的編譯器設定
-
-隨著你對 TypeScript 的深入使用，你會發現它不僅能捕獲錯誤，還能改善程式碼的設計和架構。
-
----
-
-**相關資源：**
-- [TypeScript 官方文檔](https://www.typescriptlang.org/docs/)
-- [TypeScript Deep Dive](https://basarat.gitbook.io/typescript/)
-- [TypeScript Playground](https://www.typescriptlang.org/play)
+TypeScript 的類型系統是非常強大的，遵循這些最佳實踐可以幫助你寫出更加健壯和可維護的代碼。記住，TypeScript 的目標是增強你的開發體驗，而不是阻礙它。適當地使用類型系統，你的代碼會更加可靠且易於重構。

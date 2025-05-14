@@ -8,6 +8,7 @@ import { Tweet } from 'react-tweet';
 
 interface MDXContentProps {
   source: MDXRemoteSerializeResult;
+  components?: Record<string, React.ComponentType<any>>;
 }
 
 // Type for code element props (which can have className)
@@ -16,7 +17,7 @@ interface CodeProps extends ComponentPropsWithoutRef<'code'> {
   children?: ReactNode;
 }
 
-const components = {
+const defaultComponents = {
   // Custom component mapping
   h1: (props: ComponentPropsWithoutRef<'h1'>) => <h1 className="text-4xl font-bold mb-6 mt-8" {...props} />,
   h2: (props: ComponentPropsWithoutRef<'h2'>) => <h2 className="text-3xl font-bold mb-4 mt-6" {...props} />,
@@ -29,16 +30,13 @@ const components = {
     <blockquote className="border-l-4 border-gray-300 pl-4 italic text-gray-700 mb-6" {...props} />
   ),
   
-  // Custom MDX components
-  // 自定義組件可以在全局添加，或者由 MDX 文件局部導入
-  
   // For both code blocks and inline code
   code: (props: CodeProps) => {
     const { className, children, ...rest } = props;
     
     // If className exists, it's a code block, otherwise it's inline code
     if (className?.includes('language-')) {
-      return <CodeBlock className={className}>{children}</CodeBlock>;
+      return <CodeBlock className={className}>{children as string}</CodeBlock>;
     }
     
     // Inline code styling
@@ -56,10 +54,16 @@ const components = {
   ),
 };
 
-export default function MDXContent({ source }: MDXContentProps) {
+export default function MDXContent({ source, components }: MDXContentProps) {
+  // Merge default components with any passed in components
+  const mergedComponents = {
+    ...defaultComponents,
+    ...(components || {})
+  };
+
   return (
     <div className="overflow-hidden">
-      <MDXRemote {...source} components={components} />
+      <MDXRemote {...source} components={mergedComponents} />
     </div>
   );
 }
