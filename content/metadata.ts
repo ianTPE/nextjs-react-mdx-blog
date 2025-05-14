@@ -1,6 +1,14 @@
 import { BlogMetadata } from '@/app/types/blog';
 
 export const postsMetadata: Record<string, BlogMetadata> = {
+  'product-logic-shift-ai': {
+    title: 'AI產品邏輯：從操作變為托付的轉變',
+    date: '2025-05-15',
+    excerpt: '探討人工智能產品設計的新範式：從工具操作到任務託付的轉變。本文深入分析AI產品設計思維的根本性轉變，以及這種轉變對用戶體驗和產品價值的深遠影響。',
+    author: 'Ian Chen',
+    tags: ['AI', 'Product Design', 'UX', 'React'],
+    coverImage: '/images/posts/product-logic-shift-ai.jpg'
+  },
   'openmemory-personal-memory-layer': {
     title: 'OpenMemory：打造個人 AI 記憶層的開源解決方案',
     date: '2025-05-14',
