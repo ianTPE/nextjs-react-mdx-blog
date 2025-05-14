@@ -39,7 +39,7 @@ export default function HomeHero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          ⚡ 使用 Next.js 15 與 React 19 打造的高效能部落格
+          ▲ 使用 Next.js 15 與 React 19 打造的高效能部落格
         </motion.div>
       
         <motion.h1 
