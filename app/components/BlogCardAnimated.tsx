@@ -4,12 +4,23 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { BlogPost } from '@/lib/mdx';
 import MotionCard from '@/components/animation/MotionCard';
+import { authors } from '@/app/data/authors';
 
 interface BlogCardProps {
   post: BlogPost;
 }
 
 export default function BlogCardAnimated({ post }: BlogCardProps) {
+  // 根據作者名稱獲取頭像
+  function getAuthorAvatar(authorName: string): string {
+    // 查找作者ID
+    const authorEntry = Object.entries(authors).find(([_, author]) => 
+      author.name === authorName || ('chineseName' in author && author.chineseName === authorName)
+    );
+    
+    // 如果找到作者，返回其頭像；否則返回默認頭像
+    return authorEntry ? authorEntry[1].avatar : '/images/author.png';
+  }
   return (
     <MotionCard className="h-full">
       <article className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col h-full">
@@ -41,7 +52,7 @@ export default function BlogCardAnimated({ post }: BlogCardProps) {
           <div className="mt-auto pt-4 border-t border-gray-100 flex items-center">
             <div className="w-8 h-8 relative rounded-full overflow-hidden">
               <Image 
-                src="/images/author.png" 
+                src={getAuthorAvatar(post.author)} 
                 alt={post.author}
                 fill
                 sizes="32px"

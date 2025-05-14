@@ -4,12 +4,23 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { BlogPost } from '@/lib/mdx';
 import { motion } from 'framer-motion';
+import { authors } from '@/app/data/authors';
 
 interface FeaturedPostProps {
   post: BlogPost;
 }
 
 export default function FeaturedPost({ post }: FeaturedPostProps) {
+  // 根據作者名稱獲取頭像
+  function getAuthorAvatar(authorName: string): string {
+    // 查找作者ID
+    const authorEntry = Object.entries(authors).find(([_, author]) => 
+      author.name === authorName || ('chineseName' in author && author.chineseName === authorName)
+    );
+    
+    // 如果找到作者，返回其頭像；否則返回默認頭像
+    return authorEntry ? authorEntry[1].avatar : '/images/author.png';
+  }
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -57,7 +68,7 @@ export default function FeaturedPost({ post }: FeaturedPostProps) {
           <div className="flex items-center mt-auto">
             <div className="w-10 h-10 relative rounded-full overflow-hidden mr-4">
               <Image 
-                src="/images/author.png" 
+                src={getAuthorAvatar(post.author)} 
                 alt={post.author}
                 fill
                 sizes="40px"
