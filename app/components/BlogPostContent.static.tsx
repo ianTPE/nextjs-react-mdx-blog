@@ -11,7 +11,7 @@ interface BlogPostContentProps {
 function getAuthorAvatar(authorName: string): string {
   // 查找作者ID
   const authorEntry = Object.entries(authors).find(([_, author]) => 
-    author.name === authorName || author.chineseName === authorName
+    author.name === authorName || ('chineseName' in author && author.chineseName === authorName)
   );
   
   // 如果找到作者，返回其頭像；否則返回默認頭像
