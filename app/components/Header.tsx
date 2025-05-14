@@ -4,7 +4,7 @@ export default function Header() {
   return (
     <header className="bg-white shadow-sm">
       <nav className="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
-        <Link href="/" className="text-2xl font-bold text-gray-900">
+        <Link href="/" className="text-2xl font-bold text-gray-900 font-cursive">
           Citrine.top
         </Link>
         <ul className="flex gap-6">

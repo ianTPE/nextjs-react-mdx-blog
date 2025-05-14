@@ -1,5 +1,21 @@
 @import "tailwindcss";
 
+/* 引入 Dancing Script 草書字體 */
+@font-face {
+  font-family: 'Dancing Script';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/dancingscript/v25/If2cXTr6YS-zF4S-kcSWSVi_sxjsohD9F50Ruu7B1i0HTQ.ttf) format('truetype');
+}
+
+/* 草書字體 utility class */
+.font-cursive {
+  font-family: 'Dancing Script', cursive, sans-serif;
+  font-weight: 700;
+}
+
+
 /* 功能特色卡片 */
 .feature-card {
   transition: box-shadow 0.3s ease, transform 0.3s ease;
