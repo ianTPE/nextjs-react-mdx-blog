@@ -27,7 +27,7 @@ const CodeBlock: FC<CodeBlockProps> = ({ children, className }) => {
       <button
         type="button"
         onClick={copyToClipboard}
-        className="absolute right-2 top-2 rounded bg-zinc-700 px-2 py-1 text-xs text-white hover:bg-zinc-600 transition-colors"
+        className="absolute right-3 top-3 rounded bg-zinc-700 px-2 py-1 text-xs text-white hover:bg-zinc-600 transition-colors"
         aria-label="Copy code"
       >
         {copied ? 'Copied!' : 'Copy'}
@@ -38,7 +38,7 @@ const CodeBlock: FC<CodeBlockProps> = ({ children, className }) => {
         language={language as Language}
       >
         {({ className, style, tokens, getLineProps, getTokenProps }) => (
-          <pre className={`${className} overflow-auto p-4`} style={{
+          <pre className={`${className} overflow-auto py-6 px-4`} style={{
             ...style,
             backgroundColor: 'transparent',
             margin: 0,
