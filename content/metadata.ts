@@ -32,9 +32,17 @@ export const postsMetadata: Record<string, BlogMetadata> = {
     excerpt: '本文詳細記錄了我作為技術博主在尋找理想 CMS 平台的探索過程。從基於雲端的 WispCMS 到更靈活的 TinaCMS，我分享了每個系統的優缺點、使用體驗以及潛在的商業模式考量。文章特別關注了對 MDX 和 Page Bundle 的支持，以及跨 Next.js、Gatsby 和 Hugo 等框架的實際安裝體驗。對於考慮建立或遷移技術博客的開發者和內容創作者來說，這篇深入分析提供了寶貴的第一手經驗與見解。',
     author: 'Ian Chou',
     tags: ['CMS', 'WispCMS', 'TinaCMS', 'MDX', 'Page Bundle'],
-    coverImage: '/images/posts/comparing-cms-platforms-wispcms-tinacms-mdx-support-analysis.jpg'
+    coverImage: '/images/posts/comparing-cms-platforms-wispcms-tinacms-mdx-support-analysis.png'
   },
 
+  'fullstack-development-adventure-mdx-cloud-deployment-ai-workflow-experience': {
+    title: '全棧開發探險記：MDX、雲端部署與AI輔助工作流程的實戰體驗',
+    date: '2025-04-13',
+    excerpt: '簡介： 本文記錄了我探索全棧開發的一天歷程，涵蓋MDX技術、各大部署平台比較、域名管理策略，以及如何利用Claude MCP等AI工具打造高效開發流程。從技術選型到實戰測試，分享了一位開發者如何結合AI助手與Git版本控制，勇敢嘗試新技術的真實體驗。無論你是前端開發者還是全棧愛好者，這篇探險日記都能給你帶來實用的工作流程啟發。',
+    author: 'Ian Chou',
+    tags: ['Fullstack', 'MDX', 'Cloud Deployment', 'AI Workflow'],
+    coverImage: '/images/posts/fullstack-development-adventure-mdx-cloud-deployment-ai-workflow-experience.png'
+  },
   
   'blog-exploring-react-workflow-contentlayer-tinacms': {
     title: 'React 開發日誌：從 Contentlayer 到 TinaCMS 的實用工作流程探索',
