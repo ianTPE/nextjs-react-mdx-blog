@@ -102,11 +102,11 @@ kali-linux          Stopped      2
 wsl -d 您的WSL發行版名稱 -- bash -ic "cd /mnt/c/Users/您的用戶名/GitHub/mem0/openmemory/api && docker-compose up -d"
 ```
 
-例如，如果您的 WSL 發行版是 Ubuntu，使用者名為 iantp，則腳本應為：
+例如，如果您的 WSL 發行版是 Ubuntu，使用者名為 gogotw，則腳本應為：
 
 ```bat
 @echo off
-wsl -d Ubuntu -- bash -ic "cd /mnt/c/Users/iantp/GitHub/mem0/openmemory/api && docker-compose up -d"
+wsl -d Ubuntu -- bash -ic "cd /mnt/c/Users/gogotw/GitHub/mem0/openmemory/api && docker-compose up -d"
 ```
 
 這裡 `-d` 參數表示以後台模式啟動容器，不會佔用終端機視窗。
@@ -121,7 +121,7 @@ wsl -d Ubuntu -- bash -ic "cd /mnt/c/Users/iantp/GitHub/mem0/openmemory/api && d
    - 新建觸發器，選擇「在登入時」觸發
    - **重要：設定延遲啓動時間**（如 2-3 分鐘），等待 Docker Desktop 完全啟動
 4. 在「操作」頁簿：
-   - 新建操作，程序/腳本填寫您剛剛創建的 `.bat` 文件的完整路徑
+   - 新建操作，程序/腳本填寫您剛剛創建的 `start_openmemory.bat` 文件的完整路徑
 5. 確定保存
 
 完成上述設置後，每次系統啟動或用戶登入時，OpenMemory 就會自動在後台啟動，無需手動執行命令。
