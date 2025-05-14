@@ -7,7 +7,7 @@ export const authors = {
   arkiiz: {
     name: 'Arkiiz',
     chineseName: '庭宇',
-    avatar: '/images/authors/arkiiz.png',
+    avatar: '/images/authors/Arkiiz.png',
     bio: 'AI講師、超級顧問',
   },
 };

@@ -1,9 +1,21 @@
 import Image from 'next/image';
 import { BlogMetadata } from '../types/blog';
+import { authors } from '../data/authors';
 
 interface BlogPostContentProps {
   metadata: BlogMetadata;
   children: React.ReactNode;
+}
+
+// 根據作者名稱獲取頭像
+function getAuthorAvatar(authorName: string): string {
+  // 查找作者ID
+  const authorEntry = Object.entries(authors).find(([_, author]) => 
+    author.name === authorName || author.chineseName === authorName
+  );
+  
+  // 如果找到作者，返回其頭像；否則返回默認頭像
+  return authorEntry ? authorEntry[1].avatar : '/images/author.png';
 }
 
 export default function BlogPostContentStatic({ metadata, children }: BlogPostContentProps) {
@@ -29,7 +41,7 @@ export default function BlogPostContentStatic({ metadata, children }: BlogPostCo
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 relative rounded-full overflow-hidden">
               <Image 
-                src="/images/author.png" 
+                src={getAuthorAvatar(metadata.author)} 
                 alt={metadata.author}
                 fill
                 sizes="32px"
