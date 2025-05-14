@@ -110,7 +110,7 @@ pre[class*="language-"] {
 
 /* Code blocks styling (handled by CodeBlock) */
 pre[class*="language-"] {
-  @apply rounded-lg shadow-lg my-6;
+  @apply rounded-lg shadow-lg my-8 p-4;
   font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
 }
 
