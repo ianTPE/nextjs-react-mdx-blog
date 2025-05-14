@@ -1,4 +1,66 @@
 
+## 快速安裝指南
+
+以下是安裝和使用 OpenMemory 的快速指南：
+
+### 1. 使用 Git 下載 `openmemory` 代碼
+
+由於 Git 不支援直接克隆單一子目錄，您需要先克隆整個倉庫：
+
+```bash
+# 克隆整個倉庫
+git clone https://github.com/mem0ai/mem0.git
+
+# 進入 openmemory 目錄
+cd mem0/openmemory
+```
+
+### 2. 在 Windows 下設置和構建
+
+在 Windows 下，您需要使用 WSL (Windows Subsystem for Linux) 進行構建：
+
+```bash
+# 進入 WSL
+wsl
+
+# 構建軟體
+make build
+```
+
+### 3. 設置環境變量
+
+在 `C:\Users\[user]\GitHub\mem0\openmemory\api` 目錄下：
+
+```bash
+# 複製環境變量樣本文件
+cp .env.example .env
+```
+
+然後打開 `.env` 文件，加入您的 OpenAI API 金鑰：
+
+```
+OPENAI_API_KEY=sk-...
+USER=username  # 這個可以保持預設值
+```
+
+### 4. 啟動服務
+
+```bash
+# 啟動 OpenMemory 服務
+make up
+
+# 啟動使用者界面
+make ui
+```
+
+### 5. 設置 MCP 客戶端整合
+
+1. 開啟瀏覽器訪問：`http://localhost:3000`
+2. 在介面中複製 MCP 服務器安裝指令
+3. 將指令粘貼到終端機中執行
+4. 重啟 Claude Desktop、Cursor 或 Windsurf 等 MCP 客戶端
+5. 現在，您就可以在這些應用中使用 OpenMemory 記憶功能
+
 ## OpenMemory：打造個人 AI 記憶層的開源解決方案
 
 > **實用推薦：** 創新的 OpenMemory MCP 讓你將 AI 記憶全部存在本地，然後共享給所有支援 MCP 協議的客戶端。這意味著 Claude、Cursor、Windsurf 等應用都可以讀取相同的記憶內容——您只需維護一份記憶即可。[查看相關訊息](https://x.com/taranjeetio/status/1922315139057070154)
