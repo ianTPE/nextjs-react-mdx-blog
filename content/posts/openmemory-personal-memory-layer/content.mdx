@@ -70,6 +70,62 @@ make ui
 4. 重啟 Claude Desktop、Cursor 或 Windsurf 等 MCP 客戶端
 5. 現在，您就可以在這些應用中使用 OpenMemory 記憶功能
 
+### 6. 設置系統登入後自動啟動
+
+為了更方便的使用體驗，您可以設置 OpenMemory 在 Windows 系統啟動時自動啟動：
+
+#### 步驟 1: 確認 WSL 發行版名稱
+
+在 PowerShell 或 CMD 終端機（不是在 WSL 終端機裡）執行：
+
+```powershell
+wsl -l -v
+```
+
+您會看到類似這樣的輸出：
+
+```
+NAME                STATE       VERSION
+* Ubuntu-20.04      Running     2
+Debian              Stopped      2
+kali-linux          Stopped      2
+```
+
+記下您的 WSL 發行版名稱（如 Ubuntu-20.04、Debian 等），帶星號 * 的是預設發行版。
+
+#### 步驟 2: 編寫啟動腳本
+
+在 Windows 上新建一個批處理文件（如 `start_openmemory.bat`），內容為：
+
+```bat
+@echo off
+wsl -d 您的WSL發行版名稱 -- bash -ic "cd /mnt/c/Users/您的用戶名/GitHub/mem0/openmemory/api && docker-compose up -d"
+```
+
+例如，如果您的 WSL 發行版是 Ubuntu，使用者名為 iantp，則腳本應為：
+
+```bat
+@echo off
+wsl -d Ubuntu -- bash -ic "cd /mnt/c/Users/iantp/GitHub/mem0/openmemory/api && docker-compose up -d"
+```
+
+這裡 `-d` 參數表示以後台模式啟動容器，不會佔用終端機視窗。
+
+#### 步驟 3: 創建計劃任務
+
+1. 開啟「任務計劃程序」（Task Scheduler），點擊「創建任務」
+2. 在「常規」頁簿：
+   - 勾選「以最高權限執行」
+   - 「配置為」選擇對應的 Windows 版本
+3. 在「觸發器」頁簿：
+   - 新建觸發器，選擇「在登入時」觸發
+   - **重要：設定延遲啓動時間**（如 2-3 分鐘），等待 Docker Desktop 完全啟動
+4. 在「操作」頁簿：
+   - 新建操作，程序/腳本填寫您剛剛創建的 `.bat` 文件的完整路徑
+5. 確定保存
+
+完成上述設置後，每次系統啟動或用戶登入時，OpenMemory 就會自動在後台啟動，無需手動執行命令。
+
 > **專案亮點：**OpenMemory 是一個開源的個人記憶層系統，為大型語言模型（LLMs）提供私有、可攜帶且開源的記憶管理解決方案，讓您完全掌控自己的數據。
 
 在當今 AI 技術快速發展的時代，個人數據隱私和控制權變得尤為重要。OpenMemory 專案應運而生，為開發者和終端使用者提供了一個安全、可控的方式來管理 AI 與大型語言模型的記憶系統。本文將深入分析 OpenMemory 的架構、功能以及它如何改變 AI 應用的個人化體驗。
