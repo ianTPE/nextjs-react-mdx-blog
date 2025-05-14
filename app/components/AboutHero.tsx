@@ -41,7 +41,7 @@ export default function AboutHero() {
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.6 }}
         >
-          這裡是 Ian 的現代化 React/TypeScript 部落格，專注於 AI 協作、極簡 coding 與彈性內容架構。
+          這裡是 Ian 的現代化 React/MDX 部落格，專注於 AI 協作、極簡 coding 與彈性內容架構。
         </motion.p>
       </div>
     </motion.section>
