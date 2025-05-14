@@ -1,6 +1,7 @@
 'use client';
 
-import React from 'react';
+import type { FC } from 'react';
+import type { Language } from 'prism-react-renderer';
 import { Highlight, themes } from 'prism-react-renderer';
 
 interface CodeBlockProps {
@@ -8,16 +9,16 @@ interface CodeBlockProps {
   className?: string;
 }
 
-const CodeBlock: React.FC<CodeBlockProps> = ({ children, className }) => {
+const CodeBlock: FC<CodeBlockProps> = ({ children, className }) => {
   // Extract the language from className (format: language-xxx)
   const language = className ? className.replace(/language-/, '') : 'typescript';
   
   return (
-    <div className="relative my-6 overflow-hidden rounded-lg border border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800">
+    <div className="relative my-6 overflow-hidden rounded-lg border border-zinc-700 bg-black text-white">
       <Highlight 
         theme={themes.vsDark}
         code={children.trim()}
-        language={language as any}
+        language={language as Language}
       >
         {({ className, style, tokens, getLineProps, getTokenProps }) => (
           <pre className={`${className} overflow-auto p-4`} style={{
@@ -25,11 +26,10 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ children, className }) => {
             backgroundColor: 'transparent',
             margin: 0,
           }}>
-            {tokens.map((line, i) => (
-              <div key={i} {...getLineProps({ line, key: i })}>
-                <span className="inline-block w-8 text-right mr-4 text-gray-500 select-none opacity-50">{i + 1}</span>
-                {line.map((token, key) => (
-                  <span key={key} {...getTokenProps({ token, key })} />
+            {tokens.map((line, lineIndex) => (
+              <div key={`line-${lineIndex}`} {...getLineProps({ line, key: `line-${lineIndex}` })}>
+                {line.map((token, tokenIndex) => (
+                  <span key={`token-${lineIndex}-${tokenIndex}`} {...getTokenProps({ token, key: tokenIndex })} />
                 ))}
               </div>
             ))}
