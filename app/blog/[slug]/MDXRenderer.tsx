@@ -4,16 +4,35 @@ import React, { useState, useEffect } from 'react';
 import { MDXRemote } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
 import type { MDXRemoteSerializeResult } from 'next-mdx-remote';
-import mdxComponents from '@/components/mdx/MDXComponents';
+import defaultMDXComponents from '@/components/mdx/MDXComponents';
+import { Alert, Callout, Tweet, YouTube } from '@/components/mdx/global-components';
+import CodeBlock from '@/components/mdx/CodeBlock';
 
 interface MDXRendererProps {
   source: string;
-  components: Record<string, React.ComponentType<any>>;
+  components: Record<string, any>;
 }
+
+// Global components map that includes our global components
+const globalComponents = {
+  Alert,
+  Callout,
+  Tweet,
+  YouTube,
+  CodeBlock,
+  // Default components for markdown elements
+  ...defaultMDXComponents
+};
 
 export default function MDXRenderer({ source, components }: MDXRendererProps) {
   const [mdxSource, setMdxSource] = useState<MDXRemoteSerializeResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  // Create a merged components object that combines global components and post-specific components
+  const mergedComponents = {
+    ...globalComponents,
+    ...components // Post-specific components can override global ones
+  };
 
   useEffect(() => {
     const processMDX = async () => {
@@ -52,12 +71,6 @@ export default function MDXRenderer({ source, components }: MDXRendererProps) {
       </div>
     );
   }
-
-  // Merge the default MDX components with any custom components passed in
-  const mergedComponents = {
-    ...mdxComponents,
-    ...components
-  };
 
   return (
     <div className="mdx-content prose prose-lg dark:prose-invert max-w-none">

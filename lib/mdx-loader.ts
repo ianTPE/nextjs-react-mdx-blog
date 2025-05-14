@@ -15,31 +15,25 @@ export const getPostComponents = cache(async (slug: string) => {
     
     if (!fs.existsSync(componentsDir)) {
       console.log(`No custom components directory found for post: ${slug}`);
-      // 如果找不到組件目錄，只返回全局組件
-      const globalComps = await import('@/components/mdx/global-components');
-      return globalComps;
+      // 如果找不到組件目錄，只返回空物件 - 全局組件會在 MDXContent 中處理
+      return {};
     }
 
     // 嘗試導入局部組件
     try {
+      // 注意：這裡我們僅返回模塊，而不是模塊的預設導出，來避免序列化問題
       const postComponents = await import(`@content/posts/${slug}/components/index`);
-      const globalComponents = await import('@/components/mdx/global-components');
       
-      // 合併全局和局部組件，優先使用局部組件
-      return {
-        ...globalComponents,
-        ...postComponents
-      };
+      // 返回一個簡單物件，避免函數直接序列化的問題
+      return { ...postComponents };
     } catch (importError) {
       console.error(`Error importing components for ${slug}:`, importError);
-      // 如果導入出錯，返回全局組件
-      const globalComps = await import('@/components/mdx/global-components');
-      return globalComps;
+      // 如果導入出錯，返回空物件
+      return {};
     }
   } catch (error) {
     console.error(`Error loading components for post ${slug}:`, error);
-    // 如果任何錯誤發生，返回全局組件
-    const globalComps = await import('@/components/mdx/global-components');
-    return globalComps;
+    // 如果任何錯誤發生，返回空物件
+    return {};
   }
 });

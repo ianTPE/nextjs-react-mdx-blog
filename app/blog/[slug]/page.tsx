@@ -57,7 +57,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     notFound();
   }
 
-  // 獲取該文章的自定義組件
+  // 獲取該文章的自定義組件 - 現在應該只是一個物件，而不是函數
   const components = await getPostComponents(resolvedParams.slug);
 
   return (

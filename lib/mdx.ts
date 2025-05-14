@@ -3,6 +3,9 @@ import path from 'path';
 import { BlogPost, BlogMetadata } from '@/app/types/blog';
 import { getAllPostSlugs, getPostMetadata } from '@/content/metadata';
 
+// Re-export the BlogPost type
+export type { BlogPost, BlogMetadata };
+
 const postsDirectory = path.join(process.cwd(), 'content/posts');
 
 export function getAllPosts(): BlogPost[] {
