@@ -373,6 +373,105 @@ OpenMemory 在多種場景中都有廣泛應用：
 
 為開發者提供一個框架，用於構建具有記憶能力的自定義 AI 應用。
 
+## 使用 USB 隨身碟交換 OpenMemory 資料
+
+<Alert type="tip" title="離線數據交換">
+  使用 USB 隨身碟是交換 OpenMemory 記憶資料的最安全方式之一，完全避免網路傳輸風險。
+</Alert>
+
+OpenMemory 的設計支持將記憶數據通過物理媒介（如 USB 隨身碟）進行安全交換，這是確保數據隱私的絕佳方式。以下是三種主要方法：
+
+### 1. 直接複製數據庫文件
+
+OpenMemory 的核心數據存儲在幾個關鍵文件中：
+
+```
+openmemory/
+├── api/
+│   ├── openmemory.db        # SQLite 主數據庫文件
+│   └── vector_store/        # 向量數據存儲目錄
+```
+
+您可以通過以下步驟將這些文件複製到 USB 隨身碟：
+
+```bash
+# 1. 首先確保 OpenMemory 服務已停止
+make down
+
+# 2. 複製關鍵文件到 USB 隨身碟
+cp api/openmemory.db /media/usb/
+cp -r api/vector_store/ /media/usb/
+```
+
+接收者只需將這些文件複製到他們的 OpenMemory 安裝目錄即可使用您的記憶數據。
+
+### 2. 創建結構化導出文件
+
+如果您只想分享特定記憶，可以實現導出功能：
+
+```python
+# 在 app/routers/memories.py 添加導出功能
+@router.post("/export-to-usb")
+async def export_memories_to_usb(
+    memory_ids: List[UUID],
+    export_path: str,
+    db: Session = Depends(get_db)
+):
+    # 獲取指定的記憶
+    memories = db.query(Memory).filter(Memory.id.in_(memory_ids)).all()
+    
+    # 為每個記憶獲取向量嵌入
+    memory_data = []
+    for memory in memories:
+        vector = memory_client.get_vector(str(memory.id))
+        
+        memory_data.append({
+            "id": str(memory.id),
+            "content": memory.content,
+            "vector": vector.tolist() if vector is not None else None,
+            "categories": [c.name for c in memory.categories],
+            "metadata": memory.metadata_,
+            "created_at": memory.created_at.isoformat()
+        })
+    
+    # 將數據保存為 JSON 文件
+    with open(export_path, 'w') as f:
+        json.dump({"memories": memory_data}, f, indent=2)
+        
+    return {"message": f"成功導出 {len(memories)} 條記憶到 {export_path}"}
+```
+
+### 3. 創建便攜式 OpenMemory 實例
+
+更完整的解決方案是在 USB 隨身碟上創建一個完整的便攜式 OpenMemory 實例：
+
+```bash
+# 在 USB 上克隆儲存庫
+cd /media/usb
+git clone https://github.com/mem0/openmemory.git
+cd openmemory
+
+# 配置為使用本地存儲
+echo "DB_PATH=/media/usb/openmemory/data/openmemory.db" > api/.env
+echo "VECTOR_STORE_PATH=/media/usb/openmemory/data/vector_store" >> api/.env
+
+# 複製您的數據
+mkdir -p /media/usb/openmemory/data
+cp /path/to/your/openmemory.db /media/usb/openmemory/data/
+cp -r /path/to/your/vector_store /media/usb/openmemory/data/
+```
+
+### 安全考量
+
+使用 USB 隨身碟交換數據時，請考慮以下安全措施：
+
+- **加密 USB 內容**：使用 VeraCrypt、BitLocker 或 FileVault 等工具
+- **設置密碼保護**：要求接收者提供密碼才能訪問數據
+- **只包含必要數據**：僅導出必要的記憶，而非整個數據庫
+- **提供數據清理指南**：告訴接收者使用後如何安全地刪除數據
+
+這種離線交換方式的主要優勢在於完全掌控數據流向，無需依賴網絡傳輸，為敏感記憶提供最高級別的安全保障。
+
 ## 未來展望
 
 OpenMemory 專案正在積極發展中，未來計劃包括：
