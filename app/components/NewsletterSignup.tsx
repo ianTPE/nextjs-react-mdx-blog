@@ -9,22 +9,28 @@ export default function NewsletterSignup() {
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
     if (!email) return;
-    
     setStatus('loading');
-    
-    // 模擬 API 呼叫，實際可替換為你的訂閱 API
-    setTimeout(() => {
-      setStatus('success');
-      setEmail('');
-      
-      // 5秒後重置狀態
-      setTimeout(() => {
-        setStatus('idle');
-      }, 5000);
-    }, 1500);
+    try {
+      const res = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      if (res.ok) {
+        setStatus('success');
+        setEmail('');
+        setTimeout(() => setStatus('idle'), 5000);
+      } else {
+        setStatus('error');
+        setTimeout(() => setStatus('idle'), 5000);
+      }
+    } catch (err) {
+      setStatus('error');
+      setTimeout(() => setStatus('idle'), 5000);
+    }
   };
+
   
   return (
     <motion.div 
