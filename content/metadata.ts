@@ -32,7 +32,7 @@ export const postsMetadata: Record<string, BlogMetadata> = {
     excerpt: '本文深入探討 AI（人工智慧）如何與 PRD（產品需求文件）及 DevOps 深度融合，開創軟體工程的全新模式。從需求洞察智能化到自動化部署，分享 AI + PRD + DevOps 的實戰應用與最佳實踐。',
     author: 'Ian Chou',
     tags: ['AI', 'PRD', 'DevOps', '軟體工程', '自動化', '智能化'],
-    coverImage: '/images/posts/ai-prd-devops-integration-guide-2025.jpg'
+    coverImage: '/images/posts/ai-prd-devops-integration-guide-2025.png'
   },
 
   '2025-freelancer-guide-low-code-no-code-development-applications-ranking': {
