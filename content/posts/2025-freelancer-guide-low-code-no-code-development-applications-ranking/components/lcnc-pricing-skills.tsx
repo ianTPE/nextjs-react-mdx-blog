@@ -152,15 +152,13 @@ const PricingAndSkills = () => {
           {
             label: '最低價格',
             data: minValues,
-            backgroundColor: '#8884d8',
-            opacity: 0.7,
+            backgroundColor: 'rgba(136, 132, 216, 0.7)',
             order: 2
           },
           {
             label: '最高價格',
             data: maxValues,
-            backgroundColor: '#82ca9d',
-            opacity: 0.7,
+            backgroundColor: 'rgba(130, 202, 157, 0.7)',
             order: 1
           },
         ]
