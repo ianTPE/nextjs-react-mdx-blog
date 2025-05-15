@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 
 // Define types for our data
 interface TechStackItem {
@@ -8,6 +9,18 @@ interface TechStackItem {
   tools: string;
   adoption: number;
 }
+
+// Dynamically import Recharts components to avoid SSR issues
+const RechartsComponents = dynamic(() => import('recharts').then((mod) => ({
+  BarChart: mod.BarChart,
+  Bar: mod.Bar,
+  XAxis: mod.XAxis,
+  YAxis: mod.YAxis,
+  CartesianGrid: mod.CartesianGrid,
+  Tooltip: mod.Tooltip,
+  Cell: mod.Cell,
+  ResponsiveContainer: mod.ResponsiveContainer
+})), { ssr: false });
 
 const TechStackChart = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -24,7 +37,7 @@ const TechStackChart = () => {
     { category: '數據閉環', tools: 'MLflow, Elasticsearch', adoption: 65 },
   ];
 
-  if (!isMounted) {
+  if (!isMounted || !RechartsComponents) {
     // Return a simple placeholder when not mounted (during SSR)
     return (
       <div className="w-full p-4 bg-white rounded-lg shadow-lg">
@@ -36,7 +49,7 @@ const TechStackChart = () => {
     );
   }
 
-  // Import Recharts components only on the client side
+  // Destructure the dynamically loaded components
   const {
     BarChart,
     Bar,
@@ -46,28 +59,55 @@ const TechStackChart = () => {
     Tooltip,
     Cell,
     ResponsiveContainer
-  } = require('recharts');
+  } = RechartsComponents;
 
   return (
-    <div className="w-full p-4 bg-white rounded-lg shadow-lg">
-      <h3 className="text-xl font-bold mb-4 text-center">AI 技術棧採用率分析</h3>
-      <div className="flex justify-center items-center w-full">
-        <div className="w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl mx-auto">
-          <ResponsiveContainer width="100%" height={400}>
-            <BarChart data={techStackData} layout="vertical" margin={{ left: 120 }}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis type="number" domain={[0, 100]} hide />
-              <YAxis dataKey="category" type="category" axisLine={false} tickLine={false} width={100} />
-              <Tooltip />
-              <Bar dataKey="adoption" fill="#6366f1">
+    <div className="w-full p-2 bg-white rounded-lg shadow-lg overflow-hidden">
+      <h3 className="text-xl font-bold mb-2 text-center">AI 技術棧採用率分析</h3>
+      <div className="flex justify-center w-full overflow-visible">
+        <div className="w-full max-w-full sm:max-w-md md:max-w-lg mx-auto">
+          <ResponsiveContainer width="100%" height={350}>
+            <BarChart 
+              data={techStackData} 
+              layout="vertical" 
+              margin={{ top: 5, right: 10, left: 80, bottom: 5 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} />
+              <XAxis 
+                type="number" 
+                domain={[0, 100]} 
+                tick={{ fontSize: 12 }}
+                tickFormatter={(value) => `${value}%`}
+              />
+              <YAxis 
+                dataKey="category" 
+                type="category" 
+                axisLine={false} 
+                tickLine={false} 
+                width={70} 
+                tick={{ fontSize: 11 }}
+              />
+              <Tooltip 
+                formatter={(value) => [`${value}%`, '採用率']} 
+                contentStyle={{ fontSize: 12 }}
+              />
+              <Bar 
+                dataKey="adoption" 
+                fill="#6366f1"
+                radius={[0, 4, 4, 0]}
+                barSize={20}
+              >
                 {techStackData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={[
-                    '#3b82f6', // 藍
-                    '#10b981', // 綠
-                    '#f59e42', // 橙
-                    '#ef4444', // 紅
-                    '#a78bfa'  // 紫
-                  ][index]} />
+                  <Cell 
+                    key={`cell-${index}`} 
+                    fill={[
+                      '#3b82f6', // 藍
+                      '#10b981', // 綠
+                      '#f59e42', // 橙
+                      '#ef4444', // 紅
+                      '#a78bfa'  // 紫
+                    ][index]} 
+                  />
                 ))}
               </Bar>
             </BarChart>
