@@ -1,9 +1,30 @@
 'use client';
 
-import React from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import React, { useState, useEffect } from 'react';
+
+type RechartsType = typeof import('recharts');
+type ValueFormatterType = (value: number) => [string, string];
+type LabelFormatterType = (props: { name: string; percent: number }) => string;
 
 const LowCodeMarketDiagram = () => {
+  const [isClient, setIsClient] = useState(false);
+  const [RechartsComponents, setRechartsComponents] = useState<RechartsType | null>(null);
+
+  useEffect(() => {
+    setIsClient(true);
+    
+    const loadRecharts = async () => {
+      try {
+        const recharts = await import('recharts');
+        setRechartsComponents(recharts);
+      } catch (error) {
+        console.error('Failed to load recharts:', error);
+      }
+    };
+    
+    loadRecharts();
+  }, []);
+
   // 市場規模預測數據
   const marketSizeData = [
     { year: '2023', value: 24.8, description: '2023年市場規模約248億美元' },
@@ -31,6 +52,36 @@ const LowCodeMarketDiagram = () => {
   
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
   
+  // Format functions with proper typing
+  const marketValueFormatter: ValueFormatterType = (value) => [`${value}十億美元`, '市場規模'];
+  const marketShareFormatter: ValueFormatterType = (value) => [`${value}%`, '市場份額'];
+  const pieChartLabelFormatter: LabelFormatterType = ({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`;
+
+  // If not client-side yet or recharts hasn't loaded, show a placeholder
+  if (!isClient || !RechartsComponents) {
+    return (
+      <div style={{ fontFamily: 'Arial, sans-serif', padding: '20px' }}>
+        <h1 style={{ textAlign: 'center', color: '#333' }}>低代碼/無代碼市場概況</h1>
+        <p style={{ textAlign: 'center' }}>圖表載入中...</p>
+      </div>
+    );
+  }
+
+  // Destructure the recharts components once they're loaded
+  const { 
+    BarChart, 
+    Bar, 
+    XAxis, 
+    YAxis, 
+    CartesianGrid, 
+    Tooltip, 
+    Legend, 
+    ResponsiveContainer, 
+    PieChart, 
+    Pie, 
+    Cell 
+  } = RechartsComponents;
+
   return (
     <div style={{ fontFamily: 'Arial, sans-serif', padding: '20px' }}>
       <h1 style={{ textAlign: 'center', color: '#333' }}>低代碼/無代碼市場概況</h1>
@@ -49,7 +100,7 @@ const LowCodeMarketDiagram = () => {
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="year" />
               <YAxis label={{ value: '市場規模 (十億美元)', angle: -90, position: 'insideLeft' }} />
-              <Tooltip formatter={(value) => [`${value}十億美元`, '市場規模']} />
+              <Tooltip formatter={marketValueFormatter} />
               <Legend />
               <Bar dataKey="value" name="市場規模 (十億美元)" fill="#8884d8" />
             </BarChart>
@@ -72,20 +123,20 @@ const LowCodeMarketDiagram = () => {
                   fill="#8884d8"
                   dataKey="value"
                   nameKey="name"
-                  label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                  label={pieChartLabelFormatter}
                 >
-                  {platformTypes.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  {platformTypes.map((entry) => (
+                    <Cell key={`cell-${entry.name}`} fill={COLORS[platformTypes.indexOf(entry) % COLORS.length]} />
                   ))}
                 </Pie>
-                <Tooltip formatter={(value) => [`${value}%`, '市場份額']} />
+                <Tooltip formatter={marketShareFormatter} />
               </PieChart>
             </ResponsiveContainer>
           </div>
           <div>
-            {platformTypes.map((type, index) => (
-              <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
-                <div style={{ width: '20px', height: '20px', backgroundColor: COLORS[index % COLORS.length], marginRight: '8px' }}></div>
+            {platformTypes.map((type) => (
+              <div key={`legend-${type.name}`} style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
+                <div style={{ width: '20px', height: '20px', backgroundColor: COLORS[platformTypes.indexOf(type) % COLORS.length], marginRight: '8px' }} />
                 <div><strong>{type.name}</strong>: {type.description}</div>
               </div>
             ))}
@@ -106,20 +157,20 @@ const LowCodeMarketDiagram = () => {
                   fill="#8884d8"
                   dataKey="value"
                   nameKey="name"
-                  label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                  label={pieChartLabelFormatter}
                 >
-                  {applicationAreas.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  {applicationAreas.map((entry) => (
+                    <Cell key={`cell-${entry.name}`} fill={COLORS[applicationAreas.indexOf(entry) % COLORS.length]} />
                   ))}
                 </Pie>
-                <Tooltip formatter={(value) => [`${value}%`, '市場份額']} />
+                <Tooltip formatter={marketShareFormatter} />
               </PieChart>
             </ResponsiveContainer>
           </div>
           <div>
             {applicationAreas.map((area, index) => (
-              <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
-                <div style={{ width: '20px', height: '20px', backgroundColor: COLORS[index % COLORS.length], marginRight: '8px' }}></div>
+              <div key={`${area.name}-${index}`} style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
+                <div style={{ width: '20px', height: '20px', backgroundColor: COLORS[index % COLORS.length], marginRight: '8px' }} />
                 <div><strong>{area.name}</strong>: {area.description}</div>
               </div>
             ))}
