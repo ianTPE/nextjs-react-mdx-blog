@@ -83,7 +83,7 @@ const VictoryTechStackChart = () => {
         >
           <VictoryAxis
             dependentAxis
-            tickFormat={(tick) => tick}
+            tickFormat={(tick) => `${tick}`}
             style={{
               tickLabels: { 
                 fontSize: labelFontSize,
