@@ -35,6 +35,14 @@ export const postsMetadata: Record<string, BlogMetadata> = {
     coverImage: '/images/posts/static-website-architecture-breakthrough-abandoning-page-bundle-for-react-ecosystem.jpg'
   },
 
+  'vercel-blog-setup-experience': {
+    title: '從拖延到行動：我用Vercel快速建立部落格的實戰經驗與心得',
+    date: '2025-04-04',
+    excerpt: '在數月的拖延和過度思考後，我終於下定決心使用Vercel建立了自己的部落格。分享我如何選擇平台、利用AI輔助、實現一鍵部署的全過程。',
+    author: 'Ian Chou',
+    tags: ['Vercel', 'Next.js', 'Blog', 'AI'],
+    coverImage: '/images/posts/vercel-blog-setup-experience.png'
+  },
 
   
   'comparing-cms-platforms-wispcms-tinacms-mdx-support-analysis': {
