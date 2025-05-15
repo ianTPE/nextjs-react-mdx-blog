@@ -1,28 +1,48 @@
 "use client";
 
-import React from 'react';
-import {
-  ComposedChart,
-  Area,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer
-} from 'recharts';
-
-const roiTimelineData = [
-  { month: '第1月', roi: -20, investment: 100, return: 80 },
-  { month: '第3月', roi: -5, investment: 150, return: 145 },
-  { month: '第6月', roi: 30, investment: 200, return: 260 },
-  { month: '第9月', roi: 85, investment: 220, return: 407 },
-  { month: '第12月', roi: 150, investment: 240, return: 600 },
-  { month: '第18月', roi: 220, investment: 260, return: 832 },
-];
+import React, { useEffect, useState } from 'react';
 
 const ROITrendChart = () => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const roiTimelineData = [
+    { month: '第1月', roi: -20, investment: 100, return: 80 },
+    { month: '第3月', roi: -5, investment: 150, return: 145 },
+    { month: '第6月', roi: 30, investment: 200, return: 260 },
+    { month: '第9月', roi: 85, investment: 220, return: 407 },
+    { month: '第12月', roi: 150, investment: 240, return: 600 },
+    { month: '第18月', roi: 220, investment: 260, return: 832 },
+  ];
+
+  if (!isMounted) {
+    // Return a simple placeholder when not mounted (during SSR)
+    return (
+      <div className="w-full p-6 bg-white rounded-lg shadow-lg">
+        <h3 className="text-xl font-bold mb-4 text-center">投資回報率（ROI）趨勢分析</h3>
+        <div className="w-full h-[400px] flex items-center justify-center bg-gray-50">
+          <p>載入ROI趨勢圖...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Import Recharts components only on the client side
+  const {
+    ComposedChart,
+    Area,
+    Line,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    Legend,
+    ResponsiveContainer
+  } = require('recharts');
+
   return (
     <div className="w-full p-6 bg-white rounded-lg shadow-lg">
       <h3 className="text-xl font-bold mb-4 text-center">投資回報率（ROI）趨勢分析</h3>
