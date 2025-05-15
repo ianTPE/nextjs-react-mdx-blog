@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import dynamic from 'next/dynamic';
 
 // Define types for our data
 interface TechStackItem {
@@ -9,18 +8,6 @@ interface TechStackItem {
   tools: string;
   adoption: number;
 }
-
-// Dynamically import Recharts components to avoid SSR issues
-const RechartsComponents = dynamic(() => import('recharts').then((mod) => ({
-  BarChart: mod.BarChart,
-  Bar: mod.Bar,
-  XAxis: mod.XAxis,
-  YAxis: mod.YAxis,
-  CartesianGrid: mod.CartesianGrid,
-  Tooltip: mod.Tooltip,
-  Cell: mod.Cell,
-  ResponsiveContainer: mod.ResponsiveContainer
-})), { ssr: false });
 
 const TechStackChart = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -37,29 +24,20 @@ const TechStackChart = () => {
     { category: '數據閉環', tools: 'MLflow, Elasticsearch', adoption: 65 },
   ];
 
-  if (!isMounted || !RechartsComponents) {
+  if (!isMounted) {
     // Return a simple placeholder when not mounted (during SSR)
     return (
       <div className="w-full p-4 bg-white rounded-lg shadow-lg">
         <h3 className="text-xl font-bold mb-4 text-center">AI 技術棧採用率分析</h3>
-        <div className="w-full h-[400px] flex items-center justify-center bg-gray-50">
+        <div className="w-full h-[350px] flex items-center justify-center bg-gray-50">
           <p>載入技術棧圖表...</p>
         </div>
       </div>
     );
   }
 
-  // Destructure the dynamically loaded components
-  const {
-    BarChart,
-    Bar,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    Tooltip,
-    Cell,
-    ResponsiveContainer
-  } = RechartsComponents;
+  // Import Recharts components only on the client side
+  const { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Cell, ResponsiveContainer } = require('recharts');
 
   return (
     <div className="w-full p-2 bg-white rounded-lg shadow-lg overflow-hidden">
@@ -77,7 +55,7 @@ const TechStackChart = () => {
                 type="number" 
                 domain={[0, 100]} 
                 tick={{ fontSize: 12 }}
-                tickFormatter={(value) => `${value}%`}
+                tickFormatter={(value: number) => `${value}%`}
               />
               <YAxis 
                 dataKey="category" 
@@ -88,7 +66,7 @@ const TechStackChart = () => {
                 tick={{ fontSize: 11 }}
               />
               <Tooltip 
-                formatter={(value) => [`${value}%`, '採用率']} 
+                formatter={(value: number) => [`${value}%`, '採用率']} 
                 contentStyle={{ fontSize: 12 }}
               />
               <Bar 
