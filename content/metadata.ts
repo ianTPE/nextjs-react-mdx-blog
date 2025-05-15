@@ -7,7 +7,7 @@ export const postsMetadata: Record<string, BlogMetadata> = {
     excerpt: '深入介紹基於 Next.js、React、TypeScript 和 MDX 的現代部落格架構設計。本文詳細說明如何實現分離式元數據管理、純客戶端渲染、局部與全域 MDX 元件，以及完整的實作指南。適合想建立技術部落格的開發者參考。',
     author: 'Ian Chou',
     tags: ['Next.js', 'React', 'TypeScript', 'MDX', '部落格架構'],
-    coverImage: '/images/posts/nextjs-react-typescript-mdx-blog-architecture.png'
+    coverImage: '/images/default-og-image.png'
   },
   'product-logic-shift-ai': {
     title: 'AI產品邏輯：從操作變為托付的轉變',
