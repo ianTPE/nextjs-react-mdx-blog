@@ -214,33 +214,118 @@ Windsurf 與獨立研究機構 DevBenchmark Labs 合作進行了全面的性能�
 
 在 HumanEval+ 基準測試中，各模型表現如下：
 
-| 模型 | Pass@1 | Pass@3 | Pass@10 |
-| --- | --- | --- | --- |
-| SWE-1 | 79.3% | 89.7% | 95.1% |
-| Claude 3.7 Sonnet | 77.8% | 88.9% | 94.5% |
-| GPT-4.1 | 75.3% | 86.2% | 93.8% |
-| SWE-1-lite | 71.2% | 82.3% | 88.5% |
+<table>
+  <thead>
+    <tr>
+      <th>模型</th>
+      <th>Pass@1</th>
+      <th>Pass@3</th>
+      <th>Pass@10</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>SWE-1</td>
+      <td>79.3%</td>
+      <td>89.7%</td>
+      <td>95.1%</td>
+    </tr>
+    <tr>
+      <td>Claude 3.7 Sonnet</td>
+      <td>77.8%</td>
+      <td>88.9%</td>
+      <td>94.5%</td>
+    </tr>
+    <tr>
+      <td>GPT-4.1</td>
+      <td>75.3%</td>
+      <td>86.2%</td>
+      <td>93.8%</td>
+    </tr>
+    <tr>
+      <td>SWE-1-lite</td>
+      <td>71.2%</td>
+      <td>82.3%</td>
+      <td>88.5%</td>
+    </tr>
+  </tbody>
+</table>
 
 
 在 SWE-bench 測試中，針對實際 GitHub 問題修復的評估：
 
-| 模型 | 準確率 | 完成時間 | 解決問題深度 |
-| --- | --- | --- | --- |
-| SWE-1 | 67.8% | 42.3 秒 | 3.78/5 |
-| Claude 3.7 (標準) | 62.3% | 83.5 秒 | 3.62/5 |
-| Claude 3.7 (Scaffold) | 70.3% | 127.8 秒 | 4.12/5 |
-| GPT-4.1 | 54.6% | 61.2 秒 | 3.41/5 |
+<table>
+  <thead>
+    <tr>
+      <th>模型</th>
+      <th>準確率</th>
+      <th>完成時間</th>
+      <th>解決問題深度</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>SWE-1</td>
+      <td>67.8%</td>
+      <td>42.3 秒</td>
+      <td>3.78/5</td>
+    </tr>
+    <tr>
+      <td>Claude 3.7 (標準)</td>
+      <td>62.3%</td>
+      <td>83.5 秒</td>
+      <td>3.62/5</td>
+    </tr>
+    <tr>
+      <td>Claude 3.7 (Scaffold)</td>
+      <td>70.3%</td>
+      <td>127.8 秒</td>
+      <td>4.12/5</td>
+    </tr>
+    <tr>
+      <td>GPT-4.1</td>
+      <td>54.6%</td>
+      <td>61.2 秒</td>
+      <td>3.41/5</td>
+    </tr>
+  </tbody>
+</table>
 
 
 #### 2. 多文件上下文理解（Multi-file Context Comprehension）
 
 使用 MFC-500 資料集評估模型對跨文件依賴關係的理解能力：
 
-| 模型 | 依賴識別 | 變更衝突預測 | 語義理解 |
-| --- | --- | --- | --- |
-| SWE-1 | 89.3% | 83.7% | 86.5% |
-| Claude 3.7 Sonnet | 72.1% | 68.5% | 81.2% |
-| GPT-4.1 | 79.6% | 74.2% | 82.8% |
+<table>
+  <thead>
+    <tr>
+      <th>模型</th>
+      <th>依賴識別</th>
+      <th>變更衝突預測</th>
+      <th>語義理解</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>SWE-1</td>
+      <td>89.3%</td>
+      <td>83.7%</td>
+      <td>86.5%</td>
+    </tr>
+    <tr>
+      <td>Claude 3.7 Sonnet</td>
+      <td>72.1%</td>
+      <td>68.5%</td>
+      <td>81.2%</td>
+    </tr>
+    <tr>
+      <td>GPT-4.1</td>
+      <td>79.6%</td>
+      <td>74.2%</td>
+      <td>82.8%</td>
+    </tr>
+  </tbody>
+</table>
 
 
 SWE-1 在多文件上下文測試中的優勢非常明顯，特別是在識別代碼間複雜依賴關係方面，這歸功於其流感知技術。
@@ -250,22 +335,77 @@ SWE-1 在多文件上下文測試中的優勢非常明顯，特別是在識別�
 在標準軟體開發工作流中的回應時間（毫秒）：
 
 
-| 模型 | 平均回應時間 | 首次 Token 延遲 | 完整回應時間 |
-| ------ | ------------ | ---------------- | -------------- |
-| SWE-1-mini | 43 ms | N/A | N/A |
-| SWE-1-lite | 156 ms | 372 ms | 423 ms |
-| SWE-1 | 278 ms | 312 ms | 385 ms |
-| API-based models | 800-1200 ms | 1000-1500 ms | 1200-2000 ms |
+<table>
+  <thead>
+    <tr>
+      <th>模型</th>
+      <th>平均回應時間</th>
+      <th>首次 Token 延遲</th>
+      <th>完整回應時間</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>SWE-1-mini</td>
+      <td>43 ms</td>
+      <td>N/A</td>
+      <td>N/A</td>
+    </tr>
+    <tr>
+      <td>SWE-1-lite</td>
+      <td>156 ms</td>
+      <td>372 ms</td>
+      <td>423 ms</td>
+    </tr>
+    <tr>
+      <td>SWE-1</td>
+      <td>278 ms</td>
+      <td>312 ms</td>
+      <td>385 ms</td>
+    </tr>
+    <tr>
+      <td>API-based models</td>
+      <td>800-1200 ms</td>
+      <td>1000-1500 ms</td>
+      <td>1200-2000 ms</td>
+    </tr>
+  </tbody>
+</table>
 
 
 資源消耗比較（相對值，以 GPT-4.1 API 呼叫為基準 100%）：
 
 
-| 模型 | 計算資源 | 成本 | 網絡流量 |
-| ------ | ---------- | ------ | ---------- |
-| SWE-1 | 65% | 45% | 22% |
-| SWE-1-lite | 37% | 12% | 18% |
-| SWE-1-mini | 8% | 0% | 3% |
+<table>
+  <thead>
+    <tr>
+      <th>模型</th>
+      <th>計算資源</th>
+      <th>成本</th>
+      <th>網絡流量</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>SWE-1</td>
+      <td>65%</td>
+      <td>45%</td>
+      <td>22%</td>
+    </tr>
+    <tr>
+      <td>SWE-1-lite</td>
+      <td>37%</td>
+      <td>12%</td>
+      <td>18%</td>
+    </tr>
+    <tr>
+      <td>SWE-1-mini</td>
+      <td>8%</td>
+      <td>0%</td>
+      <td>3%</td>
+    </tr>
+  </tbody>
+</table>
 
 
 
@@ -275,13 +415,54 @@ SWE-1 在多文件上下文測試中的優勢非常明顯，特別是在識別�
 
 
 
-| 開發任務 | 無 AI 輔助 | 通用 AI 輔助 | SWE-1 輔助 | 改進 |
-| ---------- | ------------ | ---------------- | ------------ | -------- |
-| 新功能實現 | 100 分鐘 | 47 分鐘 | 28 分鐘 | 72% |
-| 錯誤修復 | 35 分鐘 | 22 分鐘 | 9 分鐘 | 74% |
-| 重構優化 | 120 分鐘 | 73 分鐘 | 36 分鐘 | 70% |
-| 單元測試生成 | 50 分鐘 | 18 分鐘 | 8 分鐘 | 84% |
-| 文檔生成 | 45 分鐘 | 15 分鐘 | 6 分鐘 | 87% |
+<table>
+  <thead>
+    <tr>
+      <th>開發任務</th>
+      <th>無 AI 輔助</th>
+      <th>通用 AI 輔助</th>
+      <th>SWE-1 輔助</th>
+      <th>改進</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>新功能實現</td>
+      <td>100 分鐘</td>
+      <td>47 分鐘</td>
+      <td>28 分鐘</td>
+      <td>72%</td>
+    </tr>
+    <tr>
+      <td>錯誤修復</td>
+      <td>35 分鐘</td>
+      <td>22 分鐘</td>
+      <td>9 分鐘</td>
+      <td>74%</td>
+    </tr>
+    <tr>
+      <td>重構優化</td>
+      <td>120 分鐘</td>
+      <td>73 分鐘</td>
+      <td>36 分鐘</td>
+      <td>70%</td>
+    </tr>
+    <tr>
+      <td>單元測試生成</td>
+      <td>50 分鐘</td>
+      <td>18 分鐘</td>
+      <td>8 分鐘</td>
+      <td>84%</td>
+    </tr>
+    <tr>
+      <td>文檔生成</td>
+      <td>45 分鐘</td>
+      <td>15 分鐘</td>
+      <td>6 分鐘</td>
+      <td>87%</td>
+    </tr>
+  </tbody>
+</table>
 
 
 
@@ -306,24 +487,84 @@ SWE-1 在多文件上下文測試中的優勢非常明顯，特別是在識別�
 
 
 
-| 特性 | Windsurf SWE-1 | Claude 3.7 Sonnet | OpenAI GPT-4.1 |
-| ------ | --------------- | ------------------- | ---------------- |
-| **核心定位** | 軟體工程專用垂直模型 | 混合推理通用模型 | 長上下文通用模型 |
-| **上下文窗口** | 未公開（IDE 實時上下文） | 200K tokens | 1,000,000 tokens |
-| **推理模式** | 流感知多階段優化 | 混合推理（標準/延展） | 單階段高效推理 |
-| **工具調用** | 靜態分析、測試運行、API 調用 | 依賴 Prompt Scaffold 引導 | 插件系統 API 調用 |
-| **主要優勢** | 開發流程深度集成 | 複雜問題混合推理 | 超長上下文處理 |
+<table>
+  <thead>
+    <tr>
+      <th>特性</th>
+      <th>Windsurf SWE-1</th>
+      <th>Claude 3.7 Sonnet</th>
+      <th>OpenAI GPT-4.1</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>核心定位</strong></td>
+      <td>軟體工程專用垂直模型</td>
+      <td>混合推理通用模型</td>
+      <td>長上下文通用模型</td>
+    </tr>
+    <tr>
+      <td><strong>上下文窗口</strong></td>
+      <td>未公開（IDE 實時上下文）</td>
+      <td>200K tokens</td>
+      <td>1,000,000 tokens</td>
+    </tr>
+    <tr>
+      <td><strong>推理模式</strong></td>
+      <td>流感知多階段優化</td>
+      <td>混合推理（標準/延展）</td>
+      <td>單階段高效推理</td>
+    </tr>
+    <tr>
+      <td><strong>工具調用</strong></td>
+      <td>靜態分析、測試運行、API 調用</td>
+      <td>依賴 Prompt Scaffold 引導</td>
+      <td>插件系統 API 調用</td>
+    </tr>
+    <tr>
+      <td><strong>主要優勢</strong></td>
+      <td>開發流程深度集成</td>
+      <td>複雜問題混合推理</td>
+      <td>超長上下文處理</td>
+    </tr>
+  </tbody>
+</table>
 
 
 
 ### 性能基準對比
 
 
-| 基準測試 | Claude 3.7 Sonnet | GPT-4.1 | SWE-1 |
-| --------- | ------------------- | --------- | ------- |
-| **SWE-bench** | 62.3%（標準）70.3%（Scaffold） | 54.6% | 67.8% |
-| **MMLU** | 未公開 | 80.1% | 未公開 |
-| **編碼能力** | 端到端 SDLC 支持 | Aider 瀏覽 9.8% | 強（內部評測） |
+<table>
+  <thead>
+    <tr>
+      <th>基準測試</th>
+      <th>Claude 3.7 Sonnet</th>
+      <th>GPT-4.1</th>
+      <th>SWE-1</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>SWE-bench</strong></td>
+      <td>62.3%（標準）70.3%（Scaffold）</td>
+      <td>54.6%</td>
+      <td>67.8%</td>
+    </tr>
+    <tr>
+      <td><strong>MMLU</strong></td>
+      <td>未公開</td>
+      <td>80.1%</td>
+      <td>未公開</td>
+    </tr>
+    <tr>
+      <td><strong>編碼能力</strong></td>
+      <td>端到端 SDLC 支持</td>
+      <td>Aider 瀏覽 9.8%</td>
+      <td>強（內部評測）</td>
+    </tr>
+  </tbody>
+</table>
 
 
 ### 各模型深度解析
