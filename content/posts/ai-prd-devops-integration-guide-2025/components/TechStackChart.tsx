@@ -21,24 +21,50 @@ const techStackData = [
 
 const TechStackChart = () => {
   return (
-    <div className="w-full p-6 bg-white rounded-lg shadow-lg">
-      <h3 className="text-xl font-bold mb-4 text-center">AI 技術棧採用率分析</h3>
-      <ResponsiveContainer width="100%" height={400}>
-        <BarChart data={techStackData} layout="vertical" margin={{ left: 120 }}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis type="number" domain={[0, 100]} />
-          <YAxis dataKey="category" type="category" width={100} />
-          <Tooltip 
-            formatter={(value, name) => [`${value}%`, '採用率']}
-            contentStyle={{ backgroundColor: '#f9fafb', border: '1px solid #e5e7eb' }}
-          />
-          <Bar dataKey="adoption" fill="#6366f1" radius={[0, 4, 4, 0]}>
-            {techStackData.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'][index]} />
-            ))}
-          </Bar>
-        </BarChart>
-      </ResponsiveContainer>
+    <div className="w-full p-3 sm:p-6 bg-white rounded-lg shadow-lg">
+      <h3 className="text-xl font-bold mb-2 sm:mb-4 text-center">AI 技術棧採用率分析</h3>
+      <div className="-ml-4 sm:ml-0">
+        <ResponsiveContainer width="100%" height={350}>
+          <BarChart 
+            data={techStackData} 
+            layout="vertical" 
+            margin={{ top: 5, right: 20, left: 80, bottom: 5 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} />
+            <XAxis 
+              type="number" 
+              domain={[0, 100]} 
+              tick={{ fontSize: 12 }}
+              tickFormatter={(value) => `${value}%`}
+            />
+            <YAxis 
+              dataKey="category" 
+              type="category" 
+              width={70} 
+              tick={{ fontSize: 11 }}
+              axisLine={false}
+              tickLine={false}
+            />
+            <Tooltip 
+              formatter={(value) => [`${value}%`, '採用率']}
+              contentStyle={{ backgroundColor: '#f9fafb', border: '1px solid #e5e7eb', fontSize: 12 }}
+            />
+            <Bar 
+              dataKey="adoption" 
+              fill="#6366f1" 
+              radius={[0, 4, 4, 0]}
+              barSize={20}
+            >
+              {techStackData.map((entry, index) => (
+                <Cell 
+                  key={`cell-${entry.category}`} 
+                  fill={['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'][index]} 
+                />
+              ))}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 };
