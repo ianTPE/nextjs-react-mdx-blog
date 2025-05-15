@@ -193,7 +193,7 @@ const PricingAndSkills = () => {
                 borderDash: [5, 5],
                 label: {
                   content: '高價值專案門檻',
-                  enabled: true,
+                  display: true,
                   position: 'end',
                   backgroundColor: 'rgba(255, 255, 255, 0.8)',
                   color: 'red',
