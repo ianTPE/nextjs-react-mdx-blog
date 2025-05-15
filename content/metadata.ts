@@ -118,7 +118,7 @@ export const postsMetadata: Record<string, BlogMetadata> = {
   },
   'mdx-blog-setup': {
     title: '使用 MDX 建立部落格',
-    date: '2024-05-11',
+    date: '2025-05-11',
     excerpt: '了解如何整合 MDX 到 Next.js 專案中，讓您可以在 Markdown 中使用 React 組件。',
     author: 'Ian Chou',
     tags: ['MDX', 'Next.js', 'Blog'],
@@ -136,7 +136,7 @@ export const postsMetadata: Record<string, BlogMetadata> = {
 
   'typescript-best-practices': {
     title: 'TypeScript 最佳實踐',
-    date: '2024-05-12',
+    date: '2025-05-12',
     excerpt: '探索 TypeScript 開發中的最佳實踐，包括類型定義、泛型使用和常見陷阱。',
     author: 'Ian Chou',
     tags: ['TypeScript', 'JavaScript', 'Best Practices'],
@@ -145,7 +145,7 @@ export const postsMetadata: Record<string, BlogMetadata> = {
 
   'tailwind-css-tips': {
     title: 'Tailwind CSS 進階技巧',
-    date: '2024-05-13',
+    date: '2025-05-13',
     excerpt: '深入了解 Tailwind CSS 的進階使用技巧，包括自定義類別、組件化和效能優化。',
     author: 'Ian Chou',
     tags: ['Tailwind CSS', 'CSS', 'Frontend'],
