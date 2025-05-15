@@ -226,7 +226,7 @@ const MarketTrendsAndAdoption = () => {
               label: function(context) {
                 const label = context.label || '';
                 const value = context.raw as number;
-                const total = context.chart.data.datasets[0].data.reduce((sum, val) => sum + (val as number), 0);
+                const total = context.chart.data.datasets[0].data.reduce((sum: number, val) => sum + (val as number), 0);
                 const percentage = Math.round((value / total) * 100);
                 return `${label}: ${value}% (${percentage}%)`;
               }
@@ -246,7 +246,7 @@ const MarketTrendsAndAdoption = () => {
           datalabels: {
             display: true,
             formatter: (value, context) => {
-              const total = context.chart.data.datasets[0].data.reduce((sum, val) => sum + (val as number), 0);
+              const total = context.chart.data.datasets[0].data.reduce((sum: number, val) => sum + (val as number), 0);
               const percentage = Math.round((value / total) * 100);
               return isMobile ? `${percentage}%` : `${percentage}%`;
             },
