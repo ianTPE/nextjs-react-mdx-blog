@@ -214,118 +214,19 @@ Windsurf 與獨立研究機構 DevBenchmark Labs 合作進行了全面的性能�
 
 在 HumanEval+ 基準測試中，各模型表現如下：
 
-<table>
-  <thead>
-    <tr>
-      <th>模型</th>
-      <th>Pass@1</th>
-      <th>Pass@3</th>
-      <th>Pass@10</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>SWE-1</td>
-      <td>79.3%</td>
-      <td>89.7%</td>
-      <td>95.1%</td>
-    </tr>
-    <tr>
-      <td>Claude 3.7 Sonnet</td>
-      <td>77.8%</td>
-      <td>88.9%</td>
-      <td>94.5%</td>
-    </tr>
-    <tr>
-      <td>GPT-4.1</td>
-      <td>75.3%</td>
-      <td>86.2%</td>
-      <td>93.8%</td>
-    </tr>
-    <tr>
-      <td>SWE-1-lite</td>
-      <td>71.2%</td>
-      <td>82.3%</td>
-      <td>88.5%</td>
-    </tr>
-  </tbody>
-</table>
+<HumanEvalTable />
 
 
 在 SWE-bench 測試中，針對實際 GitHub 問題修復的評估：
 
-<table>
-  <thead>
-    <tr>
-      <th>模型</th>
-      <th>準確率</th>
-      <th>完成時間</th>
-      <th>解決問題深度</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>SWE-1</td>
-      <td>67.8%</td>
-      <td>42.3 秒</td>
-      <td>3.78/5</td>
-    </tr>
-    <tr>
-      <td>Claude 3.7 (標準)</td>
-      <td>62.3%</td>
-      <td>83.5 秒</td>
-      <td>3.62/5</td>
-    </tr>
-    <tr>
-      <td>Claude 3.7 (Scaffold)</td>
-      <td>70.3%</td>
-      <td>127.8 秒</td>
-      <td>4.12/5</td>
-    </tr>
-    <tr>
-      <td>GPT-4.1</td>
-      <td>54.6%</td>
-      <td>61.2 秒</td>
-      <td>3.41/5</td>
-    </tr>
-  </tbody>
-</table>
+<SWEBenchTable />
 
 
 #### 2. 多文件上下文理解（Multi-file Context Comprehension）
 
 使用 MFC-500 資料集評估模型對跨文件依賴關係的理解能力：
 
-<table>
-  <thead>
-    <tr>
-      <th>模型</th>
-      <th>依賴識別</th>
-      <th>變更衝突預測</th>
-      <th>語義理解</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>SWE-1</td>
-      <td>89.3%</td>
-      <td>83.7%</td>
-      <td>86.5%</td>
-    </tr>
-    <tr>
-      <td>Claude 3.7 Sonnet</td>
-      <td>72.1%</td>
-      <td>68.5%</td>
-      <td>81.2%</td>
-    </tr>
-    <tr>
-      <td>GPT-4.1</td>
-      <td>79.6%</td>
-      <td>74.2%</td>
-      <td>82.8%</td>
-    </tr>
-  </tbody>
-</table>
+<MultiFileContextTable />
 
 
 SWE-1 在多文件上下文測試中的優勢非常明顯，特別是在識別代碼間複雜依賴關係方面，這歸功於其流感知技術。
@@ -334,78 +235,12 @@ SWE-1 在多文件上下文測試中的優勢非常明顯，特別是在識別�
 
 在標準軟體開發工作流中的回應時間（毫秒）：
 
-
-<table>
-  <thead>
-    <tr>
-      <th>模型</th>
-      <th>平均回應時間</th>
-      <th>首次 Token 延遲</th>
-      <th>完整回應時間</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>SWE-1-mini</td>
-      <td>43 ms</td>
-      <td>N/A</td>
-      <td>N/A</td>
-    </tr>
-    <tr>
-      <td>SWE-1-lite</td>
-      <td>156 ms</td>
-      <td>372 ms</td>
-      <td>423 ms</td>
-    </tr>
-    <tr>
-      <td>SWE-1</td>
-      <td>278 ms</td>
-      <td>312 ms</td>
-      <td>385 ms</td>
-    </tr>
-    <tr>
-      <td>API-based models</td>
-      <td>800-1200 ms</td>
-      <td>1000-1500 ms</td>
-      <td>1200-2000 ms</td>
-    </tr>
-  </tbody>
-</table>
+<LatencyTable />
 
 
 資源消耗比較（相對值，以 GPT-4.1 API 呼叫為基準 100%）：
 
-
-<table>
-  <thead>
-    <tr>
-      <th>模型</th>
-      <th>計算資源</th>
-      <th>成本</th>
-      <th>網絡流量</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>SWE-1</td>
-      <td>65%</td>
-      <td>45%</td>
-      <td>22%</td>
-    </tr>
-    <tr>
-      <td>SWE-1-lite</td>
-      <td>37%</td>
-      <td>12%</td>
-      <td>18%</td>
-    </tr>
-    <tr>
-      <td>SWE-1-mini</td>
-      <td>8%</td>
-      <td>0%</td>
-      <td>3%</td>
-    </tr>
-  </tbody>
-</table>
+<ResourceConsumptionTable />
 
 
 
@@ -413,56 +248,7 @@ SWE-1 在多文件上下文測試中的優勢非常明顯，特別是在識別�
 
 針對 5 個典型開發任務，測量完成時間的減少百分比：
 
-
-
-<table>
-  <thead>
-    <tr>
-      <th>開發任務</th>
-      <th>無 AI 輔助</th>
-      <th>通用 AI 輔助</th>
-      <th>SWE-1 輔助</th>
-      <th>改進</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>新功能實現</td>
-      <td>100 分鐘</td>
-      <td>47 分鐘</td>
-      <td>28 分鐘</td>
-      <td>72%</td>
-    </tr>
-    <tr>
-      <td>錯誤修復</td>
-      <td>35 分鐘</td>
-      <td>22 分鐘</td>
-      <td>9 分鐘</td>
-      <td>74%</td>
-    </tr>
-    <tr>
-      <td>重構優化</td>
-      <td>120 分鐘</td>
-      <td>73 分鐘</td>
-      <td>36 分鐘</td>
-      <td>70%</td>
-    </tr>
-    <tr>
-      <td>單元測試生成</td>
-      <td>50 分鐘</td>
-      <td>18 分鐘</td>
-      <td>8 分鐘</td>
-      <td>84%</td>
-    </tr>
-    <tr>
-      <td>文檔生成</td>
-      <td>45 分鐘</td>
-      <td>15 分鐘</td>
-      <td>6 分鐘</td>
-      <td>87%</td>
-    </tr>
-  </tbody>
-</table>
+<DevelopmentAccelerationTable />
 
 
 
