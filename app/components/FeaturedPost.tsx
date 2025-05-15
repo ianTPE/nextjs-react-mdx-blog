@@ -19,7 +19,7 @@ export default function FeaturedPost({ post }: FeaturedPostProps) {
     );
     
     // 如果找到作者，返回其頭像；否則返回默認頭像
-    return authorEntry ? authorEntry[1].avatar : '/images/author.png';
+    return authorEntry ? authorEntry[1].avatar : '/images/author.webp';
   }
   return (
     <motion.div

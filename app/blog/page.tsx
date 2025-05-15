@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     description: "瀏覽我的所有技術文章，包含 Next.js、React、TypeScript、Tailwind CSS 等主題。",
     type: "website",
     images: [{
-      url: "/images/default-og-image.png",
+      url: "/images/default-og-image.webp",
       width: 1200,
       height: 630,
       alt: "My Blog - 所有文章"

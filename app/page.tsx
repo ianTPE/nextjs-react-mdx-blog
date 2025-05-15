@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     description: "分享技術心得、開發經驗，以及生活中的點點滴滴。",
     type: "website",
     images: [{
-      url: "/images/default-og-image.png",
+      url: "/images/default-og-image.webp",
       width: 1200,
       height: 630,
       alt: "Ian's Vibe Coding Blog"

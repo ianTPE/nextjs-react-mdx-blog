@@ -13,7 +13,7 @@ date: '2024-04-25'
 author: 'Ian Chen'
 excerpt: '了解 Next.js 15 的新功能和改進，以及如何從 Next.js 14 遷移。'
 tags: ['Next.js', 'React', 'Web Development']
-coverImage: '/images/getting-started-with-nextjs.jpg'
+coverImage: '/images/getting-started-with-nextjs.webp'
 ---
 
 ## Next.js 15 與 14 版本的主要差異

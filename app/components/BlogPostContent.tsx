@@ -18,7 +18,7 @@ function getAuthorAvatar(authorName: string): string {
   );
   
   // 如果找到作者，返回其頭像；否則返回默認頭像
-  return authorEntry ? authorEntry[1].avatar : '/images/author.png';
+  return authorEntry ? authorEntry[1].avatar : '/images/author.webp';
 }
 
 export default function BlogPostContent({ metadata, children }: BlogPostContentProps) {

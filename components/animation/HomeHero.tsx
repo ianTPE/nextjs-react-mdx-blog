@@ -21,7 +21,7 @@ export default function HomeHero() {
         transition={{ duration: 1.2, ease: "easeOut" }}
       >
         <Image
-          src="/images/hero-background.jpg"
+          src="/images/hero-background.webp"
           alt="Blog background"
           fill
           priority

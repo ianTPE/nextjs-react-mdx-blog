@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 
   const { metadata } = post;
-  const ogImage = metadata.coverImage || '/images/default-og-image.png';
+  const ogImage = metadata.coverImage || '/images/default-og-image.webp';
   
   return {
     title: `${metadata.title} | My Blog`,

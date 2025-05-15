@@ -88,7 +88,7 @@ export default function About() {
           <div className="w-40 h-40 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
             {/* 作者照片 */}
             <Image 
-              src="/images/author.png" 
+              src="/images/author.webp" 
               alt="Ian" 
               width={160} 
               height={160} 

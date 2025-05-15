@@ -15,7 +15,7 @@ export default function AboutHero() {
       {/* Background image with improved styling */}
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
         <Image
-          src="/images/AboutHero.jpg"
+          src="/images/AboutHero.webp"
           alt="關於本站主圖"
           fill
           priority

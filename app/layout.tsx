@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     siteName: "Ian's Vibe Coding Blog",
     locale: "zh_TW",
     images: [{
-      url: "/images/default-og-image.png",
+      url: "/images/default-og-image.webp",
       width: 1200,
       height: 630,
       alt: "Ian's Vibe Coding Blog"
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Ian's Vibe Coding Blog",
     description: "分享技術心得、開發經驗，以及生活中的點點滴滴。",
-    images: ["/images/default-og-image.png"]
+    images: ["/images/default-og-image.webp"]
   }
 };
 
