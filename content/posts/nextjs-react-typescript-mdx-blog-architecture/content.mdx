@@ -237,7 +237,32 @@ npm install next-mdx-remote @mdx-js/react @mdx-js/loader
 
 ### 3. 設定目錄結構
 
-建立前述的目錄結構，包括 `content`、`components/mdx` 等資料夾。
+建立前述的目錄結構，包括 content、components/mdx 等資料夾。
+
+```
+project/
+├── app/                     # Next.js App Router
+│   └── blog/
+│       └── [slug]/
+│           ├── page.tsx     # 動態載入 MDX 與元件
+│           ├── MDXRenderer.tsx # MDX 渲染器
+│           └── ClientMDXContent.tsx # 客戶端MDX容器
+├── content/                 # 內容檔案
+│   ├── metadata.ts          # 所有文章的元數據
+│   └── posts/
+│       └── [post-slug]/
+│           ├── content.mdx  # 文章內容
+│           └── components/  # 文章專用元件
+│               ├── index.ts # 元件匯出索引
+│               └── CustomComponent.tsx # 文章專用元件
+├── components/
+│   └── mdx/
+│       └── global-components/ # 全域 MDX 元件
+│           ├── index.ts      # 全域元件匯出索引
+│           └── Alert.tsx     # 全域可用的元件
+└── lib/
+    └── mdx-loader.ts        # 元件載入系統
+```
 
 ### 4. 配置 Next.js
 
