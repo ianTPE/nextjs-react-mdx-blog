@@ -122,8 +122,6 @@ const RankingChart = () => {
             max: 100,
             grid: {
               display: true,
-              drawBorder: true,
-              drawOnChartArea: true,
               drawTicks: true,
             },
             ticks: {
