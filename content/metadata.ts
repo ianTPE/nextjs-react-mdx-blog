@@ -27,7 +27,7 @@ export const postsMetadata: Record<string, BlogMetadata> = {
   },
 
   'ai-prd-devops-integration-guide-2025': {
-    title: 'AI PRD DevOps 整合指南：從需求洞察到自動化部署的全過程',
+    title: 'AI 驅動 PRD - DevOps 整合指南：從需求洞察到自動化部署的全過程',
     date: '2025-05-15',
     excerpt: '本文深入研究 AI（人工智慧）如何與 PRD（產品需求文件）及 DevOps 深度融合，開創軟體工程的全新模式。從需求洞察智能化到自動化部署，分享 AI + PRD + DevOps 的實戰應用與最佳實踐。',
     author: 'Ian Chou',
