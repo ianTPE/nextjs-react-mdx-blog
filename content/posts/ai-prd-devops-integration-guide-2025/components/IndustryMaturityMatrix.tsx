@@ -71,7 +71,7 @@ const IndustryMaturityMatrix = () => {
               tick={{ fontSize: 14 }}
             />
             <Tooltip 
-              formatter={(value) => [`${value}%`, '']} 
+              formatter={(value: number) => [`${value}%`, '']} 
               contentStyle={{ fontSize: 14 }}
             />
             <Legend 
