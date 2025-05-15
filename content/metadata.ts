@@ -26,10 +26,20 @@ export const postsMetadata: Record<string, BlogMetadata> = {
     coverImage: '/images/getting-started-with-nextjs.jpg'
   },
 
+  '2025-freelancer-guide-low-code-no-code-development-applications-ranking': {
+    title: '2025年低代碼/無代碼開發應用程式排名指南',
+    date: '2025-05-15',
+    excerpt: '本文提供2025年低代碼/無代碼開發應用程式排名指南，包括平台類型、應用領域與市場機會，為資深專業人士提供轉型藍圖，展示如何結合豐富經驗與前沿技術，把握低代碼革命帶來的商業新機遇。',
+    author: 'Ian Chou',
+    tags: ['Low-Code', 'No-Code', 'Market Trends', 'Career Transition', 'AI', 'Entrepreneurship'],
+    coverImage: '/images/posts/2025-freelancer-guide-low-code-no-code-development-applications-ranking.png'
+  },
+
+  
   'Vercel-Blog-Starter-Kit--TinaCMS': {
     title: '我的部落格建站之旅：從 Vercel Blog Starter Kit 到 TinaCMS 的轉變',
     date: '2025-04-05',
-    excerpt: '昨天我用 Vercel 的 Blog Starter Kit 快速建立了一個部落格，但今早發現管理上的不便與遷移的困難。在重新思考需求後，我與 AI 討論理想的部落格解決方案，最終找到 TinaCMS 這個選項。經過一番嘗試與轉變，我放棄了整合 Blog Starter Kit 的想法，完全採用 TinaCMS 的架構，成功建立了滿足我需求的部落格網站。這趟建站之旅教會我，有時最佳解決方案不是直線前進，而是願意嘗試不同路徑。',
+    excerpt: '昨天我用 Vercel 的 Blog Starter Kit 快速建立了一個部落格，但今早發現管理上的不便與遷移的困難。在重新思考需求後，我與 AI 討論理想的部落格解決方案，最終找到 TinaCMS 這個選項。經過一番嘗試與轉變，我放棄了整合 Blog Starter Kit 的想法，完全採用 TinaCMS 的架構，成功建立了滿足我需求的部落 weblog。這趟建站之旅教會我，有時最佳解決方案不是直線前進，而是願意嘗試不同路徑。',
     author: 'Ian Chou',
     tags: ['Vercel', 'Next.js', 'React', 'TypeScript', 'TinaCMS'],
     coverImage: '/images/posts/Vercel-Blog-Starter-Kit--TinaCMS.png'
