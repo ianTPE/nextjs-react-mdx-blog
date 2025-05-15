@@ -55,7 +55,22 @@ const PricingAndSkills = () => {
     }
   ];
 
-  const CustomTooltip = ({ active, payload, label }) => {
+  // Define proper types for the tooltip props
+  interface TooltipProps {
+    active?: boolean;
+    payload?: Array<{
+      payload: {
+        category: string;
+        min: number;
+        max: number;
+        avg: number;
+        skills: string[];
+      };
+    }>;
+    label?: string;
+  }
+
+  const CustomTooltip = ({ active, payload }: TooltipProps) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
       return (

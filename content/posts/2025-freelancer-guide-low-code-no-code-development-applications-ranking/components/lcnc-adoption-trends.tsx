@@ -58,7 +58,21 @@ const MarketTrendsAndAdoption = () => {
     '#A4DE6C', '#D0ED57', '#83a6ed', '#8dd1e1', '#ffc658', '#d0ed57'
   ];
 
-  const CustomizedTooltip = ({ active, payload, label }) => {
+  // Define proper types for the tooltip props
+  interface TooltipProps {
+    active?: boolean;
+    payload?: Array<{
+      name: string;
+      value: number;
+      unit?: string;
+      payload: {
+        description?: string;
+      };
+    }>;
+    label?: string;
+  }
+
+  const CustomizedTooltip = ({ active, payload }: TooltipProps) => {
     if (active && payload && payload.length) {
       return (
         <div className="bg-white p-3 border border-gray-200 shadow-md rounded">
@@ -86,10 +100,10 @@ const MarketTrendsAndAdoption = () => {
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="year" />
             <YAxis 
-              tickFormatter={(value) => `$${value}B`} 
-              label={isMobile ? null : { value: '市場規模 (十億美元)', angle: -90, position: 'insideLeft', offset: 0 }} 
+              tickFormatter={(value: number) => `$${value}B`} 
+              label={isMobile ? undefined : { value: '市場規模 (十億美元)', angle: -90, position: 'insideLeft', offset: 0 }} 
             />
-            <Tooltip formatter={(value) => [`$${value}B`, '市場規模']} />
+            <Tooltip formatter={(value: number) => [`$${value}B`, '市場規模']} />
             <Legend />
             <Line 
               type="monotone" 
