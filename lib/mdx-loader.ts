@@ -27,12 +27,15 @@ export const getPostComponents = cache(async (slug: string) => {
       // 注意：這裡我們僅返回模塊，而不是模塊的預設導出，來避免序列化問題
       const postComponents = await import(`@content/posts/${slug}/components/index`);
       
-      // 返回一個簡單物件，避免函數直接序列化的問題
-      return { ...postComponents };
+      // 合併全局組件和局部組件
+      return { 
+        ...globalComponents,
+        ...postComponents
+      };
     } catch (importError) {
       console.error(`Error importing components for ${slug}:`, importError);
-      // 如果導入出錯，返回空物件
-      return {};
+      // 如果導入出錯，返回全局組件
+      return { ...globalComponents };
     }
   } catch (error) {
     console.error(`Error loading components for post ${slug}:`, error);

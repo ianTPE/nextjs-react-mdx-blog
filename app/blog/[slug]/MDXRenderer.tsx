@@ -5,7 +5,7 @@ import { MDXRemote } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
 import type { MDXRemoteSerializeResult } from 'next-mdx-remote';
 import defaultMDXComponents from '@/components/mdx/MDXComponents';
-import { Mermaid, Alert } from '@/components/mdx/global-components';
+import { Mermaid } from '@/components/mdx/global-components';
 import CodeBlock from '@/components/mdx/CodeBlock';
 
 interface MDXRendererProps {
@@ -16,7 +16,6 @@ interface MDXRendererProps {
 // Global components map that includes our global components
 const globalComponents = {
   Mermaid,
-  Alert,
   CodeBlock,
   // Default components for markdown elements
   ...defaultMDXComponents
