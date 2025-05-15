@@ -1,5 +1,3 @@
-/**
- * 各個文章使用的局部組件
- */
-
-export { default as VersionComparisonTable } from './VersionComparisonTable';
+// Export post-specific components
+export { default as Alert } from './Alert';
+// Add other local components here as needed

@@ -8,6 +8,9 @@ import fs from 'fs';
 import { cache } from 'react';
 
 // 使用React的cache功能確保同一個請求中不會重複加載組件
+// Import global components
+import * as globalComponents from '@/components/mdx/global-components';
+
 export const getPostComponents = cache(async (slug: string) => {
   try {
     // 檢查該文章是否有自定義組件目錄
@@ -15,8 +18,8 @@ export const getPostComponents = cache(async (slug: string) => {
     
     if (!fs.existsSync(componentsDir)) {
       console.log(`No custom components directory found for post: ${slug}`);
-      // 如果找不到組件目錄，只返回空物件 - 全局組件會在 MDXContent 中處理
-      return {};
+      // 返回全局組件
+      return { ...globalComponents };
     }
 
     // 嘗試導入局部組件
@@ -33,7 +36,7 @@ export const getPostComponents = cache(async (slug: string) => {
     }
   } catch (error) {
     console.error(`Error loading components for post ${slug}:`, error);
-    // 如果任何錯誤發生，返回空物件
-    return {};
+    // 如果任何錯誤發生，返回全局組件
+    return { ...globalComponents };
   }
 });
