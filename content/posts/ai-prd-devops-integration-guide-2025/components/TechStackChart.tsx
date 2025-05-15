@@ -27,7 +27,7 @@ const TechStackChart = () => {
   if (!isMounted) {
     // Return a simple placeholder when not mounted (during SSR)
     return (
-      <div className="w-full p-6 bg-white rounded-lg shadow-lg">
+      <div className="w-full p-4 bg-white rounded-lg shadow-lg">
         <h3 className="text-xl font-bold mb-4 text-center">AI 技術棧採用率分析</h3>
         <div className="w-full h-[400px] flex items-center justify-center bg-gray-50">
           <p>載入技術棧圖表...</p>
@@ -49,24 +49,31 @@ const TechStackChart = () => {
   } = require('recharts');
 
   return (
-    <div className="w-full p-6 bg-white rounded-lg shadow-lg">
+    <div className="w-full p-4 bg-white rounded-lg shadow-lg">
       <h3 className="text-xl font-bold mb-4 text-center">AI 技術棧採用率分析</h3>
-      <ResponsiveContainer width="100%" height={400}>
-        <BarChart data={techStackData} layout="vertical" margin={{ left: 120 }}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis type="number" domain={[0, 100]} />
-          <YAxis dataKey="category" type="category" width={100} />
-          <Tooltip 
-            formatter={(value: number, name: string) => [`${value}%`, '採用率']}
-            contentStyle={{ backgroundColor: '#f9fafb', border: '1px solid #e5e7eb' }}
-          />
-          <Bar dataKey="adoption" fill="#6366f1" radius={[0, 4, 4, 0]}>
-            {techStackData.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'][index]} />
-            ))}
-          </Bar>
-        </BarChart>
-      </ResponsiveContainer>
+      <div className="flex justify-center items-center w-full">
+        <div className="w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl mx-auto">
+          <ResponsiveContainer width="100%" height={400}>
+            <BarChart data={techStackData} layout="vertical" margin={{ left: 120 }}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis type="number" domain={[0, 100]} hide />
+              <YAxis dataKey="category" type="category" axisLine={false} tickLine={false} width={100} />
+              <Tooltip />
+              <Bar dataKey="adoption" fill="#6366f1">
+                {techStackData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={[
+                    '#3b82f6', // 藍
+                    '#10b981', // 綠
+                    '#f59e42', // 橙
+                    '#ef4444', // 紅
+                    '#a78bfa'  // 紫
+                  ][index]} />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
     </div>
   );
 };
