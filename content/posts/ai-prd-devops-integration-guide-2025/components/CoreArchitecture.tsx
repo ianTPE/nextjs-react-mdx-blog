@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-const CoreArchitecture = () => (
+const CoreArchitecture: React.FC = () => (
   <div className="w-full p-6 bg-white rounded-lg shadow-lg mb-8">
     <h3 className="text-xl font-bold mb-4 text-center">AI + PRD + DevOps 核心架構</h3>
     <div className="relative w-full max-w-4xl mx-auto">

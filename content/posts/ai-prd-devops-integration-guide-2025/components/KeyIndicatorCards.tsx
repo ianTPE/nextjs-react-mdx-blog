@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-const KeyIndicatorCards = () => {
+const KeyIndicatorCards: React.FC = () => {
   return (
     <div className="w-full p-6 bg-white rounded-lg shadow-lg">
       <h3 className="text-xl font-bold mb-4 text-center">關鍵指標提升效果</h3>

@@ -2,6 +2,15 @@
 
 import React, { useEffect, useState } from 'react';
 
+// Define types for our data
+interface IndustryMaturityItem {
+  industry: string;
+  prd: number;
+  devops: number;
+  aiops: number;
+  overall: number;
+}
+
 const IndustryMaturityMatrix = () => {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -9,7 +18,7 @@ const IndustryMaturityMatrix = () => {
     setIsMounted(true);
   }, []);
 
-  const industryApplicationData = [
+  const industryApplicationData: IndustryMaturityItem[] = [
     { industry: '智能製造', prd: 90, devops: 85, aiops: 88, overall: 88 },
     { industry: '金融科技', prd: 95, devops: 90, aiops: 92, overall: 92 },
     { industry: '醫療健康', prd: 85, devops: 75, aiops: 80, overall: 80 },

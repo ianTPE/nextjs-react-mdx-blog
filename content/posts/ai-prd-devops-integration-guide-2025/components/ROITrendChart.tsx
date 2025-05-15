@@ -2,6 +2,14 @@
 
 import React, { useEffect, useState } from 'react';
 
+// Define types for our data
+interface ROITimelineItem {
+  month: string;
+  roi: number;
+  investment: number;
+  return: number;
+}
+
 const ROITrendChart = () => {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -9,7 +17,7 @@ const ROITrendChart = () => {
     setIsMounted(true);
   }, []);
 
-  const roiTimelineData = [
+  const roiTimelineData: ROITimelineItem[] = [
     { month: '第1月', roi: -20, investment: 100, return: 80 },
     { month: '第3月', roi: -5, investment: 150, return: 145 },
     { month: '第6月', roi: 30, investment: 200, return: 260 },

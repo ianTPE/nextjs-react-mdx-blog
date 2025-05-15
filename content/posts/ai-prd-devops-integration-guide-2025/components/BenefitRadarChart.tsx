@@ -2,6 +2,14 @@
 
 import React, { useEffect, useState } from 'react';
 
+// Define types for our data
+interface BenefitDataItem {
+  metric: string;
+  traditional: number;
+  ai: number;
+  fullMark: number;
+}
+
 const BenefitRadarChart = () => {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -9,31 +17,7 @@ const BenefitRadarChart = () => {
     setIsMounted(true);
   }, []);
 
-  if (!isMounted) {
-    // Return a simple placeholder when not mounted (during SSR)
-    return (
-      <div className="w-full p-6 bg-white rounded-lg shadow-lg">
-        <h3 className="text-xl font-bold mb-4 text-center">傳統模式 vs AI 賦能模式效益對比</h3>
-        <div className="w-full h-[400px] flex items-center justify-center bg-gray-50">
-          <p>載入雷達圖...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // Import Recharts components only on the client side
-  const {
-    RadarChart,
-    PolarGrid,
-    PolarAngleAxis,
-    PolarRadiusAxis,
-    Radar,
-    Tooltip,
-    Legend,
-    ResponsiveContainer
-  } = require('recharts');
-
-  const benefitData = [
+  const benefitData: BenefitDataItem[] = [
     {
       metric: '需求準確率',
       traditional: 65,
@@ -71,6 +55,30 @@ const BenefitRadarChart = () => {
       fullMark: 100,
     },
   ];
+
+  if (!isMounted) {
+    // Return a simple placeholder when not mounted (during SSR)
+    return (
+      <div className="w-full p-6 bg-white rounded-lg shadow-lg">
+        <h3 className="text-xl font-bold mb-4 text-center">傳統模式 vs AI 賦能模式效益對比</h3>
+        <div className="w-full h-[400px] flex items-center justify-center bg-gray-50">
+          <p>載入雷達圖...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Import Recharts components only on the client side
+  const {
+    RadarChart,
+    PolarGrid,
+    PolarAngleAxis,
+    PolarRadiusAxis,
+    Radar,
+    Tooltip,
+    Legend,
+    ResponsiveContainer
+  } = require('recharts');
 
   return (
     <div className="w-full p-6 bg-white rounded-lg shadow-lg">

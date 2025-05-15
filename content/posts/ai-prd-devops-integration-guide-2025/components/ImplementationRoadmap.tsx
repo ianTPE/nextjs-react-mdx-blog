@@ -2,7 +2,10 @@
 
 import React from 'react';
 
-const ImplementationRoadmap = () => {
+const ImplementationRoadmap: React.FC = () => {
+  // Timeline data
+  const timelineLabels: string[] = ['0', '3個月', '6個月', '9個月', '12個月', '15個月', '18個月'];
+  
   return (
     <div className="w-full p-6 bg-white rounded-lg shadow-lg mb-8">
       <h3 className="text-xl font-bold mb-4 text-center">AI+PRD+DevOps 實施路線圖</h3>
@@ -18,7 +21,7 @@ const ImplementationRoadmap = () => {
           
           {/* 時間軸 */}
           <line x1="100" y1="50" x2="900" y2="50" stroke="#374151" strokeWidth="2" />
-          {['0', '3個月', '6個月', '9個月', '12個月', '15個月', '18個月'].map((label, i) => (
+          {timelineLabels.map((label, i) => (
             <g key={i}>
               <line x1={100 + i * 120} y1="45" x2={100 + i * 120} y2="55" stroke="#374151" strokeWidth="2" />
               <text x={100 + i * 120} y="35" textAnchor="middle" className="text-sm">{label}</text>

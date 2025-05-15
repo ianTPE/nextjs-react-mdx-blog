@@ -2,6 +2,13 @@
 
 import React, { useEffect, useState } from 'react';
 
+// Define types for our data
+interface IndustryDataItem {
+  name: string;
+  value: number;
+  color: string;
+}
+
 const IndustryDistributionPieChart = () => {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -9,7 +16,7 @@ const IndustryDistributionPieChart = () => {
     setIsMounted(true);
   }, []);
 
-  const industryData = [
+  const industryData: IndustryDataItem[] = [
     { name: '智能製造', value: 25, color: '#3b82f6' },
     { name: '金融科技', value: 20, color: '#10b981' },
     { name: '醫療健康', value: 15, color: '#f59e0b' },
@@ -49,7 +56,7 @@ const IndustryDistributionPieChart = () => {
             cx="50%"
             cy="50%"
             labelLine={false}
-            label={(entry) => `${entry.name} ${entry.value}%`}
+            label={(entry: IndustryDataItem) => `${entry.name} ${entry.value}%`}
             outerRadius={150}
             fill="#8884d8"
             dataKey="value"

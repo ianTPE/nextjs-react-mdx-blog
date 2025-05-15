@@ -2,6 +2,13 @@
 
 import React, { useEffect, useState } from 'react';
 
+// Define types for our data
+interface TechStackItem {
+  category: string;
+  tools: string;
+  adoption: number;
+}
+
 const TechStackChart = () => {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -9,7 +16,7 @@ const TechStackChart = () => {
     setIsMounted(true);
   }, []);
 
-  const techStackData = [
+  const techStackData: TechStackItem[] = [
     { category: 'AI 需求分析', tools: 'GPT-4, BERT, AWS Comprehend', adoption: 85 },
     { category: '智能編碼', tools: 'GitHub Copilot, CodeWhisperer', adoption: 75 },
     { category: '自適應流水線', tools: 'Harness AI, Azure ML', adoption: 60 },
@@ -50,7 +57,7 @@ const TechStackChart = () => {
           <XAxis type="number" domain={[0, 100]} />
           <YAxis dataKey="category" type="category" width={100} />
           <Tooltip 
-            formatter={(value, name) => [`${value}%`, '採用率']}
+            formatter={(value: number, name: string) => [`${value}%`, '採用率']}
             contentStyle={{ backgroundColor: '#f9fafb', border: '1px solid #e5e7eb' }}
           />
           <Bar dataKey="adoption" fill="#6366f1" radius={[0, 4, 4, 0]}>
