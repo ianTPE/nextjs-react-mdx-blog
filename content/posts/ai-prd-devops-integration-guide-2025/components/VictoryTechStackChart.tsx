@@ -1,6 +1,27 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import type { ChartData, ChartOptions, TooltipItem } from 'chart.js';
+import { Bar } from 'react-chartjs-2';
+
+// 註冊 Chart.js 組件
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 // 定義數據類型
 interface TechStackItem {
@@ -17,7 +38,7 @@ const VictoryTechStackChart = () => {
   }, []);
 
   // 技術棧數據
-  const techStackData = [
+  const techStackData: TechStackItem[] = [
     { category: 'AI 需求分析', tools: 'GPT-4, BERT, AWS Comprehend', adoption: 85 },
     { category: '智能編碼', tools: 'GitHub Copilot, CodeWhisperer', adoption: 75 },
     { category: '自適應流水線', tools: 'Harness AI, Azure ML', adoption: 60 },
@@ -39,45 +60,74 @@ const VictoryTechStackChart = () => {
     );
   }
 
-  // 使用更簡單的方法來顯示圖表，避免客戶端渲染問題
+  // Chart.js 配置
+  const options: ChartOptions<'bar'> = {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false,
+      },
+      tooltip: {
+        callbacks: {
+          label: (context: TooltipItem<'bar'>) => {
+            const value = context.parsed.x || 0;
+            const index = context.dataIndex;
+            const toolTip = techStackData[index]?.tools || '';
+            return [`${value}% 採用率`, `工具: ${toolTip}`];
+          }
+        }
+      },
+    },
+    scales: {
+      x: {
+        beginAtZero: true,
+        max: 100,
+        ticks: {
+          callback: (value) => `${value}%`,
+          font: {
+            size: 14
+          }
+        },
+        grid: {
+          display: true,
+          color: 'rgba(0, 0, 0, 0.05)'
+        }
+      },
+      y: {
+        ticks: {
+          font: {
+            size: 14,
+            weight: 'bold' as const
+          }
+        },
+        grid: {
+          display: false
+        }
+      }
+    },
+  };
+
+  const data: ChartData<'bar'> = {
+    labels: techStackData.map(item => item.category),
+    datasets: [
+      {
+        data: techStackData.map(item => item.adoption),
+        backgroundColor: colors,
+        borderColor: colors,
+        borderWidth: 1,
+        borderRadius: 4,
+        barThickness: 25,
+      },
+    ],
+  };
+
   return (
     <div className="w-full p-4 bg-white rounded-lg shadow-lg">
       <h3 className="text-xl font-bold mb-4 text-center">AI 技術棧採用率分析</h3>
-      
-      <div className="overflow-x-auto">
-        <div className="min-w-full">
-          {/* 自定義水平條形圖 */}
-          <div className="space-y-4 py-2">
-            {techStackData.map((item, index) => (
-              <div key={item.category} className="relative">
-                <div className="flex items-center mb-1">
-                  <span className="text-sm font-medium w-24 md:w-32">{item.category}</span>
-                  <div className="flex-1 h-8 bg-gray-100 rounded-r-md overflow-hidden">
-                    <div 
-                      className="h-full rounded-r-md flex items-center pl-2 text-white text-sm font-medium"
-                      style={{
-                        width: `${item.adoption}%`,
-                        backgroundColor: colors[index % colors.length],
-                      }}
-                    >
-                      {item.adoption}%
-                    </div>
-                  </div>
-                </div>
-                <div className="text-xs text-gray-500 ml-24 md:ml-32">{item.tools}</div>
-              </div>
-            ))}
-          </div>
-          
-          {/* X軸標籤 */}
-          <div className="flex justify-between px-24 md:px-32 mt-2 text-xs text-gray-500">
-            <span>0%</span>
-            <span>25%</span>
-            <span>50%</span>
-            <span>75%</span>
-            <span>100%</span>
-          </div>
-        </div>
+      <div className="h-[350px] w-full">
+        <Bar options={options} data={data} />
       </div>
     </div>
   );
