@@ -1,3 +1,7 @@
+/**
+ * Custom components for the windsurf-swe1-model-family blog post
+ */
+
 // Export basic table components
 export { Table, THead, TBody, Th, Td, Tr } from './Table';
 
@@ -8,6 +12,3 @@ export { default as PerformanceBenchmarkTable } from './PerformanceBenchmarkTabl
 
 // Export CodeBlock component
 export { default as CodeBlock } from './CodeBlock';
-
-// Export MDX components
-export { default as mdxComponents } from './MDXComponents';

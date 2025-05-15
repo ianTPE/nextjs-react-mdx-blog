@@ -3,9 +3,6 @@
 import type { ComponentType, ReactNode } from 'react';
 import CodeBlock from './CodeBlock';
 import { Table, THead, TBody, Th, Td, Tr } from './Table';
-import ModelComparisonTable from './ModelComparisonTable';
-import TechnicalSpecsTable from './TechnicalSpecsTable';
-import PerformanceBenchmarkTable from './PerformanceBenchmarkTable';
 
 type ComponentProps = {
   children?: ReactNode;
@@ -51,10 +48,6 @@ export const mdxComponents: MDXComponents = {
   th: Th,
   td: Td,
   tr: Tr,
-  // Custom table components
-  ModelComparisonTable,
-  TechnicalSpecsTable,
-  PerformanceBenchmarkTable,
 } as const;
 
 export default mdxComponents;
