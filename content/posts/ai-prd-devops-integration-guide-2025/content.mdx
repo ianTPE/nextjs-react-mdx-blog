@@ -14,7 +14,7 @@
 
 ### 1.1 架構概覽
 
-```mermaid
+<Mermaid chart={`
 flowchart LR
     A["用戶數據"] --> B["AI 分析引擎"] --> C["智能 PRD"] --> D["DevOps 自動化"] --> E["生產環境"]
     
@@ -38,7 +38,7 @@ flowchart LR
     %% Link styling
     linkStyle 0,1,2,3 stroke-width:2px
     linkStyle 4 stroke:#ef4444,stroke-width:2.5px
-```
+`} />
 
 這個閉環系統的三個核心組件相互協作：
 
@@ -243,7 +243,7 @@ flowchart LR
 
 **技術架構實施**：
 
-```mermaid
+<Mermaid chart={`
 graph TD
     A[傳感器數據收集] --> B[AI 分析引擎]
     B --> C[PRD 自動更新]
@@ -251,7 +251,7 @@ graph TD
     D --> E[生產系統調整]
     E --> F[運營數據反饋]
     F --> B
-```
+`} />
 
 **具體實施細節**：
 
@@ -412,7 +412,7 @@ def analyze_medical_requirements():
 
 **技術整合框架**：
 
-```mermaid
+<Mermaid chart={`
 graph LR
     A[車輛傳感數據] --> B[邊緣 AI 處理]
     B --> C[雲端 AI 分析]
@@ -421,7 +421,7 @@ graph LR
     E --> F[車輛部署]
     F --> G[用戶反饋收集]
     G --> C
-```
+`} />
 
 **關鍵實施環節**：
 
