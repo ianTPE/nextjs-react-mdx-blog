@@ -1,8 +1,22 @@
 'use client';
-import React, { useState, useEffect } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, BarChart, Bar } from 'recharts';
+
+import React, { useRef, useEffect, useState } from 'react';
+import { Chart, registerables } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+import annotationPlugin from 'chartjs-plugin-annotation';
+
+// Register all Chart.js components and plugins
+Chart.register(...registerables, ChartDataLabels, annotationPlugin);
 
 const MarketTrendsAndAdoption = () => {
+  const lineChartRef = useRef<HTMLCanvasElement | null>(null);
+  const pieChartRef = useRef<HTMLCanvasElement | null>(null);
+  const barChartRef = useRef<HTMLCanvasElement | null>(null);
+  
+  const lineChartInstance = useRef<Chart | null>(null);
+  const pieChartInstance = useRef<Chart | null>(null);
+  const barChartInstance = useRef<Chart | null>(null);
+  
   const [isMobile, setIsMobile] = useState(false);
 
   // 檢測視窗大小變化
@@ -58,33 +72,327 @@ const MarketTrendsAndAdoption = () => {
     '#A4DE6C', '#D0ED57', '#83a6ed', '#8dd1e1', '#ffc658', '#d0ed57'
   ];
 
-  // Define proper types for the tooltip props
-  interface TooltipProps {
-    active?: boolean;
-    payload?: Array<{
-      name: string;
-      value: number;
-      unit?: string;
-      payload: {
-        description?: string;
-      };
-    }>;
-    label?: string;
-  }
+  // 初始化和更新折線圖
+  useEffect(() => {
+    if (!lineChartRef.current) return;
 
-  const CustomizedTooltip = ({ active, payload }: TooltipProps) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="bg-white p-3 border border-gray-200 shadow-md rounded">
-          <p className="text-sm font-bold">{`${payload[0].name}: ${payload[0].value}${payload[0].unit || ''}`}</p>
-          {payload[0].payload.description && (
-            <p className="text-xs text-gray-600 mt-1">{payload[0].payload.description}</p>
-          )}
-        </div>
-      );
+    // 如果已經有圖表實例，則銷毀它
+    if (lineChartInstance.current) {
+      lineChartInstance.current.destroy();
     }
-    return null;
-  };
+
+    const ctx = lineChartRef.current.getContext('2d');
+    if (!ctx) return;
+
+    // 準備數據
+    const years = marketGrowthData.map(item => item.year);
+    const values = marketGrowthData.map(item => item.value);
+    const isProjected = marketGrowthData.map(item => item.projected || false);
+
+    // 創建新的圖表實例
+    lineChartInstance.current = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: years,
+        datasets: [
+          {
+            label: '全球市場規模',
+            data: values,
+            borderColor: '#4C9AFF',
+            backgroundColor: 'rgba(76, 154, 255, 0.1)',
+            borderWidth: 2,
+            tension: 0.3,
+            fill: true,
+            pointBackgroundColor: (context) => {
+              const index = context.dataIndex;
+              return isProjected[index] ? '#fac515' : '#4C9AFF';
+            },
+            pointRadius: 5,
+            pointHoverRadius: 7,
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          tooltip: {
+            mode: 'index',
+            intersect: false,
+            callbacks: {
+              label: function(context) {
+                const value = context.raw as number;
+                return `市場規模: $${value}B`;
+              },
+              title: function(tooltipItems) {
+                return `${tooltipItems[0].label}年`;
+              },
+              footer: function(tooltipItems) {
+                const index = tooltipItems[0].dataIndex;
+                return isProjected[index] ? '(預測數據)' : '';
+              }
+            }
+          },
+          legend: {
+            position: 'top',
+          },
+          datalabels: {
+            display: false
+          }
+        },
+        scales: {
+          x: {
+            grid: {
+              display: true
+            },
+            title: {
+              display: true,
+              text: '年份'
+            }
+          },
+          y: {
+            beginAtZero: true,
+            grid: {
+              display: true
+            },
+            ticks: {
+              callback: function(value) {
+                return '$' + value + 'B';
+              }
+            },
+            title: {
+              display: !isMobile,
+              text: '市場規模 (十億美元)',
+              font: {
+                size: 12
+              }
+            }
+          }
+        },
+        interaction: {
+          mode: 'index',
+          intersect: false,
+        },
+        animation: {
+          duration: 1500
+        }
+      }
+    });
+
+    return () => {
+      if (lineChartInstance.current) {
+        lineChartInstance.current.destroy();
+      }
+    };
+  }, [isMobile]); // 當移動設備狀態變化時重新創建圖表
+
+  // 初始化和更新餅圖
+  useEffect(() => {
+    if (!pieChartRef.current) return;
+
+    // 如果已經有圖表實例，則銷毀它
+    if (pieChartInstance.current) {
+      pieChartInstance.current.destroy();
+    }
+
+    const ctx = pieChartRef.current.getContext('2d');
+    if (!ctx) return;
+
+    // 準備數據
+    const labels = industryAdoptionData.map(item => item.name);
+    const values = industryAdoptionData.map(item => item.value);
+    const colors = industryAdoptionData.map((_, index) => COLORS[index % COLORS.length]);
+
+    // 創建新的圖表實例
+    pieChartInstance.current = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            data: values,
+            backgroundColor: colors,
+            borderColor: colors.map(color => color),
+            borderWidth: 1,
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const label = context.label || '';
+                const value = context.raw as number;
+                const total = context.chart.data.datasets[0].data.reduce((sum, val) => sum + (val as number), 0);
+                const percentage = Math.round((value / total) * 100);
+                return `${label}: ${value}% (${percentage}%)`;
+              }
+            }
+          },
+          legend: {
+            position: isMobile ? 'bottom' : 'right',
+            align: 'center',
+            labels: {
+              boxWidth: 15,
+              padding: 15,
+              font: {
+                size: isMobile ? 10 : 12
+              }
+            }
+          },
+          datalabels: {
+            display: true,
+            formatter: (value, context) => {
+              const total = context.chart.data.datasets[0].data.reduce((sum, val) => sum + (val as number), 0);
+              const percentage = Math.round((value / total) * 100);
+              return isMobile ? `${percentage}%` : `${percentage}%`;
+            },
+            color: '#fff',
+            font: {
+              weight: 'bold',
+              size: 12
+            },
+            textAlign: 'center'
+          }
+        },
+        layout: {
+          padding: {
+            top: 10,
+            right: 10,
+            bottom: 20,
+            left: 10
+          }
+        },
+        animation: {
+          duration: 1500
+        }
+      }
+    });
+
+    return () => {
+      if (pieChartInstance.current) {
+        pieChartInstance.current.destroy();
+      }
+    };
+  }, [isMobile]);
+
+  // 初始化和更新條形圖
+  useEffect(() => {
+    if (!barChartRef.current) return;
+
+    // 如果已經有圖表實例，則銷毀它
+    if (barChartInstance.current) {
+      barChartInstance.current.destroy();
+    }
+
+    const ctx = barChartRef.current.getContext('2d');
+    if (!ctx) return;
+
+    // 準備數據
+    const labels = adoptionReasonsData.map(item => isMobile ? item.shortName : item.name);
+    const values = adoptionReasonsData.map(item => item.value);
+    const fullNames = adoptionReasonsData.map(item => item.name);
+
+    // 創建新的圖表實例
+    barChartInstance.current = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: '企業佔比',
+            data: values,
+            backgroundColor: '#00C49F',
+            barThickness: 20,
+            borderWidth: 1,
+            borderColor: '#00A78D',
+          }
+        ]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const value = context.raw as number;
+                return `企業佔比: ${value}%`;
+              },
+              title: function(tooltipItems) {
+                // 在移動版本中顯示完整名稱
+                if (isMobile) {
+                  const index = tooltipItems[0].dataIndex;
+                  return fullNames[index];
+                }
+                return tooltipItems[0].label;
+              }
+            }
+          },
+          legend: {
+            display: false
+          },
+          datalabels: {
+            display: true,
+            align: 'end',
+            anchor: 'end',
+            formatter: function(value) {
+              return value + '%';
+            },
+            color: '#333',
+            font: {
+              weight: 'bold'
+            }
+          }
+        },
+        scales: {
+          x: {
+            beginAtZero: true,
+            max: 100,
+            ticks: {
+              callback: function(value) {
+                return value + '%';
+              }
+            },
+            grid: {
+              display: true
+            }
+          },
+          y: {
+            grid: {
+              display: false
+            },
+            ticks: {
+              font: {
+                size: isMobile ? 11 : 14
+              }
+            }
+          }
+        },
+        layout: {
+          padding: {
+            top: 10,
+            right: 30,
+            bottom: 10,
+            left: isMobile ? 10 : 20
+          }
+        },
+        animation: {
+          duration: 1500
+        }
+      }
+    });
+
+    return () => {
+      if (barChartInstance.current) {
+        barChartInstance.current.destroy();
+      }
+    };
+  }, [isMobile]);
 
   return (
     <div className="p-4">
@@ -92,111 +400,27 @@ const MarketTrendsAndAdoption = () => {
       
       <div className="mb-12">
         <h3 className="text-lg font-bold mb-4">全球低代碼/無代碼市場規模預測 (2020-2027)</h3>
-        <ResponsiveContainer width="100%" height={300}>
-          <LineChart
-            data={marketGrowthData}
-            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="year" />
-            <YAxis 
-              tickFormatter={(value: number) => `$${value}B`} 
-              label={isMobile ? undefined : { value: '市場規模 (十億美元)', angle: -90, position: 'insideLeft', offset: 0 }} 
-            />
-            <Tooltip formatter={(value: number) => [`$${value}B`, '市場規模']} />
-            <Legend />
-            <Line 
-              type="monotone" 
-              dataKey="value" 
-              name="全球市場規模" 
-              stroke="#4C9AFF" 
-              strokeWidth={2}
-              activeDot={{ r: 8 }} 
-              dot={(props) => {
-                if (props.payload.projected) {
-                  return (
-                    <svg x={props.cx - 5} y={props.cy - 5} width={10} height={10} fill="#4C9AFF" viewBox="0 0 10 10">
-                      <circle cx="5" cy="5" r="5" strokeWidth="0" fill="#fac515" />
-                    </svg>
-                  );
-                }
-                return (
-                  <svg x={props.cx - 5} y={props.cy - 5} width={10} height={10} fill="#4C9AFF" viewBox="0 0 10 10">
-                    <circle cx="5" cy="5" r="5" strokeWidth="0" />
-                  </svg>
-                );
-              }}
-            />
-          </LineChart>
-        </ResponsiveContainer>
+        <div style={{ height: '300px', position: 'relative' }}>
+          <canvas ref={lineChartRef}></canvas>
+        </div>
         <div className="text-center text-sm text-gray-600 mt-2">
           <span className="inline-block w-3 h-3 rounded-full bg-yellow-400 mr-1"></span> 黃色點表示預測數據
         </div>
       </div>
 
-      {/* Changed from grid with 2 columns to vertical stack */}
       <div className="grid grid-cols-1 gap-12 mb-8">
         <div>
           <h3 className="text-lg font-bold mb-4">低代碼/無代碼平台行業採用分佈</h3>
-          <div className="h-64">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={industryAdoptionData}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={true}
-                  outerRadius={isMobile ? 60 : 80}
-                  fill="#8884d8"
-                  dataKey="value"
-                  nameKey="name"
-                  label={({ name, percent }) => isMobile 
-                    ? `${(percent * 100).toFixed(0)}%` 
-                    : `${name}: ${(percent * 100).toFixed(0)}%`}
-                >
-                  {industryAdoptionData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-                <Tooltip content={<CustomizedTooltip />} />
-                <Legend layout={isMobile ? "horizontal" : "vertical"} align={isMobile ? "center" : "right"} verticalAlign={isMobile ? "bottom" : "middle"} />
-              </PieChart>
-            </ResponsiveContainer>
+          <div style={{ height: '320px', position: 'relative' }}>
+            <canvas ref={pieChartRef}></canvas>
           </div>
         </div>
 
         <div>
           <h3 className="text-lg font-bold mb-4">企業選擇低代碼/無代碼平台的主要原因</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart
-              data={adoptionReasonsData}
-              layout="vertical"
-              margin={isMobile 
-                ? { top: 5, right: 30, left: 75, bottom: 5 } 
-                : { top: 5, right: 30, left: 150, bottom: 5 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis type="number" domain={[0, 100]} tickFormatter={(value) => `${value}%`} />
-              <YAxis 
-                dataKey={isMobile ? "shortName" : "name"} 
-                type="category" 
-                width={isMobile ? 70 : 140}
-                tick={{ fontSize: isMobile ? 11 : 14 }}
-              />
-              <Tooltip 
-                formatter={(value) => [`${value}%`, '企業佔比']} 
-                labelFormatter={(label) => {
-                  // 在移動版中顯示完整名稱
-                  if (isMobile) {
-                    const fullItem = adoptionReasonsData.find(item => item.shortName === label);
-                    return fullItem ? fullItem.name : label;
-                  }
-                  return label;
-                }}
-              />
-              <Bar dataKey="value" name="企業佔比" fill="#00C49F" barSize={20} />
-            </BarChart>
-          </ResponsiveContainer>
+          <div style={{ height: '300px', position: 'relative' }}>
+            <canvas ref={barChartRef}></canvas>
+          </div>
         </div>
       </div>
 

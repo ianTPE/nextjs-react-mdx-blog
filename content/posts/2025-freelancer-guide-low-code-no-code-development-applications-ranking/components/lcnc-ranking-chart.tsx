@@ -1,7 +1,10 @@
 'use client';
 
-import React from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LabelList, Cell } from 'recharts';
+import React, { useEffect, useRef, useState } from 'react';
+import { Chart, registerables } from 'chart.js';
+
+// Register all Chart.js components
+Chart.register(...registerables);
 
 // 天青色的十六進制代碼
 const TIAN_QING_COLOR = '#88CCCA';
@@ -59,10 +62,12 @@ const getMobileName = (name: string) => {
 };
 
 const RankingChart = () => {
-  const [isMobile, setIsMobile] = React.useState(false);
+  const chartRef = useRef<HTMLCanvasElement | null>(null);
+  const chartInstance = useRef<Chart | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   // 檢測視窗大小變化
-  React.useEffect(() => {
+  useEffect(() => {
     const checkIfMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
@@ -77,74 +82,124 @@ const RankingChart = () => {
     return () => window.removeEventListener('resize', checkIfMobile);
   }, []);
 
-  // 根據設備選擇適當的數據
-  const chartData = React.useMemo(() => {
-    if (isMobile) {
-      return data.map(item => ({
-        ...item,
-        displayName: getMobileName(item.name)
-      }));
+  // 初始化和更新圖表
+  useEffect(() => {
+    if (!chartRef.current) return;
+
+    // 如果已經有圖表實例，則銷毀它
+    if (chartInstance.current) {
+      chartInstance.current.destroy();
     }
-    return data.map(item => ({
-      ...item,
-      displayName: item.name
-    }));
-  }, [isMobile]);
+
+    const ctx = chartRef.current.getContext('2d');
+    if (!ctx) return;
+
+    // 根據設備選擇適當的標籤
+    const labels = data.map(item => isMobile ? getMobileName(item.name) : item.name);
+    const scores = data.map(item => item.score);
+    const colors = data.map(item => item.color);
+
+    // 創建新的圖表實例
+    chartInstance.current = new Chart(ctx, {
+      type: 'horizontalBar', // 水平條形圖
+      data: {
+        labels: labels,
+        datasets: [{
+          label: '前景評分',
+          data: scores,
+          backgroundColor: colors,
+          borderColor: colors.map(color => color),
+          borderWidth: 1,
+        }]
+      },
+      options: {
+        indexAxis: 'y', // 確保條形圖是水平的
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: {
+            beginAtZero: true,
+            max: 100,
+            grid: {
+              display: true,
+              drawBorder: true,
+              drawOnChartArea: true,
+              drawTicks: true,
+            },
+            ticks: {
+              callback: function(value) {
+                return value + '';
+              }
+            }
+          },
+          y: {
+            grid: {
+              display: false,
+            }
+          }
+        },
+        plugins: {
+          tooltip: {
+            callbacks: {
+              title: function(context) {
+                // 取得原始數據中的完整名稱
+                const index = context[0].dataIndex;
+                return data[index].name;
+              },
+              label: function(context) {
+                // 顯示前景評分
+                const score = context.raw as number;
+                return `前景評分: ${score}/100`;
+              },
+              afterLabel: function(context) {
+                // 顯示描述
+                const index = context.dataIndex;
+                return data[index].description;
+              }
+            }
+          },
+          legend: {
+            display: false
+          },
+          datalabels: {
+            display: true,
+            align: 'end',
+            anchor: 'end',
+            formatter: function(value) {
+              return value;
+            },
+            font: {
+              weight: 'bold'
+            }
+          }
+        },
+        layout: {
+          padding: {
+            top: 20,
+            right: 50,
+            bottom: 5,
+            left: isMobile ? 10 : 20
+          }
+        },
+        animation: {
+          duration: 1500
+        }
+      }
+    });
+
+    // 清除函數
+    return () => {
+      if (chartInstance.current) {
+        chartInstance.current.destroy();
+      }
+    };
+  }, [isMobile]); // 當移動設備狀態變化時重新創建圖表
 
   return (
     <div className="p-4">
       <h2 className="text-xl font-bold text-center mb-6">低代碼/無代碼應用領域：自由工作者前景排名</h2>
-      <div className="mb-8">
-        <ResponsiveContainer width="100%" height={400}>
-          <BarChart
-            data={chartData}
-            layout="vertical"
-            margin={isMobile ? 
-              { top: 20, right: 50, left: 80, bottom: 5 } : 
-              { top: 20, right: 50, left: 160, bottom: 5 }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis type="number" domain={[0, 100]} />
-            <YAxis 
-              dataKey="displayName" 
-              type="category" 
-              width={isMobile ? 70 : 150} 
-              tick={{ fontSize: isMobile ? 12 : 14 }}
-            />
-            <Tooltip 
-              formatter={(value) => [`前景評分: ${value}/100`, '']}
-              labelFormatter={(label) => {
-                // 在工具提示中顯示完整名稱
-                const fullItem = chartData.find(item => item.displayName === label);
-                return fullItem ? fullItem.name : label;
-              }}
-              wrapperStyle={{ 
-                backgroundColor: '#fff',
-                border: '1px solid #ccc',
-                borderRadius: '5px',
-                padding: '10px'
-              }}
-            />
-            <Bar 
-              dataKey="score" 
-              name="前景評分" 
-              isAnimationActive={true}
-              animationDuration={1500}
-            >
-              {chartData.map((entry) => (
-                <LabelList 
-                  key={entry.name}
-                  dataKey="score" 
-                  position="right" 
-                  style={{ fontWeight: 'bold' }} 
-                />
-              ))}
-              {chartData.map((entry) => (
-                <Cell key={entry.name} fill={entry.color} />
-              ))}
-            </Bar>
-          </BarChart>
-        </ResponsiveContainer>
+      <div className="mb-8" style={{ height: '400px' }}>
+        <canvas ref={chartRef}></canvas>
       </div>
       <div className="text-center text-sm text-gray-600">
         *評分基於市場需求、專案特性和自由工作適合度綜合評估
