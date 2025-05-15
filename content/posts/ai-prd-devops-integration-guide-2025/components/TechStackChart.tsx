@@ -23,31 +23,31 @@ const TechStackChart = () => {
   return (
     <div className="w-full p-3 sm:p-6 bg-white rounded-lg shadow-lg">
       <h3 className="text-xl font-bold mb-2 sm:mb-4 text-center">AI 技術棧採用率分析</h3>
-      <div className="-ml-4 sm:ml-0">
-        <ResponsiveContainer width="100%" height={350}>
+      <div className="-ml-2 sm:ml-0">
+        <ResponsiveContainer width="100%" height={380}>
           <BarChart 
             data={techStackData} 
             layout="vertical" 
-            margin={{ top: 5, right: 20, left: 80, bottom: 5 }}
+            margin={{ top: 10, right: 25, left: 90, bottom: 10 }}
           >
             <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} />
             <XAxis 
               type="number" 
               domain={[0, 100]} 
-              tick={{ fontSize: 12 }}
+              tick={{ fontSize: 14 }}
               tickFormatter={(value) => `${value}%`}
             />
             <YAxis 
               dataKey="category" 
               type="category" 
-              width={70} 
-              tick={{ fontSize: 11 }}
+              width={80} 
+              tick={{ fontSize: 14 }}
               axisLine={false}
               tickLine={false}
             />
             <Tooltip 
               formatter={(value) => [`${value}%`, '採用率']}
-              contentStyle={{ backgroundColor: '#f9fafb', border: '1px solid #e5e7eb', fontSize: 12 }}
+              contentStyle={{ backgroundColor: '#f9fafb', border: '1px solid #e5e7eb', fontSize: 14 }}
             />
             <Bar 
               dataKey="adoption" 
