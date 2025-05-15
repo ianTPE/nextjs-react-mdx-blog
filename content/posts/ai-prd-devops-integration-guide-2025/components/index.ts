@@ -1,3 +1,5 @@
+"use client";
+
 // Export all chart components
 export { default as CoreArchitecture } from './CoreArchitecture';
 export { default as TechStackChart } from './TechStackChart';
