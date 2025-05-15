@@ -101,7 +101,7 @@ const RankingChart = () => {
 
     // 創建新的圖表實例
     chartInstance.current = new Chart(ctx, {
-      type: 'horizontalBar', // 水平條形圖
+      type: 'bar',
       data: {
         labels: labels,
         datasets: [{
