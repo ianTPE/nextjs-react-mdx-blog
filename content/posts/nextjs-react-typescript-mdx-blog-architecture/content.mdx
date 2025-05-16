@@ -52,6 +52,56 @@ project/
     └── mdx-loader.ts        # 元件載入系統
 ```
 
+## 路由段落共置與 MDX 組件自動注入機制
+
+在 Next.js（特別是 App Router + MDX）架構下，您可以充分利用「路由段落共置」與「MDX 組件自動注入」的現代開發體驗：
+
+### 1. 路由段落的檔案共置（Colocation）
+
+- **App Router 段落機制**  
+  Next.js 13+ 的 App Router 會將 `app/` 目錄下的每個子資料夾視為「路由段落（route segment）」，只有包含 `page.tsx`、`layout.tsx` 或 `route.ts` 的資料夾才會對外公開成為路由頁面。
+- **非路由檔案自動共置**  
+  在同一段落資料夾下新增的其他檔案（如 `components/index.ts`、`utils.ts` 等）不會生成額外路由，但可直接在同段落內被其他檔案引用，提升模組化與維護性。
+
+### 2. MDX 插件自動注入同目錄組件
+
+- **自動載入組件**  
+  Next.js 的 MDX 插件（@next/mdx）在編譯 MDX 檔案時，會自動尋找同目錄下的 `components.tsx` 或 `components/index.ts`，並將其所有 export 的 React 元件注入到 MDX 的 `components` prop。
+- **免手動 import**  
+  這代表您在 MDX 檔案中可以直接使用 `<Button>`、`<Alert>` 等自訂元件，而無需再手動 import，極大提升開發效率與可讀性。
+
+#### 實作範例
+
+```plaintext
+app/
+└── posts/
+    └── [slug]/
+        ├── page.mdx               # MDX 內容，無需 import 組件
+        └── components/
+            └── index.ts           # 匯出 Button、Alert 等元件
+```
+
+MDX 內容只需：
+
+```mdx
+# 我的文章
+
+<Button>按我</Button>
+```
+
+無需再寫 `import Button from './components'`，Next.js 會自動注入。
+
+### 3. 機制原理與開發便利
+
+- **共置檔案不生成路由**  
+  只要不是 `page.tsx`、`layout.tsx` 等特殊檔案，其他檔案都只是共置模組，不會被當成頁面公開。
+- **MDXProvider 省略**  
+  傳統 React 需用 `<MDXProvider components={...}>` 注入元件，Next.js 架構已自動完成這步驟，讓 MDX 檔案可直接使用元件標籤。
+- **提升維護性**  
+  這種設計讓內容、元件與邏輯可自然共置，提升專案的可維護性、可讀性與團隊協作效率。
+
+> 延伸閱讀：可參考 Next.js 官方「[配置 MDX](https://nextjs.org/docs/app/building-your-application/configuring/mdx)」與「[路由共置](https://nextjs.org/docs/app/building-your-application/routing/colocating)」文件，了解更多細節。
+
 ## 設計理念
 
 ### 為何分離元數據和內容？
