@@ -44,6 +44,7 @@ export default function AIAnxietyByDemographics() {
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false, // Allow the chart to break aspect ratio
     plugins: {
       legend: {
         position: 'bottom',
@@ -67,7 +68,10 @@ export default function AIAnxietyByDemographics() {
   return (
     <div className="py-6 my-6 bg-gray-50 rounded-lg shadow-sm p-4">
       <h3 className="text-lg font-medium text-center mb-4">不同年齡層的AI焦慮與使用情況</h3>
-      <Bar data={data} options={options} />
+      {/* Add a container with fixed height */}
+      <div style={{ height: '400px', maxHeight: '70vh' }}>
+        <Bar data={data} options={options} />
+      </div>
       <p className="text-sm text-gray-500 text-center mt-4">
         資料來源：2025年全球科技焦慮調查報告 (樣本數: 4,500人)
       </p>
