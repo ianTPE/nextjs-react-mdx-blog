@@ -52,6 +52,7 @@ export default function CopingStrategiesEffectiveness() {
         suggestedMax: 100
       }
     },
+    maintainAspectRatio: false, // Allow the chart to break aspect ratio
     plugins: {
       title: {
         display: true,
@@ -69,7 +70,7 @@ export default function CopingStrategiesEffectiveness() {
   return (
     <div className="py-6 my-6 bg-gray-50 rounded-lg shadow-sm p-4">
       <h3 className="text-lg font-medium text-center mb-4">各種應對策略的短期與長期效果對比</h3>
-      <div className="max-w-xl mx-auto">
+      <div style={{ height: '450px', maxHeight: '75vh' }}>
         <Radar data={data} options={options} />
       </div>
       <p className="text-sm text-gray-500 text-center mt-4">

@@ -34,6 +34,7 @@ export default function AICausesPieChart() {
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false, // Allow the chart to break aspect ratio
     plugins: {
       legend: {
         position: 'bottom',
@@ -51,7 +52,7 @@ export default function AICausesPieChart() {
   return (
     <div className="py-6 my-6 bg-gray-50 rounded-lg shadow-sm p-4">
       <h3 className="text-lg font-medium text-center mb-4">AI焦慮成因分布圖</h3>
-      <div className="max-w-md mx-auto">
+      <div style={{ height: '400px', maxHeight: '70vh' }}>
         <Pie data={data} options={options} />
       </div>
       <p className="text-sm text-gray-500 text-center mt-4">

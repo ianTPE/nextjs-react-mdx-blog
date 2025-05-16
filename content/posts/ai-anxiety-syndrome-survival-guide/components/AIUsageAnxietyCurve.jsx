@@ -43,6 +43,7 @@ export default function AIUsageAnxietyCurve() {
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false, // Allow the chart to break aspect ratio
     plugins: {
       legend: {
         position: 'top',
@@ -83,7 +84,10 @@ export default function AIUsageAnxietyCurve() {
   return (
     <div className="py-6 my-6 bg-gray-50 rounded-lg shadow-sm p-4">
       <h3 className="text-lg font-medium text-center mb-4">AI使用頻率與焦慮程度關係曲線</h3>
-      <Line options={options} data={data} />
+      {/* Add a container with fixed height */}
+      <div style={{ height: '400px', maxHeight: '70vh' }}>
+        <Line options={options} data={data} />
+      </div>
       <p className="text-sm text-gray-500 text-center mt-4">
         資料顯示適度使用AI的人焦慮程度最低，而不使用或過度依賴的人焦慮感較高
       </p>
