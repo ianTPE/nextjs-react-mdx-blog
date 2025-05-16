@@ -22,13 +22,15 @@ const CustomButton = ({
   type="button"
   onClick={handleClick}
   className={`
-    px-4 py-2
-    bg-white text-blue-600 font-semibold
-    border-2 border-blue-600
-    rounded-full
-    hover:bg-blue-50
-    focus:outline-none focus:ring-2 focus:ring-blue-300
-    transition-all duration-200
+    px-5 py-3
+    bg-gradient-to-r from-blue-500 to-indigo-600
+    text-white font-medium
+    rounded-xl
+    shadow-lg
+    hover:from-blue-600 hover:to-indigo-700
+    active:scale-95
+    transform transition duration-150
+    focus:outline-none focus:ring-4 focus:ring-indigo-300
     ${className}
   `}
 >
