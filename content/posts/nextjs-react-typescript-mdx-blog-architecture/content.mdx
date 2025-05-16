@@ -1,50 +1,31 @@
-# Next.js + React + TypeScript + MDX 部落格架構：從設計到實踐
+# Next.js + React + TypeScript + MDX 部落格架構
 
-## 前言：為什麼選擇 MDX 作為部落格解決方案
+## 前言
 
-在當今的網站開發中，尋找一個既能保持寫作流暢又能融入互動元素的部落格解決方案一直是一項挑戰。Markdown 提供了簡潔的寫作體驗，但缺乏互動性；HTML/React 則提供了強大的互動能力，但編寫純內容時顯得繁瑣。MDX 的出現正好填補了這個空缺，它實現了「寫作簡潔性」與「技術擴展性」的完美結合。
+現代部落格系統需要兼顧開發效率、內容管理靈活性和良好的用戶體驗。本文將深入介紹一個基於 Next.js、React、TypeScript 和 MDX 的部落格架構方案，該方案源自實際專案經驗，特別適合喜歡以程式碼為中心的技術寫作者。
 
-本篇文章將深入分享我如何基於 Next.js App Router、React、TypeScript 和 MDX 構建一個現代化部落格系統，特別著重於：
+## 核心特色
 
-- 如何透過集中式元數據管理提升內容組織效率
-- 如何實現全域與文章特定元件的分層設計
-- 如何用 TypeScript 確保型別安全與開發體驗
-- 如何平衡靜態生成與客戶端互動性
+1. **分離式元數據管理（TypeScript Metadata）**  
+   所有文章的 metadata（如標題、日期、作者、標籤等）統一集中於 TypeScript 檔案（如 *metadata.ts*），而非分散在每篇 MDX 的 frontmatter。  
+   這種方式帶來更強的型別安全、易於全站維護、批次編輯與自動化處理，並能避免 YAML 語法錯誤導致的編譯問題。
 
-無論你是前端開發者還是尋求建立技術部落格的博主，這篇文章都能為你提供一個完整可行的實作藍圖。
+2. **純客戶端渲染，避免水合（Hydration）問題**  
+   所有 MDX 內容透過 Next.js 的客戶端渲染機制處理，確保互動式元件與 React hook 能在各種情境下正常運作，並減少 SSR/CSR 不一致導致的水合錯誤。
 
-## 1. 技術棧選擇與架構設計
+3. **局部 MDX 元件支援**  
+   每篇文章資料夾下可自訂專屬的 React 元件（如 *components/CustomComponent.tsx*），實現內容與元件的高度解耦與重用，讓每篇文章都能擁有獨特的互動體驗。
 
-### 1.1 技術選擇的考量
+4. **全域 MDX 元件庫**  
+   提供一套可跨文章共用的全域元件（如 Alert、YouTube、Mermaid 等），方便維護統一的設計風格與互動行為，提升開發效率。
 
-在構建部落格系統時，我優先考慮了以下要素：
+5. **完整 TypeScript 強型別整合**  
+   metadata、內容、元件全程 TypeScript 型別檢查，避免欄位遺漏或型別錯誤，提升專案穩定性與維護性。
 
-- **效能優先**：選擇能夠靜態生成的框架，確保頁面載入速度
-- **開發體驗**：強型別系統、熱更新、模組化設計
-- **內容創作流暢性**：能夠專注於寫作，又不失技術擴展性
-- **SEO 友好**：確保內容能被搜尋引擎有效索引
-- **部署便捷性**：簡化從開發到上線的流程
+6. **高效建構流程**  
+   基於 Next.js 現代架構，結合集中 metadata 管理與模組化元件設計，讓整個內容站點的建構、部署與擴展都更快速、可靠。
 
-基於以上考量，最終技術棧如下：
-
-- **Next.js (App Router)**：提供頁面靜態生成、API 路由與server components
-- **React 18**：用於構建互動式UI元件
-- **TypeScript**：確保型別安全，提升開發體驗
-- **MDX**：結合 Markdown 的簡潔與 React 元件的靈活性
-- **Tailwind CSS**：用於快速樣式開發
-- **Vercel**：自動化部署與邊緣CDN加速
-
-### 1.2 核心架構設計原則
-
-本部落格架構遵循以下設計原則：
-
-1. **關注點分離**：內容、元數據與展示邏輯嚴格分離
-2. **元件可復用性**：全域元件與文章特定元件分層設計
-3. **型別安全至上**：所有資料流與元件介面均有明確型別定義
-4. **漸進式增強**：基礎功能不依賴JavaScript，互動性為錦上添花
-5. **優先靜態生成**：盡可能在構建時生成內容，提升用戶體驗
-
-### 1.3 檔案結構概述
+## 目錄結構
 
 ```
 project/
@@ -52,313 +33,124 @@ project/
 │   └── blog/
 │       └── [slug]/
 │           ├── page.tsx     # 動態載入 MDX 與元件
-│           └── MDXRenderer.tsx # MDX 渲染器
+│           ├── MDXRenderer.tsx # MDX 渲染器
+│           └── ClientMDXContent.tsx # 客戶端MDX容器
 ├── content/                 # 內容檔案
-│   ├── metadata.ts          # 集中式元數據管理
+│   ├── metadata.ts          # 所有文章的元數據
 │   └── posts/
 │       └── [post-slug]/
 │           ├── content.mdx  # 文章內容
 │           └── components/  # 文章專用元件
-│               ├── index.ts # 元件導出索引
+│               ├── index.ts # 元件匯出索引
 │               └── CustomComponent.tsx # 文章專用元件
 ├── components/
 │   └── mdx/
-│       ├── MDXComponents.tsx # 預設 Markdown 元素樣式
 │       └── global-components/ # 全域 MDX 元件
-│           ├── index.ts      # 全域元件導出索引
+│           ├── index.ts      # 全域元件匯出索引
 │           └── Alert.tsx     # 全域可用的元件
 └── lib/
-    ├── mdx.ts              # MDX 內容載入與處理
-    └── mdx-loader.ts       # 動態元件載入系統
+    └── mdx-loader.ts        # 元件載入系統
 ```
 
-## 2. 集中式元數據管理：代碼的心臟
+## 路由段落共置與 MDX 組件自動注入機制
 
-部落格系統的一個關鍵創新是完全分離內容與元數據。我選擇了在 TypeScript 檔案中集中管理所有元數據，而非傳統的在 MDX 檔案頂部使用 frontmatter。
+在 Next.js（特別是 App Router + MDX）架構下，您可以充分利用「路由段落共置」與「MDX 組件自動注入」的現代開發體驗：
 
-### 2.1 元數據結構設計
+### 1. 路由段落的檔案共置（Colocation）
+
+- **App Router 段落機制**  
+  Next.js 13+ 的 App Router 會將 *app/* 目錄下的每個子資料夾視為「路由段落（route segment）」，只有包含 *page.tsx*、*layout.tsx* 或 *route.ts* 的資料夾才會對外公開成為路由頁面。
+- **非路由檔案自動共置**  
+  在同一段落資料夾下新增的其他檔案（如 *components/index.ts*、*utils.ts* 等）不會生成額外路由，但可直接在同段落內被其他檔案引用，提升模組化與維護性。
+
+### 2. MDX 插件自動注入同目錄組件
+
+- **自動載入組件**  
+  Next.js 的 MDX 插件（@next/mdx）在編譯 MDX 檔案時，會自動尋找同目錄下的 *components.tsx* 或 *components/index.ts*，並將其所有 export 的 React 元件注入到 MDX 的 *components* prop。
+- **免手動 import**  
+  這代表您在 MDX 檔案中可以直接使用 
+  ```mdx
+  <Button>
+  <Alert>
+  ``` 
+  等自訂元件，而無需再手動 import，極大提升開發效率與可讀性。
+
+#### 實作範例
+
+```plaintext
+app/
+└── posts/
+    └── [slug]/
+        ├── page.mdx               # MDX 內容，無需 import 組件
+        └── components/
+            └── index.ts           # 匯出 Button、Alert 等元件
+```
+
+MDX 內容只需：
+
+```mdx
+# 我的文章
+
+<Button>按我</Button>
+```
+無需再寫 `import Button from './components'`，Next.js 會自動注入。
+
+### 3. 機制原理與開發便利
+
+- **共置檔案不生成路由**  
+  只要不是 *page.tsx*、*layout.tsx* 等特殊檔案，其他檔案都只是共置模組，不會被當成頁面公開。
+- **MDXProvider 省略**  
+  傳統 React 需用 `<MDXProvider components={...}>` 注入元件，Next.js 架構已自動完成這步驟，讓 MDX 檔案可直接使用元件標籤。
+- **提升維護性**  
+  這種設計讓內容、元件與邏輯可自然共置，提升專案的可維護性、可讀性與團隊協作效率。
+
+> 延伸閱讀：可參考 Next.js 官方「[配置 MDX](https://nextjs.org/docs/app/building-your-application/configuring/mdx)」與「[路由共置](https://nextjs.org/docs/app/building-your-application/routing/colocating)」文件，了解更多細節。
+
+## 設計理念
+
+### 為何分離元數據和內容？
+
+傳統的 MDX 文件常使用 YAML frontmatter 來管理元數據，但這種方式存在以下問題：
+
+1. **解析衝突**：MDX 解析器和 TypeScript 編譯器可能競爭解析同一個檔案
+2. **需額外配置**：MDX 預設不支援 frontmatter，需配置插件
+3. **擴展名限制**：僅 *.mdx* 檔案能正確使用 frontmatter
+4. **維護困難**：元數據和內容混合使維護更複雜
+
+因此，本架構採用了獨立的 TypeScript 檔案 *metadata.ts* 來儲存所有文章的元數據：
 
 ```typescript
 // content/metadata.ts
-import { BlogMetadata } from '@/app/types/blog';
-
 export const postsMetadata: Record<string, BlogMetadata> = {
-  'nextjs-react-typescript-mdx-blog-architecture': {
-    title: 'Next.js + React + TypeScript + MDX 部落格架構',
-    date: '2025-05-16',
-    excerpt: '深入介紹基於 Next.js、React、TypeScript 和 MDX 的現代部落格架構設計...',
-    author: 'Ian Chou',
-    tags: ['Next.js', 'React', 'TypeScript', 'MDX', '部落格架構'],
-    coverImage: '/images/posts/nextjs-react-typescript-mdx-blog-architecture.webp'
+  'getting-started-with-nextjs': {
+    title: '開始使用 Next.js 15',
+    date: '2025-05-10',
+    excerpt: '學習如何使用 Next.js 15 建立現代化的 React 應用程式...',
+    author: '作者名稱',
+    tags: ['Next.js', 'React', 'TypeScript'],
+    coverImage: '/images/getting-started-with-nextjs.webp'
   },
-  // 其他文章元數據...
-};
-
-// 根據 slug 獲取文章的 metadata
-export const getPostMetadata = (slug: string): BlogMetadata | null => {
-  return postsMetadata[slug] || null;
-};
-
-// 獲取所有文章的 slugs
-export const getAllPostSlugs = (): string[] => {
-  return Object.keys(postsMetadata);
+  // 其他文章...
 };
 ```
 
-### 2.2 強型別介面定義
+### 元件架構
+
+本架構支援兩類 MDX 元件：
+
+1. **全域元件**：位於 `components/mdx/global-components/` 目錄，所有文章可用
+2. **局部元件**：位於 `content/posts/[slug]/components/` 目錄，只有特定文章可用
+
+當全域和局部元件同名時，**局部元件優先**。這允許文章覆寫全域元件的行為。
+
+## 實作細節
+
+### 1. 文章載入流程
+
+文章載入由 *lib/mdx.ts* 中的函數處理：
 
 ```typescript
-// app/types/blog.ts
-export interface BlogMetadata {
-  title: string;
-  date: string;
-  excerpt: string;
-  author: string;
-  tags: string[];
-  coverImage: string;
-}
-
-export interface BlogPost extends BlogMetadata {
-  slug: string;
-}
-```
-
-### 2.3 集中式元數據的優勢
-
-這種設計帶來的優勢包括：
-
-1. **型別安全**：TypeScript 提供了完整的型別檢查，避免遺漏必要欄位
-2. **搜尋與篩選效率**：無需解析 MDX 文件即可獲取元數據，加快了站點生成速度
-3. **批量操作便捷**：可以輕松對多篇文章進行元數據更新或聚合操作
-4. **元數據分離**：內容創作者只需專注於 MDX 內容，無需關心元數據格式
-
-## 3. MDX 文章結構與元件整合
-
-MDX 的核心優勢在於能夠在 Markdown 中無縫使用 React 元件。本架構實現了一套靈活而強大的元件整合系統。
-
-### 3.1 文章目錄結構
-
-每篇文章都有獨立的目錄結構：
-
-```
-content/posts/mdx-blog-setup/
-├── content.mdx              # 文章主體內容
-└── components/              # 文章專用元件
-    ├── index.ts             # 元件導出
-    ├── CustomButton.tsx     # 自定義按鈕元件
-    ├── Tweet.tsx            # Twitter 嵌入元件
-    └── YouTube.tsx          # YouTube 嵌入元件
-```
-
-### 3.2 文章專用元件範例
-
-以下是一個自定義按鈕元件的實現，它只會在特定文章中使用：
-
-```tsx
-// content/posts/mdx-blog-setup/components/CustomButton.tsx
-'use client';
-
-import { useCallback, type ReactNode } from 'react';
-
-interface CustomButtonProps {
-  children: ReactNode;
-  className?: string;
-  message?: string;
-}
-
-const CustomButton = ({ 
-  children, 
-  className = '',
-  message = 'Hello MDX!',
-}: CustomButtonProps) => {
-  const handleClick = useCallback(() => {
-    alert(message);
-  }, [message]);
-
-  return (
-    <button
-      type="button"
-      onClick={handleClick}
-      className={`
-        inline-flex items-center justify-center
-        px-5 py-3
-        bg-gradient-to-r from-blue-500 to-indigo-600
-        text-white font-medium text-center
-        rounded-xl shadow-lg
-        hover:from-blue-600 hover:to-indigo-700
-        active:scale-95
-        transform transition duration-150
-        focus:outline-none focus:ring-4 focus:ring-indigo-300
-        ${className}
-      `}
-    >
-      {children}
-    </button>
-  );
-};
-
-export default CustomButton;
-```
-
-### 3.3 在 MDX 中使用元件
-
-在 MDX 文件中，你可以直接使用註冊的元件，無需導入：
-
-```mdx
-# 使用 MDX 建立部落格
-
-MDX 是一個強大的格式，它允許你在 Markdown 文件中直接使用 JSX。
-
-## 互動式按鈕示例
-
-點擊下面的按鈕：
-
-<CustomButton message="MDX 與 React 的完美結合！">
-  點擊體驗
-</CustomButton>
-
-## 嵌入外部內容
-
-<Tweet id="463440424141459456" />
-
-<YouTube id="dQw4w9WgXcQ" />
-```
-
-### 3.4 元件導出索引
-
-每個文章目錄下的 `components/index.ts` 文件負責導出該文章的所有元件：
-
-```typescript
-// content/posts/mdx-blog-setup/components/index.ts
-export { default as Tweet } from './Tweet';
-export { default as YouTube } from './YouTube';
-export { default as CustomButton } from './CustomButton';
-```
-
-## 4. 雙層元件系統：全域 vs 文章特定
-
-本架構實現了一個創新的雙層元件系統，平衡了代碼複用與文章特定需求。
-
-### 4.1 全域元件設計
-
-全域元件位於 `components/mdx/global-components/` 目錄，所有文章均可使用：
-
-```tsx
-// components/mdx/global-components/Alert.tsx
-'use client';
-
-import React from 'react';
-
-interface AlertProps {
-  type?: 'info' | 'warning' | 'error' | 'success';
-  title?: string;
-  children: React.ReactNode;
-}
-
-const typeStyles = {
-  info: {
-    container: 'bg-blue-50 border-blue-200',
-    title: 'text-blue-800',
-    content: 'text-blue-700'
-  },
-  // 其他樣式...
-};
-
-export default function Alert({ type = 'info', title, children }: AlertProps) {
-  const styles = typeStyles[type];
-  
-  return (
-    <div className={`p-4 mb-4 rounded border ${styles.container}`}>
-      {title && (
-        <h4 className={`text-lg font-medium mb-2 ${styles.title}`}>
-          {title}
-        </h4>
-      )}
-      <div className={`${styles.content}`}>
-        {children}
-      </div>
-    </div>
-  );
-}
-```
-
-### 4.2 全域元件導出
-
-```typescript
-// components/mdx/global-components/index.ts
-export { default as Alert } from './Alert';
-export { default as Callout } from './Callout';
-export { default as Tweet } from './Tweet';
-export { default as YouTube } from './YouTube';
-export { default as CodeBlock } from '../CodeBlock';
-```
-
-### 4.3 動態元件載入系統
-
-核心創新在於 `mdx-loader.ts`，它負責動態合併全域元件和文章特定元件：
-
-```typescript
-// lib/mdx-loader.ts
-import path from 'path';
-import fs from 'fs';
-import { cache } from 'react';
-
-// 導入全域元件
-import * as globalComponents from '@/components/mdx/global-components';
-
-export const getPostComponents = cache(async (slug: string) => {
-  try {
-    // 檢查該文章是否有自定義元件目錄
-    const componentsDir = path.join(process.cwd(), 'content/posts', slug, 'components');
-    
-    if (!fs.existsSync(componentsDir)) {
-      console.log(`No custom components directory found for post: ${slug}`);
-      // 返回全域元件
-      return { ...globalComponents };
-    }
-
-    // 嘗試導入局部元件
-    try {
-      // 動態導入文章特定元件
-      const postComponents = await import(`@content/posts/${slug}/components/index`);
-      
-      // 合併全域元件和局部元件，優先使用局部元件
-      return { 
-        ...globalComponents,
-        ...postComponents
-      };
-    } catch (importError) {
-      console.error(`Error importing components for ${slug}:`, importError);
-      // 如果導入出錯，返回全域元件
-      return { ...globalComponents };
-    }
-  } catch (error) {
-    console.error(`Error loading components for post ${slug}:`, error);
-    // 如果任何錯誤發生，返回全域元件
-    return { ...globalComponents };
-  }
-});
-```
-
-### 4.4 元件優先級機制
-
-當全域元件和文章特定元件同名時，**文章特定元件優先**。這允許文章能夠覆蓋全域元件的行為，提供了極大的靈活性。例如，一篇文章可以有自己特殊版本的 `Tweet` 元件，而不影響其他文章。
-
-## 5. MDX 渲染與動態載入
-
-MDX 內容的渲染涉及多個步驟，從文件讀取到最終頁面呈現。
-
-### 5.1 MDX 內容載入
-
-```typescript
-// lib/mdx.ts
-import fs from 'fs';
-import path from 'path';
-import { BlogPost, BlogMetadata } from '@/app/types/blog';
-import { getAllPostSlugs, getPostMetadata } from '@/content/metadata';
-
-const postsDirectory = path.join(process.cwd(), 'content/posts');
-
+// 取得特定文章的內容和元數據
 export function getPostBySlug(slug: string): { metadata: BlogMetadata; content: string } | null {
   const metadata = getPostMetadata(slug);
   
@@ -366,7 +158,6 @@ export function getPostBySlug(slug: string): { metadata: BlogMetadata; content: 
     return null;
   }
 
-  // 更新路徑以匹配新的目錄結構
   const fullPath = path.join(postsDirectory, slug, 'content.mdx');
   
   if (!fs.existsSync(fullPath)) {
@@ -382,138 +173,93 @@ export function getPostBySlug(slug: string): { metadata: BlogMetadata; content: 
 }
 ```
 
-### 5.2 MDX 渲染器
+### 2. 元件載入系統
+
+元件載入由 `lib/mdx-loader.ts` 處理，它會動態載入全域和局部元件：
+
+```typescript
+export const getPostComponents = cache(async (slug: string) => {
+  try {
+    // 檢查該文章是否有自定義元件目錄
+    const componentsDir = path.join(process.cwd(), 'content/posts', slug, 'components');
+    
+    if (!fs.existsSync(componentsDir)) {
+      // 返回全域元件
+      return { ...globalComponents };
+    }
+
+    // 嘗試導入局部元件
+    try {
+      const postComponents = await import(`@content/posts/${slug}/components/index`);
+      
+      // 合併全域元件和局部元件
+      return { 
+        ...globalComponents,
+        ...postComponents  // 局部元件優先
+      };
+    } catch (importError) {
+      return { ...globalComponents };
+    }
+  } catch (error) {
+    return { ...globalComponents };
+  }
+});
+```
+
+### 3. MDX 渲染流程
+
+MDX 內容透過 *next-mdx-remote* 處理和渲染：
 
 ```tsx
-// app/blog/[slug]/MDXRenderer.tsx
-'use client';
-
-import React, { useState, useEffect } from 'react';
-import { MDXRemote } from 'next-mdx-remote';
-import { serialize } from 'next-mdx-remote/serialize';
-import type { MDXRemoteSerializeResult } from 'next-mdx-remote';
-import defaultMDXComponents from '@/components/mdx/MDXComponents';
-
-interface MDXRendererProps {
-  source: string;
-  components: Record<string, any>;
-}
-
-// 預設元件集合
-const globalComponents = {
-  ...defaultMDXComponents
-};
-
+// MDXRenderer.tsx
 export default function MDXRenderer({ source, components }: MDXRendererProps) {
   const [mdxSource, setMdxSource] = useState<MDXRemoteSerializeResult | null>(null);
-  const [error, setError] = useState<string | null>(null);
 
-  // 合併元件
+  // 合併全域和局部元件
   const mergedComponents = {
     ...globalComponents,
-    ...components // 文章特定元件優先
+    ...components  // 局部元件可覆寫全域元件
   };
 
   useEffect(() => {
     const processMDX = async () => {
       try {
-        // MDX 序列化
         const serialized = await serialize(source, {
           parseFrontmatter: true
         });
 
         setMdxSource(serialized);
-        setError(null);
       } catch (err) {
         console.error('Error processing MDX:', err);
-        setError('MDX 內容處理錯誤。請檢查控制台以獲取詳細信息。');
       }
     };
     
     processMDX();
   }, [source]);
 
-  if (error) {
-    return (
-      <div className="p-4 bg-red-50 border border-red-300 rounded-md text-red-700">
-        <h3 className="text-lg font-bold mb-2">錯誤</h3>
-        <p>{error}</p>
-      </div>
-    );
-  }
-
   if (!mdxSource) {
-    return (
-      <div className="p-4 text-center animate-pulse">
-        <div className="inline-block px-4 py-2 rounded-md bg-gray-200">
-          載入中...
-        </div>
-      </div>
-    );
+    return <div>載入中...</div>;
   }
 
   return (
-    <div className="mdx-content prose prose-lg dark:prose-invert max-w-none">
+    <div className="mdx-content prose prose-lg max-w-none">
       <MDXRemote {...mdxSource} components={mergedComponents} />
     </div>
   );
 }
 ```
 
-### 5.3 部落格文章頁面組件
+### 4. 動態路由設定
+
+Next.js 的 App Router 透過 `[slug]` 處理動態路由，並使用 *generateStaticParams* 進行靜態產生：
 
 ```tsx
 // app/blog/[slug]/page.tsx
-import { notFound } from 'next/navigation';
-import { getPostBySlug, getAllPosts } from '@/lib/mdx';
-import BlogPostContentStatic from '@/app/components/BlogPostContent.static';
-import MDXRenderer from './MDXRenderer';
-import { Metadata } from 'next';
-import { getPostComponents } from '@/lib/mdx-loader';
-
 export async function generateStaticParams() {
   const posts = getAllPosts();
   return posts.map((post) => ({
     slug: post.slug,
   }));
-}
-
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const resolvedParams = await params;
-  const post = getPostBySlug(resolvedParams.slug);
-  
-  if (!post) {
-    return {};
-  }
-
-  const { metadata } = post;
-  const ogImage = metadata.coverImage || '/images/default-og-image.webp';
-  
-  // 生成 SEO 相關 metadata
-  return {
-    title: `${metadata.title} | My Blog`,
-    description: metadata.excerpt,
-    openGraph: {
-      title: metadata.title,
-      description: metadata.excerpt,
-      type: 'article',
-      publishedTime: metadata.date,
-      authors: [metadata.author],
-      tags: metadata.tags,
-      images: [{
-        url: ogImage,
-        width: 1200,
-        height: 630,
-        alt: metadata.title
-      }]
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: metadata.title,
-      description: metadata.excerpt,
-      images: [ogImage]
-    }
-  };
 }
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -524,7 +270,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     notFound();
   }
 
-  // 獲取該文章的自定義元件
+  // 取得該文章的自定義元件
   const components = await getPostComponents(resolvedParams.slug);
 
   return (
@@ -538,278 +284,275 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 }
 ```
 
-## 6. 型別安全與客戶端互動性
+## 實作指南
 
-本架構在實現互動性的同時，確保了端到端的型別安全。
+### 1. 建立 Next.js 專案
 
-### 6.1 Markdown 元件型別定義
-
-```tsx
-// components/mdx/MDXComponents.tsx
-'use client';
-
-import type { ComponentType, ReactNode } from 'react';
-import CodeBlock from './CodeBlock';
-import { Table, THead, TBody, Th, Td, Tr } from './Table';
-
-// 定義元件屬性型別
-type ComponentProps = {
-  children?: ReactNode;
-  className?: string;
-  [key: string]: unknown;
-};
-
-// 定義 MDX 元件集合的型別
-type MDXComponents = {
-  // 允許任何字串鍵與帶有 children 的元件
-  [key: string]: ComponentType<ComponentProps>;
-} & {
-  // 特定元件及其精確的屬性型別
-  pre: ComponentType<{ children?: ReactNode }>;
-  code: ComponentType<{ children?: ReactNode; className?: string }>;
-  table: ComponentType<{ children?: ReactNode; className?: string }>;
-  thead: ComponentType<{ children?: ReactNode; className?: string }>;
-  tbody: ComponentType<{ children?: ReactNode; className?: string }>;
-  th: ComponentType<{ children?: ReactNode; className?: string }>;
-  td: ComponentType<{ children?: ReactNode; className?: string }>;
-  tr: ComponentType<{ children?: ReactNode; className?: string }>;
-};
-
-// 其他元件實現...
-
-// 創建擁有正確型別的元件物件
-export const mdxComponents: MDXComponents = {
-  // 覆蓋默認的 pre 和 code 標籤
-  pre: Pre,
-  code: CodeBlockWrapper,
-  // 表格元件
-  table: Table,
-  thead: THead,
-  tbody: TBody,
-  th: Th,
-  td: Td,
-  tr: Tr,
-} as const;
-
-export default mdxComponents;
+```bash
+npx create-next-app@latest my-blog --typescript --eslint
+cd my-blog
 ```
 
-### 6.2 客戶端與伺服器元件分離
+### 2. 安裝必要依賴
 
-為了優化效能，我們嚴格區分了客戶端和伺服器元件：
+```bash
+npm install next-mdx-remote @mdx-js/react @mdx-js/loader
+```
 
-- 互動元件：使用 `'use client'` 指令，只在瀏覽器中執行
-- 靜態元件：默認為伺服器元件，在構建時渲染
+### 3. 設定目錄結構
 
-這種分離確保了最佳的效能和可訪問性：即使 JavaScript 未載入，基本內容也能正常顯示。
+建立前述的目錄結構，包括 content、components/mdx 等資料夾。
 
-### 6.3 React 鉤子在 MDX 元件中的應用
+```
+project/
+├── app/                     # Next.js App Router
+│   └── blog/
+│       └── [slug]/
+│           ├── page.tsx     # 動態載入 MDX 與元件
+│           ├── MDXRenderer.tsx # MDX 渲染器
+│           └── ClientMDXContent.tsx # 客戶端MDX容器
+├── content/                 # 內容檔案
+│   ├── metadata.ts          # 所有文章的元數據
+│   └── posts/
+│       └── [post-slug]/
+│           ├── content.mdx  # 文章內容
+│           └── components/  # 文章專用元件
+│               ├── index.ts # 元件匯出索引
+│               └── CustomComponent.tsx # 文章專用元件
+├── components/
+│   └── mdx/
+│       └── global-components/ # 全域 MDX 元件
+│           ├── index.ts      # 全域元件匯出索引
+│           └── Alert.tsx     # 全域可用的元件
+└── lib/
+    └── mdx-loader.ts        # 元件載入系統
+```
 
-互動元件可以充分利用 React 鉤子，例如：
+### 4. 配置 Next.js
+
+更新 *next.config.js* 以支援 MDX：
+
+```javascript
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+  // 視需要添加其他配置
+};
+
+export default nextConfig;
+```
+
+### 5. 新增類型定義
+
+在 `app/types/blog.ts` 中定義部落格類型：
+
+```typescript
+export interface BlogMetadata {
+  title: string;
+  date: string;
+  excerpt: string;
+  author: string;
+  tags: string[];
+  coverImage?: string;
+}
+
+export interface BlogPost {
+  slug: string;
+  title: string;
+  date: string;
+  excerpt: string;
+  author: string;
+  tags: string[];
+  coverImage?: string;
+}
+```
+
+### 6. 建立全域 MDX 元件
+
+在 `components/mdx/global-components` 目錄中建立共用元件，例如：
 
 ```tsx
+// components/mdx/global-components/Alert.tsx
 'use client';
 
-import { useState, useEffect } from 'react';
+import React from 'react';
 
-export default function InteractiveDemo({ initialCode }) {
-  const [code, setCode] = useState(initialCode);
-  const [result, setResult] = useState('');
-  
-  useEffect(() => {
-    try {
-      // 安全的評估代碼（實際中應使用更安全的方法）
-      const output = eval(code);
-      setResult(String(output));
-    } catch (error) {
-      setResult(`錯誤: ${error.message}`);
-    }
-  }, [code]);
-  
+interface AlertProps {
+  type?: 'info' | 'warning' | 'error';
+  children: React.ReactNode;
+}
+
+export function Alert({ type = 'info', children }: AlertProps) {
+  const bgColor = {
+    info: 'bg-blue-50 border-blue-200 text-blue-800',
+    warning: 'bg-yellow-50 border-yellow-200 text-yellow-800',
+    error: 'bg-red-50 border-red-200 text-red-800',
+  }[type];
+
   return (
-    <div className="my-4 border rounded-lg overflow-hidden">
-      <textarea
-        value={code}
-        onChange={(e) => setCode(e.target.value)}
-        className="w-full p-4 font-mono bg-gray-50"
-        rows={5}
-      />
-      <div className="p-4 bg-gray-100 border-t">
-        <p className="font-semibold">結果:</p>
-        <pre className="mt-2 p-2 bg-white rounded">{result}</pre>
-      </div>
+    <div className={`p-4 my-4 rounded-md border ${bgColor}`}>
+      {children}
     </div>
   );
 }
 ```
 
-## 7. 部署與效能優化
+並在 *index.ts* 中匯出：
 
-本部落格架構設計時就考慮了優化和部署的便捷性。
+```typescript
+// components/mdx/global-components/index.ts
+export * from './Alert';
+// 匯出其他全域元件...
+```
 
-### 7.1 靜態生成
+### 7. 撰寫文章內容
 
-使用 Next.js 的靜態生成功能，在構建時預渲染所有頁面：
+在 `content/posts/[slug]/content.mdx` 中撰寫文章內容：
+
+```mdx
+# 開始使用 Next.js 15
+
+這是一篇關於 Next.js 15 的入門教學。
+
+<Alert type="info">
+  Next.js 15 帶來了許多新功能和改進！
+</Alert>
+
+## 主要特點
+
+- App Router
+- Server Components
+- 改進的快取機制
+```
+
+### 8. 建立文章專屬元件（可選）
+
+如果要為特定文章建立專屬元件：
 
 ```tsx
-export async function generateStaticParams() {
-  const posts = getAllPosts();
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
+// content/posts/your-post/components/VersionComparison.tsx
+'use client';
+
+import React from 'react';
+
+export function VersionComparison() {
+  return (
+    <div className="my-6 overflow-x-auto">
+      <table className="min-w-full border-collapse">
+        <thead>
+          <tr className="bg-gray-100">
+            <th className="border p-2">功能</th>
+            <th className="border p-2">Next.js 14</th>
+            <th className="border p-2">Next.js 15</th>
+          </tr>
+        </thead>
+        <tbody>
+          {/* 表格內容 */}
+        </tbody>
+      </table>
+    </div>
+  );
 }
 ```
 
-這確保了最佳的頁面載入效能和 SEO。
+並在該文章的 `components/index.ts` 中匯出：
 
-### 7.2 圖片優化
-
-自動處理圖片優化，包括：
-
-- 使用 Next.js Image 組件自動優化圖片
-- WebP 格式轉換
-- 響應式圖片尺寸
-- 懶加載
-
-### 7.3 代碼分割
-
-每個 MDX 文章及其元件都作為獨立的塊加載，確保頁面初始載入時間最小化：
-
-```tsx
-// 動態導入文章特定元件
-const postComponents = await import(`@content/posts/${slug}/components/index`);
+```typescript
+// content/posts/your-post/components/index.ts
+export * from './VersionComparison';
 ```
 
-### 7.4 Vercel 部署
+## 使用技巧
 
-Vercel 提供了無縫的部署體驗，特點包括：
+### 1. 在 MDX 中直接使用元件
 
-- 自動 HTTPS
-- 全球 CDN
-- 自動預覽部署
-- 持續集成
+無需導入，直接在 MDX 中使用元件名稱：
 
-## 8. 實際工作流程：從寫作到發布
+```mdx
+## 版本比較
 
-### 8.1 新增文章流程
+<VersionComparison />
 
-1. 創建文章目錄
-   ```bash
-   mkdir -p content/posts/new-article-slug/components
-   touch content/posts/new-article-slug/content.mdx
-   touch content/posts/new-article-slug/components/index.ts
-   ```
+<Alert type="warning">
+  請注意，某些功能可能需要額外配置。
+</Alert>
+```
 
-2. 更新元數據
-   ```typescript
-   // content/metadata.ts
-   export const postsMetadata: Record<string, BlogMetadata> = {
-     // 現有文章...
-     'new-article-slug': {
-       title: '新文章標題',
-       date: '2025-05-20',
-       excerpt: '文章摘要...',
-       author: 'Author Name',
-       tags: ['Tag1', 'Tag2'],
-       coverImage: '/images/posts/new-article-slug.webp'
-     },
-   };
-   ```
+### 2. 動態生成元數據
 
-3. 編寫 MDX 內容
-   ```mdx
-   # 新文章標題
-   
-   這是文章內容...
-   
-   <Alert type="info" title="提示">
-     這是一個信息提示框
-   </Alert>
-   ```
+在 *page.tsx* 中的 *generateMetadata* 函數處理 SEO 元數據：
 
-4. 上傳圖片到 `public/images/posts/`
+```typescript
+export async function generateMetadata({ params }): Promise<Metadata> {
+  const post = getPostBySlug(params.slug);
+  
+  if (!post) {
+    return {};
+  }
 
-5. 如需自定義元件，在 `components/` 目錄中創建並導出
+  const { metadata } = post;
+  
+  return {
+    title: `${metadata.title} | My Blog`,
+    description: metadata.excerpt,
+    openGraph: {
+      // Open Graph 相關設定
+    }
+  };
+}
+```
 
-6. 提交代碼並部署
+### 3. 實現交互式元件
 
-### 8.2 編輯工作流程
+在局部元件中實現文章專屬的交互式元件：
 
-為提升編輯體驗，推薦以下工具：
+```tsx
+'use client';
 
-- **VS Code** 搭配 MDX 擴展
-- **即時預覽**：使用 `npm run dev` 在本地開發伺服器上預覽
-- **版本控制**：使用 Git 進行變更管理
-- **內容檢查**：可集成 markdownlint、Prettier 等工具
+import { useState } from 'react';
 
-## 9. 挑戰與解決方案
+export function InteractiveDemo() {
+  const [count, setCount] = useState(0);
+  
+  return (
+    <div className="my-6 p-4 border rounded-md">
+      <p>點擊次數: {count}</p>
+      <button 
+        onClick={() => setCount(count + 1)}
+        className="px-4 py-2 bg-blue-500 text-white rounded-md"
+      >
+        增加
+      </button>
+    </div>
+  );
+}
+```
 
-在實現過程中，我遇到了一些挑戰，並找到了相應的解決方案：
+## 最佳實踐
 
-### 9.1 MDX 與 TypeScript 整合
+1. **元件職責清晰**：全域元件應為通用功能，局部元件專注於特定文章需求
+2. **命名一致性**：使用 PascalCase 命名所有元件
+3. **類型安全**：為所有元件添加適當的 TypeScript 型別
+4. **客戶端指令**：對交互式元件使用 `'use client'` 指令
+5. **元件索引檔案**：透過 *index.ts* 匯出元件，保持導入路徑簡潔
 
-**挑戰**：確保 MDX 元件在 TypeScript 中有正確的型別定義。
+## 效能考量
 
-**解決方案**：為所有元件創建明確的介面定義，並使用 TypeScript 的 `as const` 確保型別正確性。
+1. **圖片最佳化**：使用 Next.js 的 `<Image>` 元件處理圖片
+2. **代碼分割**：局部元件自動實現細粒度代碼分割
+3. **靜態產生**：使用 *generateStaticParams* 在建構時產生靜態頁面
+4. **元件選擇性載入**：只載入每篇文章需要的元件
 
-### 9.2 客戶端渲染問題
+## 擴展方向
 
-**挑戰**：MDX 內容中的互動元件可能導致水合不匹配。
+1. **搜尋功能**：實現基於元數據的文章搜尋
+2. **標籤分類**：根據文章標籤實現分類頁面
+3. **國際化**：添加多語言支援
+4. **主題切換**：實現深色/淺色模式切換
+5. **分析整合**：添加訪問分析功能
 
-**解決方案**：使用 `'use client'` 指令明確標記客戶端元件，並確保伺服器端與客戶端渲染一致。
+## 結語
 
-### 9.3 動態元件載入
+這個基於 Next.js、React、TypeScript 和 MDX 的部落格架構提供了強大的彈性和開發體驗。透過分離元數據和內容、支援局部元件，以及完整的 TypeScript 整合，使得技術部落格的開發和維護變得更加高效和愉快。
 
-**挑戰**：為每篇文章動態載入自定義元件。
-
-**解決方案**：實現了一個動態載入系統，使用 React 的 `cache` 函數優化效能，並優雅處理錯誤情況。
-
-### 9.4 內容創作體驗
-
-**挑戰**：確保技術元件不影響寫作流程。
-
-**解決方案**：分離元數據與內容，提供全域元件庫，簡化 MDX 寫作體驗。
-
-## 10. 未來計劃與改進方向
-
-這個架構仍有許多可以改進的地方：
-
-### 10.1 增強功能
-
-- 實現全文搜索功能
-- 添加閱讀時間估計
-- 集成評論系統
-- 多語言支持
-
-### 10.2 性能優化
-
-- 優化圖片處理流程
-- 實現增量靜態重新生成
-- 進一步代碼分割
-- 預載實現功能
-- 預加載相關文章
-
-### 10.3 開發體驗
-
-- 創建 CLI 工具簡化文章創建流程
-- 添加可視化編輯器
-- 改進錯誤報告
-- 強化型別檢查
-
-## 結論
-
-基於 Next.js、React、TypeScript 和 MDX 的部落格架構為技術寫作提供了一個強大而靈活的解決方案。通過分離元數據與內容、實現雙層元件系統、確保端到端型別安全，以及優化效能，這個架構可以滿足從簡單到複雜的技術部落格需求。
-
-這種架構的核心優勢在於平衡了「技術可擴展性」與「內容創作便捷性」，讓開發者能夠專注於內容創作，同時保留了擴展技術功能的靈活性。
-
-希望這篇文章能為你提供有價值的見解，無論你是想構建自己的技術部落格，還是尋求改進現有系統的靈感。這個架構不僅適用於部落格，也可以擴展到文檔系統、知識庫或任何需要結合豐富內容和互動功能的網站。
-
-分享是最好的學習方式，歡迎嘗試、改進並分享你的經驗！
-
----
-
-**參考資源**:
-- [Next.js 官方文檔](https://nextjs.org/docs)
-- [MDX 官方文檔](https://mdxjs.com/)
-- [TypeScript 文檔](https://www.typescriptlang.org/docs/)
-- [next-mdx-remote 庫](https://github.com/hashicorp/next-mdx-remote)
+無論是個人技術部落格還是團隊知識庫，這個架構都能很好地滿足需求，並可根據專案規模進行適當調整和擴展。
