@@ -22,12 +22,12 @@ const CustomButton = ({
   type="button"
   onClick={handleClick}
   className={`
-    inline-flex items-center justify-center   /* ← 讓文字水平+垂直都置中 */
+    inline-flex items-center justify-center
+    w-full h-full
     px-5 py-3
     bg-gradient-to-r from-blue-500 to-indigo-600
-    text-white font-medium leading-none     /* ← 去掉預設行高 */
-    rounded-xl
-    shadow-lg
+    text-white font-medium
+    rounded-xl shadow-lg
     hover:from-blue-600 hover:to-indigo-700
     active:scale-95
     transform transition duration-150
