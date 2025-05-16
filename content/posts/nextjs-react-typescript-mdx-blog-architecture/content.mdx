@@ -68,7 +68,12 @@ project/
 - **自動載入組件**  
   Next.js 的 MDX 插件（@next/mdx）在編譯 MDX 檔案時，會自動尋找同目錄下的 *components.tsx* 或 *components/index.ts*，並將其所有 export 的 React 元件注入到 MDX 的 *components* prop。
 - **免手動 import**  
-  這代表您在 MDX 檔案中可以直接使用 `<Button>`、`<Alert>` 等自訂元件，而無需再手動 import，極大提升開發效率與可讀性。
+  這代表您在 MDX 檔案中可以直接使用 
+  ```mdx
+  <Button>
+  <Alert>
+  ``` 
+  等自訂元件，而無需再手動 import，極大提升開發效率與可讀性。
 
 #### 實作範例
 
