@@ -59,14 +59,14 @@ project/
 ### 1. 路由段落的檔案共置（Colocation）
 
 - **App Router 段落機制**  
-  Next.js 13+ 的 App Router 會將 `app/` 目錄下的每個子資料夾視為「路由段落（route segment）」，只有包含 `page.tsx`、`layout.tsx` 或 `route.ts` 的資料夾才會對外公開成為路由頁面。
+  Next.js 13+ 的 App Router 會將 *app/* 目錄下的每個子資料夾視為「路由段落（route segment）」，只有包含 *page.tsx*、*layout.tsx* 或 *route.ts* 的資料夾才會對外公開成為路由頁面。
 - **非路由檔案自動共置**  
-  在同一段落資料夾下新增的其他檔案（如 `components/index.ts`、`utils.ts` 等）不會生成額外路由，但可直接在同段落內被其他檔案引用，提升模組化與維護性。
+  在同一段落資料夾下新增的其他檔案（如 *components/index.ts*、*utils.ts* 等）不會生成額外路由，但可直接在同段落內被其他檔案引用，提升模組化與維護性。
 
 ### 2. MDX 插件自動注入同目錄組件
 
 - **自動載入組件**  
-  Next.js 的 MDX 插件（@next/mdx）在編譯 MDX 檔案時，會自動尋找同目錄下的 `components.tsx` 或 `components/index.ts`，並將其所有 export 的 React 元件注入到 MDX 的 `components` prop。
+  Next.js 的 MDX 插件（@next/mdx）在編譯 MDX 檔案時，會自動尋找同目錄下的 *components.tsx* 或 *components/index.ts*，並將其所有 export 的 React 元件注入到 MDX 的 *components* prop。
 - **免手動 import**  
   這代表您在 MDX 檔案中可以直接使用 `<Button>`、`<Alert>` 等自訂元件，而無需再手動 import，極大提升開發效率與可讀性。
 
@@ -110,10 +110,10 @@ MDX 內容只需：
 
 1. **解析衝突**：MDX 解析器和 TypeScript 編譯器可能競爭解析同一個檔案
 2. **需額外配置**：MDX 預設不支援 frontmatter，需配置插件
-3. **擴展名限制**：僅 `.mdx` 檔案能正確使用 frontmatter
+3. **擴展名限制**：僅 *.mdx* 檔案能正確使用 frontmatter
 4. **維護困難**：元數據和內容混合使維護更複雜
 
-因此，本架構採用了獨立的 TypeScript 檔案 (`metadata.ts`) 來儲存所有文章的元數據：
+因此，本架構採用了獨立的 TypeScript 檔案 *metadata.ts* 來儲存所有文章的元數據：
 
 ```typescript
 // content/metadata.ts
@@ -143,7 +143,7 @@ export const postsMetadata: Record<string, BlogMetadata> = {
 
 ### 1. 文章載入流程
 
-文章載入由 `lib/mdx.ts` 中的函數處理：
+文章載入由 *lib/mdx.ts* 中的函數處理：
 
 ```typescript
 // 取得特定文章的內容和元數據
@@ -204,7 +204,7 @@ export const getPostComponents = cache(async (slug: string) => {
 
 ### 3. MDX 渲染流程
 
-MDX 內容透過 `next-mdx-remote` 處理和渲染：
+MDX 內容透過 *next-mdx-remote* 處理和渲染：
 
 ```tsx
 // MDXRenderer.tsx
@@ -247,7 +247,7 @@ export default function MDXRenderer({ source, components }: MDXRendererProps) {
 
 ### 4. 動態路由設定
 
-Next.js 的 App Router 透過 `[slug]` 處理動態路由，並使用 `generateStaticParams` 進行靜態產生：
+Next.js 的 App Router 透過 `[slug]` 處理動態路由，並使用 *generateStaticParams* 進行靜態產生：
 
 ```tsx
 // app/blog/[slug]/page.tsx
@@ -326,7 +326,7 @@ project/
 
 ### 4. 配置 Next.js
 
-更新 `next.config.js` 以支援 MDX：
+更新 *next.config.js* 以支援 MDX：
 
 ```javascript
 /** @type {import('next').NextConfig} */
@@ -393,7 +393,7 @@ export function Alert({ type = 'info', children }: AlertProps) {
 }
 ```
 
-並在 `index.ts` 中匯出：
+並在 *index.ts* 中匯出：
 
 ```typescript
 // components/mdx/global-components/index.ts
@@ -476,7 +476,7 @@ export * from './VersionComparison';
 
 ### 2. 動態生成元數據
 
-在 `page.tsx` 中的 `generateMetadata` 函數處理 SEO 元數據：
+在 *page.tsx* 中的 *generateMetadata* 函數處理 SEO 元數據：
 
 ```typescript
 export async function generateMetadata({ params }): Promise<Metadata> {
@@ -530,13 +530,13 @@ export function InteractiveDemo() {
 2. **命名一致性**：使用 PascalCase 命名所有元件
 3. **類型安全**：為所有元件添加適當的 TypeScript 型別
 4. **客戶端指令**：對交互式元件使用 `'use client'` 指令
-5. **元件索引檔案**：透過 `index.ts` 匯出元件，保持導入路徑簡潔
+5. **元件索引檔案**：透過 *index.ts* 匯出元件，保持導入路徑簡潔
 
 ## 效能考量
 
 1. **圖片最佳化**：使用 Next.js 的 `<Image>` 元件處理圖片
 2. **代碼分割**：局部元件自動實現細粒度代碼分割
-3. **靜態產生**：使用 `generateStaticParams` 在建構時產生靜態頁面
+3. **靜態產生**：使用 *generateStaticParams* 在建構時產生靜態頁面
 4. **元件選擇性載入**：只載入每篇文章需要的元件
 
 ## 擴展方向
