@@ -30,6 +30,7 @@ export default function JobDisplacementConcerns() {
       },
     },
     responsive: true,
+    maintainAspectRatio: false, // Allow the chart to break aspect ratio for better mobile display
     plugins: {
       legend: {
         position: 'bottom',
@@ -88,7 +89,10 @@ export default function JobDisplacementConcerns() {
   return (
     <div className="py-6 my-6 bg-gray-50 rounded-lg shadow-sm p-4">
       <h3 className="text-lg font-medium text-center mb-4">各職業對AI取代工作的擔憂程度</h3>
-      <Bar options={options} data={data} />
+      {/* Create a div with fixed height to contain the chart */}
+      <div style={{ height: '500px', maxHeight: '80vh' }}>
+        <Bar options={options} data={data} />
+      </div>
       <p className="text-sm text-gray-500 text-center mt-4">
         比較就業者的主觀憂慮與產業專家客觀評估的風險程度
       </p>
