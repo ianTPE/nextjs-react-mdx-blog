@@ -22,6 +22,7 @@ const CustomButton = ({
   type="button"
   onClick={handleClick}
   className={`
+    flex items-center justify-center   /* ← 新增這行 */
     px-5 py-3
     bg-gradient-to-r from-blue-500 to-indigo-600
     text-white font-medium
