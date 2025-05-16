@@ -23,10 +23,9 @@ const CustomButton = ({
   onClick={handleClick}
   className={`
     inline-flex items-center justify-center
-    w-full h-full
     px-5 py-3
     bg-gradient-to-r from-blue-500 to-indigo-600
-    text-white font-medium
+    text-white font-medium text-center
     rounded-xl shadow-lg
     hover:from-blue-600 hover:to-indigo-700
     active:scale-95
