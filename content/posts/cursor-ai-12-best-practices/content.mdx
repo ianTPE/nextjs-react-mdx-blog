@@ -1,0 +1,478 @@
+# Cursor 正確使用方法與實踐解讀
+
+## 引言
+
+Cursor 是一款強大的 AI 程式設計工具，當正確使用時，能夠協助開發者生成快速、乾淨的程式碼。然而，不當使用則可能導致「AI 義大利麵條程式碼」—那種混亂、難以維護的程式碼，可能讓你花上一整週的時間來清理。
+
+Cursor 首席設計師 Ryo Lu 提出了 12 條正確使用方法，本文將逐一解析這些方法，並提供實際例子，幫助你充分發揮 Cursor 的潛力。
+
+## Cursor 的 12 條正確使用方法
+
+### 1. 事先設定 5-10 條明確的專案規則，讓 Cursor 了解您的架構和限制
+
+為 Cursor 設定明確的專案規則，就像是為它提供一份專案的「使用手冊」。這些規則幫助 AI 理解您專案的結構、技術選型、編碼風格以及內部約定。
+
+**實踐方法：**
+- 使用 Project Rules 替代舊有的 .cursorrules
+- 包含檔案結構、命名約定、必須使用的庫或框架等資訊
+- 對於現有程式碼庫，可以使用 `/generate rules` 命令自動生成初步規則
+
+**例子：**
+```
+React 專案規則：
+1. 使用 functional components 和 hooks，避免 class components
+2. 檔案結構：pages/ 存放路由頁面，components/ 存放共用元件
+3. 樣式使用 Tailwind CSS，避免內聯樣式
+4. 狀態管理使用 Context API 和 useReducer
+5. API 請求放在 services/ 資料夾中，使用 React Query
+6. 命名約定：駝峰式命名法(camelCase)用於變數和函式，帕斯卡命名法(PascalCase)用於元件
+7. 所有元件必須包含 PropTypes
+8. 所有頁面必須實作 SEO 元數據
+```
+
+當你使用 `/generate rules` 在現有專案中，Cursor 會分析程式碼並產生類似上面的規則列表，然後你可以根據需要進行調整。
+
+### 2. 在提示詞中要具體，清楚說明技術棧、行為和限制，就像一個迷你規格書
+
+提示詞的品質直接決定了 Cursor 輸出的品質。具體、詳細的提示詞能大幅提高 AI 正確理解需求的可能性。
+
+**實踐方法：**
+- 明確說明您使用的技術棧（程式語言、框架、庫等）
+- 詳細描述預期的行為和功能，包括輸入、處理流程和輸出
+- 列出任何限制條件（效能要求、安全性考量、不允許使用的功能等）
+
+**例子：**
+模糊的提示詞：
+```
+幫我創建一個購物車功能
+```
+
+具體的提示詞：
+```
+使用 React 18 和 TypeScript 創建一個購物車元件，需要實現以下功能：
+1. 產品顯示：圖片、名稱、價格和數量
+2. 可以增加/減少數量或移除產品
+3. 自動計算總金額，包含稅金（稅率8.5%）
+4. 使用 React Context 管理購物車狀態
+5. 實作本地儲存功能，在頁面重新整理後保持購物車內容
+6. 效能要求：元件需要使用 memo、useMemo 最佳化渲染
+7. 必須支援行動裝置響應式設計
+8. 使用 Tailwind CSS 進行樣式設定
+```
+
+### 3. 逐檔案作業，以小而集中的區塊進行生成、測試和審查
+
+採用漸進式的工作流程，將大任務分解為小區塊，能顯著提高 Cursor 的效率和準確性。
+
+**實踐方法：**
+- 聚焦於單個檔案，而非嘗試一次處理整個專案
+- 進一步將任務分解為小的功能或邏輯區塊
+- 在每個小區塊生成後，立即進行測試和審查
+
+**例子：**
+假設你正在開發一個電子商務網站，而不是要求 Cursor「為我建立一個完整的電子商務系統」，你可以這樣分解：
+
+1. 首先專注於產品列表頁面：
+   ```
+   創建 ProductList.tsx 元件，顯示產品卡片網格，包含分頁功能
+   ```
+
+2. 然後實作產品卡片元件：
+   ```
+   創建 ProductCard.tsx 元件，展示產品圖片、名稱、價格和「加入購物車」按鈕
+   ```
+
+3. 再開發篩選功能：
+   ```
+   在 ProductFilter.tsx 中實作價格範圍、類別、排序等篩選選項
+   ```
+
+完成每個元件後，立即進行測試和審查，然後再進行下一個元件。
+
+### 4. 先寫測試，鎖定測試，然後生成程式碼直到所有測試通過
+
+這是將測試驅動開發（TDD）與 AI 輔助開發相結合的方法，能有效確保程式碼的正確性。
+
+**實踐方法：**
+- 首先為將要實現的功能寫自動化測試
+- 測試寫好後，視其為功能的規格或要求，不輕易更改
+- 使用 Cursor 生成或修改程式碼，直到所有測試通過
+
+**例子：**
+假設你需要實作一個驗證使用者密碼強度的函數：
+
+1. 首先編寫測試：
+```javascript
+// passwordValidator.test.js
+describe('passwordValidator', () => {
+  it('should return false for passwords shorter than 8 characters', () => {
+    expect(passwordValidator('short')).toBe(false);
+  });
+  
+  it('should return false for passwords without uppercase letters', () => {
+    expect(passwordValidator('onlylowercase123')).toBe(false);
+  });
+  
+  it('should return false for passwords without numbers', () => {
+    expect(passwordValidator('OnlyLetters')).toBe(false);
+  });
+  
+  it('should return true for valid passwords', () => {
+    expect(passwordValidator('ValidPass123')).toBe(true);
+  });
+});
+```
+
+2. 然後讓 Cursor 生成符合測試的實作：
+```
+請根據測試檔案 passwordValidator.test.js 實作 passwordValidator 函數，
+該函數應驗證密碼是否至少 8 個字元、包含大寫字母和數字
+```
+
+### 5. 始終審查 AI 輸出並硬核修復任何破壞性的改動，然後告訴 Cursor 將其作為範例使用
+
+這條建議強調了開發者在 AI 輔助開發中的主導角色和責任。
+
+**實踐方法：**
+- 仔細審查 Cursor 生成的每一段程式碼
+- 發現問題時，親自介入並「硬核地」手動修復
+- 將修正後的正確程式碼回饋給 Cursor，讓它學習您的修改
+
+**例子：**
+假設 Cursor 生成了這段有問題的程式碼：
+
+```javascript
+// 有問題的程式碼
+function calculateTotalPrice(items) {
+  let total = 0;
+  items.forEach(item => {
+    // 沒有檢查 price 是否存在，可能導致 NaN
+    total += item.price * item.quantity;
+  });
+  return total;
+}
+```
+
+你檢查後發現潛在錯誤，手動修正如下：
+
+```javascript
+// 修正後的程式碼
+function calculateTotalPrice(items) {
+  if (!Array.isArray(items) || items.length === 0) return 0;
+  
+  return items.reduce((total, item) => {
+    // 添加安全檢查，避免 NaN
+    const price = Number(item.price) || 0;
+    const quantity = Number(item.quantity) || 0;
+    return total + (price * quantity);
+  }, 0);
+}
+```
+
+然後告訴 Cursor：
+```
+我修正了 calculateTotalPrice 函數，添加了輸入驗證和空值處理。請以此作為處理類似函數的範例，確保添加適當的輸入檢查和類型轉換。
+```
+
+### 6. 使用 @ file, @ folders, @ git 來限制 Cursor 的注意力範圍
+
+有效管理 AI 的「上下文」或「注意力」範圍，是提高 Cursor 效能的關鍵。
+
+**實踐方法：**
+- 使用 @ file 指定一個或多個特定檔案作為參考
+- 使用 @ folders 指定資料夾及其子資料夾作為搜尋範圍
+- 使用 @ git 聚焦於版本控制下的特定變更或狀態
+
+**例子：**
+想要更新一個元件時，可以這樣使用 @ file：
+```
+@file src/components/UserProfile.tsx @file src/types/User.ts
+
+在 UserProfile 元件中添加使用者頭像上傳功能，使用 User 類型中定義的 avatarUrl 屬性
+```
+
+使用 @ folders 分析所有認證相關檔案：
+```
+@folders src/auth
+
+分析我們的認證系統，找出目前實作中的安全漏洞
+```
+
+使用 @ git 查看最近的更改：
+```
+@git HEAD~5
+
+分析最近五次提交中對資料庫查詢的修改，檢查是否有效能問題
+```
+
+### 7. 在 .cursor/ 資料夾中保留設計文件和清單
+
+這種方法擴展了「上下文」的概念，從程式碼層面延伸到專案和任務層面。
+
+**實踐方法：**
+- 在 .cursor/ 資料夾中存放功能需求、介面設計、系統架構概覽等設計文件
+- 保存任務清單、開發步驟等計畫文件
+- 確保這些文件定期更新，反映最新的專案狀態和目標
+
+**例子：**
+```
+項目結構：
+/project
+  /.cursor/
+    /design/
+      architecture.md   # 系統架構概覽
+      api-endpoints.md  # API端點文檔
+      db-schema.md      # 數據庫結構
+    /tasks/
+      roadmap.md        # 開發路線圖
+      current-sprint.md # 當前衝刺任務
+    /standards/
+      code-review.md    # 代碼審查標準
+```
+
+在 `architecture.md` 中你可能會有：
+```markdown
+# 系統架構
+
+## 前端架構
+- React 單頁應用
+- Redux 狀態管理
+- React Router 處理路由
+
+## 後端架構
+- Node.js Express API 服務
+- PostgreSQL 數據庫
+- Redis 緩存
+
+## 微服務
+- 用戶認證服務 (Port 3001)
+- 支付處理服務 (Port 3002)
+- 通知服務 (Port 3003)
+```
+
+### 8. 如果程式碼錯了，就自己寫，Cursor 從編輯中學習比從解釋中學習更快
+
+這條建議提供了一種高效的「教導」或「引導」Cursor 的方法。
+
+**實踐方法：**
+- 當 Cursor 生成錯誤程式碼時，不要花時間詳細解釋錯誤
+- 直接手動編輯並修正程式碼，或從頭重寫
+- 讓 Cursor「觀察」您的編輯行為，從中學習
+
+**例子：**
+假設 Cursor 生成了以下不符合你項目風格的 React 元件：
+
+```jsx
+// Cursor 生成的程式碼
+class ProductDisplay extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { quantity: 1 };
+  }
+  
+  render() {
+    return (
+      <div className="product">
+        <h2>{this.props.product.name}</h2>
+        <p>${this.props.product.price}</p>
+        <button onClick={() => this.setState({ quantity: this.state.quantity + 1 })}>+</button>
+        <span>{this.state.quantity}</span>
+        <button onClick={() => this.setState({ quantity: Math.max(1, this.state.quantity - 1) })}>-</button>
+      </div>
+    );
+  }
+}
+```
+
+不要解釋為什麼這不對，直接重寫為：
+
+```jsx
+// 你的修正版本
+const ProductDisplay = ({ product }) => {
+  const [quantity, setQuantity] = useState(1);
+  
+  const incrementQuantity = () => setQuantity(prev => prev + 1);
+  const decrementQuantity = () => setQuantity(prev => Math.max(1, prev - 1));
+  
+  return (
+    <div className="flex flex-col p-4 border rounded-lg">
+      <h2 className="text-xl font-bold">{product.name}</h2>
+      <p className="text-green-600">${product.price}</p>
+      <div className="flex items-center mt-2">
+        <button 
+          onClick={decrementQuantity}
+          className="px-3 py-1 bg-gray-200 rounded-l-lg"
+        >
+          -
+        </button>
+        <span className="px-4 py-1 bg-gray-100">{quantity}</span>
+        <button 
+          onClick={incrementQuantity}
+          className="px-3 py-1 bg-gray-200 rounded-r-lg"
+        >
+          +
+        </button>
+      </div>
+    </div>
+  );
+};
+```
+
+Cursor 將從你的修改中學習：使用函數組件而非類組件、使用 hooks、提取函數、使用 Tailwind 樣式等。
+
+### 9. 利用聊天歷史記錄，在舊的提示詞基礎上迭代，而無需從頭開始
+
+將與 Cursor 的互動視為持續的對話，能大幅提高工作效率。
+
+**實踐方法：**
+- 在同一個聊天執行緒中發出後續的修改或擴展請求
+- 參考之前的對話內容，無需重複提供已有的背景資訊
+- 使用簡短、精確的指令來調整或擴展之前生成的程式碼
+
+**例子：**
+初始請求：
+```
+創建一個用戶註冊表單，包含姓名、電子郵件和密碼欄位，使用 React Hook Form 進行表單處理
+```
+
+而不是為每個新功能重新寫完整的提示詞，可以在同一對話中迭代：
+```
+添加密碼強度檢查功能
+```
+
+然後：
+```
+添加電子郵件驗證，確保使用有效的格式
+```
+
+接著：
+```
+添加表單提交時的載入狀態，並處理後端 API 提交
+```
+
+Cursor 會記住之前的對話內容，每次迭代都基於前一個版本，保持一致性且避免重複。
+
+### 10. 有目的地選擇模型，Gemini 適合精確，Claude 適合廣度
+
+了解不同 AI 模型的特點，並根據任務需求選擇合適的模型，是高效使用 Cursor 的重要策略。
+
+**實踐方法：**
+- 需要精確、具體輸出時，考慮使用 Gemini 模型
+- 需要創意思考、廣泛探索或處理複雜概念時，考慮使用 Claude 模型
+- 根據專案類型和階段，靈活切換或組合使用不同模型
+
+**例子：**
+使用 Gemini 的情境：
+```
+使用 Gemini 模型：生成符合 OpenAPI 3.0 規範的 REST API 文檔，需要精確的 JSON 結構和正確的語法
+```
+
+使用 Claude 的情境：
+```
+使用 Claude 模型：為我的電子商務應用設計一個創新的產品推薦系統，探索不同的算法和使用者體驗方法
+```
+
+混合使用的策略：
+```
+在專案初期使用 Claude 進行廣泛的架構設計和創意發想，
+然後在實作階段切換到 Gemini 編寫精確的程式碼和測試
+```
+
+### 11. 在新的或不熟悉的技術棧中，貼上文件連結
+
+當處理不熟悉的技術時，為 AI 提供官方文檔是加速學習和排錯的有效方法。
+
+**實踐方法：**
+- 向 Cursor 提供相關技術的官方文檔連結
+- 要求 Cursor 根據文檔逐行解釋程式碼中的錯誤
+- 讓 Cursor 詳細說明每個錯誤的修復方法
+
+**例子：**
+當學習 Svelte 這個新框架時：
+```
+我正在學習 Svelte，這是官方文檔：https://svelte.dev/docs
+這是我的程式碼，但它有錯誤：
+
+<script>
+  let count = 0;
+  
+  function handleClick() {
+    count += 1;
+  }
+</script>
+
+<h1>Count: {count}</h1>
+<button on:clicked={handleClick}>增加</button>
+
+請根據文檔逐行解釋我的錯誤，並提供正確的寫法
+```
+
+Cursor 可能會回應：
+```
+根據 Svelte 文檔，你的程式碼有一個錯誤：
+
+在 <button> 元素中，事件處理器的語法不正確。
+你寫的是：on:clicked={handleClick}
+正確的應該是：on:click={handleClick}
+
+在 Svelte 中，內建事件使用 on:事件名稱 的格式，而不是 on:事件名稱d。
+點擊事件是 "click" 而不是 "clicked"。
+
+正確的程式碼應該是：
+
+<script>
+  let count = 0;
+  
+  function handleClick() {
+    count += 1;
+  }
+</script>
+
+<h1>Count: {count}</h1>
+<button on:click={handleClick}>增加</button>
+```
+
+### 12. 讓大型專案在夜間索引，並限制上下文範圍以保持效能流暢
+
+這條建議針對大型專案的效能優化，確保 Cursor 在處理複雜專案時仍能保持高效運作。
+
+**實踐方法：**
+- 安排在夜間或非工作時段進行資源密集型的索引處理
+- 在日常使用中，有意識地限制 AI 處理的程式碼範圍
+- 使用前面提到的 @ file, @ folders 等技巧來精確控制上下文
+
+**例子：**
+大型專案的夜間索引設定：
+```
+在 Cursor 設定中，找到「資料庫和索引」選項
+設定自動索引時間為晚上 11:00 PM
+配置索引範圍包含主要的 src/ 目錄，但排除 node_modules/ 和 dist/
+啟用「增量索引」選項，只處理最近修改的檔案
+```
+
+日常使用中限制上下文範圍：
+```
+@folders src/features/checkout
+
+只關注結帳功能模組，分析這個模組中的支付處理流程，
+並找出可能的改進方向
+```
+
+使用工作區設定來管理大型專案：
+```
+為不同模組創建分開的工作區設定
+例如：
+- 前端工作區：只索引 frontend/ 目錄
+- 後端工作區：只索引 backend/ 目錄
+- 數據庫工作區：只索引與數據庫相關的檔案
+
+根據當前任務切換工作區，避免同時載入整個專案
+```
+
+## 總結
+
+正確使用 Cursor 的關鍵在於結構化和控制。就像 Ryo Lu 所說，將 Cursor 視為一個「強大的初級工程師」—它可以走得很遠、很快，前提是你必須為它指明方向。
+
+通過實施這 12 條正確用法，你可以顯著提高 Cursor 生成的程式碼品質，減少錯誤，提升開發效率，最終充分發揮 AI 輔助程式設計的潛力。
+
+記住，AI 是強大的工具，但優秀的開發者仍然是決定最終程式碼品質的關鍵。保持對 AI 輸出的警惕和控制，結合你的專業判斷，才能達到最佳的開發效果。

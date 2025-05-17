@@ -5,11 +5,68 @@ trigger: manual
 # Next.js React MDX Blog Project Rules
 
 ## Project Overview
-- **Architecture**: Next.js 15.3.2 with App Router, MDX 3.1.0, React 19.0.0
-- **Content Structure**: Blog posts in `/content/posts/{slug}/content.mdx`
-- **Custom Components**: Global in `/components/mdx/` and per-post in `/content/posts/{slug}/components/`
-- **Metadata**: Centrally managed in `/content/metadata.ts`
-- **Features**: Code highlighting, charts, Mermaid diagrams, Framer Motion animations
+This is a well-structured Next.js blog project leveraging the App Router and MDX for flexible content management. It uses the latest stable versions of all core technologies to ensure optimal performance and development experience.
+
+* **Next.js**: Latest version with App Router
+* **React**: Latest stable release
+* **TypeScript**: Latest stable release
+* **MDX**: Latest stable release
+* **Styling**: Tailwind CSS v4
+* **Animations**: Framer Motion
+
+## Content Structure
+The project organizes blog content and metadata in a clear, scalable folder layout:
+
+```
+/content
+  /posts
+    /{slug}
+      content.mdx
+      /components
+        CustomChart.tsx
+        ...
+/content/metadata.ts
+```
+
+* **content.mdx**: Primary Markdown + JSX file for each post.
+* **components**: Local components specific to a particular post (e.g., custom charts, interactive widgets). These are auto-loaded during MDX rendering.
+* **metadata.ts**: Centralized metadata file exporting an array or object containing each post's title, date, summary, tags, and other attributes. Used throughout the site for listing, SEO, sitemap generation, and RSS feeds.
+
+### Why Separate Metadata
+* **Performance**: Avoid reading full MDX files when only metadata is needed.
+* **Tooling Integration**: External tools like sitemap generators or RSS builders can consume metadata directly without parsing MDX.
+
+## Component Architecture
+This project supports two categories of MDX components, with a clear override mechanism:
+
+1. **Global Components**
+   * Location: `components/mdx/global-components/`
+   * Scope: Available to all posts.
+   * Usage: Generic elements such as headings, alerts, code blocks, and reusable design system components.
+
+2. **Local Components**
+   * Location: `content/posts/[slug]/components/`
+   * Scope: Only available within the corresponding post.
+   * Usage: Post-specific interactive charts, custom visualizations, or unique content widgets.
+
+3. **Override Behavior**
+   * When a component name exists in both global and local directories, the local component takes precedence.
+   * This allows individual posts to customize or extend global behavior without changing the shared component library.
+
+## MDX Usage Example
+
+```mdx
+import CustomChart from './components/CustomChart'
+import AlertBox from 'components/mdx/global-components/AlertBox'
+
+# Sample Post Title
+
+Here is a post-specific chart:
+<CustomChart data={chartData} />
+
+And here is a global alert component:
+<AlertBox type="warning">This is a warning message.</AlertBox>
+```
 
 ## Key Files
 - `/app/blog/[slug]/page.tsx` - Dynamic routes for blog posts
@@ -48,33 +105,12 @@ trigger: manual
 - Consider `next/dynamic` for component-level code splitting
 - Performance budget: 200KB bundle (gzipped), LCP < 2.5s, TTI < 5s on 3G
 
-#### Performance Monitoring
-- Use `next/lint` and `@next/bundle-analyzer` for bundle size analysis
-- Integrate Lighthouse CI for performance regression testing
-- Set up Web Vitals monitoring and alerts
-- Conduct regular performance audits (quarterly minimum)
-- Monitor Real User Metrics (RUM)
-- Set budgets and alerts for Core Web Vitals
-
 ### MDX Implementation
 - Maintain separation between content and metadata
+- Support both global and local components
 - Process MDX client-side with next-mdx-remote
 - Use proper error handling in MDX rendering
 - Test MDX content with custom components before deployment
-
-#### MDX Component Scope
-- **Global Components** (`/components/mdx/`): Shared across multiple posts
-- **Post-specific Components**: Place in `/content/posts/{slug}/components/`
-- Post-specific components take precedence in naming conflicts
-- Keep components stateless when possible for better reusability
-- Avoid direct style imports; use Tailwind utility classes
-
-#### Error Handling
-- Add React Error Boundary to MDX renderer
-- Provide meaningful error messages and recovery options
-- Log client-side errors to a monitoring service
-- Implement fallback UI for component loading failures
-- Validate custom components in MDX content
 
 ### Accessibility
 - Use semantic HTML elements
@@ -89,54 +125,25 @@ trigger: manual
 - Document props with TypeScript interfaces
 - Include usage examples in component files
 - Keep README.md updated
-- Document known limitations and edge cases
+- Document known limitations
 
 ### Git Workflow
 - Use feature branches (`feature/feature-name`)
 - Use bugfix branches (`bugfix/issue-description`)
 - Write conventional commit messages
 - Reference issue numbers when applicable
-- Create pull requests for code review
 
-### Testing Strategy
-
-#### Unit Testing
-- Use Jest and React Testing Library
-- Test utility and pure functions
+### Testing
+- Write tests for utility functions
 - Test component rendering and interactions
-- Simulate user events and behaviors
-
-#### Integration Testing
-- Test component compositions
-- Verify page-level interactions
-- Validate data flow and state management
-
-#### End-to-End Testing
-- Use Cypress or Playwright
-- Test critical user journeys
-- Include both mobile and desktop test cases
-- Implement visual regression testing
-
-#### MDX Content Testing
-- Validate MDX syntax
-- Test custom components within MDX
-- Verify metadata integrity and correctness
-
-#### Performance Testing
-- Monitor bundle size changes
-- Test loading performance
-- Validate Core Web Vitals metrics
-- Set performance budgets
+- Test critical user flows
+- Include mobile and desktop test cases
 
 ### Security
 - Keep dependencies updated
 - Use environment variables for sensitive information
-- Sanitize all user inputs
-- Implement proper authentication and authorization
-- Regular security audits
+- Sanitize user inputs
 
 ### Browser Support
 - Support latest 2 versions of major browsers
 - Ensure graceful degradation for older browsers
-- Test on real devices when possible
-- Document known browser-specific issues
