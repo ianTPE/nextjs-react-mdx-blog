@@ -1,89 +1,102 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js MDX 博客
 
-## Getting Started
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-First, run the development server:
+一個基於 Next.js 和 MDX 的現代化博客系統，專注於性能、可訪問性和開發體驗。
+
+## 功能特點
+
+- ⚡ **極速加載**：使用 Next.js 13+ App Router 和 React Server Components
+- 📝 **強大的內容管理**：支持 MDX 和 Markdown
+- 🎨 **響應式設計**：完美適配移動端和桌面端
+- 🚀 **優化的性能**：自動圖片優化、代碼分割等
+- ♿ **無障礙優先**：遵循 WCAG 2.1 標準
+- 🔍 **SEO 友好**：自動生成 sitemap 和 RSS 訂閱
+
+## 快速開始
+
+### 環境要求
+
+- Node.js 18.0.0 或更高版本
+- npm 或 yarn
+
+### 安裝依賴
+
+```bash
+npm install
+# 或
+yarn install
+```
+
+### 開發模式
 
 ```bash
 npm run dev
-# or
+# 或
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+然後在瀏覽器中打開 [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 生產構建
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
----
+## 項目結構
 
-## Why Separate Metadata (metadata.ts) from MDX/TSX Content?
+```
+.
+├── .github/               # GitHub 工作流程
+├── .husky/                # Git 鉤子
+├── app/                   # Next.js 13+ App Router
+│   ├── api/               # API 路由
+│   ├── blog/              # 博客文章
+│   └── (marketing)/       # 營銷頁面
+├── components/            # 可重用組件
+│   ├── ui/                # UI 組件
+│   └── icons/             # SVG 圖標
+├── config/                # 配置文件
+├── content/               # MDX 內容
+├── lib/                   # 工具函數
+├── public/                # 靜態文件
+├── styles/                # 全局樣式
+└── types/                 # TypeScript 類型定義
+```
 
-**Best Practice: Always keep metadata (like title, date, tags, excerpt, coverImage, etc) in a separate file, such as `metadata.ts`, instead of mixing YAML frontmatter or `export const ...` in your MDX/TSX content files.**
+## 添加新文章
 
-### Why?
+1. 在 `content/posts` 目錄下創建新文件夾
+2. 添加 `content.mdx` 文件（文章內容）
+3. 添加 `metadata.ts` 文件（文章元數據）
 
-- **Parsing Conflicts**: MDX loaders and TypeScript/JSX compilers may compete to parse the same file. If you use YAML frontmatter in `.tsx` files, or forget to configure MDX plugins, you'll get syntax errors (like `Unexpected token`).
-- **Plugin/Config Required**: MDX does not support frontmatter by default. You must install and configure plugins like `remark-frontmatter` and `remark-mdx-frontmatter` for correct parsing. Missing these will break your build.
-- **Extension Matters**: Only `.mdx` files with proper loader config can use frontmatter. `.tsx` files will always error on YAML blocks.
-- **Maintenance & Clarity**: Keeping all metadata in one place (`metadata.ts`) makes your codebase much easier to maintain, update, and debug.
-- **Performance**: Separating metadata allows faster and more reliable builds, as metadata can be loaded and indexed independently.
-
-### CommonMark and Metadata
-
-- CommonMark (the Markdown standard) does **not** define or require frontmatter or metadata blocks. Frontmatter is an ecosystem convention, not a standard.
-- Some tools (like Jekyll, Hugo, Docusaurus) support YAML frontmatter, but this is not portable or universal.
-- MDX supports metadata via plugins, or by using ESM exports (e.g. `export const title = ...`), but this is not CommonMark standard.
-
-### Recommended Approach
-
-- Store all metadata in a single `metadata.ts` (or `.js`, `.json`, etc) file, and import/use as needed.
-- Keep your MDX/TSX files focused on content and components, not metadata.
-
-#### Example
+示例 `metadata.ts`:
 
 ```typescript
-// content/metadata.ts
-export const postsMetadata = {
-  'my-article': {
-    title: '我的文章',
-    date: '2025-05-12',
-    tags: ['CommonMark', 'metadata']
-  }
+export const metadata = {
+  title: '文章標題',
+  date: '2023-01-01',
+  description: '文章描述',
+  tags: ['標籤1', '標籤2'],
+  coverImage: '/images/posts/example.jpg',
+  published: true,
 };
 ```
 
-```mdx
-// content/posts/my-article/content.mdx
-import { postsMetadata } from '../metadata';
+## 開發規範
 
-# {postsMetadata['my-article'].title}
+請參閱 [CONTRIBUTING.md](CONTRIBUTING.md) 了解代碼風格、提交規範和貢獻指南。
 
-內容正文...
-```
+## 性能優化
 
-**Summary:**
-- Separating metadata makes your project more robust, maintainable, and avoids confusing build errors.
-- This is especially important for complex MDX/TSX projects with lots of React components.
+- 圖片優化：使用 Next.js Image 組件
+- 字體優化：使用 `next/font`
+- 代碼分割：自動路由級代碼分割
+- 靜態生成：預渲染頁面以獲得最佳性能
 
----
+## 許可證
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+本項目採用 [MIT 許可證](LICENSE)。
