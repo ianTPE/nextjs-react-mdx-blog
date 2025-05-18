@@ -141,12 +141,12 @@ const QuestionTypeDistributionChart = () => {
         }
       }
     },
-    // 添加動畫效果
+    // 添加動畫效果 - 修正 easing 類型為 Chart.js 支持的值
     animation: {
       animateRotate: true,
       animateScale: true,
       duration: 1200,
-      easing: 'easeOutQuart',
+      easing: 'easeInOutQuart' as const,
     },
     cutout: '0%', // 確保是完整的餅圖
     radius: '90%', // 稍微縮小半徑以適應容器
