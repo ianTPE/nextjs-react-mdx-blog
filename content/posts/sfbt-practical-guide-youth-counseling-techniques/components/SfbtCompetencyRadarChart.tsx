@@ -64,7 +64,14 @@ const SfbtCompetencyRadarChart = () => {
     responsive: true,
     plugins: {
       legend: {
-        position: isDesktop ? 'bottom' : 'right',
+        position: (isDesktop ? 'bottom' : 'right') as 'bottom' | 'right',
+      },
+      title: {
+        display: true,
+        text: 'SFBT不同學習階段能力雷達圖（0-10分）',
+        font: {
+          size: 16,
+        },
       },
     },
     scales: {
@@ -79,18 +86,6 @@ const SfbtCompetencyRadarChart = () => {
           font: {
             size: 12,
           },
-        },
-      },
-    },
-    plugins: {
-      legend: {
-        position: 'top' as const,
-      },
-      title: {
-        display: true,
-        text: 'SFBT不同學習階段能力雷達圖（0-10分）',
-        font: {
-          size: 16,
         },
       },
     },
