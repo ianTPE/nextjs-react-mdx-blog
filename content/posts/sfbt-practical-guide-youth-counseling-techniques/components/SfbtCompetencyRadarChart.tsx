@@ -91,9 +91,7 @@ const SfbtCompetencyRadarChart = () => {
 
   return (
     <div className="chart-container p-4 bg-white rounded-lg shadow-md">
-      <div style={{ height: '350px', minHeight: '350px' }}>
-        <Radar data={data} options={options} />
-      </div>
+      <Radar data={data} options={options} />
       <div className="text-sm text-gray-500 mt-2 text-center">
         *數據基於研習課程參與者自評與講師評量
       </div>

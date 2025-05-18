@@ -68,9 +68,7 @@ const QuestionTypeDistributionChart = () => {
 
   return (
     <div className="chart-container p-4 bg-white rounded-lg shadow-md">
-      <div style={{ height: '350px', minHeight: '350px' }}>
-        <Pie data={data} options={options} />
-      </div>
+      <Pie data={data} options={options} />
       <div className="text-sm text-gray-500 mt-2 text-center">
         *數據基於研習課程中實際案例分析與練習紀錄
       </div>
