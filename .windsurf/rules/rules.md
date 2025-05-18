@@ -262,4 +262,56 @@ With the barrel file approach, the MDX loader automatically resolves components 
    ```
    Solution: Restructure imports to avoid circular dependencies between client and server components.
 
+## Responsive Chart Component Rules
+
+### Requirements for All Chart Components
+
+All chart components in this project must follow these requirements to ensure proper display across devices:
+
+1. **Container Structure**:
+   * Use flexible height with minimum and maximum constraints: 
+     ```jsx
+     <div className="p-4 pb-8 bg-white rounded-lg shadow-md min-h-[300px] max-h-[350px] sm:min-h-[350px] sm:max-h-[400px] lg:min-h-[400px] lg:max-h-[500px] flex flex-col items-center mb-4">
+     ```
+   * Include bottom padding (`pb-8`) to accommodate footnotes/captions
+   * Add vertical margin (`mb-4`) to prevent content overlap in MDX
+
+2. **Responsive Configuration**:
+   * Define screen breakpoint detection:
+     ```typescript
+     const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 640;
+     ```
+   * Adjust `maintainAspectRatio` dynamically:
+     ```typescript
+     maintainAspectRatio: isDesktop, // true for desktop, false for mobile
+     ```
+   * Position legends appropriately by screen size:
+     ```typescript
+     legend: {
+       position: (isDesktop ? 'bottom' : 'right') as 'bottom' | 'right',
+     }
+     ```
+
+3. **Type Safety**:
+   * Import correct TypeScript types:
+     ```typescript
+     import { type TooltipItem } from 'chart.js';
+     ```
+   * Use proper typing for chart callbacks:
+     ```typescript
+     label: (context: TooltipItem<'pie'>) => { /* ... */ }
+     ```
+   * Use arrow functions instead of function expressions
+
+4. **Footnotes/Caption Structure**:
+   * Place captions within chart container as siblings to chart component
+   * Use consistent styling:
+     ```jsx
+     <div className="text-sm text-gray-500 mt-2 text-center">
+       *Caption text here
+     </div>
+     ```
+
+Following these rules ensures charts render correctly across all devices without text overflow or display issues.
+
 Always run `next build` locally before deployment to catch these issues early.
