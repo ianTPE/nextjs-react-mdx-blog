@@ -86,8 +86,19 @@ const CaseProgressChart = () => {
   };
 
   return (
-    <div className="chart-container p-4 bg-white rounded-lg shadow-md">
-      <Line data={data} options={options} />
+    <div
+      className={
+        `chart-container p-4 bg-white rounded-lg shadow-md ` +
+        (typeof window !== 'undefined' && window.innerWidth < 640 ? 'h-[300px]' : 'h-auto')
+      }
+    >
+      <Line
+        data={data}
+        options={{
+          ...options,
+          maintainAspectRatio: typeof window !== 'undefined' && window.innerWidth < 640 ? false : true,
+        }}
+      />
       <div className="text-sm text-gray-500 mt-2 text-center">
         *數據基於案主自評與輔導者觀察記錄
       </div>
