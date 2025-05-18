@@ -47,7 +47,7 @@ const QuestionTypeDistributionChart = () => {
     maintainAspectRatio: true,
     plugins: {
       legend: {
-        position: isDesktop ? 'bottom' : 'right',
+        position: (isDesktop ? 'bottom' : 'right') as 'bottom' | 'right',
       },
       title: {
         display: true,
