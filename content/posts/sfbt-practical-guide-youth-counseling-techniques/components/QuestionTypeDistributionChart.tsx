@@ -36,7 +36,7 @@ const QuestionTypeDistributionChart = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const isDesktop = windowDimensions.width >= 640;
+  const isMobile = windowDimensions.width < 768;
 
   // 優化的色彩方案 - 使用和諧色彩
   const data = {
@@ -82,10 +82,10 @@ const QuestionTypeDistributionChart = () => {
   // 優化的圖表選項
   const options = {
     responsive: true,
-    maintainAspectRatio: isDesktop,
+    maintainAspectRatio: !isMobile,
     plugins: {
       legend: {
-        position: (isDesktop ? 'bottom' : 'right') as 'bottom' | 'right',
+        position: 'bottom' as const,
         labels: {
           font: {
             family: "'Noto Sans TC', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
@@ -153,7 +153,7 @@ const QuestionTypeDistributionChart = () => {
   };
 
   return (
-    <div className="chart-container p-6 pb-8 bg-white rounded-lg shadow-md min-h-[250px] max-h-[350px] sm:min-h-[350px] sm:max-h-[400px] lg:min-h-[400px] lg:max-h-[500px] flex flex-col items-center mb-4 border border-gray-100">
+    <div className="chart-container p-4 pb-6 bg-white rounded-lg shadow-md w-full max-w-3xl mx-auto flex flex-col items-center mb-4 border border-gray-100">
       {/* 半透明裝飾元素 */}
       <div className="w-full relative">
         <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-blue-50 to-transparent rounded-full -z-1 opacity-50"></div>
@@ -164,7 +164,7 @@ const QuestionTypeDistributionChart = () => {
       <h3 className="text-xl font-semibold text-gray-800 mb-2 text-center">SFBT問句類型分佈</h3>
       
       {/* 圖表 */}
-      <div className="w-full h-full flex justify-center items-center relative">
+      <div className="w-full flex justify-center items-center relative" style={{ height: isMobile ? '380px' : '350px' }}>
         <Pie data={data} options={options} />
       </div>
       
