@@ -98,18 +98,7 @@ const QuestionTypeDistributionChart = () => {
         },
       },
       title: {
-        display: true,
-        text: 'SFBT問句類型使用分佈',
-        font: {
-          family: "'Noto Sans TC', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
-          size: 18,
-          weight: 600
-        },
-        padding: {
-          top: 10,
-          bottom: 20
-        },
-        color: '#333333'
+        display: false
       },
       tooltip: {
         backgroundColor: 'rgba(255, 255, 255, 0.9)',
