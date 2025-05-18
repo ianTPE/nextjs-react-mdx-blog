@@ -64,7 +64,7 @@ const SfbtCompetencyRadarChart = () => {
     responsive: true,
     plugins: {
       legend: {
-        position: (isDesktop ? 'bottom' : 'right') as 'bottom' | 'right',
+        position: 'bottom' as const,
       },
       title: {
         display: true,
