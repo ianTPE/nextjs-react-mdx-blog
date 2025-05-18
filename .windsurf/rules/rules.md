@@ -23,6 +23,7 @@ The project organizes blog content and metadata in a clear, scalable folder layo
     /{slug}
       content.mdx
       /components
+        index.ts          # Barrel file for exporting components
         CustomChart.tsx
         ...
 /content/metadata.ts
@@ -30,6 +31,7 @@ The project organizes blog content and metadata in a clear, scalable folder layo
 
 * **content.mdx**: Primary Markdown + JSX file for each post.
 * **components**: Local components specific to a particular post (e.g., custom charts, interactive widgets). These are auto-loaded during MDX rendering.
+* **components/index.ts**: Barrel file that exports all local components, enabling cleaner MDX files without imports.
 * **metadata.ts**: Centralized metadata file exporting an array or object containing each post's title, date, summary, tags, and other attributes. Used throughout the site for listing, SEO, sitemap generation, and RSS feeds.
 
 ### Why Separate Metadata
@@ -48,13 +50,38 @@ This project supports two categories of MDX components, with a clear override me
    * Location: `content/posts/[slug]/components/`
    * Scope: Only available within the corresponding post.
    * Usage: Post-specific interactive charts, custom visualizations, or unique content widgets.
+   * **Best Practice**: Use `index.ts` barrel file to export all local components, which allows for cleaner MDX without import statements.
 
 3. **Override Behavior**
    * When a component name exists in both global and local directories, the local component takes precedence.
    * This allows individual posts to customize or extend global behavior without changing the shared component library.
 
+## Local Components Best Practices
+
+We use a barrel file approach (`index.ts`) for local components to keep MDX content clean and focused on content rather than technical details:
+
+```typescript
+// content/posts/[slug]/components/index.ts
+import ChartOne from './ChartOne';
+import ChartTwo from './ChartTwo';
+import CustomTable from './CustomTable';
+
+export {
+  ChartOne,
+  ChartTwo,
+  CustomTable
+};
+```
+
+This approach provides several benefits:
+* **Cleaner MDX Files**: No need for multiple import statements at the top of MDX files
+* **Centralized Component Management**: All components are exported from a single location
+* **Simplified Refactoring**: Component file names can be changed without updating MDX files
+* **Automatic Namespacing**: When MDX is rendered, components are automatically available in the namespace
+
 ## MDX Usage Example
 
+### Traditional Approach (with imports):
 ```mdx
 import CustomChart from './components/CustomChart'
 import AlertBox from 'components/mdx/global-components/AlertBox'
@@ -68,12 +95,26 @@ And here is a global alert component:
 <AlertBox type="warning">This is a warning message.</AlertBox>
 ```
 
+### Improved Approach (using index.ts barrel file):
+```mdx
+# Sample Post Title
+
+Here is a post-specific chart:
+<CustomChart data={chartData} />
+
+And here is a global alert component:
+<AlertBox type="warning">This is a warning message.</AlertBox>
+```
+
+With the barrel file approach, the MDX loader automatically resolves components from the index.ts exports, eliminating the need for explicit imports in the MDX file.
+
 ## Key Files
 - `/app/blog/[slug]/page.tsx` - Dynamic routes for blog posts
 - `/app/blog/[slug]/MDXRenderer.tsx` - Client-side MDX rendering
 - `/lib/mdx.ts` - Core content fetching functions
 - `/lib/mdx-loader.ts` - Custom component loading
 - `/content/metadata.ts` - Blog post metadata storage
+- `/content/posts/[slug]/components/index.ts` - Barrel files for local component exports
 
 ## Development Guidelines
 
@@ -89,6 +130,7 @@ And here is a global alert component:
 - Group related components in subdirectories
 - Keep components small and focused
 - Use descriptive names; prefix utilities with `with`
+- **Use index.ts barrel files** for component directories to simplify imports and MDX usage
 
 ### Code Style
 - Use ES6+ and functional components with hooks
@@ -108,9 +150,11 @@ And here is a global alert component:
 ### MDX Implementation
 - Maintain separation between content and metadata
 - Support both global and local components
+- **Use index.ts barrel files** to export local components for cleaner MDX content
 - Process MDX client-side with next-mdx-remote
 - Use proper error handling in MDX rendering
 - Test MDX content with custom components before deployment
+- Avoid imports in MDX files when possible by using the barrel file pattern
 
 ### Accessibility
 - Use semantic HTML elements

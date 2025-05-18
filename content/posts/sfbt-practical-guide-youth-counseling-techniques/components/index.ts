@@ -1,3 +1,5 @@
+"use client";
+
 import EffectivenessComparisonChart from './EffectivenessComparisonChart';
 import CaseProgressChart from './CaseProgressChart';
 import QuestionTypeDistributionChart from './QuestionTypeDistributionChart';
