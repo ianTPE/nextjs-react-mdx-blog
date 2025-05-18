@@ -90,7 +90,7 @@ const QuestionTypeDistributionChart = () => {
           font: {
             family: "'Noto Sans TC', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
             size: 13,
-            weight: '500' as const
+            weight: 500
           },
           padding: 20,
           usePointStyle: true,
@@ -103,7 +103,7 @@ const QuestionTypeDistributionChart = () => {
         font: {
           family: "'Noto Sans TC', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
           size: 18,
-          weight: '600' as const
+          weight: 600
         },
         padding: {
           top: 10,
@@ -122,7 +122,7 @@ const QuestionTypeDistributionChart = () => {
         titleFont: {
           family: "'Noto Sans TC', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
           size: 16,
-          weight: 'bold' as const
+          weight: 700
         },
         padding: 12,
         boxPadding: 8,
