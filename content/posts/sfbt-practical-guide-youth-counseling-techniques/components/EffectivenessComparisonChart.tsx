@@ -78,9 +78,46 @@ const EffectivenessComparisonChart = () => {
   };
 
   return (
-    <div className="chart-container p-4 bg-white rounded-lg shadow-md">
-      <Bar data={data} options={options} />
-      <div className="text-sm text-gray-500 mt-2 text-center">
+    <div className="chart-container p-4 bg-white rounded-lg shadow-md h-[400px] sm:h-auto">
+      <Bar 
+        data={data} 
+        options={{
+          ...options,
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            ...options.plugins,
+            legend: {
+              ...options.plugins.legend,
+              labels: {
+                font: {
+                  size: window.innerWidth < 640 ? 12 : 14
+                }
+              }
+            }
+          },
+          scales: {
+            ...options.scales,
+            x: {
+              ticks: {
+                font: {
+                  size: window.innerWidth < 640 ? 10 : 12
+                }
+              }
+            },
+            y: {
+              ...options.scales.y,
+              ticks: {
+                ...options.scales.y.ticks,
+                font: {
+                  size: window.innerWidth < 640 ? 10 : 12
+                }
+              }
+            }
+          }
+        }} 
+      />
+      <div className="text-xs sm:text-sm text-gray-500 mt-2 text-center">
         *數據基於SFBT實證研究文獻與實務工作者問卷調查彙整
       </div>
     </div>
