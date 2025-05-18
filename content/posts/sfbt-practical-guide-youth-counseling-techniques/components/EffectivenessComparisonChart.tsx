@@ -78,13 +78,18 @@ const EffectivenessComparisonChart = () => {
   };
 
   return (
-    <div className="chart-container p-4 pb-6 bg-white rounded-lg shadow-md h-[400px] sm:h-auto mb-6">
-      <Bar 
-        data={data} 
+    <div
+      className={
+        `chart-container p-4 pb-6 bg-white rounded-lg shadow-md mb-6 ` +
+        (typeof window !== 'undefined' && window.innerWidth < 640 ? 'h-[300px]' : 'h-auto')
+      }
+    >
+      <Bar
+        data={data}
         options={{
           ...options,
           responsive: true,
-          maintainAspectRatio: false,
+          maintainAspectRatio: typeof window !== 'undefined' && window.innerWidth < 640 ? false : true,
           plugins: {
             ...options.plugins,
             legend: {
