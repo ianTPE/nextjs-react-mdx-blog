@@ -79,7 +79,9 @@ const EffectivenessComparisonChart = () => {
 
   return (
     <div className="chart-container p-4 bg-white rounded-lg shadow-md">
-      <Bar data={data} options={options} />
+      <div style={{ height: '350px', minHeight: '350px' }}>
+        <Bar data={data} options={options} />
+      </div>
       <div className="text-sm text-gray-500 mt-2 text-center">
         *數據基於SFBT實證研究文獻與實務工作者問卷調查彙整
       </div>

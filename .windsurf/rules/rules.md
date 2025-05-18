@@ -56,12 +56,49 @@ This project supports two categories of MDX components, with a clear override me
    * When a component name exists in both global and local directories, the local component takes precedence.
    * This allows individual posts to customize or extend global behavior without changing the shared component library.
 
+## Server and Client Components
+
+With Next.js App Router, components are server components by default. For interactive components that require client-side JavaScript, you must mark them as client components:
+
+```typescript
+// content/posts/[slug]/components/ChartComponent.tsx
+"use client";
+
+import React from 'react';
+import { Chart } from 'chart.js';
+// Component code...
+```
+
+### Rules for Client Components
+
+1. **Always add the "use client" directive** at the top of any file that:
+   * Uses Chart.js, Recharts, or other visualization libraries
+   * Uses browser APIs (window, document, localStorage, etc.)
+   * Contains React hooks (useState, useEffect, useRef, etc.)
+   * Requires user interaction (event handlers, form inputs)
+   * Imports any other client component
+
+2. **Index barrel files must include "use client"** when exporting client components:
+   ```typescript
+   // content/posts/[slug]/components/index.ts
+   "use client";
+   
+   import ChartComponent from './ChartComponent';
+   export { ChartComponent };
+   ```
+
+3. **Build will fail** if client components are not properly marked, with errors like:
+   * "Functions cannot be passed directly to Client Components unless you explicitly expose it"
+   * "React hooks can only be used in Client Components"
+
 ## Local Components Best Practices
 
 We use a barrel file approach (`index.ts`) for local components to keep MDX content clean and focused on content rather than technical details:
 
 ```typescript
 // content/posts/[slug]/components/index.ts
+"use client";  // Add this when exporting any client components
+
 import ChartOne from './ChartOne';
 import ChartTwo from './ChartTwo';
 import CustomTable from './CustomTable';
@@ -131,6 +168,7 @@ With the barrel file approach, the MDX loader automatically resolves components 
 - Keep components small and focused
 - Use descriptive names; prefix utilities with `with`
 - **Use index.ts barrel files** for component directories to simplify imports and MDX usage
+- **Mark interactive components with "use client"** directive
 
 ### Code Style
 - Use ES6+ and functional components with hooks
@@ -138,6 +176,7 @@ With the barrel file approach, the MDX loader automatically resolves components 
 - Use TypeScript for new components
 - Use Tailwind CSS primarily; CSS modules for complex styles
 - Follow BEM for custom CSS classes
+- Clearly distinguish between server and client components
 
 ### Performance
 - Use Next.js `Image` component with specified dimensions
@@ -146,15 +185,18 @@ With the barrel file approach, the MDX loader automatically resolves components 
 - Use dynamic imports for heavy components
 - Consider `next/dynamic` for component-level code splitting
 - Performance budget: 200KB bundle (gzipped), LCP < 2.5s, TTI < 5s on 3G
+- Be mindful of the client/server boundary to minimize client-side JavaScript
 
 ### MDX Implementation
 - Maintain separation between content and metadata
 - Support both global and local components
 - **Use index.ts barrel files** to export local components for cleaner MDX content
+- **Add "use client" directive** to any component files that use interactive features or browser APIs
 - Process MDX client-side with next-mdx-remote
 - Use proper error handling in MDX rendering
 - Test MDX content with custom components before deployment
 - Avoid imports in MDX files when possible by using the barrel file pattern
+- Always run a local build (`next build`) before deployment to catch client/server errors
 
 ### Accessibility
 - Use semantic HTML elements
@@ -170,6 +212,7 @@ With the barrel file approach, the MDX loader automatically resolves components 
 - Include usage examples in component files
 - Keep README.md updated
 - Document known limitations
+- Document which components are client components
 
 ### Git Workflow
 - Use feature branches (`feature/feature-name`)
@@ -182,6 +225,7 @@ With the barrel file approach, the MDX loader automatically resolves components 
 - Test component rendering and interactions
 - Test critical user flows
 - Include mobile and desktop test cases
+- Verify build process for client/server component boundaries
 
 ### Security
 - Keep dependencies updated
@@ -191,3 +235,31 @@ With the barrel file approach, the MDX loader automatically resolves components 
 ### Browser Support
 - Support latest 2 versions of major browsers
 - Ensure graceful degradation for older browsers
+
+### Common Build Issues and Solutions
+
+1. **Client Component Error**:
+   ```
+   Error: Functions cannot be passed directly to Client Components unless you explicitly expose it
+   ```
+   Solution: Add "use client" directive at the top of component files and their index.ts exports.
+
+2. **React Hooks Error**:
+   ```
+   Error: React hooks can only be used in Client Components
+   ```
+   Solution: Add "use client" directive to any component using React hooks.
+
+3. **Browser API Error**:
+   ```
+   ReferenceError: window is not defined
+   ```
+   Solution: Add "use client" directive or use next/dynamic with ssr: false option.
+
+4. **Import Cycle Error**:
+   ```
+   Error: Import trace for requested module contains a cycle
+   ```
+   Solution: Restructure imports to avoid circular dependencies between client and server components.
+
+Always run `next build` locally before deployment to catch these issues early.
