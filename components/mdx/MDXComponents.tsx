@@ -3,6 +3,7 @@
 import type { ComponentType, ReactNode } from 'react';
 import CodeBlock from './CodeBlock';
 import { Table, THead, TBody, Th, Td, Tr } from './Table';
+import AlertComponent from './global-components/Alert';  // 重命名導入以避免名稱衝突
 
 type ComponentProps = {
   children?: ReactNode;
@@ -23,6 +24,11 @@ type MDXComponents = {
   th: ComponentType<{ children?: ReactNode; className?: string }>;
   td: ComponentType<{ children?: ReactNode; className?: string }>;
   tr: ComponentType<{ children?: ReactNode; className?: string }>;
+  // Custom components
+  Alert: ComponentType<ComponentProps & {
+    type?: 'info' | 'warning' | 'error' | 'success';
+    title?: string;
+  }>;
 };
 
 // Create a simple wrapper for the pre tag
@@ -41,13 +47,16 @@ export const mdxComponents: MDXComponents = {
   // Override the default pre and code tags
   pre: Pre,
   code: CodeBlockWrapper,
-  // Table components
+  // HTML elements
   table: Table,
   thead: THead,
   tbody: TBody,
   th: Th,
   td: Td,
   tr: Tr,
+  
+  // Custom components
+  Alert: AlertComponent,
 } as const;
 
 export default mdxComponents;

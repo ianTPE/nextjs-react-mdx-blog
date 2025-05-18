@@ -1,11 +1,11 @@
 'use client';
 
-import React from 'react';
+import type { ReactNode } from 'react';
 
 interface AlertProps {
   type?: 'info' | 'warning' | 'error' | 'success';
   title?: string;
-  children: React.ReactNode;
+  children?: ReactNode;  // 使用導入的 ReactNode 類型
 }
 
 const typeStyles = {
@@ -31,7 +31,7 @@ const typeStyles = {
   }
 };
 
-export default function Alert({ type = 'info', title, children }: AlertProps) {
+export default function Alert({ type = 'info', title, children }: AlertProps = {}) {
   const styles = typeStyles[type];
   
   return (
