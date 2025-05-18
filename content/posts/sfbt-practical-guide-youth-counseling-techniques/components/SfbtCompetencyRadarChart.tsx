@@ -206,12 +206,12 @@ const SfbtCompetencyRadarChart = () => {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-4 md:p-6 bg-white rounded-xl shadow-sm border border-gray-100">
+    <div className="w-full max-w-4xl mx-auto p-4 md:p-6 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
       <div className="w-full flex flex-col items-center">
         <h3 className="text-lg md:text-xl font-semibold text-gray-800 mb-4 text-center">
           SFBT不同學習階段能力雷達圖 <span className="text-sm font-normal text-gray-500">(0-10分)</span>
         </h3>
-        <div className="w-full" style={{ height: isMobile ? '300px' : (isTablet ? '400px' : '450px') }}>
+        <div className="w-full flex justify-center" style={{ height: isMobile ? '300px' : (isTablet ? '400px' : '450px') }}>
           <Radar data={data} options={options} />
         </div>
         <div className="text-xs sm:text-sm text-gray-500 mt-3 text-center px-2">
