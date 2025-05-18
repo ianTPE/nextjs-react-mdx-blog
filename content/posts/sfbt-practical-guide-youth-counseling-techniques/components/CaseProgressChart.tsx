@@ -11,6 +11,7 @@ import {
   Title,
   Tooltip,
   Legend,
+  type TooltipItem
 } from 'chart.js';
 
 // 註冊必須的 ChartJS 元件
@@ -67,7 +68,7 @@ const CaseProgressChart = () => {
       },
       tooltip: {
         callbacks: {
-          label: function(context: any) {
+          label: (context: TooltipItem<'line'>) => {
             return `${context.dataset.label}: ${context.parsed.y}/10分`;
           }
         }
@@ -85,18 +86,16 @@ const CaseProgressChart = () => {
     }
   };
 
+  const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 640;
+
   return (
-    <div
-      className={
-        `chart-container p-4 bg-white rounded-lg shadow-md ` +
-        (typeof window !== 'undefined' && window.innerWidth < 640 ? 'h-[300px]' : 'h-auto')
-      }
-    >
+    <div className="chart-container p-4 pb-8 bg-white rounded-lg shadow-md min-h-[300px] max-h-[350px] sm:min-h-[350px] sm:max-h-[400px] lg:min-h-[400px] lg:max-h-[500px] flex flex-col items-center mb-4">
+
       <Line
         data={data}
         options={{
           ...options,
-          maintainAspectRatio: typeof window !== 'undefined' && window.innerWidth < 640 ? false : true,
+          maintainAspectRatio: isDesktop,
         }}
       />
       <div className="text-sm text-gray-500 mt-2 text-center">
