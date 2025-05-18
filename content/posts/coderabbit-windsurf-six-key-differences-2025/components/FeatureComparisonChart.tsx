@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, TooltipItem } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
 // 註冊 ChartJS 元件
@@ -53,7 +53,7 @@ const FeatureComparisonChart = () => {
     },
     plugins: {
       legend: {
-        position: 'top',
+        position: 'top' as const,
         labels: {
           font: {
             size: 12
@@ -62,7 +62,7 @@ const FeatureComparisonChart = () => {
       },
       tooltip: {
         callbacks: {
-          label: function(context) {
+          label: function(context: TooltipItem<'bar'>) {
             let label = context.dataset.label || '';
             if (label) {
               label += ': ';
