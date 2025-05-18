@@ -70,7 +70,7 @@ const QuestionTypeDistributionChart = () => {
   };
 
   return (
-    <div className="chart-container p-4 pb-8 bg-white rounded-lg shadow-md min-h-[250px] sm:min-h-[350px] lg:min-h-[400px] max-h-[500px] flex flex-col items-center mb-4">
+    <div className="chart-container p-4 pb-8 bg-white rounded-lg shadow-md min-h-[250px] max-h-[350px] sm:min-h-[350px] sm:max-h-[400px] lg:min-h-[400px] lg:max-h-[500px] flex flex-col items-center mb-4">
       <Pie data={data} options={options} />
       <div className="text-sm text-gray-500 mt-2 text-center">
         *數據基於研習課程中實際案例分析與練習紀錄

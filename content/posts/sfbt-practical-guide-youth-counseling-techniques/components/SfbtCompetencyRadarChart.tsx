@@ -92,7 +92,7 @@ const SfbtCompetencyRadarChart = () => {
   };
 
   return (
-    <div className="chart-container p-4 pb-8 bg-white rounded-lg shadow-md min-h-[300px] sm:min-h-[350px] lg:min-h-[400px] max-h-[500px] flex flex-col items-center mb-4">
+    <div className="chart-container p-4 pb-8 bg-white rounded-lg shadow-md min-h-[300px] max-h-[350px] sm:min-h-[350px] sm:max-h-[400px] lg:min-h-[400px] lg:max-h-[500px] flex flex-col items-center mb-4">
       <Radar data={data} options={options} />
       <div className="text-sm text-gray-500 mt-2 text-center">
         *數據基於研習課程參與者自評與講師評量
