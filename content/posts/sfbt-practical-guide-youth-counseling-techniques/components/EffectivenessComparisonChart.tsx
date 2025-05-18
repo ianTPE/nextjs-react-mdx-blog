@@ -78,7 +78,7 @@ const EffectivenessComparisonChart = () => {
   };
 
   return (
-    <div className="chart-container p-4 bg-white rounded-lg shadow-md h-[400px] sm:h-auto">
+    <div className="chart-container p-4 pb-6 bg-white rounded-lg shadow-md h-[400px] sm:h-auto mb-6">
       <Bar 
         data={data} 
         options={{
