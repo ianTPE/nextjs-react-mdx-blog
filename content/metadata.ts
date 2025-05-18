@@ -1,6 +1,14 @@
 import { BlogMetadata } from '@/app/types/blog';
 
 export const postsMetadata: Record<string, BlogMetadata> = {
+  'coderabbit-vs-windsurf-comparison': {
+    title: 'CodeRabbit vs Windsurf 深度分析：6 大功能差異與最佳使用場景比較 - 2025',
+    date: '2025-05-18',
+    excerpt: '本文詳細比較兩款熱門的 AI 開發工具：CodeRabbit 和 Windsurf。探討它們在程式碼審查、代碼生成、多檔案編輯等方面的優缺點，幫助開發者根據自身需求選擇最適合的工具。',
+    author: 'Ian Chou',
+    tags: ['AI', '開發工具', 'CodeRabbit', 'Windsurf', '程式碼審查', '程式碼生成', 'IDE'],
+    coverImage: '/images/posts/coderabbit-windsurf-six-key-differences-2025.webp'
+  },
   'sfbt-practical-guide-youth-counseling-techniques': {
     title: 'SFBT焦點解決實戰指南：兒童青少年輔導的12個轉化技巧與案例分析',
     date: '2025-05-18',
