@@ -7,6 +7,7 @@ import {
   ArcElement,
   Tooltip,
   Legend,
+  type TooltipItem
 } from 'chart.js';
 
 // 註冊必須的 ChartJS 元件
@@ -58,7 +59,7 @@ const QuestionTypeDistributionChart = () => {
       },
       tooltip: {
         callbacks: {
-          label: function(context: any) {
+          label: (context: TooltipItem<'pie'>) => {
             const label = context.label || '';
             const value = context.parsed || 0;
             return `${label}: ${value}%`;
@@ -69,7 +70,7 @@ const QuestionTypeDistributionChart = () => {
   };
 
   return (
-    <div className="chart-container p-4 bg-white rounded-lg shadow-md h-[250px] sm:h-[350px] lg:h-[400px] max-h-[500px] flex flex-col items-center">
+    <div className="chart-container p-4 bg-white rounded-lg shadow-md h-[250px] sm:h-[350px] lg:h-[400px] max-h-[500px] flex flex-col items-center mb-4">
       <Pie data={data} options={options} />
       <div className="text-sm text-gray-500 mt-2 text-center">
         *數據基於研習課程中實際案例分析與練習紀錄
