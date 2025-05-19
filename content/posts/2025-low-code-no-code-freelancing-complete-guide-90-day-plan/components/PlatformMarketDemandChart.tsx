@@ -1,13 +1,26 @@
 "use client";
 
 import React from 'react';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import { 
+  Chart as ChartJS, 
+  CategoryScale, 
+  LinearScale, 
+  BarElement, 
+  Title, 
+  Tooltip, 
+  Legend 
+} from 'chart.js';
+import type { 
+  ChartData, 
+  ChartOptions, 
+  TooltipItem 
+} from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const PlatformMarketDemandChart = () => {
-  const options = {
+  const options: ChartOptions<'bar'> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
@@ -23,13 +36,13 @@ const PlatformMarketDemandChart = () => {
       },
       tooltip: {
         callbacks: {
-          label: function(context: any) {
+          label: (context: TooltipItem<'bar'>) => {
             let label = context.dataset.label || '';
             if (label) {
               label += ': ';
             }
             if (context.parsed.y !== null) {
-              label += context.parsed.y + ' 分';
+              label += `${context.parsed.y} 分`;
             }
             return label;
           }
@@ -42,22 +55,20 @@ const PlatformMarketDemandChart = () => {
         max: 10,
         ticks: {
           stepSize: 1,
-          callback: function(value: any) {
-            return value + ' 分';
-          }
+          callback: (value: string | number) => `${value} 分`
         },
         title: {
           display: true,
           text: '評分 (0-10分)',
           font: {
-            weight: 'bold'
+            weight: 'bold' as const
           }
         }
       }
     }
   };
 
-  const data = {
+  const data: ChartData<'bar', number[], string> = {
     labels: ['Power Apps', 'AppSheet', 'OutSystems', 'Mendix', 'Bubble', 'Webflow', 'Retool', 'Appsmith', 'Glide', 'Softr'],
     datasets: [
       {
