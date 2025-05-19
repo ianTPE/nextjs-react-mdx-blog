@@ -1,6 +1,11 @@
 "use client";
 
-import React from 'react';
+import React, { useMemo } from 'react';
+import type {
+  ChartOptions,
+  TooltipItem,
+  ChartTypeRegistry
+} from 'chart.js';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -26,12 +31,25 @@ ChartJS.register(
   BarElement
 );
 
-const MarketGrowthChart = () => {
+interface ChartDataset {
+  label: string;
+  data: number[];
+  borderColor: string;
+  backgroundColor: string;
+  tension: number;
+}
+
+interface CustomChartData {
+  labels: string[];
+  datasets: ChartDataset[];
+}
+
+const MarketGrowthChart = (): JSX.Element => {
   // 設定圖表是否在桌面版
   const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 640;
   
   // 圖表數據
-  const data = {
+  const data: CustomChartData = useMemo(() => ({
     labels: ['2022', '2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030', '2031'],
     datasets: [
       {
@@ -42,15 +60,15 @@ const MarketGrowthChart = () => {
         tension: 0.3,
       }
     ],
-  };
+  }), []);
 
   // 圖表選項
-  const options = {
+  const options: ChartOptions<'line'> = useMemo(() => ({
     responsive: true,
     maintainAspectRatio: isDesktop,
     plugins: {
       legend: {
-        position: (isDesktop ? 'top' : 'bottom') as const,
+        position: (isDesktop ? 'top' : 'bottom') as 'top' | 'bottom',
       },
       title: {
         display: true,
@@ -61,9 +79,8 @@ const MarketGrowthChart = () => {
       },
       tooltip: {
         callbacks: {
-          label: function(context: any) {
-            return `${context.dataset.label}: $${context.parsed.y}B`;
-          }
+          label: (context: TooltipItem<keyof ChartTypeRegistry>) => 
+            `${context.dataset.label}: $${context.parsed.y}B`
         }
       }
     },
@@ -81,13 +98,11 @@ const MarketGrowthChart = () => {
           text: '市場規模（十億美元）'
         },
         ticks: {
-          callback: function(value: any) {
-            return '$' + value + 'B';
-          }
+          callback: (value: string | number) => `$${value}B`
         }
       }
     },
-  };
+  }), [isDesktop]);
 
   return (
     <div className="w-full my-8 p-4 pb-8 bg-white rounded-lg shadow-md min-h-[300px] max-h-[350px] sm:min-h-[350px] sm:max-h-[400px] lg:min-h-[400px] lg:max-h-[500px]">
