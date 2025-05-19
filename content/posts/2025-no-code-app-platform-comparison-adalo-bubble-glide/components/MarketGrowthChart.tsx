@@ -44,7 +44,7 @@ interface CustomChartData {
   datasets: ChartDataset[];
 }
 
-const MarketGrowthChart = (): JSX.Element => {
+function MarketGrowthChart() {
   // 設定圖表是否在桌面版
   const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 640;
   
