@@ -52,7 +52,7 @@ const PlatformFeatureRadarChart = () => {
   };
 
   // 圖表選項
-  const options = {
+  const options: any = {
     responsive: true,
     scales: {
       r: {
@@ -60,20 +60,35 @@ const PlatformFeatureRadarChart = () => {
           display: true
         },
         suggestedMin: 0,
-        suggestedMax: 10
+        suggestedMax: 10,
+        pointLabels: {
+          font: {
+            size: 12
+          }
+        }
       }
     },
     plugins: {
+      legend: {
+        position: 'bottom' as const,
+        labels: {
+          boxWidth: 12,
+          padding: 15
+        }
+      },
       title: {
         display: true,
         text: '主要無程式碼平台功能比較',
         font: {
           size: 16,
+        },
+        padding: {
+          bottom: 10
         }
       },
       tooltip: {
         callbacks: {
-          label: function(context: any) {
+          label: (context: any) => {
             return `${context.dataset.label}: ${context.parsed.r}/10`;
           }
         }
@@ -82,18 +97,13 @@ const PlatformFeatureRadarChart = () => {
   };
 
   return (
-    <div className="w-full my-8 p-4 bg-white rounded-lg shadow-md">
-      <div className="w-full max-w-2xl mx-auto">
+    <div className="w-full my-4 sm:my-6 md:my-8 p-2 sm:p-3 md:p-4 bg-white rounded-lg shadow-md -ml-2 sm:ml-0">
+      <div className="w-full max-w-xs sm:max-w-sm md:max-w-md mx-auto">
         <div className="relative" style={{ paddingBottom: '100%' }}>
           <div className="absolute inset-0">
             <Radar 
               data={data} 
-              options={{
-                ...options,
-                maintainAspectRatio: true,
-                aspectRatio: 1,
-                responsive: true,
-              }} 
+              options={options}
             />
           </div>
         </div>
