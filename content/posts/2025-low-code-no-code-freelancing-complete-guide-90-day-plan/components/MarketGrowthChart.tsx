@@ -1,13 +1,28 @@
 "use client";
 
 import React from 'react';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+import { 
+  Chart as ChartJS, 
+  CategoryScale, 
+  LinearScale, 
+  PointElement, 
+  LineElement, 
+  Title, 
+  Tooltip, 
+  Legend,
+  Filler
+} from 'chart.js';
+import type { 
+  ChartData,
+  ChartOptions,
+  TooltipItem 
+} from 'chart.js';
 import { Line } from 'react-chartjs-2';
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
 const MarketGrowthChart = () => {
-  const options = {
+  const options: ChartOptions<'line'> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
@@ -23,13 +38,13 @@ const MarketGrowthChart = () => {
       },
       tooltip: {
         callbacks: {
-          label: function(context: any) {
+          label: (context: TooltipItem<'line'>) => {
             let label = context.dataset.label || '';
             if (label) {
               label += ': ';
             }
             if (context.parsed.y !== null) {
-              label += '$' + context.parsed.y + '十億';
+              label += `$${context.parsed.y}十億`;
             }
             return label;
           }
@@ -43,19 +58,17 @@ const MarketGrowthChart = () => {
           display: true,
           text: '市場規模 (十億美元)',
           font: {
-            weight: 'bold'
+            weight: 'bold' as const
           }
         },
         ticks: {
-          callback: function(value: any) {
-            return '$' + value;
-          }
+          callback: (value: string | number) => `$${value}`
         }
       }
     }
   };
 
-  const data = {
+  const data: ChartData<'line', number[], string> = {
     labels: ['2022', '2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030'],
     datasets: [
       {
