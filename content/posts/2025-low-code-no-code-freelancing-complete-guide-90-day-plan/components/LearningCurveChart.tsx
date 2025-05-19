@@ -1,13 +1,28 @@
 "use client";
 
 import React from 'react';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
+import { 
+  Chart as ChartJS, 
+  CategoryScale, 
+  LinearScale, 
+  PointElement, 
+  LineElement, 
+  Title, 
+  Tooltip, 
+  Legend, 
+  Filler
+} from 'chart.js';
+import type { 
+  ChartData,
+  ChartOptions,
+  TooltipItem 
+} from 'chart.js';
 import { Line } from 'react-chartjs-2';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
 const LearningCurveChart = () => {
-  const options = {
+  const options: ChartOptions<'line'> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
@@ -23,13 +38,13 @@ const LearningCurveChart = () => {
       },
       tooltip: {
         callbacks: {
-          label: function(context: any) {
+          label: (context: TooltipItem<'line'>) => {
             let label = context.dataset.label || '';
             if (label) {
               label += ': ';
             }
             if (context.parsed.y !== null) {
-              label += context.parsed.y + ' 週';
+              label += `${context.parsed.y} 週`;
             }
             return label;
           }
@@ -44,7 +59,7 @@ const LearningCurveChart = () => {
           display: true,
           text: '熟練所需時間 (週)',
           font: {
-            weight: 'bold'
+            weight: 'bold' as const  // 添加 as const 確保類型正確
           }
         }
       },
@@ -53,14 +68,14 @@ const LearningCurveChart = () => {
           display: true,
           text: 'LC/NC平台',
           font: {
-            weight: 'bold'
+            weight: 'bold' as const  // 添加 as const 確保類型正確
           }
         }
       }
     }
   };
 
-  const data = {
+  const data: ChartData<'line', number[], string> = {
     labels: ['Glide', 'Softr', 'Adalo', 'AppSheet', 'Webflow', 'Bubble', 'Power Apps', 'Retool', 'OutSystems', 'Mendix'],
     datasets: [
       {
