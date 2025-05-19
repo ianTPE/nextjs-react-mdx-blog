@@ -82,17 +82,21 @@ const PlatformFeatureRadarChart = () => {
   };
 
   return (
-    <div className="w-full my-8 p-4 pb-8 bg-white rounded-lg shadow-md min-h-[350px] max-h-[400px] sm:min-h-[400px] sm:max-h-[450px] lg:min-h-[450px] lg:max-h-[550px] flex items-center justify-center">
-      <div className="w-full max-w-3xl mx-auto">
-        <Radar 
-          data={data} 
-          options={{
-            ...options,
-            maintainAspectRatio: true,
-            aspectRatio: 1,
-            responsive: true,
-          }} 
-        />
+    <div className="w-full my-8 p-4 bg-white rounded-lg shadow-md">
+      <div className="w-full max-w-2xl mx-auto">
+        <div className="relative" style={{ paddingBottom: '100%' }}>
+          <div className="absolute inset-0">
+            <Radar 
+              data={data} 
+              options={{
+                ...options,
+                maintainAspectRatio: true,
+                aspectRatio: 1,
+                responsive: true,
+              }} 
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
