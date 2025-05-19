@@ -1,6 +1,14 @@
 import { BlogMetadata } from '@/app/types/blog';
 
 export const postsMetadata: Record<string, BlogMetadata> = {
+  '2025-no-code-app-platform-comparison-adalo-bubble-glide': {
+    title: '【最新2025】無程式碼應用開發平台大比拼：Adalo、Bubble與Glide哪個最值得學？',
+    date: '2025-05-19',
+    excerpt: '深入分析Adalo、Bubble、Glide、Thunkable等無程式碼平台的優缺點，自由職業市場機會，以及如何為您的項目選擇最佳工具。',
+    author: 'Ian Chou',
+    tags: ['no-code', 'adalo', 'bubble', 'glide', 'thunkable', 'freelancing', 'app-development'],
+    coverImage: '/images/posts/2025-no-code-app-platform-comparison-adalo-bubble-glide.webp'
+  },
   'coderabbit-windsurf-six-key-differences-2025': {
     title: 'CodeRabbit vs Windsurf 深度分析：6 大功能差異與最佳使用場景比較 - 2025',
     date: '2025-05-18',
