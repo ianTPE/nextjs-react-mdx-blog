@@ -1,6 +1,11 @@
 "use client";
 
-import React from 'react';
+import { useMemo } from 'react';
+import type {
+  ChartOptions,
+  TooltipItem,
+  ChartTypeRegistry
+} from 'chart.js';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -22,12 +27,23 @@ ChartJS.register(
   Legend
 );
 
-const PlatformComparisonChart = () => {
+interface ChartDataset {
+  label: string;
+  data: number[];
+  backgroundColor: string;
+}
+
+interface ChartData {
+  labels: string[];
+  datasets: ChartDataset[];
+}
+
+const PlatformComparisonChart: React.FC = () => {
   // 設定圖表是否在桌面版
   const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 640;
   
   // 圖表數據
-  const data = {
+  const data: ChartData = useMemo(() => ({
     labels: ['Bubble', 'Adalo', 'FlutterFlow', 'Glide', 'Thunkable', 'AppMaster'],
     datasets: [
       {
@@ -41,15 +57,15 @@ const PlatformComparisonChart = () => {
         backgroundColor: 'rgba(53, 162, 235, 0.5)',
       },
     ],
-  };
+  }), []);
 
   // 圖表選項
-  const options = {
+  const options: ChartOptions<'bar'> = useMemo(() => ({
     responsive: true,
     maintainAspectRatio: isDesktop,
     plugins: {
       legend: {
-        position: (isDesktop ? 'top' : 'bottom') as const,
+        position: (isDesktop ? 'top' : 'bottom') as 'top' | 'bottom',
       },
       title: {
         display: true,
@@ -60,9 +76,8 @@ const PlatformComparisonChart = () => {
       },
       tooltip: {
         callbacks: {
-          label: function(context: any) {
-            return `${context.dataset.label}: $${context.parsed.y}/hr`;
-          }
+          label: (context: TooltipItem<keyof ChartTypeRegistry>) => 
+            `${context.dataset.label}: $${context.parsed.y}/hr`
         }
       }
     },
@@ -80,13 +95,11 @@ const PlatformComparisonChart = () => {
           text: '時薪 (USD)'
         },
         ticks: {
-          callback: function(value: any) {
-            return '$' + value;
-          }
+          callback: (value: string | number) => `$${value}`
         }
       }
-    },
-  };
+    }
+  }), [isDesktop]);
 
   return (
     <div className="w-full my-8 p-4 pb-8 bg-white rounded-lg shadow-md min-h-[300px] max-h-[350px] sm:min-h-[350px] sm:max-h-[400px] lg:min-h-[400px] lg:max-h-[500px]">
