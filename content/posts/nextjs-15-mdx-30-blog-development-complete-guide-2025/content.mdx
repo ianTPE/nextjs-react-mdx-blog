@@ -1,0 +1,918 @@
+# Next.js 15 + MDX 3.0 部落格開發完整指南：從檔案到頁面的深度實戰解析 (2025)
+
+在現代前端開發中，Next.js 結合 MDX 已成為建立技術部落格的主流選擇。本文將深入剖析從 MDX 檔案、local components、metadata.ts 到最終 blog 頁面的完整轉換流程，以實際專案架構為例，逐步拆解每個環節的技術細節。無論你是 React 開發者、想學習 MDX 的前端工程師，或是正在規劃技術部落格的創作者，這份完整指南都將為你提供從零到一的實戰知識。
+
+## 目錄
+
+1. [專案架構概覽](#專案架構概覽)
+2. [檔案與資料來源](#檔案與資料來源)
+3. [內容讀取與解析機制](#內容讀取與解析機制)
+4. [靜態路由產生流程](#靜態路由產生流程)
+5. [MDX 渲染與組件整合](#mdx-渲染與組件整合)
+6. [頁面組合與最終呈現](#頁面組合與最終呈現)
+7. [完整數據流示例](#完整數據流示例)
+8. [進階優化與最佳實踐](#進階優化與最佳實踐)
+
+## 專案架構概覽
+
+本專案採用 Next.js 15+ App Router 架構，結合 MDX 3.1.0 進行內容管理。核心技術棧包括：
+
+- **Next.js 15.3.2** with App Router
+- **React 19.0.0** 
+- **MDX 3.1.0** for content
+- **TypeScript** for type safety
+- **Tailwind CSS v4** for styling
+- **next-mdx-remote** for dynamic MDX rendering
+
+### 核心檔案結構
+
+```
+├── app/
+│   └── blog/
+│       └── [slug]/
+│           ├── page.tsx              # 主要文章頁面邏輯
+│           └── MDXRenderer.tsx       # 客戶端 MDX 渲染組件
+├── content/
+│   ├── metadata.ts                   # 集中式 metadata 管理
+│   └── posts/
+│       └── [slug]/
+│           ├── content.mdx           # 文章內容
+│           └── components/           # 文章專用組件
+│               ├── index.ts          # 組件匯出檔
+│               ├── CustomChart.tsx
+│               └── ...
+├── lib/
+│   ├── mdx.ts                        # MDX 處理核心函數
+│   └── mdx-loader.ts                 # 組件載入邏輯
+└── components/
+    ├── BlogPostContent.static.tsx    # 靜態頁面布局
+    └── mdx/
+        └── global-components/        # 全域 MDX 組件
+```
+
+## 檔案與資料來源
+
+### 1. 集中式 Metadata 管理
+
+本專案採用集中式 metadata 管理策略，所有文章的 metadata 都儲存在 `content/metadata.ts` 中：
+
+```typescript
+// content/metadata.ts
+export const postsMetadata: Record<string, BlogMetadata> = {
+  'nextjs-mdx-setup': {
+    title: 'Next.js + MDX 部落格建置指南',
+    date: '2024-05-21',
+    author: 'Ian',
+    summary: 'Complete guide to setting up Next.js with MDX',
+    tags: ['Next.js', 'MDX', 'React'],
+    coverImage: '/images/covers/nextjs-mdx.jpg',
+    readingTime: 8
+  },
+  'react-performance': {
+    title: 'React 效能優化最佳實踐',
+    date: '2024-05-20',
+    author: 'Ian',
+    summary: 'Advanced React performance optimization techniques',
+    tags: ['React', 'Performance', 'Optimization'],
+    coverImage: '/images/covers/react-perf.jpg',
+    readingTime: 12
+  }
+  // ... 更多文章
+};
+
+export type BlogMetadata = {
+  title: string;
+  date: string;
+  author: string;
+  summary: string;
+  tags: string[];
+  coverImage?: string;
+  readingTime: number;
+};
+```
+
+**集中式管理的優勢：**
+- **效能優化**：避免讀取多個檔案，單次 import 取得所有 metadata
+- **型別安全**：統一的 TypeScript 型別定義
+- **維護便利**：所有 metadata 一目瞭然，便於統一修改
+- **工具整合**：外部工具（如 sitemap 產生器）可直接使用
+
+### 2. MDX 內容結構
+
+每篇文章的內容儲存在對應的資料夾中：
+
+```
+content/posts/nextjs-mdx-setup/
+├── content.mdx                 # 主要文章內容
+└── components/                 # 文章專用組件
+    ├── index.ts               # 組件匯出檔
+    ├── PerformanceChart.tsx   # 效能圖表組件
+    └── CodeComparison.tsx     # 程式碼比較組件
+```
+
+**MDX 檔案範例：**
+
+```mdx
+# Next.js + MDX 部落格建置指南
+
+建立現代化的技術部落格需要考慮多個面向...
+
+## 效能分析
+
+以下是不同框架的效能比較：
+
+<PerformanceChart 
+  data={performanceData} 
+  title="Framework Performance Comparison" 
+/>
+
+## 程式碼比較
+
+<CodeComparison 
+  before={legacyCode}
+  after={optimizedCode}
+  language="typescript"
+/>
+
+這樣的設計讓我們能夠...
+```
+
+### 3. Local Components 架構
+
+每篇文章可以擁有專屬的 React 組件，透過 barrel file 模式管理：
+
+```typescript
+// content/posts/nextjs-mdx-setup/components/index.ts
+"use client";
+
+import PerformanceChart from './PerformanceChart';
+import CodeComparison from './CodeComparison';
+import InteractiveDemo from './InteractiveDemo';
+
+export {
+  PerformanceChart,
+  CodeComparison,
+  InteractiveDemo
+};
+```
+
+**組件範例：**
+
+```typescript
+// content/posts/nextjs-mdx-setup/components/PerformanceChart.tsx
+"use client";
+
+import React from 'react';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import { Bar } from 'react-chartjs-2';
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+
+interface PerformanceChartProps {
+  data: any;
+  title: string;
+}
+
+export default function PerformanceChart({ data, title }: PerformanceChartProps) {
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top' as const },
+      title: { display: true, text: title }
+    }
+  };
+
+  return (
+    <div className="w-full my-8" style={{ height: '400px' }}>
+      <Bar data={data} options={options} />
+    </div>
+  );
+}
+```
+
+## 內容讀取與解析機制
+
+### 1. 核心讀取函數
+
+**getAllPostSlugs - 取得所有文章 slug**
+
+```typescript
+// lib/mdx.ts
+export const getAllPostSlugs = (): string[] => {
+  return Object.keys(postsMetadata);
+};
+```
+
+**getPostMetadata - 取得單篇文章 metadata**
+
+```typescript
+export const getPostMetadata = (slug: string): BlogMetadata | null => {
+  return postsMetadata[slug] || null;
+};
+```
+
+**getAllPosts - 取得所有文章列表**
+
+```typescript
+export function getAllPosts(): BlogPost[] {
+  const slugs = getAllPostSlugs();
+  
+  const posts = slugs
+    .map((slug) => {
+      const metadata = getPostMetadata(slug);
+      if (!metadata) return null;
+      
+      return { slug, ...metadata };
+    })
+    .filter((post): post is BlogPost => post !== null);
+
+  // 按日期排序，最新的在前
+  return posts.sort((a, b) => {
+    return new Date(b.date).getTime() - new Date(a.date).getTime();
+  });
+}
+```
+
+### 2. MDX 內容讀取
+
+**getPostBySlug - 取得完整文章資料**
+
+```typescript
+export function getPostBySlug(slug: string): { metadata: BlogMetadata; content: string } | null {
+  const metadata = getPostMetadata(slug);
+  if (!metadata) return null;
+
+  // 組建 MDX 檔案路徑
+  const fullPath = path.join(postsDirectory, slug, 'content.mdx');
+  
+  if (!fs.existsSync(fullPath)) {
+    console.warn(`MDX file not found: ${fullPath}`);
+    return null;
+  }
+
+  // 讀取 MDX 檔案內容
+  const fileContents = fs.readFileSync(fullPath, 'utf8');
+
+  return {
+    metadata,
+    content: fileContents,
+  };
+}
+```
+
+### 3. Local Components 載入機制
+
+**getPostComponents - 動態載入文章專用組件**
+
+```typescript
+// lib/mdx-loader.ts
+export async function getPostComponents(slug: string): Promise<Record<string, any>> {
+  try {
+    const componentsPath = path.join(postsDirectory, slug, 'components');
+    
+    if (!fs.existsSync(componentsPath)) {
+      return {};
+    }
+
+    const indexPath = path.join(componentsPath, 'index.ts');
+    
+    if (!fs.existsSync(indexPath)) {
+      return {};
+    }
+
+    // 動態 import 組件
+    const components = await import(indexPath);
+    return components;
+  } catch (error) {
+    console.warn(`Failed to load components for ${slug}:`, error);
+    return {};
+  }
+}
+```
+
+## 靜態路由產生流程
+
+### 1. generateStaticParams - 產生所有文章路徑
+
+```typescript
+// app/blog/[slug]/page.tsx
+export async function generateStaticParams() {
+  const posts = getAllPosts();
+  
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
+}
+```
+
+**執行時機：** 
+- Next.js build 時期
+- 為每篇文章產生對應的靜態路徑 `/blog/[slug]`
+
+### 2. generateMetadata - 產生 SEO metadata
+
+```typescript
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const resolvedParams = await params;
+  const post = getPostBySlug(resolvedParams.slug);
+
+  if (!post) {
+    return {
+      title: 'Post Not Found',
+    };
+  }
+
+  const { metadata } = post;
+
+  return {
+    title: metadata.title,
+    description: metadata.summary,
+    keywords: metadata.tags.join(', '),
+    authors: [{ name: metadata.author }],
+    openGraph: {
+      title: metadata.title,
+      description: metadata.summary,
+      type: 'article',
+      publishedTime: metadata.date,
+      authors: [metadata.author],
+      tags: metadata.tags,
+      images: metadata.coverImage ? [
+        {
+          url: metadata.coverImage,
+          width: 1200,
+          height: 630,
+          alt: metadata.title,
+        }
+      ] : [],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: metadata.title,
+      description: metadata.summary,
+      images: metadata.coverImage ? [metadata.coverImage] : [],
+    },
+  };
+}
+```
+
+## MDX 渲染與組件整合
+
+### 1. MDXRenderer - 客戶端 MDX 渲染器
+
+```typescript
+// app/blog/[slug]/MDXRenderer.tsx
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import { MDXRemote, type MDXRemoteSerializeResult } from 'next-mdx-remote';
+import { serialize } from 'next-mdx-remote/serialize';
+import globalComponents from '@/components/mdx/MDXComponents';
+
+interface MDXRendererProps {
+  source: string;
+  components?: Record<string, any>;
+}
+
+export default function MDXRenderer({ source, components = {} }: MDXRendererProps) {
+  const [mdxSource, setMdxSource] = useState<MDXRemoteSerializeResult | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  // 合併全域組件與本地組件（本地組件優先）
+  const mergedComponents = {
+    ...globalComponents,
+    ...components,
+  };
+
+  useEffect(() => {
+    const processMDX = async () => {
+      try {
+        const serialized = await serialize(source, {
+          parseFrontmatter: true,
+          mdxOptions: {
+            development: process.env.NODE_ENV === 'development',
+          },
+        });
+        
+        setMdxSource(serialized);
+        setError(null);
+      } catch (err) {
+        console.error('MDX processing error:', err);
+        setError('MDX 內容處理錯誤，請檢查語法是否正確。');
+      }
+    };
+
+    if (source) {
+      processMDX();
+    }
+  }, [source]);
+
+  if (error) {
+    return (
+      <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+        <p className="text-red-800">{error}</p>
+      </div>
+    );
+  }
+
+  if (!mdxSource) {
+    return (
+      <div className="flex items-center justify-center py-8">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <span className="ml-2 text-gray-600">載入中...</span>
+      </div>
+    );
+  }
+
+  return <MDXRemote {...mdxSource} components={mergedComponents} />;
+}
+```
+
+### 2. 全域與區域組件合併機制
+
+**優先級順序：**
+1. **Local Components** (最高優先級) - 文章專用組件
+2. **Global Components** - 全站共用組件
+
+```typescript
+// 組件解析邏輯
+const mergedComponents = {
+  ...globalComponents,    // 全域組件
+  ...components,         // 區域組件（會覆蓋同名的全域組件）
+};
+```
+
+**全域組件範例：**
+
+```typescript
+// components/mdx/MDXComponents.tsx
+import CodeBlock from './global-components/CodeBlock';
+import Alert from './global-components/Alert';
+import Mermaid from './global-components/Mermaid';
+
+const globalComponents = {
+  // 覆蓋預設 HTML 元素
+  h1: (props: any) => <h1 className="text-3xl font-bold mt-8 mb-4" {...props} />,
+  h2: (props: any) => <h2 className="text-2xl font-semibold mt-6 mb-3" {...props} />,
+  p: (props: any) => <p className="mb-4 leading-relaxed" {...props} />,
+  
+  // 自訂組件
+  CodeBlock,
+  Alert,
+  Mermaid,
+};
+
+export default globalComponents;
+```
+
+## 頁面組合與最終呈現
+
+### 1. 主要頁面組件
+
+```typescript
+// app/blog/[slug]/page.tsx
+import { notFound } from 'next/navigation';
+import { getPostBySlug, getPostComponents } from '@/lib/mdx';
+import BlogPostContentStatic from '@/components/BlogPostContent.static';
+import MDXRenderer from './MDXRenderer';
+
+interface Props {
+  params: Promise<{ slug: string }>;
+}
+
+export default async function BlogPostPage({ params }: Props) {
+  const resolvedParams = await params;
+  const post = getPostBySlug(resolvedParams.slug);
+
+  if (!post) {
+    notFound();
+  }
+
+  // 載入文章專用組件
+  const components = await getPostComponents(resolvedParams.slug);
+
+  return (
+    <BlogPostContentStatic metadata={post.metadata}>
+      <MDXRenderer 
+        source={post.content} 
+        components={components} 
+      />
+    </BlogPostContentStatic>
+  );
+}
+```
+
+### 2. 頁面布局組件
+
+```typescript
+// components/BlogPostContent.static.tsx
+import React from 'react';
+import Image from 'next/image';
+import { getAuthorAvatar } from '@/lib/authors';
+import type { BlogMetadata } from '@/lib/types';
+
+interface BlogPostContentProps {
+  metadata: BlogMetadata;
+  children: React.ReactNode;
+}
+
+export default function BlogPostContentStatic({ 
+  metadata, 
+  children 
+}: BlogPostContentProps) {
+  return (
+    <article className="max-w-4xl mx-auto px-4 py-8">
+      <header className="mb-8">
+        {/* 文章標題 */}
+        <h1 className="text-4xl md:text-5xl font-bold mb-4 leading-tight">
+          {metadata.title}
+        </h1>
+
+        {/* 封面圖片 */}
+        {metadata.coverImage && (
+          <div className="relative w-full h-72 mb-6 rounded-lg overflow-hidden transition-transform duration-300 hover:scale-102">
+            <Image
+              src={metadata.coverImage}
+              alt={metadata.title}
+              fill
+              className="object-contain bg-white"
+              priority
+            />
+          </div>
+        )}
+
+        {/* 作者與日期資訊 */}
+        <div className="flex items-center gap-4 text-gray-600 mb-4">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 relative rounded-full overflow-hidden">
+              <Image
+                src={getAuthorAvatar(metadata.author)}
+                alt={metadata.author}
+                fill
+                className="object-cover"
+              />
+            </div>
+            <span className="font-medium">{metadata.author}</span>
+          </div>
+          <span>•</span>
+          <time dateTime={metadata.date} className="text-sm">
+            {new Date(metadata.date).toLocaleDateString('zh-TW', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            })}
+          </time>
+          <span>•</span>
+          <span className="text-sm">{metadata.readingTime} 分鐘閱讀</span>
+        </div>
+
+        {/* 標籤 */}
+        {metadata.tags && metadata.tags.length > 0 && (
+          <div className="flex flex-wrap gap-2 mb-6">
+            {metadata.tags.map((tag) => (
+              <span
+                key={tag}
+                className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+      </header>
+
+      {/* 文章內容 */}
+      <section className="prose prose-lg max-w-none">
+        {children}
+      </section>
+    </article>
+  );
+}
+```
+
+## 完整數據流示例
+
+讓我們透過一個具體的範例，追蹤從檔案到頁面的完整數據流：
+
+### 步驟 1: 使用者訪問 `/blog/nextjs-mdx-setup`
+
+### 步驟 2: Next.js 路由解析
+```
+URL: /blog/nextjs-mdx-setup
+↓
+匹配路由: app/blog/[slug]/page.tsx
+↓  
+params: { slug: 'nextjs-mdx-setup' }
+```
+
+### 步驟 3: 讀取文章資料
+```typescript
+// 執行 getPostBySlug('nextjs-mdx-setup')
+const post = getPostBySlug('nextjs-mdx-setup');
+
+// 步驟 3.1: 取得 metadata
+const metadata = getPostMetadata('nextjs-mdx-setup');
+// 從 postsMetadata['nextjs-mdx-setup'] 取得：
+// {
+//   title: 'Next.js + MDX 部落格建置指南',
+//   date: '2024-05-21',
+//   author: 'Ian',
+//   summary: 'Complete guide to setting up Next.js with MDX',
+//   tags: ['Next.js', 'MDX', 'React'],
+//   coverImage: '/images/covers/nextjs-mdx.jpg',
+//   readingTime: 8
+// }
+
+// 步驟 3.2: 讀取 MDX 內容
+const fullPath = 'content/posts/nextjs-mdx-setup/content.mdx';
+const content = fs.readFileSync(fullPath, 'utf8');
+// 取得完整的 MDX 字串內容
+```
+
+### 步驟 4: 載入文章專用組件
+```typescript
+const components = await getPostComponents('nextjs-mdx-setup');
+// 從 content/posts/nextjs-mdx-setup/components/index.ts 取得：
+// {
+//   PerformanceChart: [Function],
+//   CodeComparison: [Function],
+//   InteractiveDemo: [Function]
+// }
+```
+
+### 步驟 5: 渲染頁面結構
+```typescript
+return (
+  <BlogPostContentStatic metadata={post.metadata}>
+    <MDXRenderer 
+      source={post.content} 
+      components={components} 
+    />
+  </BlogPostContentStatic>
+);
+```
+
+### 步驟 6: MDX 處理與組件合併
+```typescript
+// MDXRenderer 內部處理
+const mergedComponents = {
+  ...globalComponents,  // 全域組件 (h1, h2, CodeBlock, Alert, 等)
+  ...components,        // 區域組件 (PerformanceChart, CodeComparison, 等)
+};
+
+// MDX 序列化
+const serialized = await serialize(source, {
+  parseFrontmatter: true
+});
+```
+
+### 步驟 7: 最終頁面輸出
+```html
+<article class="max-w-4xl mx-auto px-4 py-8">
+  <header class="mb-8">
+    <h1 class="text-4xl md:text-5xl font-bold mb-4 leading-tight">
+      Next.js + MDX 部落格建置指南
+    </h1>
+    <div class="relative w-full h-72 mb-6 rounded-lg overflow-hidden">
+      <img src="/images/covers/nextjs-mdx.jpg" alt="..." />
+    </div>
+    <div class="flex items-center gap-4 text-gray-600 mb-4">
+      <!-- 作者、日期、閱讀時間 -->
+    </div>
+    <div class="flex flex-wrap gap-2 mb-6">
+      <!-- 標籤 -->
+    </div>
+  </header>
+  
+  <section class="prose prose-lg max-w-none">
+    <!-- 這裡是 MDX 轉換後的內容 -->
+    <h1>Next.js + MDX 部落格建置指南</h1>
+    <p>建立現代化的技術部落格需要考慮多個面向...</p>
+    
+    <h2>效能分析</h2>
+    <p>以下是不同框架的效能比較：</p>
+    
+    <!-- PerformanceChart 組件渲染結果 -->
+    <div class="w-full my-8" style="height: 400px;">
+      <canvas><!-- Chart.js 圖表 --></canvas>
+    </div>
+    
+    <!-- 更多內容... -->
+  </section>
+</article>
+```
+
+## 進階優化與最佳實踐
+
+### 1. 效能優化策略
+
+**靜態生成快取**
+```typescript
+// 利用 Next.js 的靜態生成能力
+export const dynamic = 'force-static';
+export const revalidate = false; // 永不重新驗證，除非重新部署
+```
+
+**組件懶載入**
+```typescript
+// 對大型圖表組件使用動態載入
+const LazyChart = dynamic(() => import('./HeavyChart'), {
+  loading: () => <div>Loading chart...</div>,
+  ssr: false
+});
+```
+
+**圖片優化**
+```typescript
+// 使用 Next.js Image 組件進行自動優化
+<Image
+  src={metadata.coverImage}
+  alt={metadata.title}
+  width={1200}
+  height={630}
+  priority={true}  // 重要圖片預載
+  placeholder="blur"
+  blurDataURL="data:image/jpeg;base64,..."
+/>
+```
+
+### 2. 型別安全保證
+
+**嚴格的 TypeScript 型別定義**
+```typescript
+// lib/types.ts
+export interface BlogMetadata {
+  title: string;
+  date: string;
+  author: string;
+  summary: string;
+  tags: string[];
+  coverImage?: string;
+  readingTime: number;
+}
+
+export interface BlogPost extends BlogMetadata {
+  slug: string;
+}
+
+export interface PostWithContent {
+  metadata: BlogMetadata;
+  content: string;
+}
+```
+
+**組件 Props 型別檢查**
+```typescript
+interface MDXRendererProps {
+  source: string;
+  components?: Record<string, React.ComponentType<any>>;
+}
+
+interface BlogPostContentProps {
+  metadata: BlogMetadata;
+  children: React.ReactNode;
+}
+```
+
+### 3. 錯誤處理與 fallback
+
+**漸進式錯誤處理**
+```typescript
+export function getPostBySlug(slug: string): PostWithContent | null {
+  try {
+    const metadata = getPostMetadata(slug);
+    if (!metadata) {
+      console.warn(`Metadata not found for slug: ${slug}`);
+      return null;
+    }
+
+    const fullPath = path.join(postsDirectory, slug, 'content.mdx');
+    
+    if (!fs.existsSync(fullPath)) {
+      console.warn(`MDX file not found: ${fullPath}`);
+      return null;
+    }
+
+    const content = fs.readFileSync(fullPath, 'utf8');
+    return { metadata, content };
+    
+  } catch (error) {
+    console.error(`Error reading post ${slug}:`, error);
+    return null;
+  }
+}
+```
+
+**用戶友善的錯誤頁面**
+```typescript
+// app/blog/[slug]/page.tsx
+export default async function BlogPostPage({ params }: Props) {
+  const post = getPostBySlug(resolvedParams.slug);
+
+  if (!post) {
+    notFound(); // 自動導向 404 頁面
+  }
+
+  // ... 正常渲染邏輯
+}
+```
+
+### 4. SEO 與 社群媒體優化
+
+**完整的 Meta Tags**
+```typescript
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const post = getPostBySlug(resolvedParams.slug);
+  if (!post) return { title: 'Post Not Found' };
+
+  const { metadata } = post;
+  const url = `https://yourdomain.com/blog/${resolvedParams.slug}`;
+
+  return {
+    title: `${metadata.title} | Your Blog Name`,
+    description: metadata.summary,
+    keywords: metadata.tags.join(', '),
+    
+    // Open Graph
+    openGraph: {
+      title: metadata.title,
+      description: metadata.summary,
+      url,
+      type: 'article',
+      publishedTime: metadata.date,
+      authors: [metadata.author],
+      tags: metadata.tags,
+      images: [{
+        url: metadata.coverImage || '/default-og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: metadata.title,
+      }],
+    },
+    
+    // Twitter Card
+    twitter: {
+      card: 'summary_large_image',
+      title: metadata.title,
+      description: metadata.summary,
+      images: [metadata.coverImage || '/default-twitter-image.jpg'],
+    },
+    
+    // JSON-LD 結構化資料
+    other: {
+      'application/ld+json': JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        headline: metadata.title,
+        description: metadata.summary,
+        author: {
+          '@type': 'Person',
+          name: metadata.author,
+        },
+        datePublished: metadata.date,
+        keywords: metadata.tags.join(', '),
+      }),
+    },
+  };
+}
+```
+
+### 5. 開發與部署最佳實踐
+
+**開發時期的熱重載**
+```typescript
+// 開發環境下的組件熱重載支援
+if (process.env.NODE_ENV === 'development') {
+  // 開發特定的邏輯
+}
+```
+
+**建置時期的錯誤檢查**
+```typescript
+// 建置前檢查所有文章的完整性
+export function validateAllPosts() {
+  const slugs = getAllPostSlugs();
+  
+  for (const slug of slugs) {
+    const post = getPostBySlug(slug);
+    if (!post) {
+      throw new Error(`Invalid post: ${slug}`);
+    }
+  }
+  
+  console.log(`✅ All ${slugs.length} posts validated successfully`);
+}
+```
+
+## 結論
+
+本文詳細剖析了 Next.js + MDX 部落格的完整頁面產生流程，從檔案結構設計到最終頁面渲染，每個環節都有其重要性：
+
+1. **集中式 metadata 管理**提供了高效的資料存取與型別安全
+2. **模組化的組件架構**讓內容創作更加靈活
+3. **漸進式的錯誤處理**確保了系統的穩定性
+4. **完整的 SEO 優化**提升了內容的可發現性
+
+這套架構不僅適合個人技術部落格，也能擴展到中小型內容網站。透過理解每個環節的設計原理，開發者可以根據自己的需求進行客製化調整，建立出既高效又易維護的現代化部落格系統。
+
+現代前端開發追求的是開發效率與使用者體驗的平衡，而 Next.js + MDX 的組合正是這個平衡點的最佳體現。希望本文能幫助你更深入理解這套技術棧的運作原理，並在實際專案中發揮其最大潛力。

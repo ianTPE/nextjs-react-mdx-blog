@@ -1,6 +1,14 @@
 import { BlogMetadata } from '@/app/types/blog';
 
 export const postsMetadata: Record<string, BlogMetadata> = {
+  'nextjs-15-mdx-30-blog-development-complete-guide-2025': {
+    title: 'Next.js 15 + MDX 3.0 部落格開發完整指南：從檔案到頁面的深度實戰解析 (2025)',
+    date: '2025-05-22',
+    excerpt: '深入剖析 Next.js 15 結合 MDX 3.0 的現代部落格開發流程，從 metadata.ts、MDX 檔案、local components 到最終頁面渲染的完整技術解析。涵蓋集中式 metadata 管理、組件架構設計、靜態路由產生、MDX 渲染機制等核心概念，並提供進階優化策略與最佳實踐。適合 React 開發者、前端工程師及技術部落格創作者的實戰指南。',
+    author: 'Ian Chou',
+    tags: ['Next.js', 'MDX', 'React', 'TypeScript', 'Blog Development', 'App Router', 'SSG', 'Component Architecture', 'Metadata Management', '技術教學'],
+    coverImage: '/images/posts/nextjs-15-mdx-30-blog-development-complete-guide-2025.webp'
+  },
   '2025-no-code-app-platform-comparison-adalo-bubble-glide': {
     title: '【最新2025】無程式碼應用開發平台大比拼：Adalo、Bubble與Glide哪個最值得學？',
     date: '2025-05-19',

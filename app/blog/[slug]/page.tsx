@@ -60,6 +60,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   // 獲取該文章的自定義組件 - 現在應該只是一個物件，而不是函數
   const components = await getPostComponents(resolvedParams.slug);
 
+  // 將 MDX 內容渲染成 React 元件
   return (
     <BlogPostContentStatic metadata={post.metadata}>
       <MDXRenderer 
