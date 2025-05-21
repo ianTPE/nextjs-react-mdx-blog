@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const ogImage = metadata.coverImage || '/images/default-og-image.webp';
   
   return {
-    title: `${metadata.title} | My Blog`,
+    title: `${metadata.title} | Citrine.top`,
     description: metadata.excerpt,
     openGraph: {
       title: metadata.title,
