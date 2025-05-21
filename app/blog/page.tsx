@@ -3,17 +3,17 @@ import { getAllPosts } from '@/lib/mdx';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "所有文章 | My Blog",
+  title: "所有文章 | Citrine.top",
   description: "瀏覽我的所有技術文章，包含 Next.js、React、TypeScript、Tailwind CSS 等主題。",
   openGraph: {
-    title: "所有文章 | My Blog",
+    title: "所有文章 | Citrine.top",
     description: "瀏覽我的所有技術文章，包含 Next.js、React、TypeScript、Tailwind CSS 等主題。",
     type: "website",
     images: [{
       url: "/images/default-og-image.webp",
       width: 1200,
       height: 630,
-      alt: "My Blog - 所有文章"
+      alt: "Citrine.top - 所有文章"
     }]
   },
 };
