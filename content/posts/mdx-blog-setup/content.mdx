@@ -273,7 +273,19 @@ vercel deploy
 ---
 - **程式碼區塊高亮與行號**：結合 rehype-prism-plus，支援多主題、複製按鈕、行號顯示。
 - **圖片自動優化**：MDX img 標籤自動轉換為 Next.js Image，支援 lazy loading、blur-up 效果。
-- **自訂短代碼（Shortcodes）**：如 <YouTube id="dQw4w9WgXcQ" />、<Tweet id="463440424141459456" />，提升內容互動性。
+- **自訂短代碼（Shortcodes）**：如
+ ```React components
+ <YouTube id="dQw4w9WgXcQ" />
+ ```
+ <YouTube id="dQw4w9WgXcQ" />
+
+ ```React components
+ <Tweet id="463440424141459456" />
+ ```
+
+ <Tweet id="463440424141459456" />
+
+ 提升內容互動性。
 - **動態組件載入**：用 dynamic import 載入重型互動組件，避免初次渲染負擔。
 - **SEO/OG 自動化**：根據 frontmatter 自動生成 metadata、Open Graph 標籤、JSON-LD。
 - **無障礙設計（Accessibility）**：所有互動組件、圖片、按鈕都應有 aria 標籤與 alt 文字。
