@@ -1,58 +1,82 @@
-'use client';
+"use client";
 
 import React from 'react';
 
 const DevelopmentAccelerationTable = () => {
+  const data = [
+    { 
+      task: '完整生命週期開發', 
+      swe1: '98%', 
+      generalAI: '45%', 
+      description: '從需求到部署的完整流程' 
+    },
+    { 
+      task: '代碼重構與優化', 
+      swe1: '92%', 
+      generalAI: '67%', 
+      description: '大型項目的架構改進' 
+    },
+    { 
+      task: '多文件協作開發', 
+      swe1: '89%', 
+      generalAI: '52%', 
+      description: '跨文件依賴管理和協調' 
+    },
+    { 
+      task: '錯誤診斷與修復', 
+      swe1: '76%', 
+      generalAI: '58%', 
+      description: '複雜 bug 的定位和解決' 
+    },
+    { 
+      task: '單文件功能實現', 
+      swe1: '72%', 
+      generalAI: '61%', 
+      description: '獨立模組的開發任務' 
+    },
+  ];
+
   return (
-    <div className="overflow-x-auto -ml-2 sm:ml-0 my-6">
-      <table className="min-w-full bg-white border-2 border-gray-300 rounded-lg shadow">
-        <thead className="bg-gray-100">
+    <div className="overflow-x-auto my-6">
+      <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+        <thead className="bg-gray-50">
           <tr>
-            <th className="py-3 px-4 border-b-2 border-gray-300 text-left font-medium text-gray-700">開發任務</th>
-            <th className="py-3 px-4 border-b-2 border-gray-300 text-left font-medium text-gray-700">無 AI 輔助</th>
-            <th className="py-3 px-4 border-b-2 border-gray-300 text-left font-medium text-gray-700">通用 AI 輔助</th>
-            <th className="py-3 px-4 border-b-2 border-gray-300 text-left font-medium text-gray-700">SWE-1 輔助</th>
-            <th className="py-3 px-4 border-b-2 border-gray-300 text-left font-medium text-gray-700">改進</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              開發任務
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              SWE-1 效率提升
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              通用 AI 工具
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              任務描述
+            </th>
           </tr>
         </thead>
-        <tbody>
-          <tr className="hover:bg-gray-50">
-            <td className="py-3 px-4 border-b border-gray-300 font-semibold">新功能實現</td>
-            <td className="py-3 px-4 border-b border-gray-300">100 分鐘</td>
-            <td className="py-3 px-4 border-b border-gray-300">47 分鐘</td>
-            <td className="py-3 px-4 border-b border-gray-300">28 分鐘</td>
-            <td className="py-3 px-4 border-b border-gray-300">72%</td>
-          </tr>
-          <tr className="hover:bg-gray-50">
-            <td className="py-3 px-4 border-b border-gray-300 font-semibold">錯誤修復</td>
-            <td className="py-3 px-4 border-b border-gray-300">35 分鐘</td>
-            <td className="py-3 px-4 border-b border-gray-300">22 分鐘</td>
-            <td className="py-3 px-4 border-b border-gray-300">9 分鐘</td>
-            <td className="py-3 px-4 border-b border-gray-300">74%</td>
-          </tr>
-          <tr className="hover:bg-gray-50">
-            <td className="py-3 px-4 border-b border-gray-300 font-semibold">重構優化</td>
-            <td className="py-3 px-4 border-b border-gray-300">120 分鐘</td>
-            <td className="py-3 px-4 border-b border-gray-300">73 分鐘</td>
-            <td className="py-3 px-4 border-b border-gray-300">36 分鐘</td>
-            <td className="py-3 px-4 border-b border-gray-300">70%</td>
-          </tr>
-          <tr className="hover:bg-gray-50">
-            <td className="py-3 px-4 border-b border-gray-300 font-semibold">單元測試生成</td>
-            <td className="py-3 px-4 border-b border-gray-300">50 分鐘</td>
-            <td className="py-3 px-4 border-b border-gray-300">18 分鐘</td>
-            <td className="py-3 px-4 border-b border-gray-300">8 分鐘</td>
-            <td className="py-3 px-4 border-b border-gray-300">84%</td>
-          </tr>
-          <tr className="hover:bg-gray-50">
-            <td className="py-3 px-4 border-b border-gray-300 font-semibold">文檔生成</td>
-            <td className="py-3 px-4 border-b border-gray-300">45 分鐘</td>
-            <td className="py-3 px-4 border-b border-gray-300">15 分鐘</td>
-            <td className="py-3 px-4 border-b border-gray-300">6 分鐘</td>
-            <td className="py-3 px-4 border-b border-gray-300">87%</td>
-          </tr>
+        <tbody className="bg-white divide-y divide-gray-200">
+          {data.map((item, index) => (
+            <tr key={index} className="hover:bg-gray-50">
+              <td className="px-6 py-4 text-sm font-medium text-gray-900">
+                {item.task}
+              </td>
+              <td className="px-6 py-4 text-sm font-bold text-blue-600">
+                {item.swe1}
+              </td>
+              <td className="px-6 py-4 text-sm text-gray-900">
+                {item.generalAI}
+              </td>
+              <td className="px-6 py-4 text-sm text-gray-600">
+                {item.description}
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
+      <div className="text-sm text-gray-500 mt-2 px-6 pb-4">
+        * 平均效率提升：SWE-1 為 77.4%，通用 AI 工具為 52.6%
+      </div>
     </div>
   );
 };

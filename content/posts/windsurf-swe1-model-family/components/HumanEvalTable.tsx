@@ -1,44 +1,48 @@
-'use client';
+"use client";
 
 import React from 'react';
 
 const HumanEvalTable = () => {
+  const data = [
+    { model: 'SWE-1', score: '89.2%', rank: 1 },
+    { model: 'Claude 3.7 Sonnet', score: '88.4%', rank: 2 },
+    { model: 'GPT-4.1', score: '84.1%', rank: 3 },
+    { model: 'Claude 3.5 Sonnet', score: '81.7%', rank: 4 },
+    { model: 'SWE-1-lite', score: '78.3%', rank: 5 },
+  ];
+
   return (
     <div className="overflow-x-auto my-6">
-      <table className="min-w-full bg-white border-2 border-gray-300 rounded-lg shadow">
-        <thead className="bg-gray-100">
+      <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+        <thead className="bg-gray-50">
           <tr>
-            <th className="py-3 px-4 border-b-2 border-gray-300 text-left font-medium text-gray-700">模型</th>
-            <th className="py-3 px-4 border-b-2 border-gray-300 text-left font-medium text-gray-700">Pass@1</th>
-            <th className="py-3 px-4 border-b-2 border-gray-300 text-left font-medium text-gray-700">Pass@3</th>
-            <th className="py-3 px-4 border-b-2 border-gray-300 text-left font-medium text-gray-700">Pass@10</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              排名
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              模型
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              HumanEval+ 分數
+            </th>
           </tr>
         </thead>
-        <tbody>
-          <tr className="hover:bg-gray-50">
-            <td className="py-3 px-4 border-b border-gray-300 font-semibold">SWE-1</td>
-            <td className="py-3 px-4 border-b border-gray-300">79.3%</td>
-            <td className="py-3 px-4 border-b border-gray-300">89.7%</td>
-            <td className="py-3 px-4 border-b border-gray-300">95.1%</td>
-          </tr>
-          <tr className="hover:bg-gray-50">
-            <td className="py-3 px-4 border-b border-gray-300 font-semibold">Claude 3.7 Sonnet</td>
-            <td className="py-3 px-4 border-b border-gray-300">77.8%</td>
-            <td className="py-3 px-4 border-b border-gray-300">88.9%</td>
-            <td className="py-3 px-4 border-b border-gray-300">94.5%</td>
-          </tr>
-          <tr className="hover:bg-gray-50">
-            <td className="py-3 px-4 border-b border-gray-300 font-semibold">GPT-4.1</td>
-            <td className="py-3 px-4 border-b border-gray-300">75.3%</td>
-            <td className="py-3 px-4 border-b border-gray-300">86.2%</td>
-            <td className="py-3 px-4 border-b border-gray-300">93.8%</td>
-          </tr>
-          <tr className="hover:bg-gray-50">
-            <td className="py-3 px-4 border-b border-gray-300 font-semibold">SWE-1-lite</td>
-            <td className="py-3 px-4 border-b border-gray-300">71.2%</td>
-            <td className="py-3 px-4 border-b border-gray-300">82.3%</td>
-            <td className="py-3 px-4 border-b border-gray-300">88.5%</td>
-          </tr>
+        <tbody className="bg-white divide-y divide-gray-200">
+          {data.map((item, index) => (
+            <tr key={index} className={item.model.includes('SWE-1') ? 'bg-blue-50' : ''}>
+              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                #{item.rank}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                {item.model}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                <span className={item.model.includes('SWE-1') ? 'font-bold text-blue-600' : ''}>
+                  {item.score}
+                </span>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>

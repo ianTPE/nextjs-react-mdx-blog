@@ -1,44 +1,48 @@
-'use client';
+"use client";
 
 import React from 'react';
 
 const SWEBenchTable = () => {
+  const data = [
+    { model: 'Claude 3.7 Sonnet', score: '70.3%', rank: 1 },
+    { model: 'SWE-1', score: '68.9%', rank: 2 },
+    { model: 'Claude 3.5 Sonnet', score: '61.2%', rank: 3 },
+    { model: 'GPT-4.1', score: '54.6%', rank: 4 },
+    { model: 'SWE-1-lite', score: '52.4%', rank: 5 },
+  ];
+
   return (
     <div className="overflow-x-auto my-6">
-      <table className="min-w-full bg-white border-2 border-gray-300 rounded-lg shadow">
-        <thead className="bg-gray-100">
+      <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+        <thead className="bg-gray-50">
           <tr>
-            <th className="py-3 px-4 border-b-2 border-gray-300 text-left font-medium text-gray-700">模型</th>
-            <th className="py-3 px-4 border-b-2 border-gray-300 text-left font-medium text-gray-700">準確率</th>
-            <th className="py-3 px-4 border-b-2 border-gray-300 text-left font-medium text-gray-700">完成時間</th>
-            <th className="py-3 px-4 border-b-2 border-gray-300 text-left font-medium text-gray-700">解決問題深度</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              排名
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              模型
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              SWE-bench 分數
+            </th>
           </tr>
         </thead>
-        <tbody>
-          <tr className="hover:bg-gray-50">
-            <td className="py-3 px-4 border-b border-gray-300 font-semibold">SWE-1</td>
-            <td className="py-3 px-4 border-b border-gray-300">67.8%</td>
-            <td className="py-3 px-4 border-b border-gray-300">42.3 秒</td>
-            <td className="py-3 px-4 border-b border-gray-300">3.78/5</td>
-          </tr>
-          <tr className="hover:bg-gray-50">
-            <td className="py-3 px-4 border-b border-gray-300 font-semibold">Claude 3.7 (標準)</td>
-            <td className="py-3 px-4 border-b border-gray-300">62.3%</td>
-            <td className="py-3 px-4 border-b border-gray-300">83.5 秒</td>
-            <td className="py-3 px-4 border-b border-gray-300">3.62/5</td>
-          </tr>
-          <tr className="hover:bg-gray-50">
-            <td className="py-3 px-4 border-b border-gray-300 font-semibold">Claude 3.7 (Scaffold)</td>
-            <td className="py-3 px-4 border-b border-gray-300">70.3%</td>
-            <td className="py-3 px-4 border-b border-gray-300">127.8 秒</td>
-            <td className="py-3 px-4 border-b border-gray-300">4.12/5</td>
-          </tr>
-          <tr className="hover:bg-gray-50">
-            <td className="py-3 px-4 border-b border-gray-300 font-semibold">GPT-4.1</td>
-            <td className="py-3 px-4 border-b border-gray-300">54.6%</td>
-            <td className="py-3 px-4 border-b border-gray-300">61.2 秒</td>
-            <td className="py-3 px-4 border-b border-gray-300">3.41/5</td>
-          </tr>
+        <tbody className="bg-white divide-y divide-gray-200">
+          {data.map((item, index) => (
+            <tr key={index} className={item.model.includes('SWE-1') ? 'bg-blue-50' : ''}>
+              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                #{item.rank}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                {item.model}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                <span className={item.model.includes('SWE-1') ? 'font-bold text-blue-600' : ''}>
+                  {item.score}
+                </span>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
