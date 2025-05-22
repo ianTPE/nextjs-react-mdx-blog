@@ -10,6 +10,8 @@ import DevelopmentAccelerationTable from './DevelopmentAccelerationTable';
 import ModelComparisonTable from './ModelComparisonTable';
 import TechnicalSpecsTable from './TechnicalSpecsTable';
 import PerformanceBenchmarkTable from './PerformanceBenchmarkTable';
+import GifImage from './GifImage';
+import ImageGallery from './ImageGallery';
 
 export {
   EndToEndBenchmarkChart,
@@ -21,5 +23,7 @@ export {
   DevelopmentAccelerationTable,
   ModelComparisonTable,
   TechnicalSpecsTable,
-  PerformanceBenchmarkTable
+  PerformanceBenchmarkTable,
+  GifImage,
+  ImageGallery
 };
