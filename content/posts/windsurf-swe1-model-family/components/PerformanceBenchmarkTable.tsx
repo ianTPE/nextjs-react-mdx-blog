@@ -2,6 +2,11 @@
 
 import React from 'react';
 
+interface ScoreData {
+  model: string;
+  value: string;
+}
+
 const PerformanceBenchmarkTable = () => {
   const data = [
     {
@@ -66,16 +71,16 @@ const PerformanceBenchmarkTable = () => {
         <tbody className="bg-white divide-y divide-gray-200">
           {data.map((item, index) => {
             // Determine winner for highlighting
-            const scores = [
+            const scores: ScoreData[] = [
               { model: 'swe1', value: item.swe1 },
               { model: 'claude', value: item.claude },
               { model: 'gpt', value: item.gpt }
             ];
             
             // Simple comparison logic (you might need to adjust this based on the actual scoring system)
-            const getHighestScore = (scores: typeof scores) => {
+            const getHighestScore = (scores: ScoreData[]) => {
               const numericScores = scores.map(s => {
-                const num = parseFloat(s.value.replace(/[%/]/g, ''));
+                const num = parseFloat(s.value.replace(/[%\/]/g, ''));
                 return { ...s, numValue: num };
               });
               const highest = numericScores.reduce((prev, current) => 
