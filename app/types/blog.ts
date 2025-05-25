@@ -6,6 +6,10 @@ export interface BlogPost {
   author: string;
   tags: string[];
   coverImage?: string;
+  readingTime?: number;
+  featured?: boolean;
+  category?: string;
+  updatedDate?: string;
 }
 
 export interface BlogMetadata {
@@ -15,4 +19,16 @@ export interface BlogMetadata {
   author: string;
   tags: string[];
   coverImage?: string;
+  readingTime?: number;
+  featured?: boolean;
+  category?: string;
+  updatedDate?: string;
+  seoKeywords?: string[];
+  canonicalUrl?: string;
+}
+
+export interface PostWithContent {
+  metadata: BlogMetadata;
+  content: string;
+  rawContent: string;
 }

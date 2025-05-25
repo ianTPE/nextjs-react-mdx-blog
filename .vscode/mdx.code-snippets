@@ -1,0 +1,77 @@
+{
+  "MDX Blog Post Template": {
+    "prefix": "mdx-blog",
+    "body": [
+      "export const metadata = {",
+      "  title: '$1',",
+      "  date: '$CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE',",
+      "  author: 'Ian Chou',",
+      "  excerpt: '$2',",
+      "  tags: [$3],",
+      "  coverImage: '/images/posts/$4.webp',",
+      "  readingTime: $5,",
+      "  featured: ${6|true,false|},",
+      "  category: '$7'",
+      "};",
+      "",
+      "# $1",
+      "",
+      "$8"
+    ],
+    "description": "Create a new MDX blog post with complete metadata"
+  },
+  "MDX Metadata Only": {
+    "prefix": "mdx-meta",
+    "body": [
+      "export const metadata = {",
+      "  title: '$1',",
+      "  date: '$CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE',",
+      "  author: 'Ian Chou',",
+      "  excerpt: '$2',",
+      "  tags: [$3],",
+      "  coverImage: '/images/posts/$4.webp',",
+      "  readingTime: $5",
+      "};"
+    ],
+    "description": "Create metadata export for MDX file"
+  },
+  "MDX Component Import": {
+    "prefix": "mdx-component",
+    "body": [
+      "<${1:ComponentName} ${2:prop}={${3:value}} />"
+    ],
+    "description": "Insert a component in MDX content"
+  },
+  "MDX Alert Component": {
+    "prefix": "mdx-alert",
+    "body": [
+      "<Alert type=\"${1|info,warning,error,success|}\" title=\"$2\">",
+      "$3",
+      "</Alert>"
+    ],
+    "description": "Insert an alert component"
+  },
+  "MDX Code Block": {
+    "prefix": "mdx-code",
+    "body": [
+      "<CodeBlock language=\"${1:typescript}\" title=\"$2\">",
+      "```${1:typescript}",
+      "$3",
+      "```",
+      "</CodeBlock>"
+    ],
+    "description": "Insert a code block with syntax highlighting"
+  },
+  "MDX Chart Component": {
+    "prefix": "mdx-chart",
+    "body": [
+      "<${1:ChartComponent} ",
+      "  data={${2:chartData}} ",
+      "  title=\"$3\"",
+      "  ${4:width}={${5:800}}",
+      "  ${6:height}={${7:400}}",
+      "/>"
+    ],
+    "description": "Insert a chart component"
+  }
+}

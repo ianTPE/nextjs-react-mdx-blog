@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "validate-posts": "node scripts/validate-posts.js",
+    "prebuild": "npm run validate-posts"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.0",
