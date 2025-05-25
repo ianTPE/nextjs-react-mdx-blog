@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 /* 引入 Dancing Script 草書字體 */
 @font-face {
