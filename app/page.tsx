@@ -26,8 +26,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Home() {
-  const allPosts = getAllPosts();
+export default async function Home() {
+  const allPosts = await getAllPosts();
   const recentPosts = allPosts.slice(0, 3); // 只顯示最近的3篇文章
   const featuredPost = allPosts.length > 0 ? allPosts[0] : null; // 首篇為精選文章
   
