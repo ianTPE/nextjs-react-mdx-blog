@@ -4,7 +4,7 @@
 export { default as CoreArchitecture } from './CoreArchitecture';
 export { default as LinearCoreArchitecture } from './LinearCoreArchitecture';
 export { default as TechStackChart } from './TechStackChart';
-export { default as VictoryTechStackChart } from './VictoryTechStackChart';
+export { default as MobileTechStackChart } from './MobileTechStackChart';
 export { default as IndustryDistributionPieChart } from './IndustryDistributionPieChart';
 export { default as IndustryMaturityMatrix } from './IndustryMaturityMatrix';
 export { default as KeyIndicatorCards } from './KeyIndicatorCards';
