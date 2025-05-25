@@ -1,3 +1,12 @@
+export const metadata = {
+title: 'MDX 部落格架構設計與實踐：從理論到實作的全方位指南',
+  date: '2025-05-17',
+  excerpt: '本文深入探討如何基於 Next.js App Router 構建一個現代化 MDX 部落格系統，特別著重於集中式元數據管理、雙層元件系統設計、TypeScript 型別安全保障，以及靜態生成與客戶端互動性的平衡。從架構選擇到實際部署，提供完整的技術藍圖和工作流程建議。',
+  author: 'Ian Chou',
+  coverImage: '/images/posts/mdx-blog-architecture-design-implementation.webp',
+  tags: ['MDX', 'Next.js', 'React', 'TypeScript', '架構設計', '部落格系統'],
+};
+
 ## 前言：現代化 AI 驅動的部落格創作流程
 
 我選擇 MDX 作為部落格解決方案的核心原因並非僅僅是它融合了 Markdown 和 JSX 的技術優勢，而是它能夠完美融入我的 AI 驅動內容創作流程。通過結合 Claude Desktop 和 Windsurf 這樣的 AI 工具，再配上 MDX 作為內容格式，我實現了一個高效率的部落格發布系統。這個工作流程讓我能夠：
@@ -278,38 +287,13 @@ MDX 是一個強大的格式，它允許你在 Markdown 文件中直接使用 JS
 
 ```typescript
 // content/posts/mdx-blog-setup/components/index.ts
-export { default as Tweet } from './Tweet';
-export { default as YouTube } from './YouTube';
-export { default as CustomButton } from './CustomButton';
-```
-
-## 4. 雙層元件系統：全域 vs 文章特定
-
-本架構實現了一個創新的雙層元件系統，平衡了代碼複用與文章特定需求。
-
-### 4.1 全域元件設計
-
-全域元件位於 `components/mdx/global-components/` 目錄，所有文章均可使用：
-
-```tsx
-// components/mdx/global-components/Alert.tsx
-'use client';
-
-import React from 'react';
-
-interface AlertProps {
-  type?: 'info' | 'warning' | 'error' | 'success';
-  title?: string;
-  children: React.ReactNode;
-}
-
-const typeStyles = {
-  info: {
-    container: 'bg-blue-50 border-blue-200',
-    title: 'text-blue-800',
-    content: 'text-blue-700'
-  },
-  // 其他樣式...
+export const metadata = {
+title: 'MDX 部落格架構設計與實踐：從理論到實作的全方位指南',
+  date: '2025-05-17',
+  excerpt: '本文深入探討如何基於 Next.js App Router 構建一個現代化 MDX 部落格系統，特別著重於集中式元數據管理、雙層元件系統設計、TypeScript 型別安全保障，以及靜態生成與客戶端互動性的平衡。從架構選擇到實際部署，提供完整的技術藍圖和工作流程建議。',
+  author: 'Ian Chou',
+  coverImage: '/images/posts/mdx-blog-architecture-design-implementation.webp',
+  tags: ['MDX', 'Next.js', 'React', 'TypeScript', '架構設計', '部落格系統'],
 };
 
 export default function Alert({ type = 'info', title, children }: AlertProps) {
@@ -334,36 +318,16 @@ export default function Alert({ type = 'info', title, children }: AlertProps) {
 
 ```typescript
 // components/mdx/global-components/index.ts
-export { default as Alert } from './Alert';
-export { default as Callout } from './Callout';
-export { default as Tweet } from './Tweet';
-export { default as YouTube } from './YouTube';
-export { default as CodeBlock } from '../CodeBlock';
-```
+export const metadata = {
+title: 'MDX 部落格架構設計與實踐：從理論到實作的全方位指南',
+  date: '2025-05-17',
+  excerpt: '本文深入探討如何基於 Next.js App Router 構建一個現代化 MDX 部落格系統，特別著重於集中式元數據管理、雙層元件系統設計、TypeScript 型別安全保障，以及靜態生成與客戶端互動性的平衡。從架構選擇到實際部署，提供完整的技術藍圖和工作流程建議。',
+  author: 'Ian Chou',
+  coverImage: '/images/posts/mdx-blog-architecture-design-implementation.webp',
+  tags: ['MDX', 'Next.js', 'React', 'TypeScript', '架構設計', '部落格系統'],
+};
 
-### 4.3 動態元件載入系統
-
-核心創新在於 `mdx-loader.ts`，它負責動態合併全域元件和文章特定元件：
-
-```typescript
-// lib/mdx-loader.ts
-import path from 'path';
-import fs from 'fs';
-import { cache } from 'react';
-
-// 導入全域元件
-import * as globalComponents from '@/components/mdx/global-components';
-
-export const getPostComponents = cache(async (slug: string) => {
-  try {
-    // 檢查該文章是否有自定義元件目錄
-    const componentsDir = path.join(process.cwd(), 'content/posts', slug, 'components');
-    
-    if (!fs.existsSync(componentsDir)) {
-      console.log(`No custom components directory found for post: ${slug}`);
-      // 返回全域元件
-      return { ...globalComponents };
-    }
+}
 
     // 嘗試導入局部元件
     try {
