@@ -1,0 +1,8 @@
+{
+  "name": "low-code-no-code-blog-charts",
+  "version": "1.0.0",
+  "description": "Interactive charts for low-code/no-code blog post",
+  "dependencies": {
+    "chart.js": "^4.4.1"
+  }
+}

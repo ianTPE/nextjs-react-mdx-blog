@@ -1,3 +1,7 @@
 export { default as ToolsTable } from './ToolsTable';
-// 未來可以在這裡添加導出其他組件
-// export { default as AnotherComponent } from './AnotherComponent';
+export { default as MarketGrowthChart } from './MarketGrowthChart';
+export { default as OpportunityRankingChart } from './OpportunityRankingChart';
+export { default as EfficiencyComparisonChart } from './EfficiencyComparisonChart';
+export { default as IncomeProgressionChart } from './IncomeProgressionChart';
+export { default as AdoptionTrendChart } from './AdoptionTrendChart';
+export { default as SkillsDemandChart } from './SkillsDemandChart';
