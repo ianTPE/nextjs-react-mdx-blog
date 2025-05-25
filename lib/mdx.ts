@@ -1,17 +1,25 @@
 import fs from 'fs';
 import path from 'path';
-import { BlogPost, BlogMetadata } from '@/app/types/blog';
+import { BlogPost, BlogMetadata, PostWithContent } from '@/app/types/blog';
+import { extractMetadataFromMDX, validateMetadata } from './metadata-extractor';
+import { mdxCache } from './mdx-cache';
 
 // Re-export the BlogPost type
-export type { BlogPost, BlogMetadata };
+export type { BlogPost, BlogMetadata, PostWithContent };
 
 const postsDirectory = path.join(process.cwd(), 'content/posts');
 
 /**
  * 從 MDX 文件解析 metadata
  */
-export function getPostMetadata(slug: string): BlogMetadata | null {
+export async function getPostMetadata(slug: string): Promise<BlogMetadata | null> {
   try {
+    // 先檢查快取
+    const cachedMetadata = mdxCache.getMetadata(slug);
+    if (cachedMetadata) {
+      return cachedMetadata;
+    }
+
     const mdxPath = path.join(postsDirectory, slug, 'content.mdx');
     
     if (!fs.existsSync(mdxPath)) {
@@ -21,137 +29,17 @@ export function getPostMetadata(slug: string): BlogMetadata | null {
 
     const fileContents = fs.readFileSync(mdxPath, 'utf8');
     
-    // 提取 export const metadata 或 export { 語句
-    const constMetadataRegex = /export\s+const\s+metadata\s*=\s*\{([\s\S]*?)\};/;
-    const exportObjectRegex = /export\s*\{\s*([\s\S]*?)\s*\};/;
+    // 使用新的 ESM metadata 提取機制
+    const { metadata } = await extractMetadataFromMDX(fileContents);
     
-    let match = fileContents.match(constMetadataRegex);
-    let exportContent = '';
-    let isConstExport = true;
+    // 快取 metadata
+    mdxCache.setMetadata(slug, metadata);
     
-    if (match) {
-      exportContent = match[1];
-    } else {
-      match = fileContents.match(exportObjectRegex);
-      if (match) {
-        exportContent = match[1];
-        isConstExport = false;
-      } else {
-        console.warn(`No metadata export statement found in ${slug}/content.mdx`);
-        return null;
-      }
-    }
-    
-    // 解析 metadata 字段
-    const metadata = parseMetadataFields(exportContent, isConstExport);
-    
-    // 驗證必要字段
-    if (!validateMetadata(metadata, slug)) {
-      return null;
-    }
-    
-    return metadata as BlogMetadata;
+    return metadata;
   } catch (error) {
     console.error(`Failed to parse metadata for ${slug}:`, error);
     return null;
   }
-}
-
-/**
- * 解析 metadata 字段
- */
-function parseMetadataFields(exportContent: string, isConstExport: boolean = true): Partial<BlogMetadata> {
-  const metadata: Partial<BlogMetadata> = {};
-  
-  // 解析字符串字段
-  const stringFields = ['title', 'date', 'excerpt', 'author', 'coverImage'];
-  
-  stringFields.forEach(field => {
-    const value = parseStringField(exportContent, field);
-    if (value !== null) {
-      (metadata as any)[field] = value;
-    }
-  });
-  
-  // 解析 tags 數組
-  const tags = parseTagsField(exportContent);
-  if (tags) {
-    metadata.tags = tags;
-  }
-  
-  return metadata;
-}
-
-/**
- * 解析字符串字段
- */
-function parseStringField(content: string, fieldName: string): string | null {
-  // 匹配單引號字符串，支持轉義的單引號
-  const regex = new RegExp(`${fieldName}:\\s*'((?:[^'\\\\]|\\\\.)*)(?<!\\\\)'`, 'g');
-  const match = regex.exec(content);
-  
-  if (match) {
-    // 處理轉義字符
-    return match[1]
-      .replace(/\\'/g, "'")      // 轉義的單引號
-      .replace(/\\n/g, '\n')     // 轉義的換行
-      .replace(/\\\\/g, '\\');   // 轉義的反斜杠
-  }
-  
-  return null;
-}
-
-/**
- * 解析 tags 數組字段
- */
-function parseTagsField(content: string): string[] | null {
-  const tagsRegex = /tags:\s*\[([\s\S]*?)\]/;
-  const match = content.match(tagsRegex);
-  
-  if (!match) {
-    return null;
-  }
-  
-  const tagsString = match[1];
-  
-  // 提取數組中的每個標籤
-  const tagRegex = /'((?:[^'\\]|\\.)*)'/g;
-  const tags: string[] = [];
-  let tagMatch;
-  
-  while ((tagMatch = tagRegex.exec(tagsString)) !== null) {
-    const tag = tagMatch[1]
-      .replace(/\\'/g, "'")
-      .replace(/\\\\/g, '\\');
-    
-    if (tag.trim()) {
-      tags.push(tag.trim());
-    }
-  }
-  
-  return tags.length > 0 ? tags : null;
-}
-
-/**
- * 驗證 metadata 完整性
- */
-function validateMetadata(metadata: Partial<BlogMetadata>, slug: string): boolean {
-  const requiredFields: (keyof BlogMetadata)[] = ['title', 'date', 'excerpt', 'author', 'tags'];
-  
-  for (const field of requiredFields) {
-    if (!metadata[field]) {
-      console.warn(`Missing required field '${field}' in ${slug}`);
-      return false;
-    }
-  }
-  
-  // 驗證 tags 是數組且非空
-  if (!Array.isArray(metadata.tags) || metadata.tags.length === 0) {
-    console.warn(`Invalid or empty tags array in ${slug}`);
-    return false;
-  }
-  
-  return true;
 }
 
 /**
@@ -183,43 +71,71 @@ export function getAllPostSlugs(): string[] {
 /**
  * 獲取所有文章列表
  */
-export function getAllPosts(): BlogPost[] {
+export async function getAllPosts(): Promise<BlogPost[]> {
+  // 先檢查快取
+  const cachedPosts = mdxCache.getAllPosts();
+  if (cachedPosts) {
+    return cachedPosts;
+  }
+
   const slugs = getAllPostSlugs();
   
-  const posts = slugs
-    .map((slug) => {
-      const metadata = getPostMetadata(slug);
+  const posts = await Promise.all(
+    slugs.map(async (slug) => {
+      const metadata = await getPostMetadata(slug);
       if (!metadata) return null;
       
       return { slug, ...metadata };
     })
-    .filter((post): post is BlogPost => post !== null);
+  );
+
+  const validPosts = posts.filter((post): post is BlogPost => post !== null);
 
   // 按日期排序，最新的在前
-  return posts.sort((a, b) => {
+  const sortedPosts = validPosts.sort((a, b) => {
     return new Date(b.date).getTime() - new Date(a.date).getTime();
   });
+
+  // 快取結果
+  mdxCache.setAllPosts(sortedPosts);
+
+  return sortedPosts;
 }
 
 /**
  * 獲取單篇文章的完整內容
  */
-export function getPostBySlug(slug: string): { metadata: BlogMetadata; content: string } | null {
+export async function getPostBySlug(slug: string): Promise<PostWithContent | null> {
   try {
-    const metadata = getPostMetadata(slug);
-    if (!metadata) return null;
+    // 先檢查快取
+    const cachedPost = await mdxCache.getPost(slug);
+    if (cachedPost) {
+      return cachedPost;
+    }
 
     // 讀取 MDX 文件內容
     const fullPath = path.join(postsDirectory, slug, 'content.mdx');
-    const fileContents = fs.readFileSync(fullPath, 'utf8');
     
-    // 移除 export 語句，只保留 MDX 內容
-    const content = removeExportStatements(fileContents);
+    if (!fs.existsSync(fullPath)) {
+      console.warn(`MDX file not found: ${fullPath}`);
+      return null;
+    }
 
-    return {
+    const rawContent = fs.readFileSync(fullPath, 'utf8');
+    
+    // 使用新的 ESM metadata 提取機制
+    const { metadata, cleanContent } = await extractMetadataFromMDX(rawContent);
+
+    const postWithContent: PostWithContent = {
       metadata,
-      content,
+      content: cleanContent,
+      rawContent
     };
+
+    // 快取結果
+    mdxCache.setPost(slug, postWithContent);
+
+    return postWithContent;
   } catch (error) {
     console.error(`Failed to load post ${slug}:`, error);
     return null;
@@ -227,25 +143,9 @@ export function getPostBySlug(slug: string): { metadata: BlogMetadata; content: 
 }
 
 /**
- * 移除 export 語句，保留 MDX 內容
- */
-function removeExportStatements(content: string): string {
-  // 移除開頭的 export const metadata 或 export { 語句
-  const constMetadataRegex = /^export\s+const\s+metadata\s*=\s*\{[\s\S]*?\};\s*\n*/;
-  const exportObjectRegex = /^export\s*\{\s*[\s\S]*?\s*\};\s*\n*/;
-  
-  let result = content.replace(constMetadataRegex, '');
-  if (result === content) {
-    result = content.replace(exportObjectRegex, '');
-  }
-  
-  return result.trim();
-}
-
-/**
  * 新增函數：獲取所有文章的基本信息（不讀取內容）
  */
-export function getAllPostsMetadata(): BlogPost[] {
+export async function getAllPostsMetadata(): Promise<BlogPost[]> {
   return getAllPosts();
 }
 
@@ -260,7 +160,45 @@ export function postExists(slug: string): boolean {
 /**
  * 獲取最近的文章
  */
-export function getRecentPosts(limit: number = 5): BlogPost[] {
-  const allPosts = getAllPosts();
+export async function getRecentPosts(limit: number = 5): Promise<BlogPost[]> {
+  const allPosts = await getAllPosts();
   return allPosts.slice(0, limit);
+}
+
+/**
+ * 向後兼容：同步版本的 getPostMetadata（已棄用）
+ * @deprecated 請使用異步版本的 getPostMetadata
+ */
+export function getPostMetadataSync(slug: string): BlogMetadata | null {
+  console.warn('getPostMetadataSync is deprecated, please use getPostMetadata (async version)');
+  
+  try {
+    const mdxPath = path.join(postsDirectory, slug, 'content.mdx');
+    
+    if (!fs.existsSync(mdxPath)) {
+      return null;
+    }
+
+    const fileContents = fs.readFileSync(mdxPath, 'utf8');
+    
+    // 使用簡單的正則表達式解析（同步版本）
+    const metadataRegex = /^export\s+const\s+metadata\s*=\s*({[\s\S]*?});/m;
+    const match = fileContents.match(metadataRegex);
+    
+    if (!match) {
+      return null;
+    }
+
+    try {
+      const evalFunction = new Function(`return ${match[1]}`);
+      const metadata = evalFunction();
+      return validateMetadata(metadata);
+    } catch (error) {
+      console.error(`Failed to parse metadata for ${slug}:`, error);
+      return null;
+    }
+  } catch (error) {
+    console.error(`Failed to read post ${slug}:`, error);
+    return null;
+  }
 }

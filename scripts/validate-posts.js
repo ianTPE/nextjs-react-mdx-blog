@@ -10,21 +10,26 @@ import path from 'path';
 import { extractMetadataFromFile, validateMetadata } from '../lib/metadata-extractor.js';
 import { getAllPostSlugs } from '../lib/mdx.js';
 
-interface ValidationError {
-  slug: string;
-  type: 'metadata' | 'file' | 'image' | 'warning';
-  message: string;
-}
+/**
+ * 驗證錯誤類型定義
+ * @typedef {Object} ValidationError
+ * @property {string} slug
+ * @property {'metadata'|'file'|'image'|'warning'} type
+ * @property {string} message
+ */
 
 /**
  * 驗證所有文章
+ * @returns {Promise<void>}
  */
-async function validateAllPosts(): Promise<void> {
+async function validateAllPosts() {
   console.log('🔍 Starting post validation...\n');
   
   const slugs = getAllPostSlugs();
-  const errors: ValidationError[] = [];
-  const warnings: ValidationError[] = [];
+  /** @type {ValidationError[]} */
+  const errors = [];
+  /** @type {ValidationError[]} */
+  const warnings = [];
   let validCount = 0;
 
   if (slugs.length === 0) {
@@ -177,8 +182,10 @@ async function validateAllPosts(): Promise<void> {
 
 /**
  * 驗證單篇文章
+ * @param {string} slug 
+ * @returns {Promise<void>}
  */
-async function validateSinglePost(slug: string): Promise<void> {
+async function validateSinglePost(slug) {
   console.log(`🔍 Validating single post: ${slug}\n`);
   
   try {
@@ -214,7 +221,7 @@ async function validateSinglePost(slug: string): Promise<void> {
 /**
  * 顯示使用說明
  */
-function showHelp(): void {
+function showHelp() {
   console.log(`
 MDX Posts Validator
 
@@ -236,8 +243,11 @@ The script will:
 `);
 }
 
-// 主程式
-async function main(): Promise<void> {
+/**
+ * 主程式
+ * @returns {Promise<void>}
+ */
+async function main() {
   const args = process.argv.slice(2);
   
   if (args.includes('--help') || args.includes('-h')) {
@@ -259,5 +269,3 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     process.exit(1);
   });
 }
-
-export { validateAllPosts, validateSinglePost };
