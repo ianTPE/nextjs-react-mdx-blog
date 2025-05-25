@@ -203,7 +203,7 @@ if (process.env.NODE_ENV === 'development' && typeof window === 'undefined') {
     });
     
   } catch (error) {
-    console.warn('File watching not available:', error.message);
+    console.warn('File watching not available:', error instanceof Error ? error.message : String(error));
   }
 }
 
