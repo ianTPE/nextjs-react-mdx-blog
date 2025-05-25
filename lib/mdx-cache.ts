@@ -150,7 +150,7 @@ class MDXCache {
       
       for (const slug of slugs) {
         if (!this.metadataCache.has(slug)) {
-          const metadata = getPostMetadata(slug);
+          const metadata = await getPostMetadata(slug);
           if (metadata) {
             this.setMetadata(slug, metadata);
           }
