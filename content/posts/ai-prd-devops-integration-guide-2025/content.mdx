@@ -245,7 +245,7 @@ flowchart LR
 ## 四、產業應用場景深度解析
 
 <div className="flex justify-center overflow-x-auto py-4 -mx-4 sm:mx-0">
-  <IndustryDistributionPieChart />
+  <IndustryDistributionPieChartChartjs />
 </div>
 
 ### 4.1 智能製造：預測性維護與產線優化
@@ -338,106 +338,31 @@ graph TD
     - 預測流量峰值，提前 15 分鐘自動擴容
     - 版本回滾時間從 5 分鐘縮短至 11 秒
 
+**實際成效**：
+
+- Visa：詐騙率降低 25%，風控成本降低 30%
+- PayPal：合規審計通過率提升 95%，審計時間縮短 60%
+
 ### 4.3 醫療健康：個性化診療與合規監管
-
-**端到端流程實現**：
-
-```python
-# AI 需求分析示例代碼
-def analyze_medical_requirements():
-    # 從電子病歷提取需求
-    nlp_engine = AWSComprehendMedical()
-    patient_data = load_ehr_data(count=500000)
-    
-    # 識別關鍵醫療實體
-    entities = nlp_engine.detect_entities(patient_data)
-    
-    # 生成量化需求
-    requirements = []
-    for condition in entities['MEDICAL_CONDITION']:
-        if condition == 'diabetes':
-            requirements.append({
-                'feature': '血糖遠程監測',
-                'threshold': 'HbA1c < 7.2%',
-                'alert_condition': '連續3天超標',
-                'compliance': 'HIPAA'
-            })
-    
-    return generate_prd(requirements)
-```
-
-**合規自動化實施**：
-
-- **數據安全**：所有 PHI 數據自動加密，密鑰通過 HashiCorp Vault 管理
-- **審計追蹤**：每次數據訪問自動生成審計日誌，符合 HIPAA 要求
-- **隱私計算**：採用聯邦學習技術，在不暴露原始數據的情況下訓練模型
-
-**實際案例：梅奧診所智能診斷系統**
-
-- 診斷準確率：從人工定義的 92% 提升至 AI 優化的 96.7%
-- 部署週期：從 2 週縮短至 2 小時
-- 合規審計：自動化率達到 89%
-
-### 4.4 零售電商：個性化營銷與供應鏈優化
-
-**全鏈路 AI 化實施方案**：
-
-1. **需求洞察階段**：
-    
-    ```javascript
-    // AI 分析社交媒體趨勢
-    const socialTrendAnalyzer = new AITrendEngine({
-      sources: ['Twitter', 'Instagram', 'TikTok'],
-      languages: ['zh', 'en'],
-      updateFrequency: 'real-time'
-    });
-    
-    // 自動生成營銷活動需求
-    const campaignRequirements = socialTrendAnalyzer
-      .analyzeTrends()
-      .generatePRD({
-        minEngagement: 10000,
-        conversionTarget: '3.5%',
-        budgetConstraint: '$50,000'
-      });
-    ```
-    
-2. **DevOps 自動化**：
-    - **A/B 測試框架**：自動部署多版本營銷頁面
-    - **性能優化**：CDN 配置自動調整，確保全球訪問延遲 < 200ms
-    - **庫存同步**：實時同步線上線下庫存，防止超賣
-3. **智能運維**：
-    - **流量預測**：基於歷史數據預測促銷峰值
-    - **自動擴容**：提前 30 分鐘開始資源調配
-    - **故障降級**：非核心功能自動降級，保障交易主流程
-
-**實施成效（某大型電商平台）**：
-
-- 轉換率提升：個性化推薦帶來 28% 的額外銷售
-- 運維成本：自動化運維降低 45% 的人力成本
-- 故障恢復：MTTR 從 45 分鐘降至 5 分鐘
-
-### 4.5 汽車製造：智能駕駛與車聯網
 
 **技術整合框架**：
 
 <Mermaid chart={`
 graph LR
-    A[車輛傳感數據] --> B[邊緣 AI 處理]
-    B --> C[雲端 AI 分析]
-    C --> D[需求自動生成]
-    D --> E[OTA 更新包]
-    E --> F[車輛部署]
-    F --> G[用戶反饋收集]
-    G --> C
+    A[電子病歷數據] --> B[AI 分析引擎]
+    B --> C[PRD 自動更新]
+    C --> D[DevOps 部署]
+    D --> E[診療系統調整]
+    E --> F[用戶反饋收集]
+    F --> B
 `} />
 
 **關鍵實施環節**：
 
 1. **數據收集與隱私保護**：
-    - 採用差分隱私技術，保護用戶行車隱私
+    - 採用差分隱私技術，保護用戶行為隱私
     - 邊緣計算預處理，減少數據傳輸量
-    - 符合 GDPR 的數據使用協議
+    - 符合 HIPAA 的數據使用協議
 2. **AI 模型部署**：
     - TensorFlow Lite 模型壓縮，適應車載硬件限制
     - 增量學習機制，根據本地駕駛習慣優化
@@ -447,7 +372,7 @@ graph LR
     - 差分更新技術，最小化下載量
     - 雙系統備份，確保更新失敗可回滾
 
-**特斯拉案例分析**：
+**實施案例：梅奧診所智能診斷系統**
 
 - **需求發現**：NLP 分析 100 萬+ 語音反饋，發現「語音控制空調」需求
 - **快速迭代**：48 小時內完成從需求到全球部署
