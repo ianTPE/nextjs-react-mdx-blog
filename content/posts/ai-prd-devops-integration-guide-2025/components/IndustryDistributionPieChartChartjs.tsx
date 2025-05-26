@@ -5,12 +5,13 @@ import { Pie } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   ArcElement,
-  Tooltip as ChartTooltip,
-  Legend as ChartLegend,
+  Tooltip,
+  Legend,
+  type TooltipItem
 } from "chart.js";
 
 // Register Chart.js elements once
-ChartJS.register(ArcElement, ChartTooltip, ChartLegend);
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 // Define types for our data
 interface IndustryDataItem {
@@ -68,7 +69,7 @@ const IndustryDistributionPieChartChartjs = () => {
       },
       tooltip: {
         callbacks: {
-          label: (ctx: any) => {
+          label: (ctx: TooltipItem<'pie'>) => {
             const label = ctx.label || "";
             const value = ctx.parsed;
             return `${label}: ${value}%`;

@@ -7,12 +7,13 @@ import {
   BarElement,
   CategoryScale,
   LinearScale,
-  Tooltip as ChartTooltip,
-  Legend as ChartLegend,
+  Tooltip,
+  Legend,
+  type TooltipItem
 } from "chart.js";
 
 // Register Chart.js elements once
-ChartJS.register(BarElement, CategoryScale, LinearScale, ChartTooltip, ChartLegend);
+ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 const techStackData = [
   { category: "AI 需求分析", adoption: 85, color: "#3b82f6" },
@@ -62,7 +63,7 @@ const TechStackChartChartjs = () => {
       },
       tooltip: {
         callbacks: {
-          label: (ctx: any) => {
+          label: (ctx: TooltipItem<'bar'>) => {
             const value = ctx.parsed.x;
             return `採用率: ${value}%`;
           },
