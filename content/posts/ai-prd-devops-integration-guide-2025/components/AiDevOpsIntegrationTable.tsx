@@ -64,21 +64,25 @@ const columns = [
     header: () => <span className="font-bold">領域</span>,
     cell: info => <span className="font-bold">{info.getValue()}</span>,
     size: 150,
+    meta: { width: '15%' },
   }),
   columnHelper.accessor('tools', {
     header: () => <span className="font-bold">技術/工具</span>,
     cell: info => renderMultiLine(info.getValue()),
     size: 200,
+    meta: { width: '25%' },
   }),
   columnHelper.accessor('examples', {
     header: () => <span className="font-bold">功能範例</span>,
     cell: info => renderMultiLine(info.getValue()),
     size: 300,
+    meta: { width: '35%' },
   }),
   columnHelper.accessor('points', {
     header: () => <span className="font-bold">實施要點</span>,
     cell: info => renderMultiLine(info.getValue()),
     size: 200,
+    meta: { width: '25%' },
   }),
 ];
 
@@ -103,7 +107,7 @@ export const AiDevOpsIntegrationTable: React.FC = () => {
                   key={header.id}
                   colSpan={header.colSpan}
                   className="border border-gray-300 px-4 py-3 text-left text-sm"
-                  style={{ width: header.getSize() !== 150 ? header.getSize() : undefined }} // Default size is 150 for Tanstack Table
+                  style={{ width: (header.column.columnDef as any).meta?.width }}
                 >
                   {header.isPlaceholder
                     ? null
@@ -123,7 +127,7 @@ export const AiDevOpsIntegrationTable: React.FC = () => {
                 <td
                   key={cell.id}
                   className="border border-gray-300 px-4 py-3 align-top text-sm"
-                  style={{ width: cell.column.getSize() !== 150 ? cell.column.getSize() : undefined }}
+                  style={{ width: (cell.column.columnDef as any).meta?.width }}
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>

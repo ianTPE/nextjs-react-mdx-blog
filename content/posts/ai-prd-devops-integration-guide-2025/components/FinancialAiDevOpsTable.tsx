@@ -50,21 +50,25 @@ const columns = [
     header: () => <span className="font-bold">流程層</span>,
     cell: info => info.getValue(),
     size: 120,
+    meta: { width: '20%' },
   }),
   columnHelper.accessor('techSolution', {
     header: () => <span className="font-bold">技術方案</span>,
     cell: info => info.getValue(),
     size: 200,
+    meta: { width: '25%' },
   }),
   columnHelper.accessor('implementationDetails', {
     header: () => <span className="font-bold">實施細節</span>,
     cell: info => renderMultiLine(info.getValue()),
     size: 250,
+    meta: { width: '35%' },
   }),
   columnHelper.accessor('performanceMetrics', {
     header: () => <span className="font-bold">效能指標</span>,
     cell: info => info.getValue(),
     size: 150,
+    meta: { width: '20%' },
   }),
 ];
 
@@ -89,7 +93,7 @@ export const FinancialAiDevOpsTable: React.FC = () => {
                   key={header.id}
                   colSpan={header.colSpan}
                   className="border border-gray-300 px-4 py-3 text-left text-sm"
-                  style={{ width: header.getSize() !== 150 ? header.getSize() : undefined }}
+                  style={{ width: (header.column.columnDef as any).meta?.width }}
                 >
                   {header.isPlaceholder
                     ? null
@@ -109,7 +113,7 @@ export const FinancialAiDevOpsTable: React.FC = () => {
                 <td
                   key={cell.id}
                   className="border border-gray-300 px-4 py-3 align-top text-sm"
-                  style={{ width: cell.column.getSize() !== 150 ? cell.column.getSize() : undefined }}
+                  style={{ width: (cell.column.columnDef as any).meta?.width }}
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
