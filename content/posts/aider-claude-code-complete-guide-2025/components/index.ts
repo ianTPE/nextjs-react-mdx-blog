@@ -7,3 +7,4 @@ export { default as ROITimelineChart } from './ROITimelineChart';
 export { default as ScenarioChart } from './ScenarioChart';
 export { default as LearningCurveChart } from './LearningCurveChart';
 export { default as MermaidDiagram } from './MermaidDiagram';
+export { default as LearningJourneySteps } from './LearningJourneySteps';
