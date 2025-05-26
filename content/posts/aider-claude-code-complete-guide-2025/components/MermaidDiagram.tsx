@@ -2,11 +2,11 @@
 
 import { useEffect, useState, type FC } from 'react';
 import mermaid from 'mermaid';
-import type { MermaidConfig } from 'mermaid';   // ★ 用型別匯入
+import type { MermaidConfig } from 'mermaid';
 
 interface MermaidDiagramProps {
   chart: string;
-  config?: MermaidConfig;                       // ★ 型別 OK
+  config?: MermaidConfig;                      
 }
 
 const MermaidDiagram: FC<MermaidDiagramProps> = ({ chart, config }) => {
