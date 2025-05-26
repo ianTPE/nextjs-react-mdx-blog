@@ -142,105 +142,7 @@ flowchart LR
   <MobileTechStackChart />
 </div>
 
-<div className="overflow-x-auto">
-  <table className="min-w-full table-auto border-collapse">
-    <thead>
-      <tr className="bg-gray-100">
-        <th className="border px-4 py-2 font-bold">領域</th>
-        <th className="border px-4 py-2 font-bold">技術/工具</th>
-        <th className="border px-4 py-2 font-bold">功能範例</th>
-        <th className="border px-4 py-2 font-bold">實施要點</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td className="border px-4 py-2 font-bold">AI 需求分析</td>
-        <td className="border px-4 py-2">
-          GPT-4、BERT<br/>
-          MonkeyLearn<br/>
-          AWS Comprehend
-        </td>
-        <td className="border px-4 py-2">
-          從非結構化文本提取需求關鍵詞<br/>
-          情感分析與主題聚類<br/>
-          自動生成用戶故事
-        </td>
-        <td className="border px-4 py-2">
-          需要高質量標註數據<br/>
-          定期微調模型參數
-        </td>
-      </tr>
-      <tr>
-        <td className="border px-4 py-2 font-bold">智能編碼</td>
-        <td className="border px-4 py-2">
-          GitHub Copilot<br/>
-          Tabnine<br/>
-          Amazon CodeWhisperer
-        </td>
-        <td className="border px-4 py-2">
-          根據 PRD 描述生成代碼片段<br/>
-          自動補全測試用例<br/>
-          安全最佳實踐建議
-        </td>
-        <td className="border px-4 py-2">
-          需配合代碼審查<br/>
-          設置合規性檢查點
-        </td>
-      </tr>
-      <tr>
-        <td className="border px-4 py-2 font-bold">自適應流水線</td>
-        <td className="border px-4 py-2">
-          Harness AI<br/>
-          Azure ML Pipelines<br/>
-          Jenkins X
-        </td>
-        <td className="border px-4 py-2">
-          動態選擇測試範圍<br/>
-          預測部署風險<br/>
-          自動回滾決策
-        </td>
-        <td className="border px-4 py-2">
-          建立完整監控指標<br/>
-          設定風險閾值
-        </td>
-      </tr>
-      <tr>
-        <td className="border px-4 py-2 font-bold">智能運維</td>
-        <td className="border px-4 py-2">
-          Moogsoft（AIOps）<br/>
-          Google Cloud AIOps<br/>
-          Datadog AI
-        </td>
-        <td className="border px-4 py-2">
-          日誌異常檢測<br/>
-          自動故障根因分析<br/>
-          預測性告警
-        </td>
-        <td className="border px-4 py-2">
-          統一日誌格式<br/>
-          建立知識庫
-        </td>
-      </tr>
-      <tr>
-        <td className="border px-4 py-2 font-bold">數據閉環</td>
-        <td className="border px-4 py-2">
-          Elasticsearch + Kibana<br/>
-          MLflow<br/>
-          Snowflake
-        </td>
-        <td className="border px-4 py-2">
-          用戶行為分析<br/>
-          模型訓練追蹤<br/>
-          數據湖管理
-        </td>
-        <td className="border px-4 py-2">
-          確保數據一致性<br/>
-          實施隱私保護
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+<AiDevOpsIntegrationTable />
 
 ## 四、產業應用場景深度解析
 
@@ -281,47 +183,7 @@ graph TD
 
 **技術堆疊詳解**：
 
-<div className="overflow-x-auto">
-  <table className="min-w-full table-auto border-collapse">
-    <thead>
-      <tr className="bg-gray-100">
-        <th className="border px-4 py-2 font-bold">流程層</th>
-        <th className="border px-4 py-2 font-bold">技術方案</th>
-        <th className="border px-4 py-2 font-bold">實施細節</th>
-        <th className="border px-4 py-2 font-bold">效能指標</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td className="border px-4 py-2">需求生成</td>
-        <td className="border px-4 py-2">GPT-4 + 金融領域預訓練</td>
-        <td className="border px-4 py-2">
-          解析 SWIFT 報文模式<br/>
-          自動生成風控規則
-        </td>
-        <td className="border px-4 py-2">需求覆蓋率 +65%</td>
-      </tr>
-      <tr>
-        <td className="border px-4 py-2">代碼交付</td>
-        <td className="border px-4 py-2">GitHub Copilot + Snyk</td>
-        <td className="border px-4 py-2">
-          生成反洗錢算法<br/>
-          合規性自動檢查
-        </td>
-        <td className="border px-4 py-2">代碼缺陷率 -42%</td>
-      </tr>
-      <tr>
-        <td className="border px-4 py-2">運維監控</td>
-        <td className="border px-4 py-2">Datadog 異常檢測</td>
-        <td className="border px-4 py-2">
-          API 調用模式分析<br/>
-          自動擴容決策
-        </td>
-        <td className="border px-4 py-2">流量處理能力 8x</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+<FinancialAiDevOpsTable />
 
 **實施案例：Visa 支付風控系統**
 
@@ -398,56 +260,7 @@ graph LR
   <ROITrendChart />
 </div>
 
-<div className="overflow-x-auto">
-  <table className="min-w-full table-auto border-collapse">
-    <thead>
-      <tr className="bg-gray-100">
-        <th className="border px-4 py-2 font-bold">指標類別</th>
-        <th className="border px-4 py-2 font-bold">傳統模式</th>
-        <th className="border px-4 py-2 font-bold">AI 賦能模式</th>
-        <th className="border px-4 py-2 font-bold">改善幅度</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td className="border px-4 py-2">需求準確率</td>
-        <td className="border px-4 py-2">65%</td>
-        <td className="border px-4 py-2">92%</td>
-        <td className="border px-4 py-2">+41.5%</td>
-      </tr>
-      <tr>
-        <td className="border px-4 py-2">開發週期</td>
-        <td className="border px-4 py-2">8-12 週</td>
-        <td className="border px-4 py-2">4-6 週</td>
-        <td className="border px-4 py-2">-50%</td>
-      </tr>
-      <tr>
-        <td className="border px-4 py-2">代碼缺陷率</td>
-        <td className="border px-4 py-2">15‰</td>
-        <td className="border px-4 py-2">8‰</td>
-        <td className="border px-4 py-2">-46.7%</td>
-      </tr>
-      <tr>
-        <td className="border px-4 py-2">部署成功率</td>
-        <td className="border px-4 py-2">85%</td>
-        <td className="border px-4 py-2">98%</td>
-        <td className="border px-4 py-2">+15.3%</td>
-      </tr>
-      <tr>
-        <td className="border px-4 py-2">運維響應時間</td>
-        <td className="border px-4 py-2">30 分鐘</td>
-        <td className="border px-4 py-2">3 分鐘</td>
-        <td className="border px-4 py-2">-90%</td>
-      </tr>
-      <tr>
-        <td className="border px-4 py-2">總體 ROI</td>
-        <td className="border px-4 py-2">-</td>
-        <td className="border px-4 py-2">-</td>
-        <td className="border px-4 py-2">3.2x</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+<QuantitativeBenefitTable />
 
 ### 5.2 戰略價值分析
 
@@ -468,44 +281,7 @@ graph LR
 
 ### 6.1 技術挑戰
 
-<div className="overflow-x-auto">
-  <table className="min-w-full table-auto border-collapse">
-    <thead>
-      <tr className="bg-gray-100">
-        <th className="border px-4 py-2 font-bold">挑戰類型</th>
-        <th className="border px-4 py-2 font-bold">具體問題</th>
-        <th className="border px-4 py-2 font-bold">解決方案</th>
-        <th className="border px-4 py-2 font-bold">實施工具</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td className="border px-4 py-2">數據孤島</td>
-        <td className="border px-4 py-2">多系統數據不互通</td>
-        <td className="border px-4 py-2">統一數據湖架構</td>
-        <td className="border px-4 py-2">Snowflake + dbt</td>
-      </tr>
-      <tr>
-        <td className="border px-4 py-2">模型漂移</td>
-        <td className="border px-4 py-2">線上效果退化</td>
-        <td className="border px-4 py-2">自動再訓練管道</td>
-        <td className="border px-4 py-2">MLflow + Kubeflow</td>
-      </tr>
-      <tr>
-        <td className="border px-4 py-2">算力瓶頸</td>
-        <td className="border px-4 py-2">大模型推理慢</td>
-        <td className="border px-4 py-2">模型壓縮與加速</td>
-        <td className="border px-4 py-2">TensorRT + ONNX</td>
-      </tr>
-      <tr>
-        <td className="border px-4 py-2">安全風險</td>
-        <td className="border px-4 py-2">模型攻擊威脅</td>
-        <td className="border px-4 py-2">對抗訓練與防護</td>
-        <td className="border px-4 py-2">Adversarial Robustness Toolbox</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+<TechnicalChallengesTable />
 
 ### 6.2 組織挑戰
 
