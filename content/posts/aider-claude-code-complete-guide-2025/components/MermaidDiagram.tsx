@@ -17,6 +17,15 @@ const MermaidDiagram: React.FC<MermaidDiagramProps> = ({ chart }) => {
         theme: 'default',
         securityLevel: 'loose',
         fontFamily: 'system-ui, -apple-system, sans-serif',
+        fontSize: 18,
+        flowchart: {
+          htmlLabels: true,
+          curve: 'basis',
+          useMaxWidth: false,
+          padding: 20,
+          nodeSpacing: 30,
+          rankSpacing: 80
+        }
       });
       
       // Clear the container first
@@ -39,8 +48,8 @@ const MermaidDiagram: React.FC<MermaidDiagramProps> = ({ chart }) => {
   }, [chart]);
 
   return (
-    <div className="my-6 overflow-x-auto" ref={containerRef}>
-      <div className="text-center text-gray-500 dark:text-gray-400">Loading diagram...</div>
+    <div className="my-8 overflow-x-auto mx-auto max-w-[95%] w-full" ref={containerRef}>
+      <div className="text-center text-gray-500 dark:text-gray-400 text-lg">Loading diagram...</div>
     </div>
   );
 };
