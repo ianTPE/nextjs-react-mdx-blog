@@ -265,11 +265,11 @@ config:
             return '400px';
           })(),
           width: '100%',
-          // 減少整體縮放，避免雙重縮放造成問題
-          transform: !isMobile ? 'scale(1.1)' : 'none', // 減少從 1.2 到 1.1
+          // 稍微增加整體縮放使圖表更大
+          transform: !isMobile ? 'scale(1.25)' : 'none', // 從 1.1 增加到 1.25
           transformOrigin: !isMobile ? 'center top' : 'initial',
-          // 增加更多 margin 來避免重疊
-          marginBottom: !isMobile ? '15%' : '0',
+          // 相應增加 margin 來避免重疊
+          marginBottom: !isMobile ? '20%' : '0', // 從 15% 增加到 20%
           // 確保容器不會溢出並改善渲染質量
           overflow: 'visible',
           // 改善文字渲染
