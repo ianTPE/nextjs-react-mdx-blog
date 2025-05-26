@@ -100,7 +100,8 @@ const LearningJourneySteps: FC = () => {
 
   return (
     <div className="bg-gray-50 dark:bg-gray-900 p-6 rounded-xl shadow-lg my-8">
-      <h2 className="text-xl font-bold mb-6 text-gray-800 dark:text-white">AI 程式設計工具學習路徑</h2>
+      <h2 className="text-xl font-bold mb-2 text-gray-800 dark:text-white">AI 程式設計工具學習路徑</h2>
+      <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">星級評分：⭐⭐⭐(基礎) 到 ⭐⭐⭐⭐⭐(精通) 表示技能熟練度</p>
       
       <StepSection title="初學者階段" steps={beginnerSteps} />
       <StepSection title="中級階段" steps={intermediateSteps} />
