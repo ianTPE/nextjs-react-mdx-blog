@@ -73,7 +73,9 @@ const MermaidDiagram: React.FC<MermaidDiagramProps> = ({ chart }) => {
           const svg = containerRef.current.querySelector('svg');
           if (svg) {
             svg.setAttribute('width', '100%');
-            svg.setAttribute('height', 'auto');
+            // Use CSS for height control instead of the SVG height attribute
+            svg.removeAttribute('height');
+            svg.style.height = 'auto';
             svg.style.maxWidth = '100%';
             
             // Constrain maximum size on desktop
