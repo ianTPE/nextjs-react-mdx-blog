@@ -96,6 +96,37 @@ Aider.chat 和 Claude Code 雖然都是基於 AI 的程式設計工具，但它�
 
 在實際開發中，兩者可以形成完美的協同工作流：
 
+```mermaid
+flowchart TD
+    A[開始新專案] --> B{任務類型？}
+    B -->|快速原型| C[使用 Aider.chat]
+    B -->|複雜開發| D[使用 Claude Code]
+    B -->|混合任務| E[組合使用]
+    
+    C --> F[多輪對話迭代]
+    F --> G[快速驗證想法]
+    G --> H{需要深度開發？}
+    H -->|是| D
+    H -->|否| I[完成任務]
+    
+    D --> J[深度程式碼理解]
+    J --> K[多檔案協同編輯]
+    K --> L[自動化測試]
+    L --> M[Git 工作流整合]
+    M --> N[自動建立 PR]
+    N --> I
+    
+    E --> O[Aider 處理探索階段]
+    O --> P[Claude Code 處理實現階段]
+    P --> Q[兩者協同維護]
+    Q --> I
+    
+    style C fill:#667eea
+    style D fill:#ff6b6b
+    style E fill:#2ecc71
+    style I fill:#f1c40f
+```
+
 **1. 探索與原型階段（Aider 主導）**
 - 使用 Aider 進行快速的想法驗證和原型開發
 - 利用多輪對話迭代改進程式碼邏輯
@@ -115,6 +146,42 @@ Aider.chat 和 Claude Code 雖然都是基於 AI 的程式設計工具，但它�
 ### 場景一：從零開始的專案開發
 
 讓我們透過一個完整的專案開發流程來展示兩者的協同效應。假設我們要開發一個基於 Python 的 RESTful API 服務：
+
+```mermaid
+flowchart LR
+    subgraph "第一階段：架構設計"
+        A1[需求分析] --> A2[技術選型]
+        A2 --> A3[架構設計]
+        A3 --> A4[專案結構]
+    end
+    
+    subgraph "第二階段：核心開發"
+        B1[資料庫設計] --> B2[API 端點]
+        B2 --> B3[業務邏輯]
+        B3 --> B4[測試用例]
+    end
+    
+    subgraph "第三階段：整合測試"
+        C1[單元測試] --> C2[API 測試]
+        C2 --> C3[效能測試]
+        C3 --> C4[安全測試]
+    end
+    
+    subgraph "第四階段：部署上線"
+        D1[CI/CD 配置] --> D2[容器化]
+        D2 --> D3[雲端部署]
+        D3 --> D4[監控日誌]
+    end
+    
+    A4 --> B1
+    B4 --> C1
+    C4 --> D1
+    
+    style A1 fill:#667eea
+    style B1 fill:#ff6b6b
+    style C1 fill:#2ecc71
+    style D1 fill:#f1c40f
+```
 
 **第一階段：專案架構設計（Aider）**
 
@@ -251,6 +318,41 @@ claude
 ```
 
 ## 安裝配置完全指南
+
+```mermaid
+flowchart TD
+    Start([開始安裝]) --> Choice{選擇工具}
+    
+    Choice -->|Aider.chat| A1[檢查 Python 版本]
+    Choice -->|Claude Code| B1[檢查 Node.js 版本]
+    Choice -->|兩者都要| C1[依序安裝]
+    
+    A1 --> A2{Python >= 3.10?}
+    A2 -->|是| A3[pip install aider-install]
+    A2 -->|否| A4[升級 Python]
+    A4 --> A3
+    A3 --> A5[aider-install]
+    A5 --> A6[設定 API 金鑰]
+    A6 --> A7[測試安裝]
+    
+    B1 --> B2{Node.js >= 18?}
+    B2 -->|是| B3[npm install -g @anthropic-ai/claude-code]
+    B2 -->|否| B4[升級 Node.js]
+    B4 --> B3
+    B3 --> B5[完成 OAuth 驗證]
+    B5 --> B6[測試安裝]
+    
+    C1 --> A1
+    A7 --> B1
+    
+    A7 --> Success([安裝完成])
+    B6 --> Success
+    
+    style Start fill:#2ecc71
+    style Success fill:#f1c40f
+    style A3 fill:#667eea
+    style B3 fill:#ff6b6b
+```
 
 ### Aider.chat 安裝配置
 
@@ -614,6 +716,42 @@ aider --load-config team-config.yml
 
 ### 投資報酬率分析
 
+```mermaid
+flowchart TB
+    subgraph "工具選擇決策樹"
+        Start([開始選擇]) --> Q1{專案複雜度？}
+        
+        Q1 -->|簡單| Q2{預算考量？}
+        Q1 -->|中等| Q3{團隊規模？}
+        Q1 -->|複雜| Q4{企業需求？}
+        
+        Q2 -->|低預算| R1[Aider + DeepSeek]
+        Q2 -->|中預算| R2[Aider + Claude Sonnet]
+        
+        Q3 -->|小團隊| R3[Aider 主導]
+        Q3 -->|大團隊| R4[Claude Code 主導]
+        
+        Q4 -->|是| R5[Claude Code + Bedrock]
+        Q4 -->|否| R6[Aider + Claude 組合]
+        
+        R1 --> Success([開始使用])
+        R2 --> Success
+        R3 --> Success
+        R4 --> Success
+        R5 --> Success
+        R6 --> Success
+    end
+    
+    style Start fill:#2ecc71
+    style Success fill:#f1c40f
+    style R1 fill:#3498db
+    style R2 fill:#667eea
+    style R3 fill:#2ecc71
+    style R4 fill:#ff6b6b
+    style R5 fill:#9b59b6
+    style R6 fill:#e67e22
+```
+
 根據業界調研，使用 AI 程式設計工具的投資報酬率通常在 200-500% 之間：
 
 **時間節約**
@@ -792,6 +930,26 @@ claude --track-usage --report-daily
 
 ### 初學者入門路徑
 
+```mermaid
+journey
+    title AI 程式設計工具學習路徑
+    section 初學者階段
+      環境安裝     : 5: 新手
+      基礎操作     : 4: 新手
+      簡單專案     : 3: 新手
+      版本控制     : 4: 新手
+    section 中級階段
+      多檔案管理   : 4: 中級開發者
+      模型調優     : 5: 中級開發者
+      IDE整合      : 4: 中級開發者
+      團隊協作     : 5: 中級開發者
+    section 高級階段
+      工作流自動化 : 5: 專家
+      企業部署     : 4: 專家
+      客製開發     : 5: 專家
+      開源貢獻     : 4: 專家
+```
+
 **第一階段：基礎概念理解（1-2週）**
 
 1. **環境建置**
@@ -880,6 +1038,8 @@ claude --track-usage --report-daily
    claude
    > 將這個 Django 專案從 Class-based Views 重構為 Function-based Views
    ```
+
+<LearningCurveChart />
 
 ### 高級使用者專家級應用
 
@@ -1010,6 +1170,31 @@ Claude Opus 4 和 Claude Sonnet 4 都經過調優以在程式設計任務上表�
 
 ### 對開發者的建議
 
+```mermaid
+timeline
+    title AI 程式設計工具導入時間表
+    
+    第1個月 : 環境建置
+           : 基礎學習
+           : 簡單專案實作
+    
+    第2-3個月 : 進階功能探索
+             : 工作流整合
+             : 團隊分享
+    
+    第4-6個月 : 複雜專案應用
+             : 效率評估
+             : 成本分析
+    
+    第7-12個月 : 企業級部署
+              : 最佳實務制定
+              : 培訓體系建立
+    
+    第2年+ : 深度客製化
+          : 開源貢獻
+          : 行業領導
+```
+
 **短期策略（6-12個月）：**
 
 1. **積極學習和實務**
@@ -1049,6 +1234,31 @@ Claude Opus 4 和 Claude Sonnet 4 都經過調優以在程式設計任務上表�
 Aider.chat 和 Claude Code 的組合不僅僅是兩個工具的簡單相加，而是代表了軟體開發行業的一次根本性變革。我們正在見證從傳統的「人寫程式碼」到「人與 AI 協作程式設計」的歷史性轉變。
 
 ### 核心價值總結
+
+```mermaid
+mindmap
+  root((Aider + Claude Code))
+    效率革命
+      智慧程式碼產生
+      自動化測試
+      版本控制整合
+      重複工作減少
+    品質提升
+      AI 一致性
+      最佳實務遵循
+      自動 Bug 檢測
+      程式碼標準化
+    學習加速
+      對話式學習
+      即時回饋
+      技術棧快速掌握
+      經驗分享
+    創新釋放
+      更多時間思考
+      專注解決方案設計
+      使用者體驗最佳化
+      商業價值創造
+```
 
 **1. 效率革命**
 透過智慧化的程式碼產生、自動化的測試編寫和無縫的版本控制整合，開發者可以將注意力從重複性的編碼工作轉移到更高層次的系統設計和業務邏輯思考上。
