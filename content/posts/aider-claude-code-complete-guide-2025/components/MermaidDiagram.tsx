@@ -20,13 +20,14 @@ const MermaidDiagram: FC<MermaidDiagramProps> = ({ chart }) => {
     // Check if we're on mobile
     setIsMobile(window.innerWidth < 768);
     
-    // Configure mermaid with compact settings
+    // Configure mermaid with Context7-inspired responsive settings
     mermaid.initialize({
       startOnLoad: false,
       theme: 'default',
       securityLevel: 'loose',
       fontFamily: 'system-ui, -apple-system, sans-serif',
       fontSize: window.innerWidth < 768 ? 12 : 14,
+      maxTextSize: window.innerWidth < 768 ? 50000 : 90000,
       flowchart: {
         htmlLabels: true,
         curve: 'basis',
@@ -37,6 +38,7 @@ const MermaidDiagram: FC<MermaidDiagramProps> = ({ chart }) => {
       },
       sequence: {
         useMaxWidth: true,
+        wrap: window.innerWidth < 768, // 手機上自動換行
         width: window.innerWidth < 768 ? 120 : 180,
         height: window.innerWidth < 768 ? 30 : 50
       },
@@ -44,7 +46,20 @@ const MermaidDiagram: FC<MermaidDiagramProps> = ({ chart }) => {
         useMaxWidth: true
       },
       gantt: {
-        useMaxWidth: true
+        useMaxWidth: true,
+        displayMode: window.innerWidth < 768 ? 'compact' : 'standard' // 手機緊湊模式
+      },
+      // 新增其他圖表類型的響應式配置
+      xyChart: {
+        width: window.innerWidth < 768 ? 350 : 900,
+        height: window.innerWidth < 768 ? 250 : 600,
+        showDataLabel: true
+      },
+      sankey: {
+        width: window.innerWidth < 768 ? 350 : 800,
+        height: window.innerWidth < 768 ? 250 : 400,
+        linkColor: 'source',
+        nodeAlignment: 'left'
       }
     });
     
@@ -69,13 +84,43 @@ const MermaidDiagram: FC<MermaidDiagramProps> = ({ chart }) => {
     setIsLoading(true);
     setError(null);
     
-    // Process chart content for mobile if needed
+    // Process chart content with Context7-inspired optimizations
     let processedChart = chart;
     if (isMobile) {
       // For flowcharts, prefer TD (top-down) layout on mobile
       processedChart = processedChart.replace(/flowchart\s+LR/g, 'flowchart TD');
       // Simplify labels for mobile when possible
       processedChart = processedChart.replace(/"([^"]+)\s*\(([^\)]+)\)"/g, '"$1"');
+      
+      // 添加手機優化的前置配置（如果圖表沒有的話）
+      if (!processedChart.includes('---\nconfig:') && !processedChart.includes('%%{init:')) {
+        const mobileConfig = `---
+config:
+  theme: 'default'
+  themeVariables:
+    fontSize: '12px'
+  flowchart:
+    useMaxWidth: true
+    htmlLabels: true
+---
+`;
+        processedChart = mobileConfig + processedChart;
+      }
+    } else {
+      // 桌面版優化：確保有最大寬度限制
+      if (!processedChart.includes('---\nconfig:') && !processedChart.includes('%%{init:')) {
+        const desktopConfig = `---
+config:
+  theme: 'default'
+  themeVariables:
+    fontSize: '14px'
+  flowchart:
+    useMaxWidth: true
+    htmlLabels: true
+---
+`;
+        processedChart = desktopConfig + processedChart;
+      }
     }
     
     // Use mermaid.render() which returns a Promise with SVG
