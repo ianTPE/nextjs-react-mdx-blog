@@ -96,7 +96,36 @@ Aider.chat 和 Claude Code 雖然都是基於 AI 的程式設計工具，但它�
 
 在實際開發中，兩者可以形成完美的協同工作流：
 
-<WorkflowReactFlow />
+```mermaid
+flowchart TD
+   A[開始新專案] --> B{任務類型？}
+   B -->|快速原型| C[使用 Aider.chat]
+   B -->|複雜開發| D[使用 Claude Code]
+   B -->|混合任務| E[組合使用]
+   
+   C --> F[多輪對話迭代]
+   F --> G[快速驗證想法]
+   G --> H{需要深度開發？}
+   H -->|是| D
+   H -->|否| I[完成任務]
+   
+   D --> J[深度程式碼理解]
+   J --> K[多檔案協同編輯]
+   K --> L[自動化測試]
+   L --> M[Git 工作流整合]
+   M --> N[自動建立 PR]
+   N --> I
+   
+   E --> O[Aider 處理探索階段]
+   O --> P[Claude Code 處理實現階段]
+   P --> Q[兩者協同維護]
+   Q --> I
+   
+   style C fill:#667eea
+   style D fill:#ff6b6b
+   style E fill:#2ecc71
+   style I fill:#f1c40f
+```
 
 **1. 探索與原型階段（Aider 主導）**
 - 使用 Aider 進行快速的想法驗證和原型開發
