@@ -65,8 +65,8 @@ const PricingTable = () => {
   });
 
   return (
-    <div className="w-full overflow-x-auto -ml-2 sm:ml-0">
-      <table className="w-full border-collapse">
+    <div className="w-full overflow-x-auto">
+      <table className="w-full border-collapse min-w-full">
         <thead>
           {table.getHeaderGroups().map(headerGroup => (
             <tr key={headerGroup.id} className="bg-gray-100 dark:bg-gray-800">
