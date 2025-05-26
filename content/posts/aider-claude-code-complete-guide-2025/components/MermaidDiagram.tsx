@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, type FC } from 'react';
+import { useEffect, useState, useRef, type FC } from 'react';
 import mermaid from 'mermaid';
 import type { MermaidConfig } from 'mermaid';
 
