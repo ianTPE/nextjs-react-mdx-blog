@@ -149,26 +149,27 @@ flowchart TD
 
 <MermaidDiagram chart={`
 flowchart TD
-    subgraph "第一階段"
+%%{ init: { 'flowchart': { 'curve': 'linear', 'nodeSpacing': 15, 'rankSpacing': 30 }, 'themeVariables': { 'fontSize': '10px', 'fontFamily': 'system-ui' } } }%%
+    subgraph "一"
         A1["需求分析"] --> A2["技術選型"]
         A2 --> A3["架構設計"]
         A3 --> A4["專案結構"]
     end
     
-    subgraph "第二階段"
-        B1["資料庫設計"] --> B2["API 端點"]
+    subgraph "二"
+        B1["資料庫設計"] --> B2["API設計"]
         B2 --> B3["業務邏輯"]
         B3 --> B4["測試用例"]
     end
     
-    subgraph "第三階段"
-        C1["單元測試"] --> C2["API 測試"]
+    subgraph "三"
+        C1["單元測試"] --> C2["API測試"]
         C2 --> C3["效能測試"]
         C3 --> C4["安全測試"]
     end
     
-    subgraph "第四階段"
-        D1["CI/CD 配置"] --> D2["容器化"]
+    subgraph "四"
+        D1["CI/CD"] --> D2["容器化"]
         D2 --> D3["雲端部署"]
         D3 --> D4["監控日誌"]
     end
@@ -177,10 +178,10 @@ flowchart TD
     B4 --> C1
     C4 --> D1
     
-    classDef phase1 fill:#667eea,color:white,stroke-width:2px
-    classDef phase2 fill:#ff6b6b,color:white,stroke-width:2px
-    classDef phase3 fill:#2ecc71,color:white,stroke-width:2px
-    classDef phase4 fill:#f1c40f,color:black,stroke-width:2px
+    classDef phase1 fill:#667eea,color:white,stroke-width:1px
+    classDef phase2 fill:#ff6b6b,color:white,stroke-width:1px
+    classDef phase3 fill:#2ecc71,color:white,stroke-width:1px
+    classDef phase4 fill:#f1c40f,color:black,stroke-width:1px
     
     class A1,A2,A3,A4 phase1
     class B1,B2,B3,B4 phase2
