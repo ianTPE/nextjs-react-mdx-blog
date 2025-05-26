@@ -147,47 +147,7 @@ flowchart TD
 
 讓我們透過一個完整的專案開發流程來展示兩者的協同效應。假設我們要開發一個基於 Python 的 RESTful API 服務：
 
-<MermaidDiagram chart={`
-flowchart TD
-%%{ init: { 'flowchart': { 'curve': 'linear', 'nodeSpacing': 15, 'rankSpacing': 30 }, 'themeVariables': { 'fontSize': '10px', 'fontFamily': 'system-ui' } } }%%
-    subgraph "第一階段"
-        A1["需求分析"] --> A2["技術選型"]
-        A2 --> A3["架構設計"]
-        A3 --> A4["專案結構"]
-    end
-    
-    subgraph "第二　階段"
-        B1["資料庫設計"] --> B2["API設計"]
-        B2 --> B3["業務邏輯"]
-        B3 --> B4["測試用例"]
-    end
-    
-    subgraph "第三　階段"
-        C1["單元測試"] --> C2["API測試"]
-        C2 --> C3["效能測試"]
-        C3 --> C4["安全測試"]
-    end
-    
-    subgraph "第四　階段"
-        D1["CI/CD"] --> D2["容器化"]
-        D2 --> D3["雲端部署"]
-        D3 --> D4["監控日誌"]
-    end
-    
-    A4 --> B1
-    B4 --> C1
-    C4 --> D1
-    
-    classDef phase1 fill:#667eea,color:white,stroke-width:1px
-    classDef phase2 fill:#ff6b6b,color:white,stroke-width:1px
-    classDef phase3 fill:#2ecc71,color:white,stroke-width:1px
-    classDef phase4 fill:#f1c40f,color:black,stroke-width:1px
-    
-    class A1,A2,A3,A4 phase1
-    class B1,B2,B3,B4 phase2
-    class C1,C2,C3,C4 phase3
-    class D1,D2,D3,D4 phase4
-`} />
+<ProjectFlowChart />
 
 **第一階段：專案架構設計（Aider）**
 
