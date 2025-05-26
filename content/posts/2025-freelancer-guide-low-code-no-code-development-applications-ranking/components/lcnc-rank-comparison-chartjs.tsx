@@ -91,23 +91,25 @@ const LcncRankComparisonChartjs = () => {
       data: dataForCategory,
       backgroundColor: getColorForCategory(item.category),
       borderColor: getColorForCategory(item.category),
+      showLine: true, // Connect the dots for each category
+      borderWidth: 2, // Line thickness
       pointRadius: (context) => { // Adjust point size based on avgRank
         const raw = context.raw as ExtendedScatterDataPoint;
         if (raw && typeof raw.avgRankVal === 'number') {
           // Scale radius: lower avgRank (better) = larger radius
-          // Example scaling: maxRadius 15, minRadius 5. Ranks 1-6
-          const scaledRadius = 15 - (raw.avgRankVal - 1) * (10 / 5);
-          return Math.max(5, scaledRadius);
+          // New scaling: maxRadius 8, minRadius 3. Ranks 1-6
+          const scaledRadius = 8 - (raw.avgRankVal - 1) * 1; // (8-3)/ (6-1) = 5/5 = 1
+          return Math.max(3, scaledRadius);
         }
-        return 6; // Default radius
+        return 4; // Default radius if avgRankVal is not available
       },
       pointHoverRadius: (context) => {
         const raw = context.raw as ExtendedScatterDataPoint;
         if (raw && typeof raw.avgRankVal === 'number') {
-          const scaledRadius = 15 - (raw.avgRankVal - 1) * (10 / 5);
-          return Math.max(5, scaledRadius) + 2; // Slightly larger on hover
+          const scaledRadius = 8 - (raw.avgRankVal - 1) * 1;
+          return Math.max(3, scaledRadius) + 2; // Slightly larger on hover
         }
-        return 8;
+        return 6; // Default hover radius
       }
     };
   });
