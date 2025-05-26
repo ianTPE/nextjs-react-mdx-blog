@@ -1,6 +1,5 @@
 "use client";
 
-import React from 'react';
 import dynamic from 'next/dynamic';
 
 // Dynamically import chart components with no SSR
@@ -10,7 +9,7 @@ export const DynamicCoreArchitecture = dynamic(
 );
 
 export const DynamicTechStackChart = dynamic(
-  () => import('./TechStackChart'),
+  () => import('./TechStackChartChartjs'),
   { ssr: false }
 );
 
