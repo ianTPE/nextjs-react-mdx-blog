@@ -200,16 +200,29 @@ config:
         svg.style.transform = 'none';
         svg.style.transformOrigin = 'center top';
         
-        // 針對窄圖表進行放大
+        // 針對窄圖表和垂直流程圖進行更積極的放大
         const svgWidth = svg.viewBox.baseVal.width;
-        if (svgWidth < 300) {
-          // 如果 SVG 原始寬度太小，進行適當縮放
-          const scaleX = Math.min(2.5, 400 / svgWidth); // 最多放大2.5倍
-          svg.style.transform = `scaleX(${scaleX})`;
-          svg.style.transformOrigin = 'left top';
+        const svgHeight = svg.viewBox.baseVal.height;
+        const aspectRatio = svgHeight / svgWidth;
+        
+        if (svgWidth < 800) { // 提高閾值，更多圖表會被放大
+          let scaleX = 1;
+          
+          // 對於垂直流程圖（高寬比 > 2），更積極地水平放大
+          if (aspectRatio > 2) {
+            scaleX = Math.min(3, 800 / svgWidth); // 垂直圖表可以放大到3倍
+          } else {
+            scaleX = Math.min(2.5, 600 / svgWidth); // 其他圖表最多2.5倍
+          }
+          
+          if (scaleX > 1.1) { // 只有需要明顯縮放時才應用
+            svg.style.transform = `scaleX(${scaleX})`;
+            svg.style.transformOrigin = 'left top';
+            console.log(`Applied scaleX: ${scaleX} for vertical flowchart (aspect ratio: ${aspectRatio.toFixed(2)})`);
+          }
         }
         
-        console.log(`Applied maxHeight: ${maxHeight}, minHeight: ${minHeight}, minWidth: ${minWidth} to chart with ${nodeCount} connections, SVG width: ${svgWidth}`);
+        console.log(`Applied maxHeight: ${maxHeight}, minHeight: ${minHeight}, minWidth: ${minWidth} to chart with ${nodeCount} connections, SVG: ${svgWidth}x${svgHeight}`);
       }
       
       // Mobile-specific styles
@@ -246,7 +259,12 @@ config:
             if (nodeCount > 8) return '450px';
             return '400px';
           })(),
-          width: '100%'
+          width: '100%',
+          // 桌面整體縮放
+          transform: !isMobile ? 'scale(1.2)' : 'none',
+          transformOrigin: !isMobile ? 'center top' : 'initial',
+          // 使用 margin 來補償縮放後的空間
+          marginBottom: !isMobile ? '10%' : '0'
         }}
       >
         {isLoading && (
