@@ -8,6 +8,43 @@ import annotationPlugin from 'chartjs-plugin-annotation';
 // Register all Chart.js components and plugins
 Chart.register(...registerables, ChartDataLabels, annotationPlugin);
 
+// 市場增長預測數據
+const marketGrowthData = [
+  { year: 2020, value: 13.2 },
+  { year: 2021, value: 20.5 },
+  { year: 2022, value: 31.7 },
+  { year: 2023, value: 46.4 },
+  { year: 2024, value: 65.8 },
+  { year: 2025, value: 86.9 },
+  { year: 2026, value: 114.3, projected: true },
+  { year: 2027, value: 147.6, projected: true },
+];
+
+// 行業採用分佈數據
+const industryAdoptionData = [
+  { name: '金融與保險', value: 24 },
+  { name: '醫療與健康', value: 19 },
+  { name: '零售與電商', value: 17 },
+  { name: '製造業', value: 12 },
+  { name: '專業服務', value: 16 },
+  { name: '其他行業', value: 12 },
+];
+
+// 企業選擇低代碼/無代碼平台的原因數據 - 為移動設備提供簡短名稱
+const adoptionReasonsData = [
+  { name: '開發速度提升', shortName: '開發速度', value: 89 },
+  { name: '降低IT部門壓力', shortName: '降低IT壓力', value: 73 },
+  { name: '成本效益', shortName: '成本效益', value: 68 },
+  { name: '業務敏捷性提高', shortName: '業務敏捷', value: 64 },
+  { name: '非技術人員賦能', shortName: '人員賦能', value: 59 },
+  { name: '傳統開發人才短缺', shortName: '人才短缺', value: 52 },
+];
+
+const COLORS = [
+  '#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82CA9D',
+  '#A4DE6C', '#D0ED57', '#83a6ed', '#8dd1e1', '#ffc658', '#d0ed57'
+];
+
 const MarketTrendsAndAdoption = () => {
   const lineChartRef = useRef<HTMLCanvasElement | null>(null);
   const pieChartRef = useRef<HTMLCanvasElement | null>(null);
@@ -34,43 +71,6 @@ const MarketTrendsAndAdoption = () => {
     // 清除監聽器
     return () => window.removeEventListener('resize', checkIfMobile);
   }, []);
-
-  // 市場增長預測數據
-  const marketGrowthData = [
-    { year: 2020, value: 13.2 },
-    { year: 2021, value: 20.5 },
-    { year: 2022, value: 31.7 },
-    { year: 2023, value: 46.4 },
-    { year: 2024, value: 65.8 },
-    { year: 2025, value: 86.9 },
-    { year: 2026, value: 114.3, projected: true },
-    { year: 2027, value: 147.6, projected: true },
-  ];
-
-  // 行業採用分佈數據
-  const industryAdoptionData = [
-    { name: '金融與保險', value: 24 },
-    { name: '醫療與健康', value: 19 },
-    { name: '零售與電商', value: 17 },
-    { name: '製造業', value: 12 },
-    { name: '專業服務', value: 16 },
-    { name: '其他行業', value: 12 },
-  ];
-  
-  // 企業選擇低代碼/無代碼平台的原因數據 - 為移動設備提供簡短名稱
-  const adoptionReasonsData = [
-    { name: '開發速度提升', shortName: '開發速度', value: 89 },
-    { name: '降低IT部門壓力', shortName: '降低IT壓力', value: 73 },
-    { name: '成本效益', shortName: '成本效益', value: 68 },
-    { name: '業務敏捷性提高', shortName: '業務敏捷', value: 64 },
-    { name: '非技術人員賦能', shortName: '人員賦能', value: 59 },
-    { name: '傳統開發人才短缺', shortName: '人才短缺', value: 52 },
-  ];
-
-  const COLORS = [
-    '#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82CA9D',
-    '#A4DE6C', '#D0ED57', '#83a6ed', '#8dd1e1', '#ffc658', '#d0ed57'
-  ];
 
   // 初始化和更新折線圖
   useEffect(() => {
@@ -223,18 +223,17 @@ const MarketTrendsAndAdoption = () => {
         plugins: {
           tooltip: {
             callbacks: {
-              label: function(context) {
+              label: (context) => {
                 const label = context.label || '';
                 const value = context.raw as number;
-                const total = context.chart.data.datasets[0].data.reduce((sum: number, val) => sum + (val as number), 0);
-                const percentage = Math.round((value / total) * 100);
-                return `${label}: ${value}% (${percentage}%)`;
+                const total = (context.chart.data.datasets[0].data.reduce((sum: number, val) => sum + (val as number), 0) as number);
+                const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
+                return `${label}: ${value} (${percentage}%)`;
               }
             }
           },
           legend: {
-            position: isMobile ? 'bottom' : 'right',
-            align: 'center',
+            position: 'top' as const,
             labels: {
               boxWidth: 15,
               padding: 15,
@@ -246,16 +245,16 @@ const MarketTrendsAndAdoption = () => {
           datalabels: {
             display: true,
             formatter: (value, context) => {
-              const total = context.chart.data.datasets[0].data.reduce((sum: number, val) => sum + (val as number), 0);
-              const percentage = Math.round((value / total) * 100);
-              return isMobile ? `${percentage}%` : `${percentage}%`;
+              const total = (context.chart.data.datasets[0].data.reduce((sum: number, val) => sum + (val as number), 0) as number);
+              const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
+              return `${percentage}%`;
             },
             color: '#fff',
             font: {
-              weight: 'bold',
+              weight: 'bold' as const,
               size: 12
             },
-            textAlign: 'center'
+            textAlign: 'center' as const,
           }
         },
         layout: {
@@ -319,11 +318,11 @@ const MarketTrendsAndAdoption = () => {
         plugins: {
           tooltip: {
             callbacks: {
-              label: function(context) {
+              label: (context) => {
                 const value = context.raw as number;
                 return `企業佔比: ${value}%`;
               },
-              title: function(tooltipItems) {
+              title: (tooltipItems) => {
                 // 在移動版本中顯示完整名稱
                 if (isMobile) {
                   const index = tooltipItems[0].dataIndex;

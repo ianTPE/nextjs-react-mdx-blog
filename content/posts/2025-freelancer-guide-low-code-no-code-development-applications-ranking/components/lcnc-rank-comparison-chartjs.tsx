@@ -154,6 +154,9 @@ const LcncRankComparisonChartjs = () => {
       legend: {
         position: 'top',
       },
+      datalabels: {
+        display: false, // Hide overlapping data labels on the chart
+      },
       tooltip: {
         callbacks: {
           label: (context: TooltipItem<'scatter'>) => {
