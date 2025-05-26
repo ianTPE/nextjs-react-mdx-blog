@@ -52,14 +52,11 @@ const MermaidDiagram: FC<MermaidDiagramProps> = ({ chart }) => {
       // 新增其他圖表類型的響應式配置
       xyChart: {
         width: window.innerWidth < 768 ? 350 : 900,
-        height: window.innerWidth < 768 ? 250 : 600,
-        showDataLabel: true
+        height: window.innerWidth < 768 ? 250 : 600
       },
       sankey: {
         width: window.innerWidth < 768 ? 350 : 800,
-        height: window.innerWidth < 768 ? 250 : 400,
-        linkColor: 'source',
-        nodeAlignment: 'left'
+        height: window.innerWidth < 768 ? 250 : 400
       }
     });
     
