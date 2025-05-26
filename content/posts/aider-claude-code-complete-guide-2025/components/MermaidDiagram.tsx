@@ -1,49 +1,44 @@
 "use client";
 
 import { useEffect, useRef, useState } from 'react';
+import type { FC } from 'react';
 import mermaid from 'mermaid';
 
 interface MermaidDiagramProps {
   chart: string;
 }
 
-const MermaidDiagram: React.FC<MermaidDiagramProps> = ({ chart }) => {
+const MermaidDiagram: FC<MermaidDiagramProps> = ({ chart }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [svgContent, setSvgContent] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
   
+  // Initialize Mermaid once on component mount
   useEffect(() => {
-    if (!containerRef.current) return;
-    
-    // Reset states
-    setIsLoading(true);
-    setError(null);
-    
-    // Clear the container first
-    containerRef.current.innerHTML = '';
-    
     // Check if we're on mobile
-    const isMobile = window.innerWidth < 768;
+    setIsMobile(window.innerWidth < 768);
     
-    // Configure mermaid to be compact on all devices
+    // Configure mermaid with compact settings
     mermaid.initialize({
-      startOnLoad: true,
+      startOnLoad: false,
       theme: 'default',
       securityLevel: 'loose',
       fontFamily: 'system-ui, -apple-system, sans-serif',
-      fontSize: isMobile ? 12 : 14,
+      fontSize: window.innerWidth < 768 ? 12 : 14,
       flowchart: {
         htmlLabels: true,
         curve: 'basis',
         useMaxWidth: true,
-        padding: isMobile ? 8 : 12,
-        nodeSpacing: isMobile ? 15 : 20,
-        rankSpacing: isMobile ? 30 : 40
+        padding: window.innerWidth < 768 ? 8 : 12,
+        nodeSpacing: window.innerWidth < 768 ? 15 : 20,
+        rankSpacing: window.innerWidth < 768 ? 30 : 40
       },
       sequence: {
         useMaxWidth: true,
-        width: isMobile ? 120 : 180,
-        height: isMobile ? 30 : 50
+        width: window.innerWidth < 768 ? 120 : 180,
+        height: window.innerWidth < 768 ? 30 : 50
       },
       journey: {
         useMaxWidth: true
@@ -53,77 +48,99 @@ const MermaidDiagram: React.FC<MermaidDiagramProps> = ({ chart }) => {
       }
     });
     
+    // Handle resize events
+    const handleResize = () => {
+      const currentIsMobile = window.innerWidth < 768;
+      if (currentIsMobile !== isMobile) {
+        setIsMobile(currentIsMobile);
+      }
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [isMobile]); // Empty dependency array - only run once on mount
+  
+  // Render diagram whenever chart or isMobile changes
+  useEffect(() => {
+    if (!chart) return;
+    
+    setIsLoading(true);
+    setError(null);
+    
     // Process chart content for mobile if needed
     let processedChart = chart;
     if (isMobile) {
       // For flowcharts, prefer TD (top-down) layout on mobile
       processedChart = processedChart.replace(/flowchart\s+LR/g, 'flowchart TD');
-      
       // Simplify labels for mobile when possible
       processedChart = processedChart.replace(/"([^"]+)\s*\(([^\)]+)\)"/g, '"$1"');
     }
     
+    // Use mermaid.render() which returns a Promise with SVG
+    const id = `mermaid-${Date.now()}`;
+    
     try {
-      const id = `mermaid-diagram-${Date.now()}`;
-      mermaid.render(id, processedChart).then((result) => {
-        if (containerRef.current) {
-          containerRef.current.innerHTML = result.svg;
-          
-          // Add styling to constrain the SVG size on all devices
-          const svg = containerRef.current.querySelector('svg');
-          if (svg) {
-            svg.setAttribute('width', '100%');
-            // Use CSS for height control instead of the SVG height attribute
-            svg.removeAttribute('height');
-            svg.style.height = 'auto';
-            svg.style.maxWidth = '100%';
-            
-            // Constrain maximum size on desktop
-            if (!isMobile) {
-              svg.style.maxHeight = '400px';
-              svg.style.transform = 'scale(0.85)';
-              svg.style.transformOrigin = 'center top';
-            }
-            
-            // Make tap targets larger on mobile
-            if (isMobile) {
-              const clickableElements = svg.querySelectorAll('g[class*="node"], g[class*="cluster"]');
-              for (const el of clickableElements) {
-                el.setAttribute('style', `${el.getAttribute('style') || ''}; cursor: pointer; touch-action: manipulation;`);
-              }
-            }
-          }
-          
+      mermaid.render(id, processedChart)
+        .then(result => {
+          // Store SVG content in state instead of directly manipulating DOM
+          setSvgContent(result.svg);
           setIsLoading(false);
-        }
-      }).catch(err => {
-        console.error('Error in mermaid render:', err);
-        setError('圖表渲染失敗');
-        setIsLoading(false);
-      });
-    } catch (error) {
-      console.error('Error rendering Mermaid diagram:', error);
+        })
+        .catch(err => {
+          console.error('Failed to render mermaid diagram:', err);
+          setError('圖表渲染失敗');
+          setIsLoading(false);
+        });
+    } catch (err) {
+      console.error('Error in mermaid rendering:', err);
       setError('圖表渲染失敗');
       setIsLoading(false);
     }
+  }, [chart, isMobile]);
+  
+  // Apply styles after SVG is rendered via dangerouslySetInnerHTML
+  useEffect(() => {
+    if (!svgContent || !containerRef.current) return;
     
-    // Responsive handling
-    const handleResize = () => {
-      // Re-render on significant size changes
-      if (containerRef.current) {
-        const wasMobile = isMobile;
-        const nowMobile = window.innerWidth < 768;
-        
-        if (wasMobile !== nowMobile) {
-          // Reload the diagram if switching between mobile/desktop
-          window.location.reload();
+    // Apply styles to the SVG element after it's been added to the DOM
+    const applyStylesToSvg = () => {
+      if (!containerRef.current) return;
+      
+      const svg = containerRef.current.querySelector('svg') as SVGSVGElement | null;
+      if (!svg) return;
+      
+      // Remove height attribute and set CSS height instead
+      svg.removeAttribute('height');
+      
+      // Apply CSS styles
+      svg.style.width = '100%';
+      svg.style.height = 'auto';
+      svg.style.maxWidth = '100%';
+      
+      // Desktop-specific styles
+      if (!isMobile) {
+        svg.style.maxHeight = '350px';
+        svg.style.transform = 'scale(0.8)';
+        svg.style.transformOrigin = 'center top';
+      }
+      
+      // Mobile-specific styles
+      if (isMobile) {
+        const clickableElements = svg.querySelectorAll('g[class*="node"], g[class*="cluster"]');
+        for (const el of clickableElements) {
+          const element = el as SVGElement;
+          element.style.cursor = 'pointer';
+          element.style.touchAction = 'manipulation';
         }
       }
     };
     
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [chart]);
+    // Run after a small delay to ensure the SVG is in the DOM
+    const timer = setTimeout(applyStylesToSvg, 0);
+    return () => clearTimeout(timer);
+  }, [svgContent, isMobile]);
 
   return (
     <div className="relative my-6 mx-auto w-full max-w-2xl">
@@ -140,6 +157,11 @@ const MermaidDiagram: React.FC<MermaidDiagramProps> = ({ chart }) => {
           <div className="flex justify-center items-center h-24 text-gray-500 dark:text-gray-400">
             <div className="animate-pulse">載入圖表中...</div>
           </div>
+        )}
+        
+        {/* Use dangerouslySetInnerHTML to insert the SVG content */}
+        {!isLoading && !error && (
+          <div dangerouslySetInnerHTML={{ __html: svgContent }} />
         )}
       </div>
       
