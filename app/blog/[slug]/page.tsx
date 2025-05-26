@@ -3,7 +3,6 @@ import { getPostBySlug, getAllPosts } from '@/lib/mdx';
 import BlogPostContentStatic from '@/app/components/BlogPostContent.static';
 import MDXRenderer from './MDXRenderer';
 import { Metadata } from 'next';
-import { getPostComponents } from '@/lib/mdx-loader';
 
 export async function generateStaticParams() {
   const posts = await getAllPosts();
@@ -57,15 +56,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     notFound();
   }
 
-  // 獲取該文章的自定義組件 - 現在應該只是一個物件，而不是函數
-  const components = await getPostComponents(resolvedParams.slug);
-
   // 將 MDX 內容渲染成 React 元件
+  // 不在服務端加載組件，而是讓 MDXRenderer 在客戶端處理
   return (
     <BlogPostContentStatic metadata={post.metadata}>
       <MDXRenderer 
         source={post.content} 
-        components={components}
+        slug={resolvedParams.slug}
       />
     </BlogPostContentStatic>
   );

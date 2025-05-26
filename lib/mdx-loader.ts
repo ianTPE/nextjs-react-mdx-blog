@@ -7,7 +7,6 @@ import path from 'path';
 import fs from 'fs';
 import { cache } from 'react';
 
-// 使用React的cache功能確保同一個請求中不會重複加載組件
 // Import global components
 import * as globalComponents from '@/components/mdx/global-components';
 
@@ -24,8 +23,19 @@ export const getPostComponents = cache(async (slug: string) => {
 
     // 嘗試導入局部組件
     try {
-      // 注意：這裡我們僅返回模塊，而不是模塊的預設導出，來避免序列化問題
-      const postComponents = await import(`@content/posts/${slug}/components/index`);
+      // 使用動態導入但避免序列化問題
+      const postComponentsModule = await import(`@content/posts/${slug}/components/index`);
+      
+      // 只提取組件名稱，避免序列化函數
+      const componentNames = Object.keys(postComponentsModule).filter(key => key !== 'default');
+      
+      // 創建一個只包含組件名稱的對象，實際組件將在客戶端載入
+      const postComponents: Record<string, any> = {};
+      componentNames.forEach(name => {
+        if (postComponentsModule[name]) {
+          postComponents[name] = postComponentsModule[name];
+        }
+      });
       
       // 合併全局組件和局部組件
       return { 

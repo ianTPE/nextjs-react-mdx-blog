@@ -10,7 +10,7 @@ import CodeBlock from '@/components/mdx/CodeBlock';
 
 interface MDXRendererProps {
   source: string;
-  components: Record<string, any>;
+  slug: string;
 }
 
 // Global components map that includes our global components
@@ -21,15 +21,32 @@ const globalComponents = {
   ...defaultMDXComponents
 };
 
-export default function MDXRenderer({ source, components }: MDXRendererProps) {
+export default function MDXRenderer({ source, slug }: MDXRendererProps) {
   const [mdxSource, setMdxSource] = useState<MDXRemoteSerializeResult | null>(null);
+  const [components, setComponents] = useState(globalComponents);
   const [error, setError] = useState<string | null>(null);
 
-  // Create a merged components object that combines global components and post-specific components
-  const mergedComponents = {
-    ...globalComponents,
-    ...components // Post-specific components can override global ones
-  };
+  // Load post-specific components on the client side
+  useEffect(() => {
+    const loadComponents = async () => {
+      try {
+        // Try to dynamically import post-specific components
+        const postComponents = await import(`@content/posts/${slug}/components/index`);
+        
+        // Merge with global components
+        setComponents({
+          ...globalComponents,
+          ...postComponents
+        });
+      } catch (err) {
+        // If no post-specific components, just use global ones
+        console.log(`No custom components for post: ${slug}`);
+        setComponents(globalComponents);
+      }
+    };
+
+    loadComponents();
+  }, [slug]);
 
   useEffect(() => {
     const processMDX = async () => {
@@ -71,7 +88,7 @@ export default function MDXRenderer({ source, components }: MDXRendererProps) {
 
   return (
     <div className="mdx-content prose prose-lg dark:prose-invert max-w-none">
-      <MDXRemote {...mdxSource} components={mergedComponents} />
+      <MDXRemote {...mdxSource} components={components} />
     </div>
   );
 }
