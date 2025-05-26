@@ -119,10 +119,11 @@ const MermaidDiagram: FC<MermaidDiagramProps> = ({ chart }) => {
       svg.style.height = 'auto';
       svg.style.maxWidth = '100%';
       
-      // Desktop-specific styles
+      // Desktop-specific styles - 修改這裡讓圖表更大
       if (!isMobile) {
-        svg.style.maxHeight = '350px';
-        svg.style.transform = 'scale(0.8)';
+        svg.style.maxHeight = 'none'; // 移除高度限制
+        svg.style.minHeight = '500px'; // 設置最小高度
+        svg.style.transform = 'none'; // 移除縮放
         svg.style.transformOrigin = 'center top';
       }
       
@@ -149,7 +150,8 @@ const MermaidDiagram: FC<MermaidDiagramProps> = ({ chart }) => {
         className="overflow-auto mx-auto max-w-full py-2 rounded-lg"
         style={{ 
           scrollbarWidth: 'thin',
-          maxHeight: '60vh',
+          maxHeight: isMobile ? '60vh' : 'none', // 桃面端移除高度限制
+          minHeight: isMobile ? 'auto' : '500px', // 桃面端設置最小高度
           width: '100%'
         }}
       >
