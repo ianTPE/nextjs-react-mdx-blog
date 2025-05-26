@@ -47,7 +47,7 @@ const MermaidDiagram: FC<MermaidDiagramProps> = ({ chart }) => {
       },
       gantt: {
         useMaxWidth: true,
-        displayMode: window.innerWidth < 768 ? 'compact' : 'standard' // 手機緊湊模式
+        displayMode: window.innerWidth < 768 ? 'compact' : undefined // 手機緊湊模式，桌面使用默認
       },
       // 新增其他圖表類型的響應式配置
       xyChart: {
