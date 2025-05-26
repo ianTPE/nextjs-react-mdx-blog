@@ -124,7 +124,7 @@ const VictoryTechStackChart = () => {
   };
 
   return (
-    <div className="w-full p-4 bg-white rounded-lg shadow-lg">
+    <div className="w-full p-4 bg-white rounded-lg shadow-lg -ml-2 sm:ml-0">
       <h3 className="text-xl font-bold mb-4 text-center">AI 技術棧採用率分析</h3>
       <div className="h-[350px] w-full">
         <Bar options={options} data={data} />
