@@ -26,21 +26,21 @@ const MermaidDiagram: FC<MermaidDiagramProps> = ({ chart }) => {
       theme: 'default',
       securityLevel: 'loose',
       fontFamily: 'system-ui, -apple-system, sans-serif',
-      fontSize: window.innerWidth < 768 ? 12 : 14,
+      fontSize: window.innerWidth < 768 ? 12 : 16, // 桌面使用更大字體
       maxTextSize: window.innerWidth < 768 ? 50000 : 90000,
       flowchart: {
         htmlLabels: true,
         curve: 'basis',
         useMaxWidth: true,
-        padding: window.innerWidth < 768 ? 8 : 12,
-        nodeSpacing: window.innerWidth < 768 ? 15 : 20,
-        rankSpacing: window.innerWidth < 768 ? 30 : 40
+        padding: window.innerWidth < 768 ? 8 : 16, // 桌面更大間距
+        nodeSpacing: window.innerWidth < 768 ? 15 : 30, // 桌面更大節點間距
+        rankSpacing: window.innerWidth < 768 ? 30 : 50 // 桌面更大層級間距
       },
       sequence: {
         useMaxWidth: true,
         wrap: window.innerWidth < 768, // 手機上自動換行
-        width: window.innerWidth < 768 ? 120 : 180,
-        height: window.innerWidth < 768 ? 30 : 50
+        width: window.innerWidth < 768 ? 120 : 200, // 桌面更寬
+        height: window.innerWidth < 768 ? 30 : 60 // 桌面更高
       },
       journey: {
         useMaxWidth: true
@@ -156,7 +156,7 @@ config:
       // Remove height attribute and set CSS height instead
       svg.removeAttribute('height');
       
-      // Apply CSS styles
+      // Apply CSS styles with better desktop scaling
       svg.style.width = '100%';
       svg.style.height = 'auto';
       svg.style.maxWidth = '100%';
@@ -171,30 +171,45 @@ config:
         
         let maxHeight = '70vh'; // 桌面最大高度限制為視窗高度的70%
         let minHeight = '400px'; // 默認最小高度
+        let minWidth = '400px'; // 桌面最小寬度
         
         if (isFlowchart) {
           // 流程圖：根據節點數量調整
           if (nodeCount > 15) {
             maxHeight = '80vh'; // 複雜流程圖允許更高
             minHeight = '500px';
+            minWidth = '600px'; // 複雜圖表需要更寬
           } else if (nodeCount > 8) {
             maxHeight = '70vh'; // 中等流程圖
             minHeight = '450px';
+            minWidth = '500px';
           } else {
             maxHeight = '60vh'; // 簡單流程圖
             minHeight = '400px';
+            minWidth = '400px';
           }
         } else if (isTimeline || isJourney) {
           maxHeight = '50vh'; // 時間線類型較扁平
           minHeight = '300px';
+          minWidth = '600px'; // 時間線通常較寬
         }
         
         svg.style.maxHeight = maxHeight;
         svg.style.minHeight = minHeight;
+        svg.style.minWidth = minWidth; // 確保桌面有足夠寬度
         svg.style.transform = 'none';
         svg.style.transformOrigin = 'center top';
         
-        console.log(`Applied maxHeight: ${maxHeight}, minHeight: ${minHeight} to chart with ${nodeCount} connections`);
+        // 針對窄圖表進行放大
+        const svgWidth = svg.viewBox.baseVal.width;
+        if (svgWidth < 300) {
+          // 如果 SVG 原始寬度太小，進行適當縮放
+          const scaleX = Math.min(2.5, 400 / svgWidth); // 最多放大2.5倍
+          svg.style.transform = `scaleX(${scaleX})`;
+          svg.style.transformOrigin = 'left top';
+        }
+        
+        console.log(`Applied maxHeight: ${maxHeight}, minHeight: ${minHeight}, minWidth: ${minWidth} to chart with ${nodeCount} connections, SVG width: ${svgWidth}`);
       }
       
       // Mobile-specific styles
