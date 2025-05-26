@@ -23,35 +23,46 @@ const globalComponents = {
 
 export default function MDXRenderer({ source, slug }: MDXRendererProps) {
   const [mdxSource, setMdxSource] = useState<MDXRemoteSerializeResult | null>(null);
-  const [components, setComponents] = useState(globalComponents);
+  const [components, setComponents] = useState<Record<string, any> | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Load post-specific components on the client side
+  // Load post-specific components first
   useEffect(() => {
     const loadComponents = async () => {
       try {
+        setIsLoading(true);
         // Try to dynamically import post-specific components
         const postComponents = await import(`@content/posts/${slug}/components/index`);
         
         // Merge with global components
-        setComponents({
+        const mergedComponents = {
           ...globalComponents,
           ...postComponents
-        });
+        };
+        
+        setComponents(mergedComponents);
+        console.log(`Loaded components for ${slug}:`, Object.keys(postComponents));
       } catch (err) {
         // If no post-specific components, just use global ones
         console.log(`No custom components for post: ${slug}`);
         setComponents(globalComponents);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     loadComponents();
   }, [slug]);
 
+  // Process MDX only after components are loaded
   useEffect(() => {
+    if (!components || isLoading) return;
+    
     const processMDX = async () => {
       try {
-        // 嘗試使用最簡單的 MDX 序列化選項
+        console.log('Processing MDX with components:', Object.keys(components));
+        
         const serialized = await serialize(source, {
           parseFrontmatter: true
         });
@@ -65,7 +76,7 @@ export default function MDXRenderer({ source, slug }: MDXRendererProps) {
     };
     
     processMDX();
-  }, [source]);
+  }, [source, components, isLoading]);
 
   if (error) {
     return (
@@ -76,7 +87,7 @@ export default function MDXRenderer({ source, slug }: MDXRendererProps) {
     );
   }
 
-  if (!mdxSource) {
+  if (isLoading || !components || !mdxSource) {
     return (
       <div className="p-4 text-center animate-pulse">
         <div className="inline-block px-4 py-2 rounded-md bg-gray-200">
