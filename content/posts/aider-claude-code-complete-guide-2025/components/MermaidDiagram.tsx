@@ -119,12 +119,40 @@ const MermaidDiagram: FC<MermaidDiagramProps> = ({ chart }) => {
       svg.style.height = 'auto';
       svg.style.maxWidth = '100%';
       
-      // Desktop-specific styles - 修改這裡讓圖表更大
+      // 根據圖表類型和復雜度智能調整大小
       if (!isMobile) {
-        svg.style.maxHeight = 'none'; // 移除高度限制
-        svg.style.minHeight = '500px'; // 設置最小高度
-        svg.style.transform = 'none'; // 移除縮放
+        // 檢測圖表類型和復雜度
+        const isFlowchart = chart.includes('flowchart');
+        const isTimeline = chart.includes('timeline');
+        const isJourney = chart.includes('journey');
+        const nodeCount = (chart.match(/-->/g) || []).length; // 估算節點數量
+        
+        let maxHeight = '70vh'; // 桌面最大高度限制為視窗高度的70%
+        let minHeight = '400px'; // 默認最小高度
+        
+        if (isFlowchart) {
+          // 流程圖：根據節點數量調整
+          if (nodeCount > 15) {
+            maxHeight = '80vh'; // 複雜流程圖允許更高
+            minHeight = '500px';
+          } else if (nodeCount > 8) {
+            maxHeight = '70vh'; // 中等流程圖
+            minHeight = '450px';
+          } else {
+            maxHeight = '60vh'; // 簡單流程圖
+            minHeight = '400px';
+          }
+        } else if (isTimeline || isJourney) {
+          maxHeight = '50vh'; // 時間線類型較扁平
+          minHeight = '300px';
+        }
+        
+        svg.style.maxHeight = maxHeight;
+        svg.style.minHeight = minHeight;
+        svg.style.transform = 'none';
         svg.style.transformOrigin = 'center top';
+        
+        console.log(`Applied maxHeight: ${maxHeight}, minHeight: ${minHeight} to chart with ${nodeCount} connections`);
       }
       
       // Mobile-specific styles
@@ -144,14 +172,23 @@ const MermaidDiagram: FC<MermaidDiagramProps> = ({ chart }) => {
   }, [svgContent, isMobile]);
 
   return (
-    <div className="relative my-6 mx-auto w-full max-w-2xl">
+    <div className="relative my-6 mx-auto w-full max-w-4xl"> {/* 增加桌面最大寬度 */}
       <div 
         ref={containerRef}
         className="overflow-auto mx-auto max-w-full py-2 rounded-lg"
         style={{ 
           scrollbarWidth: 'thin',
-          maxHeight: isMobile ? '60vh' : 'none', // 桃面端移除高度限制
-          minHeight: isMobile ? 'auto' : '500px', // 桃面端設置最小高度
+          maxHeight: isMobile ? '60vh' : '80vh', // 桌面也設定最大高度
+          minHeight: isMobile ? 'auto' : (() => {
+            // 根據圖表復雜度設置容器最小高度
+            const nodeCount = (chart.match(/-->/g) || []).length;
+            const isTimeline = chart.includes('timeline') || chart.includes('journey');
+            
+            if (isTimeline) return '320px';
+            if (nodeCount > 15) return '500px'; // 降低最小高度
+            if (nodeCount > 8) return '450px';
+            return '400px';
+          })(),
           width: '100%'
         }}
       >
