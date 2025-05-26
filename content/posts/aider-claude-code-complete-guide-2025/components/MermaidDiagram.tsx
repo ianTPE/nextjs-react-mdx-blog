@@ -156,10 +156,15 @@ config:
       // Remove height attribute and set CSS height instead
       svg.removeAttribute('height');
       
-      // Apply CSS styles with better desktop scaling
+      // Apply CSS styles with better desktop scaling and rendering quality
       svg.style.width = '100%';
       svg.style.height = 'auto';
       svg.style.maxWidth = '100%';
+      
+      // 改善縮放後的渲染質量
+      svg.style.imageRendering = 'auto';
+      svg.style.shapeRendering = 'geometricPrecision';
+      svg.style.textRendering = 'geometricPrecision';
       
       // 根據圖表類型和復雜度智能調整大小
       if (!isMobile) {
@@ -217,7 +222,7 @@ config:
           
           if (scaleX > 1.1) { // 只有需要明顯縮放時才應用
             svg.style.transform = `scaleX(${scaleX})`;
-            svg.style.transformOrigin = 'left top';
+            svg.style.transformOrigin = 'center top'; // 改為中心縮放，避免左右偏移
             console.log(`Applied scaleX: ${scaleX} for vertical flowchart (aspect ratio: ${aspectRatio.toFixed(2)})`);
           }
         }
@@ -242,7 +247,7 @@ config:
   }, [svgContent, isMobile]);
 
   return (
-    <div className="relative my-6 mx-auto w-full max-w-4xl"> {/* 增加桌面最大寬度 */}
+    <div className="relative my-6 mx-auto w-full max-w-5xl"> {/* 為放大後的圖表提供更寬的容器 */}
       <div 
         ref={containerRef}
         className="overflow-auto mx-auto max-w-full py-2 rounded-lg"
@@ -260,11 +265,16 @@ config:
             return '400px';
           })(),
           width: '100%',
-          // 桌面整體縮放
-          transform: !isMobile ? 'scale(1.2)' : 'none',
+          // 減少整體縮放，避免雙重縮放造成問題
+          transform: !isMobile ? 'scale(1.1)' : 'none', // 減少從 1.2 到 1.1
           transformOrigin: !isMobile ? 'center top' : 'initial',
-          // 使用 margin 來補償縮放後的空間
-          marginBottom: !isMobile ? '10%' : '0'
+          // 增加更多 margin 來避免重疊
+          marginBottom: !isMobile ? '15%' : '0',
+          // 確保容器不會溢出並改善渲染質量
+          overflow: 'visible',
+          // 改善文字渲染
+          WebkitFontSmoothing: 'antialiased',
+          MozOsxFontSmoothing: 'grayscale'
         }}
       >
         {isLoading && (
