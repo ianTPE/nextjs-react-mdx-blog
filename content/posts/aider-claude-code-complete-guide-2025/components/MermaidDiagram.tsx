@@ -1,12 +1,12 @@
 'use client';
 
-import { useEffect, useRef, useState, type FC } from 'react';
+import { useEffect, useState, type FC } from 'react';
 import mermaid from 'mermaid';
+import type { MermaidConfig } from 'mermaid';   // ★ 用型別匯入
 
 interface MermaidDiagramProps {
   chart: string;
-  /** 可選：覆寫 Mermaid 設定 */
-  config?: mermaid.Config;
+  config?: MermaidConfig;                       // ★ 型別 OK
 }
 
 const MermaidDiagram: FC<MermaidDiagramProps> = ({ chart, config }) => {
