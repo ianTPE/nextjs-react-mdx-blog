@@ -96,7 +96,7 @@ Aider.chat 和 Claude Code 雖然都是基於 AI 的程式設計工具，但它�
 
 在實際開發中，兩者可以形成完美的協同工作流：
 
-```mermaid
+<MermaidDiagram chart={`
 flowchart TD
     A[開始新專案] --> B{任務類型？}
     B -->|快速原型| C[使用 Aider.chat]
@@ -125,7 +125,7 @@ flowchart TD
     style D fill:#ff6b6b
     style E fill:#2ecc71
     style I fill:#f1c40f
-```
+`} />
 
 **1. 探索與原型階段（Aider 主導）**
 - 使用 Aider 進行快速的想法驗證和原型開發
@@ -147,7 +147,7 @@ flowchart TD
 
 讓我們透過一個完整的專案開發流程來展示兩者的協同效應。假設我們要開發一個基於 Python 的 RESTful API 服務：
 
-```mermaid
+<MermaidDiagram chart={`
 flowchart LR
     subgraph "第一階段：架構設計"
         A1[需求分析] --> A2[技術選型]
@@ -181,7 +181,7 @@ flowchart LR
     style B1 fill:#ff6b6b
     style C1 fill:#2ecc71
     style D1 fill:#f1c40f
-```
+`} />
 
 **第一階段：專案架構設計（Aider）**
 
@@ -319,7 +319,7 @@ claude
 
 ## 安裝配置完全指南
 
-```mermaid
+<MermaidDiagram chart={`
 flowchart TD
     Start([開始安裝]) --> Choice{選擇工具}
     
@@ -352,7 +352,7 @@ flowchart TD
     style Success fill:#f1c40f
     style A3 fill:#667eea
     style B3 fill:#ff6b6b
-```
+`} />
 
 ### Aider.chat 安裝配置
 
@@ -716,7 +716,7 @@ aider --load-config team-config.yml
 
 ### 投資報酬率分析
 
-```mermaid
+<MermaidDiagram chart={`
 flowchart TB
     subgraph "工具選擇決策樹"
         Start([開始選擇]) --> Q1{專案複雜度？}
@@ -750,7 +750,7 @@ flowchart TB
     style R4 fill:#ff6b6b
     style R5 fill:#9b59b6
     style R6 fill:#e67e22
-```
+`} />
 
 根據業界調研，使用 AI 程式設計工具的投資報酬率通常在 200-500% 之間：
 
@@ -930,7 +930,7 @@ claude --track-usage --report-daily
 
 ### 初學者入門路徑
 
-```mermaid
+<MermaidDiagram chart={`
 journey
     title AI 程式設計工具學習路徑
     section 初學者階段
@@ -948,7 +948,7 @@ journey
       企業部署     : 4: 專家
       客製開發     : 5: 專家
       開源貢獻     : 4: 專家
-```
+`} />
 
 **第一階段：基礎概念理解（1-2週）**
 
@@ -1170,7 +1170,7 @@ Claude Opus 4 和 Claude Sonnet 4 都經過調優以在程式設計任務上表�
 
 ### 對開發者的建議
 
-```mermaid
+<MermaidDiagram chart={`
 timeline
     title AI 程式設計工具導入時間表
     
@@ -1193,7 +1193,7 @@ timeline
     第2年+ : 深度客製化
           : 開源貢獻
           : 行業領導
-```
+`} />
 
 **短期策略（6-12個月）：**
 
@@ -1235,7 +1235,7 @@ Aider.chat 和 Claude Code 的組合不僅僅是兩個工具的簡單相加，�
 
 ### 核心價值總結
 
-```mermaid
+<MermaidDiagram chart={`
 mindmap
   root((Aider + Claude Code))
     效率革命
@@ -1258,7 +1258,7 @@ mindmap
       專注解決方案設計
       使用者體驗最佳化
       商業價值創造
-```
+`} />
 
 **1. 效率革命**
 透過智慧化的程式碼產生、自動化的測試編寫和無縫的版本控制整合，開發者可以將注意力從重複性的編碼工作轉移到更高層次的系統設計和業務邏輯思考上。
