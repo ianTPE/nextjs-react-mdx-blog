@@ -150,25 +150,25 @@ flowchart TD
 <MermaidDiagram chart={`
 flowchart TD
 %%{ init: { 'flowchart': { 'curve': 'linear', 'nodeSpacing': 15, 'rankSpacing': 30 }, 'themeVariables': { 'fontSize': '10px', 'fontFamily': 'system-ui' } } }%%
-    subgraph "一"
+    subgraph "第一階段"
         A1["需求分析"] --> A2["技術選型"]
         A2 --> A3["架構設計"]
         A3 --> A4["專案結構"]
     end
     
-    subgraph "二"
+    subgraph "第二　階段"
         B1["資料庫設計"] --> B2["API設計"]
         B2 --> B3["業務邏輯"]
         B3 --> B4["測試用例"]
     end
     
-    subgraph "三"
+    subgraph "第三　階段"
         C1["單元測試"] --> C2["API測試"]
         C2 --> C3["效能測試"]
         C3 --> C4["安全測試"]
     end
     
-    subgraph "四"
+    subgraph "第四　階段"
         D1["CI/CD"] --> D2["容器化"]
         D2 --> D3["雲端部署"]
         D3 --> D4["監控日誌"]
