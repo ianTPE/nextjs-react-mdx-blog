@@ -150,42 +150,47 @@ flowchart TD
 <MermaidDiagram chart={`
 %%{init:{
   "theme":"base",
-  "themeVariables":{ "fontSize":"18px" },
-  "flowchart":      { "useMaxWidth": false}
+  "themeVariables": { "fontSize":"18px" },
+  "flowchart": { "useMaxWidth": false }
 }}%%
-flowchart LR
-    subgraph \"第一階段：架構設計\"
-        A1[需求分析] --> A2[技術選型]
-        A2 --> A3[架構設計]
-        A3 --> A4[專案結構]
-    end
-    
-    subgraph \"第二階段：核心開發\"
-        B1[資料庫設計] --> B2[API 端點]
-        B2 --> B3[業務邏輯]
-        B3 --> B4[測試用例]
-    end
-    
-    subgraph \"第三階段：整合測試\"
-        C1[單元測試] --> C2[API 測試]
-        C2 --> C3[效能測試]
-        C3 --> C4[安全測試]
-    end
-    
-    subgraph \"第四階段：部署上線\"
-        D1[CI/CD 配置] --> D2[容器化]
-        D2 --> D3[雲端部署]
-        D3 --> D4[監控日誌]
-    end
-    
-    A4 --> B1
-    B4 --> C1
-    C4 --> D1
-    
-    style A1 fill:#667eea
-    style B1 fill:#ff6b6b
-    style C1 fill:#2ecc71
-    style D1 fill:#f1c40f
+flowchart TD          %% ★ 外層改成 TD (Top-Down)
+
+  %% ─── 第一階段 ─────────────────────
+  subgraph P1["第一階段：架構設計"]
+    direction LR      %% 子圖內仍用 LR 橫向排
+    A1(需求分析) --> A2(技術選型) --> A3(架構設計) --> A4(專案結構)
+    class A1,A2,A3,A4 phase1
+  end
+
+  %% ─── 第二階段 ─────────────────────
+  subgraph P2["第二階段：核心開發"]
+    direction LR
+    B1(資料庫設計) --> B2(API 端點) --> B3(業務邏輯) --> B4(測試用例)
+    class B1,B2,B3,B4 phase2
+  end
+
+  %% ─── 第三階段 ─────────────────────
+  subgraph P3["第三階段：整合測試"]
+    direction LR
+    C1(單元測試) --> C2(API 測試) --> C3(效能測試) --> C4(安全測試)
+    class C1,C2,C3,C4 phase3
+  end
+
+  %% ─── 第四階段 ─────────────────────
+  subgraph P4["第四階段：部署上線"]
+    direction LR
+    D1(CI/CD 配置) --> D2(容器化) --> D3(雲端部署) --> D4(監控日誌)
+    class D1,D2,D3,D4 phase4
+  end
+
+  %% 階段之間改成垂直箭頭
+  P1 --> P2 --> P3 --> P4
+
+  %% 顏色樣式
+  classDef phase1 fill:#667eea,color:#fff,stroke:#667eea;
+  classDef phase2 fill:#ff6b6b,color:#fff,stroke:#ff6b6b;
+  classDef phase3 fill:#2ecc71,color:#fff,stroke:#2ecc71;
+  classDef phase4 fill:#f1c40f,color:#fff,stroke:#f1c40f;
 `} />
 
 **第一階段：專案架構設計（Aider）**
