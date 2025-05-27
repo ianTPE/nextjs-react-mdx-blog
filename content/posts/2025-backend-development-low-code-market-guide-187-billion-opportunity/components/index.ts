@@ -1,3 +1,5 @@
+"use client";
+
 // 導出所有圖表組件
 export { default as MarketGrowthChart } from './MarketGrowthChart';
 export { default as FreelanceOpportunityChart } from './FreelanceOpportunityChart';
