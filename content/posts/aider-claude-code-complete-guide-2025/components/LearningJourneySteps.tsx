@@ -145,14 +145,20 @@ const DifficultyIndicator: FC<{ difficulty: number; color: string }> = ({ diffic
   const percentage = ((5 - difficulty + 1) / 5) * 100;
   
   return (
-    <div className="space-y-1">
+    <div className="space-y-2">
       <div className="flex justify-between text-xs">
         <span className="text-muted-foreground">上手難度</span>
         <span className={`font-medium text-${color}-600 dark:text-${color}-400`}>
           {difficulty === 1 ? "極易" : difficulty === 2 ? "容易" : difficulty === 3 ? "中等" : difficulty === 4 ? "困難" : "極難"}
         </span>
       </div>
-      <Progress value={percentage} className="h-2" />
+      {/* 統一高度的進度條 */}
+      <div className="relative w-full h-[6px] bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden">
+        <div 
+          className={`absolute inset-y-0 left-0 bg-${color}-500 dark:bg-${color}-400 rounded-full transition-all duration-300`}
+          style={{ width: `${percentage}%` }}
+        />
+      </div>
     </div>
   );
 };
