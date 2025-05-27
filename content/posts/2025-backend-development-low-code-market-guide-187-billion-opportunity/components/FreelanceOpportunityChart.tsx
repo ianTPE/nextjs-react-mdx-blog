@@ -6,7 +6,9 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  ChartOptions,
+  TooltipItem
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
@@ -56,7 +58,7 @@ const FreelanceOpportunityChart: React.FC = () => {
     ]
   };
 
-  const options = {
+  const options: ChartOptions<'bar'> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
@@ -82,10 +84,10 @@ const FreelanceOpportunityChart: React.FC = () => {
         borderColor: 'rgba(59, 130, 246, 0.5)',
         borderWidth: 1,
         callbacks: {
-          label: function(context: any) {
-            return '職位數量: ' + context.parsed.y.toLocaleString() + ' 個';
+          label: (context: TooltipItem<'bar'>) => {
+            return `職位數量: ${context.parsed.y.toLocaleString()} 個`;
           },
-          afterLabel: function(context: any) {
+          afterLabel: (context: TooltipItem<'bar'>) => {
             const rankings = [
               '🥇 排名第1 - 高頻剛需',
               '🥇 排名第2 - 高頻剛需', 
@@ -106,7 +108,7 @@ const FreelanceOpportunityChart: React.FC = () => {
           color: 'rgba(156, 163, 175, 0.2)'
         },
         ticks: {
-          callback: function(value: any) {
+          callback: (value) => {
             return value.toLocaleString();
           },
           font: {
@@ -118,7 +120,7 @@ const FreelanceOpportunityChart: React.FC = () => {
           text: '職位數量',
           font: {
             size: 12,
-            weight: '600'
+            weight: 'bold'
           }
         }
       },
@@ -137,7 +139,7 @@ const FreelanceOpportunityChart: React.FC = () => {
     },
     interaction: {
       intersect: false,
-      mode: 'index' as const
+      mode: 'index'
     }
   };
 
