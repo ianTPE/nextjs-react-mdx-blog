@@ -5,6 +5,13 @@ export { default as EfficiencyComparisonChart } from './EfficiencyComparisonChar
 export { default as SkillRoadmapChart } from './SkillRoadmapChart';
 export { default as EnterpriseAdoptionChart } from './EnterpriseAdoptionChart';
 export { default as IncomeComparisonChart } from './IncomeComparisonChart';
+export { default as MermaidDiagram } from './MermaidDiagram';
+
+// 導出表格組件
+export { default as DataTable } from './DataTable';
+export { default as MarketDataTable } from './MarketDataTable';
+export { default as EnterpriseAdoptionTable } from './EnterpriseAdoptionTable';
+export { default as PricingStrategyTable } from './PricingStrategyTable';
 
 // 組件使用說明
 /**

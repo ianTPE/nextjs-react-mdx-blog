@@ -487,7 +487,7 @@ module.exports = {
 
 **架構設計**：
 
-```mermaid
+<MermaidDiagram chart={`
 graph TD
     A[Contentful 內容中台] --> B[品牌 A 官網]
     A --> C[品牌 B 官網]  
@@ -499,7 +499,7 @@ graph TD
     H[內容編輯團隊] --> A
     I[行銷團隊] --> A
     J[產品團隊] --> A
-```
+`}/>
 
 **核心功能實現**：
 
@@ -775,7 +775,7 @@ const sendMessage = (message) => {
 
 **技術架構設計**：
 
-```mermaid
+<MermaidDiagram chart={`
 graph TD
     A[前端 Canvas] --> B[WebSocket 連接]
     B --> C[Socket.io 伺服器]
@@ -783,7 +783,7 @@ graph TD
     C --> E[MongoDB 持久化]
     F[衝突解決算法] --> C
     G[用戶狀態管理] --> C
-```
+`}/>
 
 **核心技術實現**：
 
@@ -1113,7 +1113,7 @@ const gateway = new ApolloGateway({
 
 **技術架構設計**：
 
-```mermaid
+<MermaidDiagram chart={`
 graph TD
     A[前端應用] --> B[GraphQL Gateway]
     B --> C[用戶服務]
@@ -1126,7 +1126,7 @@ graph TD
     I[快取層 Redis] --> B
     J[監控系統] --> B
     K[安全認證] --> B
-```
+`}/>
 
 **核心技術實現**：
 
@@ -1452,14 +1452,14 @@ import EnterpriseAdoptionChart from './components/EnterpriseAdoptionChart';
 與其他類型的專案不同，企業級後端專案的獲取往往需要數月甚至數年的信任建立過程。
 
 **信任建立階段**：
-```mermaid
+<MermaidDiagram chart={`
 graph LR
     A[初次接觸] --> B[技術能力證明]
     B --> C[小型試點專案]
     C --> D[安全審計通過]
     D --> E[參考客戶推薦]
     E --> F[大型專案合約]
-```
+`}/>
 
 #### 核心技術領域深度解析
 
@@ -2082,7 +2082,7 @@ resource "aws_lambda_function" "disaster_recovery" {
 
 **安全架構設計**：
 
-```mermaid
+<MermaidDiagram chart={`
 graph TD
     A[用戶] --> B[CDN + WAF]
     B --> C[API Gateway]
@@ -2094,7 +2094,7 @@ graph TD
     H[審計日誌系統] --> E
     I[風險評估引擎] --> E
     J[異常檢測系統] --> E
-```
+`}/>
 
 **核心安全措施**：
 
@@ -3217,7 +3217,7 @@ class CustomerOnboardingAutomation {
 
 **解決方案架構**：
 
-```mermaid
+<MermaidDiagram chart={`
 graph TB
     A[工廠設備] --> B[IoT 感測器]
     B --> C[MQTT Broker]
@@ -3234,7 +3234,7 @@ graph TB
     
     J --> M[Power BI 分析]
     M --> N[管理層儀表板]
-```
+`}/>
 
 **技術實施細節**：
 
