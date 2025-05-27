@@ -70,7 +70,7 @@ const MarketGrowthChart: React.FC = () => {
           padding: 20,
           font: {
             size: 12,
-            weight: '500'
+            weight: 'bold' as const
           }
         }
       },
@@ -79,7 +79,7 @@ const MarketGrowthChart: React.FC = () => {
         text: '全球低程式碼 vs 傳統軟體開發市場規模對比',
         font: {
           size: 16,
-          weight: 'bold'
+          weight: 'bold' as const
         },
         padding: {
           top: 10,

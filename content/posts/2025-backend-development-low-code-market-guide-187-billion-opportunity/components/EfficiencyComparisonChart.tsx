@@ -62,7 +62,7 @@ const EfficiencyComparisonChart: React.FC = () => {
           padding: 20,
           font: {
             size: 12,
-            weight: '500'
+            weight: 500
           }
         }
       },
@@ -71,7 +71,7 @@ const EfficiencyComparisonChart: React.FC = () => {
         text: '傳統 vs 低程式碼後端開發效率對比',
         font: {
           size: 16,
-          weight: 'bold'
+          weight: "bold"
         },
         padding: {
           top: 10,
