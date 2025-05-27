@@ -2,20 +2,7 @@
 
 import { FC } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { 
-  Terminal, 
-  FolderOpen, 
-  GitBranch, 
-  Rocket,
-  Settings,
-  Code2,
-  Users,
-  Cpu,
-  Workflow,
-  Building2,
-  Sparkles,
-  Github
-} from "lucide-react";
+import { Terminal, FolderOpen, GitBranch, Rocket, Settings, Code2, Users, Cpu, Workflow, Building2, Sparkles, Github } from 'lucide-react';
 
 // -----------------------------------------------------------------------------
 //  Types
@@ -152,10 +139,10 @@ const DifficultyIndicator: FC<{ difficulty: number; color: string }> = ({ diffic
           {difficulty === 1 ? "極易" : difficulty === 2 ? "容易" : difficulty === 3 ? "中等" : difficulty === 4 ? "困難" : "極難"}
         </span>
       </div>
-      {/* 統一高度的進度條 */}
-      <div className="relative w-full h-[6px] bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden">
+      {/* 修正進度條高度一致性 */}
+      <div className="w-full h-2 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden">
         <div 
-          className={`absolute inset-y-0 left-0 bg-${color}-500 dark:bg-${color}-400 rounded-full transition-all duration-300`}
+          className={`h-full bg-${color}-500 dark:bg-${color}-400 rounded-full transition-all duration-300 ease-out`}
           style={{ width: `${percentage}%` }}
         />
       </div>
