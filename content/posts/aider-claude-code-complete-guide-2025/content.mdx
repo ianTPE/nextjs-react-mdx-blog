@@ -153,11 +153,11 @@ flowchart TD
   "themeVariables": { "fontSize":"18px" },
   "flowchart": { "useMaxWidth": false }
 }}%%
-flowchart TD          %% ★ 外層改成 TD (Top-Down)
+flowchart TD
 
   %% ─── 第一階段 ─────────────────────
   subgraph P1["第一階段：架構設計"]
-    direction LR      %% 子圖內仍用 LR 橫向排
+    direction LR
     A1(需求分析) --> A2(技術選型) --> A3(架構設計) --> A4(專案結構)
     class A1,A2,A3,A4 phase1
   end
