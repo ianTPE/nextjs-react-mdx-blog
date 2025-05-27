@@ -125,11 +125,6 @@ export async function getPostBySlug(slug: string): Promise<PostWithContent | nul
     
     // 使用新的 ESM metadata 提取機制
     const { metadata, cleanContent } = await extractMetadataFromMDX(rawContent);
-    
-    // Debug: Check if cleanContent is properly processed
-    console.log('Raw content length:', rawContent.length);
-    console.log('Clean content length:', cleanContent.length);
-    console.log('Clean content preview:', cleanContent.substring(0, 300));
 
     const postWithContent: PostWithContent = {
       metadata,

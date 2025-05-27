@@ -34,7 +34,12 @@ type MDXComponents = {
 // Create a proper pre wrapper that preserves code blocks
 function Pre({ children, ...props }: { children?: ReactNode; [key: string]: any }) {
   // Check if this is a code block
-  if (React.isValidElement(children) && children.props?.className?.includes('language-')) {
+  if (React.isValidElement(children) && 
+      children.props && 
+      typeof children.props === 'object' &&
+      'className' in children.props &&
+      typeof children.props.className === 'string' &&
+      children.props.className.includes('language-')) {
     return <pre {...props}>{children}</pre>;
   }
   // For non-code content, just return children
