@@ -8,11 +8,17 @@ export { default as IncomeComparisonChart } from './IncomeComparisonChart';
 export { default as MermaidDiagram } from './MermaidDiagram';
 
 // 導出表格組件
+export { default as CmsComparisonTable } from './CmsComparisonTable';
+export { default as RealtimeProtocolTable } from './RealtimeProtocolTable';
+export { default as SecurityModelTable } from './SecurityModelTable';
+export { default as SecurityModelComparison } from './SecurityModelComparison';
+export { default as BusinessMetricsTable } from './BusinessMetricsTable';
+
+// 導出舊版表格組件（向後兼容）
 export { default as DataTable } from './DataTable';
 export { default as MarketDataTable } from './MarketDataTable';
 export { default as EnterpriseAdoptionTable } from './EnterpriseAdoptionTable';
 export { default as PricingStrategyTable } from './PricingStrategyTable';
-export { default as CmsComparisonTable } from './CmsComparisonTable';
 
 // 組件使用說明
 /**

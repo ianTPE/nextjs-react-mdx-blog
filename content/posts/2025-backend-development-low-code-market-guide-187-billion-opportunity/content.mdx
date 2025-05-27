@@ -372,16 +372,9 @@ const calculatePerformanceScore = async (employeeId, period) => {
 
 **2. 技術架構優勢**
 
-**傳統 CMS vs Headless CMS 對比**：
+import CmsComparisonTable from './components/CmsComparisonTable';
 
-| 比較項目 | 傳統 CMS | Headless CMS |
-|---------|----------|--------------|
-| 架構耦合度 | 前後端緊密耦合 | 完全解耦 |
-| 前端技術選擇 | 受限於 CMS 模板 | 任意前端框架 |
-| 性能 | 受模板引擎限制 | 可高度優化 |
-| 安全性 | 攻擊面較大 | 後端隱藏，更安全 |
-| 擴展性 | 垂直擴展為主 | 水平擴展容易 |
-| 開發體驗 | 依賴 CMS 生態 | 現代開發工具鏈 |
+<CmsComparisonTable />
 
 #### 主流 Headless CMS 平台深度分析
 
@@ -677,13 +670,9 @@ const generateProductSchema = (product) => ({
 
 **WebSocket vs Server-Sent Events vs WebRTC 比較**：
 
-| 協議類型 | WebSocket | Server-Sent Events | WebRTC |
-|---------|-----------|-------------------|--------|
-| 通訊方向 | 雙向 | 單向（伺服器到客戶端） | 點對點雙向 |
-| 連接開銷 | 中等 | 低 | 高 |
-| 適用場景 | 聊天、遊戲 | 通知、資料推送 | 音視頻通話 |
-| 瀏覽器支援 | 廣泛 | 廣泛 | 現代瀏覽器 |
-| 實現複雜度 | 中等 | 簡單 | 複雜 |
+import RealtimeProtocolTable from './components/RealtimeProtocolTable';
+
+<RealtimeProtocolTable />
 
 #### 主流即時資料平台深度分析
 
@@ -1467,13 +1456,7 @@ graph LR
 
 **傳統安全模型 vs 零信任模型**：
 
-| 安全要素 | 傳統模型 | 零信任模型 |
-|---------|----------|------------|
-| 信任基礎 | 網路邊界 | 身份驗證 |
-| 預設假設 | 內網安全 | 永不信任 |
-| 訪問控制 | 一次驗證 | 持續驗證 |
-| 監控範圍 | 邊界流量 | 所有流量 |
-| 資料保護 | 週邊防護 | 端到端加密 |
+<SecurityModelComparison />
 
 **零信任實施架構**：
 ```python
@@ -3783,14 +3766,9 @@ spec:
 
 **核心商業指標演進**：
 
-| 指標 | MVP 階段 | PMF 階段 | 規模化階段 |
-|------|----------|----------|------------|
-| 月活躍用戶 | 50 | 1,800 | 35,000 |
-| 客戶留存率 | 60% | 85% | 94% |
-| 平均客單價 | $50 | $120 | $280 |
-| 客戶獲取成本 | $200 | $80 | $65 |
-| 系統可用性 | 95% | 99.5% | 99.9% |
-| API 回應時間 | 800ms | 200ms | 50ms |
+import BusinessMetricsTable from './components/BusinessMetricsTable';
+
+<BusinessMetricsTable />
 
 **技術債務管理策略**：
 
