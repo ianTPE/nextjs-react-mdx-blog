@@ -62,9 +62,20 @@ export default function MDXRenderer({ source, slug }: MDXRendererProps) {
     const processMDX = async () => {
       try {
         console.log('Processing MDX with components:', Object.keys(components));
+        console.log('Source content preview:', source.substring(0, 500));
+        console.log('Source content length:', source.length);
+        
+        // Check if content is being treated as a single code block
+        if (source.trim().startsWith('```') && source.trim().endsWith('```')) {
+          console.warn('Content appears to be wrapped in code block markers');
+        }
         
         const serialized = await serialize(source, {
-          parseFrontmatter: true
+          parseFrontmatter: false,
+          mdxOptions: {
+            development: process.env.NODE_ENV === 'development',
+            format: 'mdx'
+          }
         });
 
         setMdxSource(serialized);

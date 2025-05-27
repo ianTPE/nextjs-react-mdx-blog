@@ -1,6 +1,6 @@
 'use client';
 
-import type { ComponentType, ReactNode } from 'react';
+import React, { type ComponentType, type ReactNode } from 'react';
 import CodeBlock from './CodeBlock';
 import { Table, THead, TBody, Th, Td, Tr } from './Table';
 import AlertComponent from './global-components/Alert';  // 重命名導入以避免名稱衝突
@@ -31,8 +31,13 @@ type MDXComponents = {
   }>;
 };
 
-// Create a simple wrapper for the pre tag
-function Pre({ children }: { children?: ReactNode }) {
+// Create a proper pre wrapper that preserves code blocks
+function Pre({ children, ...props }: { children?: ReactNode; [key: string]: any }) {
+  // Check if this is a code block
+  if (React.isValidElement(children) && children.props?.className?.includes('language-')) {
+    return <pre {...props}>{children}</pre>;
+  }
+  // For non-code content, just return children
   return <>{children}</>;
 }
 
