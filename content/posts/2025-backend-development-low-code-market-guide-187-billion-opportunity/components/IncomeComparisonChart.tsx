@@ -6,7 +6,9 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  ChartOptions,
+  TooltipItem
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
@@ -93,18 +95,18 @@ const IncomeComparisonChart: React.FC = () => {
     }
   ];
 
-  const options = {
+  const options: ChartOptions<'bar'> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'top' as const,
+        position: 'top',
         labels: {
           usePointStyle: true,
           padding: 15,
           font: {
             size: 12,
-            weight: '500'
+            weight: 'bold'
           }
         }
       },
@@ -127,13 +129,13 @@ const IncomeComparisonChart: React.FC = () => {
         borderColor: 'rgba(34, 197, 94, 0.5)',
         borderWidth: 1,
         callbacks: {
-          label: function(context: any) {
-            return context.dataset.label + ': $' + context.parsed.y.toLocaleString();
+          label: (context: TooltipItem<'bar'>) => {
+            return `${context.dataset.label}: $${context.parsed.y.toLocaleString()}`;
           },
-          afterLabel: function(context: any) {
+          afterLabel: (context: TooltipItem<'bar'>) => {
             if (context.datasetIndex === 1 && context.dataIndex >= 2) {
               const increases = ['', '', '41%↑', '64%↑', '79%↑', '122%↑'];
-              return '相比傳統開發: ' + increases[context.dataIndex];
+              return `相比傳統開發: ${increases[context.dataIndex]}`;
             }
             return '';
           }
@@ -147,8 +149,11 @@ const IncomeComparisonChart: React.FC = () => {
           color: 'rgba(156, 163, 175, 0.2)'
         },
         ticks: {
-          callback: function(value: any) {
-            return '$' + (value / 1000) + 'k';
+          callback: function(this: any, value: number | string) {
+            if (typeof value === 'number') {
+              return `$${value / 1000}k`;
+            }
+            return value;
           },
           font: {
             size: 11
@@ -159,7 +164,7 @@ const IncomeComparisonChart: React.FC = () => {
           text: '年收入 (美元)',
           font: {
             size: 12,
-            weight: '600'
+            weight: 'bold'
           }
         }
       },
@@ -178,7 +183,7 @@ const IncomeComparisonChart: React.FC = () => {
     },
     interaction: {
       intersect: false,
-      mode: 'index' as const
+      mode: 'index'
     }
   };
 
