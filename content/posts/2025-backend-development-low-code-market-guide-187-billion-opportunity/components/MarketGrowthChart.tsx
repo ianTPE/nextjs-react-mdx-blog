@@ -8,7 +8,9 @@ import {
   Title,
   Tooltip,
   Legend,
-  Filler
+  Filler,
+  ChartOptions,
+  TooltipItem
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 
@@ -59,18 +61,18 @@ const MarketGrowthChart: React.FC = () => {
     ]
   };
 
-  const options = {
+  const options: ChartOptions<'line'> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'top' as const,
+        position: 'top',
         labels: {
           usePointStyle: true,
           padding: 20,
           font: {
             size: 12,
-            weight: 'bold' as const
+            weight: 'bold'
           }
         }
       },
@@ -79,7 +81,7 @@ const MarketGrowthChart: React.FC = () => {
         text: '全球低程式碼 vs 傳統軟體開發市場規模對比',
         font: {
           size: 16,
-          weight: 'bold' as const
+          weight: 'bold'
         },
         padding: {
           top: 10,
@@ -94,10 +96,10 @@ const MarketGrowthChart: React.FC = () => {
         borderWidth: 1,
         displayColors: true,
         callbacks: {
-          label: function(context: any) {
-            return context.dataset.label + ': $' + context.parsed.y + '億美元';
+          label: (context: TooltipItem<'line'>) => {
+            return `${context.dataset.label}: $${context.parsed.y}億美元`;
           },
-          afterLabel: function(context: any) {
+          afterLabel: (context: TooltipItem<'line'>) => {
             if (context.datasetIndex === 0) {
               const year = context.label;
               const growthRates: { [key: string]: string } = {
@@ -113,7 +115,7 @@ const MarketGrowthChart: React.FC = () => {
                 '2029': '(+28%)',
                 '2030': '(+53%)'
               };
-              return '年增長率: ' + (growthRates[year] || '');
+              return `年增長率: ${growthRates[year] || ''}`;
             }
             return '';
           }
@@ -127,8 +129,11 @@ const MarketGrowthChart: React.FC = () => {
           color: 'rgba(156, 163, 175, 0.2)'
         },
         ticks: {
-          callback: function(value: any) {
-            return '$' + value + '億';
+          callback: function(this: any, value: string | number) {
+            if (typeof value === 'number') {
+              return `$${value}億`;
+            }
+            return value;
           },
           font: {
             size: 11
@@ -148,7 +153,7 @@ const MarketGrowthChart: React.FC = () => {
     },
     interaction: {
       intersect: false,
-      mode: 'index' as const
+      mode: 'index'
     }
   };
 

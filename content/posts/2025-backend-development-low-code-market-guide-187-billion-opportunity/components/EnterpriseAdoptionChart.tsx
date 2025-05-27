@@ -4,7 +4,9 @@ import {
   ArcElement,
   Tooltip,
   Legend,
-  Title
+  Title,
+  ChartOptions,
+  TooltipItem
 } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 
@@ -80,12 +82,12 @@ const EnterpriseAdoptionChart: React.FC = () => {
     ]
   };
 
-  const chartOptions = {
+  const chartOptions: ChartOptions<'doughnut'> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'bottom' as const,
+        position: 'bottom',
         labels: {
           usePointStyle: true,
           padding: 15,
@@ -101,8 +103,8 @@ const EnterpriseAdoptionChart: React.FC = () => {
         borderColor: 'rgba(59, 130, 246, 0.5)',
         borderWidth: 1,
         callbacks: {
-          label: function(context: any) {
-            return context.label + ': ' + context.parsed + '%';
+          label: (context: TooltipItem<'doughnut'>) => {
+            return `${context.label}: ${context.parsed}%`;
           }
         }
       }

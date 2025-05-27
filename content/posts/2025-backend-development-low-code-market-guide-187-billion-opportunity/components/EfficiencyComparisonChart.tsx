@@ -6,7 +6,9 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  ChartOptions,
+  TooltipItem
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
@@ -51,18 +53,18 @@ const EfficiencyComparisonChart: React.FC = () => {
     ]
   };
 
-  const options = {
+  const options: ChartOptions<'bar'> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'top' as const,
+        position: 'top',
         labels: {
           usePointStyle: true,
           padding: 20,
           font: {
             size: 12,
-            weight: 500
+            weight: 'bold'
           }
         }
       },
@@ -71,7 +73,7 @@ const EfficiencyComparisonChart: React.FC = () => {
         text: '傳統 vs 低程式碼後端開發效率對比',
         font: {
           size: 16,
-          weight: 700
+          weight: 'bold'
         },
         padding: {
           top: 10,
@@ -85,12 +87,12 @@ const EfficiencyComparisonChart: React.FC = () => {
         borderColor: 'rgba(34, 197, 94, 0.5)',
         borderWidth: 1,
         callbacks: {
-          label: function(context: any) {
+          label: (context: TooltipItem<'bar'>) => {
             const units = ['週', '月', '分', '小時', '天', '分'];
             const unit = units[context.dataIndex] || '';
-            return context.dataset.label + ': ' + context.parsed.y + unit;
+            return `${context.dataset.label}: ${context.parsed.y}${unit}`;
           },
-          afterLabel: function(context: any) {
+          afterLabel: (context: TooltipItem<'bar'>) => {
             if (context.datasetIndex === 1) {
               const improvements = [
                 '效率提升 83%',
@@ -100,7 +102,7 @@ const EfficiencyComparisonChart: React.FC = () => {
                 '迭代週期縮短 86%',
                 '協作效率提升 50%'
               ];
-              return '💡 ' + improvements[context.dataIndex];
+              return `💡 ${improvements[context.dataIndex]}`;
             }
             return '';
           }
@@ -134,7 +136,7 @@ const EfficiencyComparisonChart: React.FC = () => {
     },
     interaction: {
       intersect: false,
-      mode: 'index' as const
+      mode: 'index'
     }
   };
 

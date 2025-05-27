@@ -8,7 +8,9 @@ import {
   Title,
   Tooltip,
   Legend,
-  Filler
+  Filler,
+  ChartOptions,
+  TooltipItem
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 
@@ -85,18 +87,18 @@ const SkillRoadmapChart: React.FC = () => {
     { month: 24, title: '行業影響力', skills: ['創業投資', '生態建設'] }
   ];
 
-  const options = {
+  const options: ChartOptions<'line'> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'top' as const,
+        position: 'top',
         labels: {
           usePointStyle: true,
           padding: 20,
           font: {
             size: 12,
-            weight: '500'
+            weight: 'bold'
           }
         }
       },
@@ -120,18 +122,18 @@ const SkillRoadmapChart: React.FC = () => {
         borderWidth: 1,
         displayColors: true,
         callbacks: {
-          label: function(context: any) {
+          label: (context: TooltipItem<'line'>) => {
             const labels = ['技術等級', '月收入 $', '客戶數'];
             const units = ['分', 'k', '個'];
-            return labels[context.datasetIndex] + ': ' + context.parsed.y + units[context.datasetIndex];
+            return `${labels[context.datasetIndex]}: ${context.parsed.y}${units[context.datasetIndex]}`;
           },
-          afterLabel: function(context: any) {
+          afterLabel: (context: TooltipItem<'line'>) => {
             const monthIndex = context.dataIndex;
             const milestone = milestones[monthIndex];
             if (milestone) {
               return [
-                '🎯 里程碑: ' + milestone.title,
-                '📚 核心技能: ' + milestone.skills.join(', ')
+                `🏁 里程碑: ${milestone.title}`,
+                `📚 核心技能: ${milestone.skills.join(', ')}`
               ];
             }
             return '';
@@ -164,7 +166,7 @@ const SkillRoadmapChart: React.FC = () => {
     },
     interaction: {
       intersect: false,
-      mode: 'index' as const
+      mode: 'index'
     }
   };
 
