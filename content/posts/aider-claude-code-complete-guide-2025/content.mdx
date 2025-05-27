@@ -147,7 +147,41 @@ flowchart TD
 
 讓我們透過一個完整的專案開發流程來展示兩者的協同效應。假設我們要開發一個基於 Python 的 RESTful API 服務：
 
-<ProjectFlowChart />
+<MermaidDiagram chart={`
+flowchart LR
+    subgraph \"第一階段：架構設計\"
+        A1[需求分析] --> A2[技術選型]
+        A2 --> A3[架構設計]
+        A3 --> A4[專案結構]
+    end
+    
+    subgraph \"第二階段：核心開發\"
+        B1[資料庫設計] --> B2[API 端點]
+        B2 --> B3[業務邏輯]
+        B3 --> B4[測試用例]
+    end
+    
+    subgraph \"第三階段：整合測試\"
+        C1[單元測試] --> C2[API 測試]
+        C2 --> C3[效能測試]
+        C3 --> C4[安全測試]
+    end
+    
+    subgraph \"第四階段：部署上線\"
+        D1[CI/CD 配置] --> D2[容器化]
+        D2 --> D3[雲端部署]
+        D3 --> D4[監控日誌]
+    end
+    
+    A4 --> B1
+    B4 --> C1
+    C4 --> D1
+    
+    style A1 fill:#667eea
+    style B1 fill:#ff6b6b
+    style C1 fill:#2ecc71
+    style D1 fill:#f1c40f
+`} />
 
 **第一階段：專案架構設計（Aider）**
 
