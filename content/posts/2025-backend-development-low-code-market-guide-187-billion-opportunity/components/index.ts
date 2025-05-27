@@ -12,6 +12,7 @@ export { default as DataTable } from './DataTable';
 export { default as MarketDataTable } from './MarketDataTable';
 export { default as EnterpriseAdoptionTable } from './EnterpriseAdoptionTable';
 export { default as PricingStrategyTable } from './PricingStrategyTable';
+export { default as CmsComparisonTable } from './CmsComparisonTable';
 
 // 組件使用說明
 /**
