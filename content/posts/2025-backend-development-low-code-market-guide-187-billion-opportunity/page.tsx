@@ -1,13 +1,12 @@
 'use client';
 
-import React from 'react';
+import * as React from 'react';
 import { MDXProvider } from '@mdx-js/react';
 import dynamic from 'next/dynamic';
-import { LazyMDXSection } from './components';
 
 // 動態導入 MDX 內容以避免 SSR 時的 hydration 問題
 const MDXContent = dynamic(() => import('./content.mdx'), {
-  loading: () => <div className="animate-pulse h-20 bg-gray-100 rounded-md"></div>,
+  loading: () => <div className="animate-pulse h-20 bg-gray-100 rounded-md" />,
   ssr: false,
 });
 
@@ -38,11 +37,11 @@ export default function BackendDevelopmentGuidePage() {
   // 自定義組件，用於增強 MDX 渲染
   const components = {
     // 替換 h2 和 h3 標籤，自動添加 ID 用於導航
-    h2: ({ children, ...props }: any) => {
+    h2: ({ children, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => {
       const id = String(children).toLowerCase().replace(/\s+/g, '-');
       return <h2 id={id} {...props}>{children}</h2>;
     },
-    h3: ({ children, ...props }: any) => {
+    h3: ({ children, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => {
       const id = String(children).toLowerCase().replace(/\s+/g, '-');
       return <h3 id={id} {...props}>{children}</h3>;
     },
@@ -103,6 +102,7 @@ export default function BackendDevelopmentGuidePage() {
       
       {/* 快速返回頂部按鈕 */}
       <button
+        type="button"
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         className="fixed bottom-8 right-8 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition-colors"
         aria-label="回到頂部"
@@ -113,7 +113,10 @@ export default function BackendDevelopmentGuidePage() {
           fill="none" 
           viewBox="0 0 24 24" 
           stroke="currentColor"
+          aria-hidden="true"
+          role="img"
         >
+          <title>向上箭頭</title>
           <path 
             strokeLinecap="round" 
             strokeLinejoin="round" 

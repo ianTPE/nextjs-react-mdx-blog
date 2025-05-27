@@ -116,10 +116,51 @@ This approach provides several benefits:
 * **Simplified Refactoring**: Component file names can be changed without updating MDX files
 * **Automatic Namespacing**: When MDX is rendered, components are automatically available in the namespace
 
-## MDX Usage Example
+## MDX Metadata and Usage Example
+
+### ESM Metadata in MDX Files
+
+MDX files should use ESM export syntax to define metadata for the post. This metadata is essential for SEO, listing pages, and other site features:
+
+```mdx
+export const metadata = {
+  title: 'Post Title',
+  date: '2025-05-27',
+  excerpt: 'A brief description of the post content that will appear in listings and social media previews.',
+  author: 'Author Name',
+  coverImage: '/images/posts/cover-image.webp',
+  tags: ['Next.js', 'React', 'Tutorial']
+};
+
+# Post Title
+
+Post content starts here...
+```
+
+#### Metadata Requirements
+
+- **Format**: Must use `export const metadata = { ... };` syntax at the top of the MDX file
+- **Required Fields**: title, date, excerpt, author
+- **Optional Fields**: coverImage, tags, updatedDate, readingTime
+- **Parsing**: This metadata is extracted during build time and made available to page components
+- **Validation**: The build process validates that all required metadata fields are present
+
+#### Important Notes
+
+- Metadata must be defined before any MDX content
+- Do not use traditional frontmatter (---) syntax
+- Field names are case-sensitive
+- Date formats should be ISO-compatible (YYYY-MM-DD)
 
 ### Traditional Approach (with imports):
 ```mdx
+export const metadata = {
+  title: 'Sample Post Title',
+  date: '2025-05-27',
+  excerpt: 'Sample post description',
+  author: 'Author Name'
+};
+
 import CustomChart from './components/CustomChart'
 import AlertBox from 'components/mdx/global-components/AlertBox'
 
@@ -134,6 +175,14 @@ And here is a global alert component:
 
 ### Improved Approach (using index.ts barrel file):
 ```mdx
+export const metadata = {
+  title: 'Sample Post Title',
+  date: '2025-05-27',
+  excerpt: 'Sample post description',
+  author: 'Author Name',
+  tags: ['Next.js', 'MDX', 'Tutorial']
+};
+
 # Sample Post Title
 
 Here is a post-specific chart:
