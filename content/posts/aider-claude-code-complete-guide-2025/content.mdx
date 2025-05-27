@@ -148,6 +148,11 @@ flowchart TD
 讓我們透過一個完整的專案開發流程來展示兩者的協同效應。假設我們要開發一個基於 Python 的 RESTful API 服務：
 
 <MermaidDiagram chart={`
+%%{init:{
+  "theme":"base",
+  "themeVariables":{ "fontSize":"18px" },   // 字體直接放大
+  "flowchart":      { "useMaxWidth": false} // 不要自動縮到滿版
+}}%%
 flowchart LR
     subgraph \"第一階段：架構設計\"
         A1[需求分析] --> A2[技術選型]
