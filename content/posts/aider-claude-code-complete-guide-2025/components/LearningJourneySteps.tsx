@@ -1,161 +1,284 @@
 "use client";
 
 import { FC } from "react";
-import { Badge } from "@/components/ui/badge"; // Kept in case you use it elsewhere, but not in StepCard
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip"; // Added TooltipProvider
-import { CheckCircle, Circle } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
+import { 
+  Terminal, 
+  FolderOpen, 
+  GitBranch, 
+  Rocket,
+  Settings,
+  Code2,
+  Users,
+  Cpu,
+  Workflow,
+  Building2,
+  Sparkles,
+  Github
+} from "lucide-react";
 
 // -----------------------------------------------------------------------------
-//  Types
+//  Types
 // -----------------------------------------------------------------------------
 
 type StepLevel = "beginner" | "intermediate" | "expert";
 
-type StepRating = 3 | 4 | 5; // keep the original 3–5 scale (at least 3 filled dots)
-
 interface LearningStep {
   name: string;
-  level: StepLevel; // Still useful for data structure, even if not shown on card
-  rating: StepRating;
+  level: StepLevel;
+  difficulty: number; // 1-5, where 1 is easiest
+  icon: FC<{ className?: string }>;
+  description?: string;
 }
 
-interface StepSectionInfo { // For cleaner data passing
+interface StepSectionInfo {
   title: string;
   subtitle: string;
-  accent: string; // Tailwind color e.g. "blue", "purple", "red"
+  color: string; // Tailwind color class
+  bgGradient: string;
   steps: LearningStep[];
+  stageNumber: number;
 }
 
 // -----------------------------------------------------------------------------
-//  Helpers
+//  Data
 // -----------------------------------------------------------------------------
 
-// chineseLevelText is no longer used directly in StepCard's badge,
-// but kept here if you need it for other purposes or dynamic section titles.
-const chineseLevelText: Record<StepLevel, string> = {
-  beginner: "新手",
-  intermediate: "中級",
-  expert: "專家",
+const beginnerSteps: LearningStep[] = [
+  { 
+    name: "環境安裝", 
+    level: "beginner", 
+    difficulty: 1,
+    icon: Terminal,
+    description: "安裝必要的開發工具"
+  },
+  { 
+    name: "基礎操作", 
+    level: "beginner", 
+    difficulty: 2,
+    icon: Code2,
+    description: "學習基本指令與操作"
+  },
+  { 
+    name: "簡單專案", 
+    level: "beginner", 
+    difficulty: 3,
+    icon: Rocket,
+    description: "建立第一個小專案"
+  },
+  { 
+    name: "版本控制", 
+    level: "beginner", 
+    difficulty: 2,
+    icon: GitBranch,
+    description: "Git 基礎與版本管理"
+  },
+];
+
+const intermediateSteps: LearningStep[] = [
+  { 
+    name: "多檔案管理", 
+    level: "intermediate", 
+    difficulty: 2,
+    icon: FolderOpen,
+    description: "處理複雜專案結構"
+  },
+  { 
+    name: "模型調優", 
+    level: "intermediate", 
+    difficulty: 1,
+    icon: Settings,
+    description: "優化 AI 模型參數"
+  },
+  { 
+    name: "IDE 整合", 
+    level: "intermediate", 
+    difficulty: 2,
+    icon: Cpu,
+    description: "整合開發環境設定"
+  },
+  { 
+    name: "團隊協作", 
+    level: "intermediate", 
+    difficulty: 1,
+    icon: Users,
+    description: "多人協作工作流程"
+  },
+];
+
+const expertSteps: LearningStep[] = [
+  { 
+    name: "工作流自動化", 
+    level: "expert", 
+    difficulty: 1,
+    icon: Workflow,
+    description: "建立自動化流程"
+  },
+  { 
+    name: "企業部署", 
+    level: "expert", 
+    difficulty: 2,
+    icon: Building2,
+    description: "大規模應用部署"
+  },
+  { 
+    name: "客製開發", 
+    level: "expert", 
+    difficulty: 1,
+    icon: Sparkles,
+    description: "開發客製化功能"
+  },
+  { 
+    name: "開源貢獻", 
+    level: "expert", 
+    difficulty: 2,
+    icon: Github,
+    description: "參與開源社群"
+  },
+];
+
+// -----------------------------------------------------------------------------
+//  Components
+// -----------------------------------------------------------------------------
+
+const DifficultyIndicator: FC<{ difficulty: number; color: string }> = ({ difficulty, color }) => {
+  const percentage = ((5 - difficulty + 1) / 5) * 100;
+  
+  return (
+    <div className="space-y-1">
+      <div className="flex justify-between text-xs">
+        <span className="text-muted-foreground">上手難度</span>
+        <span className={`font-medium text-${color}-600 dark:text-${color}-400`}>
+          {difficulty === 1 ? "極易" : difficulty === 2 ? "容易" : difficulty === 3 ? "中等" : difficulty === 4 ? "困難" : "極難"}
+        </span>
+      </div>
+      <Progress value={percentage} className="h-2" />
+    </div>
+  );
 };
 
-const accentRing = (accent: string) =>
-  `ring-2 ring-${accent}-300 dark:ring-${accent}-700/60`;
-
-// -----------------------------------------------------------------------------
-//  Components
-// -----------------------------------------------------------------------------
-
-const StepCard: FC<LearningStep & { accent: string }> = ({ name, rating, accent }) => (
-  <Card
-    className={`flex flex-col gap-3 ${accentRing(accent)} hover:shadow-lg transition-shadow`}
-  >
-    <CardHeader className="pb-2 pt-4"> {/* Adjusted padding slightly */}
-      <CardTitle className="text-base font-medium leading-snug tracking-tight">
-        {name}
-      </CardTitle>
-      {/* Badge removed from here for cleaner card, section title provides level context */}
+const StepCard: FC<LearningStep & { color: string; bgGradient: string }> = ({ 
+  name, 
+  difficulty, 
+  icon: Icon, 
+  description,
+  color,
+  bgGradient 
+}) => (
+  <Card className="group hover:shadow-lg transition-all duration-300 border-muted hover:border-primary/20 overflow-hidden">
+    <div className={`h-1 bg-gradient-to-r ${bgGradient}`} />
+    <CardHeader className="pb-3">
+      <div className="flex items-start gap-3">
+        <div className={`p-2 rounded-lg bg-${color}-100 dark:bg-${color}-900/20 text-${color}-600 dark:text-${color}-400`}>
+          <Icon className="h-5 w-5" />
+        </div>
+        <div className="flex-1">
+          <CardTitle className="text-base font-semibold">{name}</CardTitle>
+          {description && (
+            <p className="text-xs text-muted-foreground mt-1">{description}</p>
+          )}
+        </div>
+      </div>
     </CardHeader>
-    <CardContent className="pb-4 flex gap-1">
-      {[1, 2, 3, 4, 5].map((n) => {
-        const filled = n <= rating;
-        return (
-          <Tooltip key={n} delayDuration={0}>
-            <TooltipTrigger className="focus:outline-none">
-              {filled ? (
-                <CheckCircle className={`h-4 w-4 text-${accent}-500`} />
-              ) : (
-                <Circle className="h-4 w-4 text-muted-foreground" />
-              )}
-            </TooltipTrigger>
-            <TooltipContent>
-              {filled ? "上手相對快速" : "需投入較多時間掌握"}
-            </TooltipContent>
-          </Tooltip>
-        );
-      })}
+    <CardContent className="pt-0">
+      <DifficultyIndicator difficulty={difficulty} color={color} />
     </CardContent>
   </Card>
 );
 
-const StepSection: FC<StepSectionInfo> = ({ title, subtitle, steps, accent }) => (
-  <section className="space-y-3"> {/* Reduced space-y slightly */}
-    <div className="mb-3"> {/* Group title and subtitle */}
-      <h3 className="text-lg font-semibold text-foreground/90">{title}</h3>
-      <p className="text-sm text-muted-foreground">{subtitle}</p>
+const StageIndicator: FC<{ stage: number; title: string; color: string }> = ({ stage, title, color }) => (
+  <div className="flex items-center gap-3 mb-4">
+    <div className={`flex items-center justify-center w-10 h-10 rounded-full bg-${color}-100 dark:bg-${color}-900/20 text-${color}-600 dark:text-${color}-400 font-bold text-lg`}>
+      {stage}
     </div>
-    <div
-      className="grid gap-4"
-      style={{
-        gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))",
-      }}
-    >
+    <div>
+      <h3 className="text-lg font-bold">{title}</h3>
+    </div>
+  </div>
+);
+
+const StepSection: FC<StepSectionInfo> = ({ 
+  title, 
+  subtitle, 
+  steps, 
+  color, 
+  bgGradient,
+  stageNumber 
+}) => (
+  <section className="space-y-4">
+    <StageIndicator stage={stageNumber} title={title} color={color} />
+    <p className="text-sm text-muted-foreground -mt-2 ml-[52px]">{subtitle}</p>
+    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {steps.map((step) => (
-        <StepCard key={step.name} {...step} accent={accent} />
+        <StepCard key={step.name} {...step} color={color} bgGradient={bgGradient} />
       ))}
     </div>
   </section>
 );
 
 const LearningJourneySteps: FC = () => {
-  const beginnerSection: StepSectionInfo = {
-    title: "初學者階段",
-    subtitle: "基礎概念理解 (預計 1-2 週)",
-    accent: "blue",
-    steps: [
-      { name: "環境安裝", level: "beginner", rating: 5 },
-      { name: "基礎操作", level: "beginner", rating: 4 },
-      { name: "簡單專案", level: "beginner", rating: 3 },
-      { name: "版本控制", level: "beginner", rating: 4 },
-    ]
-  };
-
-  const intermediateSection: StepSectionInfo = {
-    title: "中級階段",
-    subtitle: "進階技巧與整合 (預計 2-4 週)",
-    accent: "purple",
-    steps: [
-      { name: "多檔案管理", level: "intermediate", rating: 4 },
-      { name: "模型調優", level: "intermediate", rating: 5 },
-      { name: "IDE 整合", level: "intermediate", rating: 4 },
-      { name: "團隊協作", level: "intermediate", rating: 5 },
-    ]
-  };
-
-  const expertSection: StepSectionInfo = {
-    title: "高級階段",
-    subtitle: "專業應用與創新 (預計 4 週以上)",
-    accent: "red",
-    steps: [
-      { name: "工作流自動化", level: "expert", rating: 5 },
-      { name: "企業部署", level: "expert", rating: 4 },
-      { name: "客製開發", level: "expert", rating: 5 },
-      { name: "開源貢獻", level: "expert", rating: 4 },
-    ]
-  };
+  const sections: StepSectionInfo[] = [
+    {
+      title: "初學者階段",
+      subtitle: "基礎概念理解 (預計 1-2 週)",
+      color: "blue",
+      bgGradient: "from-blue-400 to-blue-600",
+      steps: beginnerSteps,
+      stageNumber: 1
+    },
+    {
+      title: "中級階段",
+      subtitle: "進階技巧與整合 (預計 2-4 週)",
+      color: "purple",
+      bgGradient: "from-purple-400 to-purple-600",
+      steps: intermediateSteps,
+      stageNumber: 2
+    },
+    {
+      title: "高級階段",
+      subtitle: "專業應用與創新 (預計 4 週以上)",
+      color: "red",
+      bgGradient: "from-red-400 to-red-600",
+      steps: expertSteps,
+      stageNumber: 3
+    }
+  ];
 
   return (
-    // Wrap with TooltipProvider if not already present at a higher level in your app
-    <TooltipProvider>
-      <div className="space-y-8 p-4 md:p-6"> {/* Added some padding */}
-        <header className="text-center space-y-2">
-          <h2 className="text-2xl font-bold tracking-tight">AI 程式設計工具學習路徑</h2>
-          <p className="text-sm text-muted-foreground max-w-md mx-auto">
-            評分說明：實心圓 (●) 越多，代表該技能越容易快速上手。
-            空心圓 (○) 表示需要投入更多時間與實戰經驗來精通。
-          </p>
-        </header>
+    <div className="max-w-7xl mx-auto space-y-8 p-4 md:p-6">
+      {/* Header */}
+      <header className="text-center space-y-3">
+        <h1 className="text-3xl font-bold tracking-tight">
+          AI 程式設計工具學習路徑
+        </h1>
+        <p className="text-muted-foreground max-w-2xl mx-auto">
+          循序漸進掌握 AI 輔助編程技能。每個階段都有明確的學習目標和難度指標，
+          幫助您有效規劃學習進度。
+        </p>
+      </header>
 
-        <StepSection {...beginnerSection} />
-        <StepSection {...intermediateSection} />
-        <StepSection {...expertSection} />
-
-        {/* The original image showed "第一階段：基礎概念理解 (1-2 週)" below the beginner cards.
-            This is now integrated as a subtitle for each section.
-            If you had other text below the entire component, it would go here.
-        */}
+      {/* Learning Path */}
+      <div className="space-y-10">
+        {sections.map((section, index) => (
+          <div key={section.title}>
+            <StepSection {...section} />
+            {index < sections.length - 1 && (
+              <div className="flex justify-center mt-8">
+                <div className="h-8 w-0.5 bg-gradient-to-b from-muted-foreground/20 to-muted-foreground/40" />
+              </div>
+            )}
+          </div>
+        ))}
       </div>
-    </TooltipProvider>
+
+      {/* Footer Tips */}
+      <div className="mt-12 p-4 bg-muted/30 rounded-lg">
+        <p className="text-sm text-center text-muted-foreground">
+          💡 提示：難度指標顯示每個技能的上手速度。進度條越滿，代表越容易快速掌握。
+        </p>
+      </div>
+    </div>
   );
 };
 
