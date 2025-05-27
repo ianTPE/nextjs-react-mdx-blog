@@ -8,6 +8,7 @@ export { default as SkillRoadmapChart } from './SkillRoadmapChart';
 export { default as EnterpriseAdoptionChart } from './EnterpriseAdoptionChart';
 export { default as IncomeComparisonChart } from './IncomeComparisonChart';
 export { default as MermaidDiagram } from './MermaidDiagram';
+export { default as MarkdownDisplay } from './MarkdownDisplay';
 
 // 導出表格組件
 export { default as CmsComparisonTable } from './CmsComparisonTable';
