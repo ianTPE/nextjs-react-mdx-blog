@@ -10,6 +10,10 @@ export { default as IncomeComparisonChart } from './IncomeComparisonChart';
 export { default as MermaidDiagram } from './MermaidDiagram';
 export { default as MarkdownDisplay } from './MarkdownDisplay';
 
+// 導出懶加載組件
+export { default as LazySection } from './LazySection';
+export { default as LazyMDXSection } from './LazyMDXSection';
+
 // 導出表格組件
 export { default as CmsComparisonTable } from './CmsComparisonTable';
 export { default as RealtimeProtocolTable } from './RealtimeProtocolTable';
