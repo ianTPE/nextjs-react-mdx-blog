@@ -131,19 +131,19 @@ const ChartsShowcase: FC = () => {
             <h4 className="font-bold text-emerald-700 mb-3 text-center">🚀 技術特色</h4>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
               <div className="flex items-center space-x-2">
-                <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
+                <span className="w-2 h-2 bg-emerald-500 rounded-full" />
                 <span className="text-gray-700">Chart.js v4</span>
               </div>
               <div className="flex items-center space-x-2">
-                <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+                <span className="w-2 h-2 bg-blue-500 rounded-full" />
                 <span className="text-gray-700">React Hooks</span>
               </div>
               <div className="flex items-center space-x-2">
-                <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
+                <span className="w-2 h-2 bg-purple-500 rounded-full" />
                 <span className="text-gray-700">Tailwind CSS</span>
               </div>
               <div className="flex items-center space-x-2">
-                <span className="w-2 h-2 bg-orange-500 rounded-full"></span>
+                <span className="w-2 h-2 bg-orange-500 rounded-full" />
                 <span className="text-gray-700">CSS Gradients</span>
               </div>
             </div>
