@@ -105,7 +105,7 @@ const MarketGrowthComparisonChart: React.FC = () => {
         ticks: {
           font: {
             size: 13,
-            weight: '600' as const,
+            weight: 600 as const,
             family: 'Inter, system-ui, sans-serif',
           },
           color: '#374151',
