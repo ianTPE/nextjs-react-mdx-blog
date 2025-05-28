@@ -24,9 +24,9 @@ const MarketGrowthComparisonChart = () => {
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const [chartHeight, setChartHeight] = useState(380);
   const [chartConfig, setChartConfig] = useState({
-    barThickness: 60, // 默认条形柱厚度
-    fontSize: { 
-      title: 16, 
+    barThickness: 60,
+    fontSize: {
+      title: 16,
       axis: 12,
       tooltip: 14
     }
@@ -36,24 +36,23 @@ const MarketGrowthComparisonChart = () => {
     const updateChartSize = () => {
       if (chartContainerRef.current) {
         const width = chartContainerRef.current.clientWidth;
-        
-        // 响应式设置
+
         if (width < 640) { // 手机
           setChartHeight(280);
           setChartConfig({
-            barThickness: 40, // 手机端更细的条形柱
+            barThickness: 40,
             fontSize: { title: 14, axis: 10, tooltip: 12 }
           });
         } else if (width < 1024) { // 平板
           setChartHeight(320);
           setChartConfig({
-            barThickness: 50, // 平板端适中粗细
+            barThickness: 50,
             fontSize: { title: 15, axis: 11, tooltip: 13 }
           });
         } else { // 电脑
           setChartHeight(380);
           setChartConfig({
-            barThickness: 60, // 电脑端稍粗但仍比原来细
+            barThickness: 60,
             fontSize: { title: 16, axis: 12, tooltip: 14 }
           });
         }
@@ -62,15 +61,19 @@ const MarketGrowthComparisonChart = () => {
 
     updateChartSize();
     window.addEventListener('resize', updateChartSize);
-    
+
     return () => window.removeEventListener('resize', updateChartSize);
   }, []);
 
   return (
-    <div 
+    <div
       ref={chartContainerRef}
-      className="w-full"
-      style={{ height: `${chartHeight}px` }}
+      className="w-full" // 保持 w-full，讓 maxWidth 控制實際寬度
+      style={{
+        height: `${chartHeight}px`,
+        maxWidth: '700px', // 在電腦上限制最大寬度為 700px (您可以調整此值)
+        margin: '0 auto'   // 水平居中
+      }}
     >
       <Bar
         data={{
@@ -89,8 +92,8 @@ const MarketGrowthComparisonChart = () => {
               'rgba(255, 99, 132, 1)'
             ],
             borderWidth: 2,
-            borderRadius: 4, // 添加轻微圆角
-            barThickness: chartConfig.barThickness // 应用响应式厚度
+            borderRadius: 4,
+            barThickness: chartConfig.barThickness
           }]
         }}
         options={{
@@ -159,13 +162,9 @@ const MarketGrowthComparisonChart = () => {
               }
             }
           },
-          // 添加间距使条形柱更细
-          datasets: {
-            bar: {
-              categoryPercentage: 0.6, // 控制类别宽度
-              barPercentage: 0.8 // 控制条形柱宽度
-            }
-          }
+          // 移除了 options.datasets.bar，因為 barThickness 已經在 dataset 中設定
+          // 如果需要調整柱子寬度比例（當不使用 barThickness 時），
+          // categoryPercentage 和 barPercentage 應放在 data.datasets 的每個對象中
         }}
       />
     </div>
