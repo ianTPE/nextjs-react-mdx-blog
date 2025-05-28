@@ -31,7 +31,7 @@ export default function BlogPostContentStatic({ metadata, children }: BlogPostCo
               src={metadata.coverImage} 
               alt={metadata.title}
               fill
-              className="object-contain bg-white"
+              className="object-cover"
               sizes="(max-width: 768px) 100vw, 800px"
               priority
             />
