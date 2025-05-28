@@ -22,11 +22,6 @@ ChartJS.register(
 
 const EmploymentGrowthForecastChart = () => {
   return (
-    // 添加一個包裹 div，並設定其高度
-    // height: 'auto' 或 '100%' 都可以，但配合 maintainAspectRatio: false 和父容器的高度控制更有效
-    // 這裡我們依然使用 vh 單位結合 min/maxHeight 來控制
-    // 由於是水平條形圖 (indexAxis: 'y')，高度主要由條目的數量和設定的容器高度決定
-    // 如果條目很多，可能需要更大的高度
     <div style={{ height: '60vh', minHeight: '350px', maxHeight: '700px', width: '100%' }}>
       <Bar
         data={{
@@ -50,16 +45,23 @@ const EmploymentGrowthForecastChart = () => {
               'rgba(153, 102, 255, 1)',
               'rgba(255, 159, 64, 1)'
             ],
-            borderWidth: 2
+            borderWidth: 2,
+            // --- 修改點在這裡 ---
+            barPercentage: 0.5, // 例如設定為 50% 的可用寬度，預設是 0.9
+            // categoryPercentage: 0.8, // 你也可以調整這個，預設是 0.8
+            // 或者使用固定的寬度 (如果需要，取消註解並調整)
+            // barThickness: 30, // 設定柱子固定寬度為 30px
+            // maxBarThickness: 50 // 設定柱子最大寬度為 50px
+            // --- ---
           }]
         }}
         options={{
-          indexAxis: 'y', // 這是水平條形圖
+          indexAxis: 'y',
           responsive: true,
-          maintainAspectRatio: false, // 關鍵：允許圖表不保持預設寬高比，以填滿容器高度
+          maintainAspectRatio: false,
           plugins: {
             legend: {
-              display: false // 根據您的原始設定，圖例是關閉的
+              display: false
             },
             title: {
               display: true,
@@ -70,7 +72,7 @@ const EmploymentGrowthForecastChart = () => {
             }
           },
           scales: {
-            x: { // 對於 indexAxis: 'y'，x 軸是數值軸
+            x: {
               beginAtZero: true,
               ticks: {
                 callback: (value) => {
@@ -78,11 +80,10 @@ const EmploymentGrowthForecastChart = () => {
                 }
               }
             },
-            y: { // y 軸是類別軸
-              // 如果標籤太長，可以在這裡調整
+            y: {
               ticks: {
-                // autoSkip: false, // 如果希望所有標籤都顯示
-                // maxRotation: 0, // 避免標籤旋轉
+                // autoSkip: false,
+                // maxRotation: 0,
               }
             }
           }
