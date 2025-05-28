@@ -21,13 +21,15 @@ ChartJS.register(
 );
 
 const MarketGrowthComparisonChart = () => {
-  // 修复：添加正确的 ref 类型定义
   const chartContainerRef = useRef<HTMLDivElement>(null);
-  const [chartHeight, setChartHeight] = useState(400);
-  const [fontSize, setFontSize] = useState({ 
-    title: 16, 
-    axis: 12,
-    tooltip: 14
+  const [chartHeight, setChartHeight] = useState(380);
+  const [chartConfig, setChartConfig] = useState({
+    barThickness: 60, // 默认条形柱厚度
+    fontSize: { 
+      title: 16, 
+      axis: 12,
+      tooltip: 14
+    }
   });
 
   useEffect(() => {
@@ -35,16 +37,25 @@ const MarketGrowthComparisonChart = () => {
       if (chartContainerRef.current) {
         const width = chartContainerRef.current.clientWidth;
         
-        // 响应式高度设置
+        // 响应式设置
         if (width < 640) { // 手机
           setChartHeight(280);
-          setFontSize({ title: 14, axis: 10, tooltip: 12 });
+          setChartConfig({
+            barThickness: 40, // 手机端更细的条形柱
+            fontSize: { title: 14, axis: 10, tooltip: 12 }
+          });
         } else if (width < 1024) { // 平板
-          setChartHeight(350);
-          setFontSize({ title: 15, axis: 11, tooltip: 13 });
+          setChartHeight(320);
+          setChartConfig({
+            barThickness: 50, // 平板端适中粗细
+            fontSize: { title: 15, axis: 11, tooltip: 13 }
+          });
         } else { // 电脑
-          setChartHeight(420);
-          setFontSize({ title: 16, axis: 12, tooltip: 14 });
+          setChartHeight(380);
+          setChartConfig({
+            barThickness: 60, // 电脑端稍粗但仍比原来细
+            fontSize: { title: 16, axis: 12, tooltip: 14 }
+          });
         }
       }
     };
@@ -77,7 +88,9 @@ const MarketGrowthComparisonChart = () => {
               'rgba(75, 192, 192, 1)',
               'rgba(255, 99, 132, 1)'
             ],
-            borderWidth: 2
+            borderWidth: 2,
+            borderRadius: 4, // 添加轻微圆角
+            barThickness: chartConfig.barThickness // 应用响应式厚度
           }]
         }}
         options={{
@@ -91,16 +104,22 @@ const MarketGrowthComparisonChart = () => {
               display: true,
               text: '市場增長對比：傳統就業 vs Gig經濟',
               font: {
-                size: fontSize.title
+                size: chartConfig.fontSize.title
+              },
+              padding: {
+                top: 10,
+                bottom: 20
               }
             },
             tooltip: {
               bodyFont: {
-                size: fontSize.tooltip
+                size: chartConfig.fontSize.tooltip
               },
               callbacks: {
                 label: (context) => `${context.parsed.y}%`
-              }
+              },
+              padding: 12,
+              displayColors: false
             }
           },
           scales: {
@@ -109,23 +128,42 @@ const MarketGrowthComparisonChart = () => {
               ticks: {
                 callback: (value) => `${value}%`,
                 font: {
-                  size: fontSize.axis
-                }
+                  size: chartConfig.fontSize.axis
+                },
+                padding: 8
               },
               title: {
                 display: true,
                 text: '增長率 (%)',
                 font: {
-                  size: fontSize.axis
+                  size: chartConfig.fontSize.axis
+                },
+                padding: {
+                  top: 10,
+                  bottom: 10
                 }
+              },
+              grid: {
+                drawTicks: false
               }
             },
             x: {
               ticks: {
                 font: {
-                  size: fontSize.axis
-                }
+                  size: chartConfig.fontSize.axis
+                },
+                padding: 10
+              },
+              grid: {
+                display: false
               }
+            }
+          },
+          // 添加间距使条形柱更细
+          datasets: {
+            bar: {
+              categoryPercentage: 0.6, // 控制类别宽度
+              barPercentage: 0.8 // 控制条形柱宽度
             }
           }
         }}
