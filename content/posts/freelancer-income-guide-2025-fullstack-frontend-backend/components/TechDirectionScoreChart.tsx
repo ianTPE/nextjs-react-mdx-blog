@@ -83,7 +83,7 @@ const TechDirectionScoreChart: React.FC = () => {
           padding: 25,
           font: {
             size: 13,
-            weight: '600' as const,
+            weight: 600 as const,
             family: 'Inter, system-ui, sans-serif',
           },
           color: '#374151',
@@ -136,7 +136,7 @@ const TechDirectionScoreChart: React.FC = () => {
         pointLabels: {
           font: {
             size: 12,
-            weight: '600' as const,
+            weight: 600 as const,
             family: 'Inter, system-ui, sans-serif',
           },
           color: '#374151',
