@@ -21,37 +21,44 @@ ChartJS.register(
 );
 
 const MarketGrowthComparisonChart = () => {
-  const chartContainerRef = useRef(null);
-  const [chartHeight, setChartHeight] = useState(400); // 預設高度
+  // 修复：添加正确的 ref 类型定义
+  const chartContainerRef = useRef<HTMLDivElement>(null);
+  const [chartHeight, setChartHeight] = useState(400);
+  const [fontSize, setFontSize] = useState({ 
+    title: 16, 
+    axis: 12,
+    tooltip: 14
+  });
 
   useEffect(() => {
     const updateChartSize = () => {
       if (chartContainerRef.current) {
-        // 根據視窗寬度動態設置高度
         const width = chartContainerRef.current.clientWidth;
-        if (width < 768) { // 手機設備
-          setChartHeight(300);
-        } else if (width < 1024) { // 平板設備
+        
+        // 响应式高度设置
+        if (width < 640) { // 手机
+          setChartHeight(280);
+          setFontSize({ title: 14, axis: 10, tooltip: 12 });
+        } else if (width < 1024) { // 平板
           setChartHeight(350);
-        } else { // 電腦設備
-          setChartHeight(400);
+          setFontSize({ title: 15, axis: 11, tooltip: 13 });
+        } else { // 电脑
+          setChartHeight(420);
+          setFontSize({ title: 16, axis: 12, tooltip: 14 });
         }
       }
     };
 
-    // 初始設置和添加resize監聽
     updateChartSize();
     window.addEventListener('resize', updateChartSize);
     
-    return () => {
-      window.removeEventListener('resize', updateChartSize);
-    };
+    return () => window.removeEventListener('resize', updateChartSize);
   }, []);
 
   return (
     <div 
       ref={chartContainerRef}
-      className="w-full" 
+      className="w-full"
       style={{ height: `${chartHeight}px` }}
     >
       <Bar
@@ -75,7 +82,7 @@ const MarketGrowthComparisonChart = () => {
         }}
         options={{
           responsive: true,
-          maintainAspectRatio: false, // 關閉默認寬高比
+          maintainAspectRatio: false,
           plugins: {
             legend: {
               display: false
@@ -84,10 +91,13 @@ const MarketGrowthComparisonChart = () => {
               display: true,
               text: '市場增長對比：傳統就業 vs Gig經濟',
               font: {
-                size: window.innerWidth < 768 ? 14 : 16 // 手機標題稍小
+                size: fontSize.title
               }
             },
             tooltip: {
+              bodyFont: {
+                size: fontSize.tooltip
+              },
               callbacks: {
                 label: (context) => `${context.parsed.y}%`
               }
@@ -99,21 +109,21 @@ const MarketGrowthComparisonChart = () => {
               ticks: {
                 callback: (value) => `${value}%`,
                 font: {
-                  size: window.innerWidth < 768 ? 10 : 12 // 手機字體稍小
+                  size: fontSize.axis
                 }
               },
               title: {
                 display: true,
                 text: '增長率 (%)',
                 font: {
-                  size: window.innerWidth < 768 ? 12 : 14
+                  size: fontSize.axis
                 }
               }
             },
             x: {
               ticks: {
                 font: {
-                  size: window.innerWidth < 768 ? 10 : 12
+                  size: fontSize.axis
                 }
               }
             }
