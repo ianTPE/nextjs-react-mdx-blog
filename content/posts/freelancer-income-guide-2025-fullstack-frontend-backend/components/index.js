@@ -6,3 +6,8 @@ export { default as LowCodeMarketTrendChart } from './LowCodeMarketTrendChart';
 export { default as TechDirectionScoreChart } from './TechDirectionScoreChart';
 export { default as JobSatisfactionChart } from './JobSatisfactionChart';
 export { default as MarketDriversChart } from './MarketDriversChart';
+
+// 導出表格組件
+export { default as PlatformComparisonTable } from './PlatformComparisonTable';
+export { default as TechDirectionIncomeTable } from './TechDirectionIncomeTable';
+export { default as TablesDemo } from './TablesDemo';
