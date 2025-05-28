@@ -9,7 +9,7 @@ import {
   Tooltip,
   Legend,
   ChartOptions,
-  ChartData
+  ChartData,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
@@ -23,7 +23,6 @@ ChartJS.register(
 );
 
 const MarketGrowthComparisonChart: React.FC = () => {
-  // 数据和配色
   const data: ChartData<'bar'> = {
     labels: ['傳統就業市場', 'Gig經濟'],
     datasets: [
@@ -39,7 +38,6 @@ const MarketGrowthComparisonChart: React.FC = () => {
     ],
   };
 
-  // Options：responsive + maintainAspectRatio false 让图表填满 flex-1
   const options: ChartOptions<'bar'> = {
     responsive: true,
     maintainAspectRatio: false,
@@ -74,35 +72,54 @@ const MarketGrowthComparisonChart: React.FC = () => {
         max: 20,
         grid: {
           color: '#f3f4f6',
-          drawBorder: false,
+          drawOnChartArea: true,
+          drawTicks: false,
+        },
+        border: {
+          display: false,  // 隐藏 y 轴那条边框线
         },
         ticks: {
           font: { size: 12, family: 'Inter, system-ui, sans-serif' },
           color: '#6b7280',
-          callback: val => `${val}%`,
+          callback: v => `${v}%`,
         },
       },
       x: {
-        grid: { display: false },
+        grid: {
+          display: false,
+        },
+        border: {
+          display: false,  // 隐藏 x 轴那条边框线
+        },
         ticks: {
-          font: { size: 13, weight: '600', family: 'Inter, system-ui, sans-serif' },
+          font: {
+            size: 13,
+            weight: '600',
+            family: 'Inter, system-ui, sans-serif',
+          },
           color: '#374151',
           maxRotation: 0,
         },
       },
     },
-    animation: { duration: 2000, easing: 'easeOutQuart' },
-    interaction: { intersect: false, mode: 'index' },
+    animation: {
+      duration: 2000,
+      easing: 'easeOutQuart',
+    },
+    interaction: {
+      intersect: false,
+      mode: 'index',
+    },
   };
 
   return (
     <div className="w-full h-96 p-6 flex flex-col bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-xl border border-gray-100">
-      {/* 图表占满可用高度 */}
+      {/* 把图表放在 flex-1 区域 */}
       <div className="flex-1">
         <Bar data={data} options={options} />
       </div>
 
-      {/* 自定义 Legend，始终在容器底部 */}
+      {/* 自定义 Legend */}
       <div className="mt-4 flex justify-center space-x-6 overflow-x-auto">
         <div className="flex items-center space-x-1">
           <div className="w-4 h-4 rounded-full bg-gradient-to-r from-indigo-400 to-purple-500"></div>

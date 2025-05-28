@@ -28,12 +28,12 @@ const EmploymentGrowthForecastChart: React.FC = () => {
         label: '預期增長率',
         data: [32, 29, 26, 22, 17, 16],
         backgroundColor: [
-          'linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%)',
-          'linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%)',
-          'linear-gradient(135deg, #45b7d1 0%, #096bde 100%)',
-          'linear-gradient(135deg, #f7b733 0%, #fc4a1a 100%)',
-          'linear-gradient(135deg, #5f27cd 0%, #341f97 100%)',
-          'linear-gradient(135deg, #00d2d3 0%, #54a0ff 100%)',
+          '#ff6b6b', // red
+          '#4ecdc4', // teal
+          '#45b7d1', // blue
+          '#f7b733', // yellow
+          '#5f27cd', // purple
+          '#00d2d3', // cyan
         ],
         borderWidth: 0,
         borderRadius: 8,
