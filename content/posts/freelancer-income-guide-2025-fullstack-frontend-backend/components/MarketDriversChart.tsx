@@ -1,6 +1,6 @@
-'use client';
-import React from 'react';
-import { Bar } from 'react-chartjs-2';
+"use client";
+import React from "react";
+import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -8,8 +8,9 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend
-} from 'chart.js';
+  Legend,
+  Filler,
+} from "chart.js";
 
 ChartJS.register(
   CategoryScale,
@@ -17,83 +18,125 @@ ChartJS.register(
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  Filler
 );
 
 const MarketDriversChart = () => {
   return (
-    <div style={{ height: '60vh', minHeight: '400px', maxHeight: '600px', width: '100%' }}>
+    <div
+      style={{
+        height: "60vh",
+        minHeight: "400px",
+        maxHeight: "600px",
+        width: "100%",
+      }}
+    >
       <Bar
         data={{
-          labels: ['企業使用低代碼', '員工遠程工作', 'AI技能需求', '訂閱制電商增長', '新應用採用低代碼'],
-          datasets: [{
-            label: '百分比 (%)',
-            data: [84, 70, 18, 65.2, 70],
-            backgroundColor: [
-              '#ef4444', // 紅
-              '#3b82f6', // 藍
-              '#8b5cf6', // 紫
-              '#10b981', // 綠
-              '#f59e0b', // 黃
-            ],
-            borderColor: [
-              'rgba(255, 99, 132, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-              'rgba(153, 102, 255, 1)'
-            ],
-            borderWidth: 2,
-            // --- 修改點在這裡 ---
-            barPercentage: 0.6, // 例如設定為 60% 的可用寬度，預設是 0.9
-            // categoryPercentage: 0.8, // 你也可以調整這個，預設是 0.8
-            // 或者使用固定的寬度 (如果需要，取消註解並調整)
-            // barThickness: 25, // 設定柱子固定寬度為 25px
-            // maxBarThickness: 40 // 設定柱子最大寬度為 40px
-            // --- ---
-          }]
+          labels: [
+            "企業使用低代碼",
+            "員工遠程工作",
+            "AI技能需求",
+            "訂閱制電商增長",
+            "新應用採用低代碼",
+          ],
+          datasets: [
+            {
+              label: "百分比 (%)",
+              data: [84, 70, 18, 65.2, 70],
+              backgroundColor: (context) => {
+                const ctx = context.chart.ctx;
+                const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+                gradient.addColorStop(0, "rgba(99, 102, 241, 0.8)");
+                gradient.addColorStop(1, "rgba(99, 102, 241, 0.2)");
+                return gradient;
+              },
+              borderColor: "rgba(99, 102, 241, 1)",
+              borderWidth: 1,
+              borderRadius: 6,
+              barPercentage: 0.7,
+              hoverBackgroundColor: "rgba(99, 102, 241, 0.9)",
+            },
+          ],
         }}
         options={{
           responsive: true,
           maintainAspectRatio: false,
+          animation: {
+            duration: 1500,
+            easing: "easeOutQuart",
+          },
           plugins: {
             legend: {
-              display: false
+              display: false,
             },
             title: {
               display: true,
-              text: '推動Freelancer需求的關鍵市場因素',
+              text: "推動Freelancer需求的關鍵市場因素",
               font: {
-                size: 16
-              }
-            }
+                size: 18,
+                weight: "bold",
+              },
+              padding: {
+                top: 10,
+                bottom: 20,
+              },
+            },
+            tooltip: {
+              backgroundColor: "rgba(0, 0, 0, 0.7)",
+              titleFont: {
+                size: 14,
+                weight: "bold",
+              },
+              bodyFont: {
+                size: 12,
+              },
+              padding: 10,
+              cornerRadius: 6,
+            },
+            datalabels: {
+              display: true,
+              color: "#4b5563",
+              anchor: "end",
+              align: "top",
+              formatter: (value) => `${value}%`,
+              font: {
+                weight: "bold",
+              },
+            },
           },
           scales: {
             y: {
               beginAtZero: true,
               max: 100,
+              grid: {
+                display: false,
+              },
               ticks: {
-                callback: (value: string | number) => {
-                  return `${Number(value)}%`;
-                }
-              }
+                callback: (value: string | number) => `${Number(value)}%`,
+                padding: 10,
+              },
             },
             x: {
+              grid: {
+                display: false,
+              },
               ticks: {
-                // autoSkip: true,
-                // maxRotation: 45,
-                // minRotation: 0,
-                // padding: 5,
-                // font: {
-                //   size: 10
-                // },
-                // callback: function(value, index, ticks) {
-                //   const label = this.getLabelForValue(index);
-                //   return label.length > 10 ? label.substring(0, 8) + '...' : label;
-                // }
-              }
-            }
-          }
+                font: {
+                  size: 12,
+                },
+              },
+            },
+          },
+          layout: {
+            padding: {
+              left: 20,
+              right: 20,
+              top: 20,
+              bottom: 20,
+            },
+          },
         }}
       />
     </div>
