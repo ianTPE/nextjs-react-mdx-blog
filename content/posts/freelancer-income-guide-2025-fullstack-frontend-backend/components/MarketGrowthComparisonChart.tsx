@@ -28,8 +28,8 @@ const MarketGrowthComparisonChart: React.FC = () => {
         label: '2010-2020年增長率 (%)',
         data: [1.1, 15],
         backgroundColor: [
-          'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+          '#667eea',
+          '#f093fb',
         ],
         borderColor: [
           '#667eea',
@@ -126,7 +126,7 @@ const MarketGrowthComparisonChart: React.FC = () => {
   return (
     <div className="w-full h-96 p-6 bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-xl border border-gray-100">
       <Bar data={data} options={options} />
-      <div className="mt-4 flex justify-center space-x-8">
+      <div className="mt-4 flex justify-center space-x-4">
         <div className="flex items-center space-x-2">
           <div className="w-4 h-4 rounded-full bg-gradient-to-r from-indigo-400 to-purple-500"></div>
           <span className="text-sm font-medium text-gray-600">傳統就業: 1.1%</span>
