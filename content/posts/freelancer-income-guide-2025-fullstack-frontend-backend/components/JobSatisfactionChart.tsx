@@ -18,40 +18,44 @@ ChartJS.register(
 
 const JobSatisfactionChart = () => {
   return (
-    <Doughnut
-      data={{
-        labels: ['Digital Nomad高度滿意', 'Digital Nomad滿意', '傳統工作者滿意'],
-        datasets: [{
-          data: [79, 12, 47],
-          backgroundColor: [
-            'rgba(75, 192, 192, 0.8)',
-            'rgba(153, 102, 255, 0.8)',
-            'rgba(255, 159, 64, 0.8)'
-          ],
-          borderColor: [
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)'
-          ],
-          borderWidth: 2
-        }]
-      }}
-      options={{
-        responsive: true,
-        plugins: {
-          legend: {
-            position: 'bottom'
-          },
-          title: {
-            display: true,
-            text: '工作滿意度對比',
-            font: {
-              size: 16
+    // 新增一個 div 來包裹圖表，並設定其樣式
+    <div style={{ width: '400px', height: '400px', margin: 'auto' }}> {/* 您可以調整這些值 */}
+      <Doughnut
+        data={{
+          labels: ['Digital Nomad高度滿意', 'Digital Nomad滿意', '傳統工作者滿意'],
+          datasets: [{
+            data: [79, 12, 47],
+            backgroundColor: [
+              'rgba(75, 192, 192, 0.8)',
+              'rgba(153, 102, 255, 0.8)',
+              'rgba(255, 159, 64, 0.8)'
+            ],
+            borderColor: [
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 2
+          }]
+        }}
+        options={{
+          responsive: true, // 保持響應式，它會根據父容器的大小調整
+          maintainAspectRatio: false, // 重要：設為 false 以允許寬高獨立調整
+          plugins: {
+            legend: {
+              position: 'bottom'
+            },
+            title: {
+              display: true,
+              text: '工作滿意度對比',
+              font: {
+                size: 16
+              }
             }
           }
-        }
-      }}
-    />
+        }}
+      />
+    </div>
   );
 };
 
