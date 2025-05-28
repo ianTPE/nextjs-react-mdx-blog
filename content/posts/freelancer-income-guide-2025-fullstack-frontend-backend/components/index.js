@@ -10,4 +10,7 @@ export { default as MarketDriversChart } from './MarketDriversChart';
 // 導出表格組件
 export { default as PlatformComparisonTable } from './PlatformComparisonTable';
 export { default as TechDirectionIncomeTable } from './TechDirectionIncomeTable';
+
+// 導出展示組件
 export { default as TablesDemo } from './TablesDemo';
+export { default as ChartsShowcase } from './ChartsShowcase';
