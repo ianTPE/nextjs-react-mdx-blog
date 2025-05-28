@@ -22,7 +22,6 @@ ChartJS.register(
 
 const IncomePotentialComparisonChart = () => {
   return (
-    // 1. 添加包裹 div 並設定其高度
     <div style={{ height: '60vh', minHeight: '400px', maxHeight: '700px', width: '100%' }}>
       <Bar
         data={{
@@ -43,7 +42,6 @@ const IncomePotentialComparisonChart = () => {
         }}
         options={{
           responsive: true,
-          // 2. 設定 maintainAspectRatio 為 false
           maintainAspectRatio: false,
           plugins: {
             title: {
@@ -67,7 +65,7 @@ const IncomePotentialComparisonChart = () => {
                 }
               }
             },
-            legend: { // 確保圖例可見，如果需要
+            legend: {
               position: 'top',
             }
           },
@@ -75,25 +73,29 @@ const IncomePotentialComparisonChart = () => {
             y: {
               beginAtZero: true,
               ticks: {
-                callback: (value) => {
-                  // 使用 Intl.NumberFormat 進行更標準的貨幣格式化
+                callback: (value: string | number) => { // value can be string or number
+                  // Convert value to number before formatting
+                  const numericValue = Number(value);
+                  // Check if conversion was successful (optional, but good practice)
+                  if (isNaN(numericValue)) {
+                    return String(value); // Fallback for non-numeric values
+                  }
                   return new Intl.NumberFormat('en-US', {
                     style: 'currency',
                     currency: 'USD',
-                    minimumFractionDigits: 0, // 如果不想要小數點
-                    maximumFractionDigits: 0  // 如果不想要小數點
-                  }).format(value);
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                  }).format(numericValue); // Use the numericValue here
                 }
               }
             },
             x: {
-                // 如果x軸標籤太長或在手機上重疊，可以考慮旋轉或自動跳過
-                // ticks: {
-                //   maxRotation: 45,
-                //   minRotation: 0,
-                //   autoSkip: true,
-                //   maxTicksLimit: 4 // 例如，限制手機上顯示的標籤數量
-                // }
+              // ticks: {
+              //   maxRotation: 45,
+              //   minRotation: 0,
+              //   autoSkip: true,
+              //   maxTicksLimit: 4
+              // }
             }
           }
         }}
