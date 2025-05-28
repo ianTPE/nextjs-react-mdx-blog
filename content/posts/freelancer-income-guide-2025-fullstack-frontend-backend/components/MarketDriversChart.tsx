@@ -48,15 +48,41 @@ const MarketDriversChart = () => {
               backgroundColor: (context) => {
                 const ctx = context.chart.ctx;
                 const gradient = ctx.createLinearGradient(0, 0, 0, 300);
-                gradient.addColorStop(0, "rgba(99, 102, 241, 0.8)");
-                gradient.addColorStop(1, "rgba(99, 102, 241, 0.2)");
+                const colors = [
+                  ["rgba(239, 68, 68, 0.8)", "rgba(239, 68, 68, 0.2)"], // 红
+                  ["rgba(59, 130, 246, 0.8)", "rgba(59, 130, 246, 0.2)"], // 蓝
+                  ["rgba(139, 92, 246, 0.8)", "rgba(139, 92, 246, 0.2)"], // 紫
+                  ["rgba(16, 185, 129, 0.8)", "rgba(16, 185, 129, 0.2)"], // 绿
+                  ["rgba(245, 158, 11, 0.8)", "rgba(245, 158, 11, 0.2)"], // 黄
+                ];
+                const [start, end] = colors[context.dataIndex % colors.length];
+                gradient.addColorStop(0, start);
+                gradient.addColorStop(1, end);
                 return gradient;
               },
-              borderColor: "rgba(99, 102, 241, 1)",
+              borderColor: (context) => {
+                const colors = [
+                  "rgba(239, 68, 68, 1)", // 红
+                  "rgba(59, 130, 246, 1)", // 蓝
+                  "rgba(139, 92, 246, 1)", // 紫
+                  "rgba(16, 185, 129, 1)", // 绿
+                  "rgba(245, 158, 11, 1)", // 黄
+                ];
+                return colors[context.dataIndex % colors.length];
+              },
               borderWidth: 1,
               borderRadius: 6,
               barPercentage: 0.7,
-              hoverBackgroundColor: "rgba(99, 102, 241, 0.9)",
+              hoverBackgroundColor: (context) => {
+                const colors = [
+                  "rgba(239, 68, 68, 0.9)", // 红
+                  "rgba(59, 130, 246, 0.9)", // 蓝
+                  "rgba(139, 92, 246, 0.9)", // 紫
+                  "rgba(16, 185, 129, 0.9)", // 绿
+                  "rgba(245, 158, 11, 0.9)", // 黄
+                ];
+                return colors[context.dataIndex % colors.length];
+              },
             },
           ],
         }}
