@@ -22,7 +22,6 @@ ChartJS.register(
 
 const MarketDriversChart = () => {
   return (
-    // 1. 添加包裹 div 並設定其高度
     <div style={{ height: '60vh', minHeight: '400px', maxHeight: '600px', width: '100%' }}>
       <Bar
         data={{
@@ -44,16 +43,22 @@ const MarketDriversChart = () => {
               'rgba(75, 192, 192, 1)',
               'rgba(153, 102, 255, 1)'
             ],
-            borderWidth: 2
+            borderWidth: 2,
+            // --- 修改點在這裡 ---
+            barPercentage: 0.6, // 例如設定為 60% 的可用寬度，預設是 0.9
+            // categoryPercentage: 0.8, // 你也可以調整這個，預設是 0.8
+            // 或者使用固定的寬度 (如果需要，取消註解並調整)
+            // barThickness: 25, // 設定柱子固定寬度為 25px
+            // maxBarThickness: 40 // 設定柱子最大寬度為 40px
+            // --- ---
           }]
         }}
         options={{
           responsive: true,
-          // 2. 設定 maintainAspectRatio 為 false
           maintainAspectRatio: false,
           plugins: {
             legend: {
-              display: false // 根據您的原始設定，圖例是關閉的
+              display: false
             },
             title: {
               display: true,
@@ -68,23 +73,20 @@ const MarketDriversChart = () => {
               beginAtZero: true,
               max: 100,
               ticks: {
-                callback: (value: string | number) => { // 顯式標註類型以避免潛在的TS問題
-                  return `${Number(value)}%`; // 確保 value 是數字
+                callback: (value: string | number) => {
+                  return `${Number(value)}%`;
                 }
               }
             },
             x: {
-              // 如果X軸標籤在手機上太長或重疊，可以考慮以下調整
               ticks: {
-                // autoSkip: true, // 自動跳過一些標籤以避免重疊
-                // maxRotation: 45, // 標籤最大旋轉角度
-                // minRotation: 0,  // 標籤最小旋轉角度
-                // padding: 5,     // 標籤與軸線的距離
-                // 如果標籤仍然太長，可以考慮縮小字體
+                // autoSkip: true,
+                // maxRotation: 45,
+                // minRotation: 0,
+                // padding: 5,
                 // font: {
-                //   size: 10 // 根據需要調整字體大小
+                //   size: 10
                 // },
-                // 或者使用 callback 函數來截斷或換行標籤
                 // callback: function(value, index, ticks) {
                 //   const label = this.getLabelForValue(index);
                 //   return label.length > 10 ? label.substring(0, 8) + '...' : label;
