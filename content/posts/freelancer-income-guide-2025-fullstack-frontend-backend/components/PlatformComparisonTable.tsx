@@ -1,12 +1,23 @@
 import React, { useMemo } from 'react';
+import type { FC } from 'react'; // Import FC directly for clarity
 import {
   useReactTable,
   getCoreRowModel,
   flexRender,
+  ColumnDef,
+  CellContext
 } from '@tanstack/react-table';
 
-const PlatformComparisonTable = () => {
-  const data = useMemo(() => [
+interface PlatformData {
+  platform: string;
+  useCase: string;
+  difficulty: string;
+  pricing: string;
+  difficultyLevel: number;
+}
+
+const PlatformComparisonTable: FC = () => {
+  const data = useMemo<PlatformData[]>(() => [
     {
       platform: 'Zapier',
       useCase: '中小企業簡單自動化',
@@ -30,13 +41,13 @@ const PlatformComparisonTable = () => {
     },
   ], []);
 
-  const columns = useMemo(() => [
+  const columns = useMemo<ColumnDef<PlatformData>[]>(() => [
     {
       accessorKey: 'platform',
       header: '平台',
       cell: ({ getValue }) => (
         <div className="font-semibold text-blue-600">
-          {getValue()}
+          {getValue() as string}
         </div>
       ),
     },
@@ -45,17 +56,17 @@ const PlatformComparisonTable = () => {
       header: '適用場景',
       cell: ({ getValue }) => (
         <div className="text-gray-700">
-          {getValue()}
+          {getValue() as string}
         </div>
       ),
     },
     {
       accessorKey: 'difficulty',
       header: '學習難度',
-      cell: ({ row }) => {
+      cell: ({ row }: CellContext<PlatformData, unknown>) => {
         const level = row.original.difficultyLevel;
-        const difficulty = row.getValue('difficulty');
-        const getColor = (level) => {
+        const difficulty = row.getValue('difficulty') as string;
+        const getColor = (level: number) => {
           switch (level) {
             case 1: return 'bg-green-100 text-green-800 border-green-200';
             case 2: return 'bg-yellow-100 text-yellow-800 border-yellow-200';
@@ -75,7 +86,7 @@ const PlatformComparisonTable = () => {
       header: '收費結構',
       cell: ({ getValue }) => (
         <div className="text-gray-700 font-medium">
-          {getValue()}
+          {getValue() as string}
         </div>
       ),
     },

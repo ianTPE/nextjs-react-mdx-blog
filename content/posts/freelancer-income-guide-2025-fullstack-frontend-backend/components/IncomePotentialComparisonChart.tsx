@@ -64,7 +64,7 @@ const IncomePotentialComparisonChart: React.FC = () => {
           padding: 25,
           font: {
             size: 13,
-            weight: '600' as const,
+            weight: 600,
             family: 'Inter, system-ui, sans-serif',
           },
           color: '#374151',
@@ -137,7 +137,7 @@ const IncomePotentialComparisonChart: React.FC = () => {
         ticks: {
           font: {
             size: 11,
-            weight: '500' as const,
+            weight: 500,
             family: 'Inter, system-ui, sans-serif',
           },
           color: '#374151',

@@ -1,12 +1,25 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
+import type React from 'react';
 import {
   useReactTable,
   getCoreRowModel,
   flexRender,
 } from '@tanstack/react-table';
+import type { ColumnDef, CellContext } from '@tanstack/react-table';
 
-const TechDirectionIncomeTable = () => {
-  const data = useMemo(() => [
+interface TechDirectionData {
+  direction: string;
+  projectType: string;
+  incomeRange: string;
+  developmentCycle: string;
+  marketDemand: string;
+  demandLevel: number;
+  minIncome: number;
+  maxIncome: number;
+}
+
+const TechDirectionIncomeTable: React.FC = () => {
+  const data = useMemo<TechDirectionData[]>(() => [
     {
       direction: '後端自動化',
       projectType: '工作流程優化',
@@ -49,13 +62,13 @@ const TechDirectionIncomeTable = () => {
     },
   ], []);
 
-  const columns = useMemo(() => [
+  const columns = useMemo<ColumnDef<TechDirectionData>[]>(() => [
     {
       accessorKey: 'direction',
       header: '技術方向',
       cell: ({ getValue }) => (
         <div className="font-semibold text-purple-600">
-          {getValue()}
+          {getValue() as string}
         </div>
       ),
     },
@@ -64,15 +77,15 @@ const TechDirectionIncomeTable = () => {
       header: '項目類型',
       cell: ({ getValue }) => (
         <div className="text-gray-700">
-          {getValue()}
+          {getValue() as string}
         </div>
       ),
     },
     {
       accessorKey: 'incomeRange',
       header: '收入範圍',
-      cell: ({ row }) => {
-        const range = row.getValue('incomeRange');
+      cell: ({ row }: CellContext<TechDirectionData, unknown>) => {
+        const range = row.getValue('incomeRange') as string;
         const min = row.original.minIncome;
         const max = row.original.maxIncome;
         
@@ -101,17 +114,17 @@ const TechDirectionIncomeTable = () => {
       header: '開發週期',
       cell: ({ getValue }) => (
         <div className="text-gray-700 font-medium">
-          {getValue()}
+          {getValue() as string}
         </div>
       ),
     },
     {
       accessorKey: 'marketDemand',
       header: '市場需求',
-      cell: ({ row }) => {
-        const demand = row.getValue('marketDemand');
+      cell: ({ row }: CellContext<TechDirectionData, unknown>) => {
+        const demand = row.getValue('marketDemand') as string;
         const level = row.original.demandLevel;
-        const getColor = (level) => {
+        const getColor = (level: number) => {
           switch (level) {
             case 5: return 'bg-red-100 text-red-800 border-red-200';
             case 4: return 'bg-orange-100 text-orange-800 border-orange-200';
@@ -119,18 +132,19 @@ const TechDirectionIncomeTable = () => {
             default: return 'bg-gray-100 text-gray-800 border-gray-200';
           }
         };
-        
+        const demandDisplayDots = Array.from({ length: 5 }, (_, idx) => ({ id: `demand-dot-${idx}` }));
+
         return (
           <div className="flex items-center space-x-2">
             <span className={`px-3 py-1 rounded-full text-sm font-medium border ${getColor(level)}`}>
               {demand}
             </span>
             <div className="flex space-x-1">
-              {Array.from({ length: 5 }, (_, i) => (
+              {demandDisplayDots.map((dot, dotIndex) => (
                 <div
-                  key={i}
+                  key={dot.id}
                   className={`w-2 h-2 rounded-full ${
-                    i < level ? 'bg-red-500' : 'bg-gray-300'
+                    dotIndex < level ? 'bg-red-500' : 'bg-gray-300'
                   }`}
                 />
               ))}

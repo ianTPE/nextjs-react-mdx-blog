@@ -1,4 +1,5 @@
 import React from 'react';
+import type { FC } from 'react';
 import MarketGrowthComparisonChart from './MarketGrowthComparisonChart';
 import EmploymentGrowthForecastChart from './EmploymentGrowthForecastChart';
 import IncomePotentialComparisonChart from './IncomePotentialComparisonChart';
@@ -7,7 +8,7 @@ import TechDirectionScoreChart from './TechDirectionScoreChart';
 import JobSatisfactionChart from './JobSatisfactionChart';
 import MarketDriversChart from './MarketDriversChart';
 
-const ChartsShowcase = () => {
+const ChartsShowcase: FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-slate-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
