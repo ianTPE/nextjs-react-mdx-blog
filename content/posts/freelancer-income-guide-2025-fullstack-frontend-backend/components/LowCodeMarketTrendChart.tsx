@@ -1,6 +1,9 @@
 'use client';
+
 import React from 'react';
+
 import { Line } from 'react-chartjs-2';
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -24,33 +27,13 @@ ChartJS.register(
   Filler
 );
 
-// It's good practice to define CSS in a separate .css file
-// and import it, or use a CSS-in-JS solution.
-// For this example, I'll show how to define a class and suggest where to put the CSS.
-
-// Create a CSS file (e.g., LowCodeMarketTrendChart.css) and add:
-/*
-.low-code-chart-container {
-  width: 100%; // Default width
-  height: 300px; // Default height for larger screens, adjust as needed
-}
-
-@media (max-width: 768px) { // Target mobile devices (adjust breakpoint as needed)
-  .low-code-chart-container {
-    height: 400px; // Taller height for mobile
-    // You could also use min-height: 400px;
-  }
-}
-*/
-
-// If you are using Next.js with CSS Modules, you could name it LowCodeMarketTrendChart.module.css
-// import styles from './LowCodeMarketTrendChart.module.css';
-
 const LowCodeMarketTrendChart = () => {
   return (
-    // Add a div with a class to control its size
-    // If using CSS Modules: <div className={styles.lowCodeChartContainer}>
-    <div className="low-code-chart-container" style={{ position: 'relative', width: '100%' }}> {/* Added inline style for basic width */}
+    // 添加一個包裹 div，並設定其高度
+    // height: 50vh 表示高度為視窗高度的 50%
+    // minHeight: '300px' 確保在手機上至少有 300px 的高度，防止過矮
+    // maxHeight: '600px' 防止在超大螢幕上圖表變得過高
+    <div style={{ height: '50vh', minHeight: '300px', maxHeight: '600px', width: '100%' }}>
       <Line
         data={{
           labels: ['2021', '2023', '2025', '2027'],
@@ -73,7 +56,8 @@ const LowCodeMarketTrendChart = () => {
         }}
         options={{
           responsive: true,
-          maintainAspectRatio: false, // IMPORTANT: Set to false to allow custom height
+          // 設定 maintainAspectRatio 為 false，讓圖表可以填滿父容器的高度
+          maintainAspectRatio: false, 
           interaction: {
             mode: 'index',
             intersect: false
@@ -85,9 +69,6 @@ const LowCodeMarketTrendChart = () => {
               font: {
                 size: 16
               }
-            },
-            legend: {
-              position: 'top', // Default, can be 'bottom', etc.
             }
           },
           scales: {
