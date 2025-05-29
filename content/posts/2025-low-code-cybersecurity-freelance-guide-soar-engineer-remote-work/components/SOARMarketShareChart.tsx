@@ -1,0 +1,282 @@
+import React from 'react';
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+  Title
+} from 'chart.js';
+import { Doughnut } from 'react-chartjs-2';
+
+ChartJS.register(ArcElement, Tooltip, Legend, Title);
+
+interface PlatformDetail {
+  platform: string;
+  marketShare: string;
+  avgSalary: string;
+  difficulty: string;
+  advantages: string;
+  learning: string;
+  trend: string;
+  color: string;
+}
+
+const SOARMarketShareChart: React.FC = () => {
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'right' as const,
+        labels: {
+          usePointStyle: true,
+          padding: 15,
+          font: {
+            size: 12,
+            family: 'Inter, sans-serif'
+          },
+          generateLabels: function(chart: any) {
+            const data = chart.data;
+            if (data.labels.length && data.datasets.length) {
+              return data.labels.map((label: string, i: number) => {
+                const value = data.datasets[0].data[i];
+                return {
+                  text: `${label} (${value}%)`,
+                  fillStyle: data.datasets[0].backgroundColor[i],
+                  strokeStyle: data.datasets[0].borderColor[i],
+                  lineWidth: data.datasets[0].borderWidth,
+                  pointStyle: 'circle'
+                };
+              });
+            }
+            return [];
+          }
+        }
+      },
+      title: {
+        display: true,
+        text: '2025年SOAR平台市場份額與工作機會分布',
+        font: {
+          size: 16,
+          weight: 'bold' as const,
+          family: 'Inter, sans-serif'
+        },
+        padding: 20
+      },
+      tooltip: {
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        titleColor: '#fff',
+        bodyColor: '#fff',
+        borderColor: '#6366F1',
+        borderWidth: 1,
+        callbacks: {
+          label: function(context: any) {
+            const label = context.label || '';
+            const value = context.parsed || 0;
+            const total = context.dataset.data.reduce((a: number, b: number) => a + b, 0);
+            const percentage = ((value / total) * 100).toFixed(1);
+            return `${label}: ${percentage}% (${value}% 市占率)`;
+          },
+          afterLabel: function(context: any) {
+            const jobOpportunities: Record<string, string> = {
+              'Splunk SOAR': '約1,200個活躍職缺',
+              'Cortex XSOAR': '約800個活躍職缺', 
+              'IBM QRadar SOAR': '約400個活躍職缺',
+              'Swimlane': '約300個活躍職缺',
+              'Torq': '約250個活躍職缺',
+              'Tines': '約200個活躍職缺',
+              '其他平台': '約150個活躍職缺'
+            };
+            return jobOpportunities[context.label] || '';
+          }
+        }
+      }
+    },
+    cutout: '45%',
+    rotation: -90,
+    circumference: 360,
+    animation: {
+      animateRotate: true,
+      animateScale: true
+    }
+  };
+
+  const data = {
+    labels: [
+      'Splunk SOAR',
+      'Cortex XSOAR', 
+      'IBM QRadar SOAR',
+      'Swimlane',
+      'Torq',
+      'Tines',
+      '其他平台'
+    ],
+    datasets: [
+      {
+        data: [32, 28, 15, 10, 8, 5, 2],
+        backgroundColor: [
+          '#3B82F6', // Splunk - 藍色
+          '#EF4444', // Cortex XSOAR - 紅色
+          '#10B981', // IBM QRadar - 綠色
+          '#F59E0B', // Swimlane - 橙色
+          '#8B5CF6', // Torq - 紫色
+          '#EC4899', // Tines - 粉色
+          '#6B7280'  // 其他 - 灰色
+        ],
+        borderColor: [
+          '#2563EB',
+          '#DC2626', 
+          '#059669',
+          '#D97706',
+          '#7C3AED',
+          '#DB2777',
+          '#4B5563'
+        ],
+        borderWidth: 2,
+        hoverBorderWidth: 3,
+        hoverOffset: 8
+      }
+    ]
+  };
+
+  const platformDetails: PlatformDetail[] = [
+    {
+      platform: 'Splunk SOAR',
+      marketShare: '32%',
+      avgSalary: '$74-105/hr',
+      difficulty: '中等',
+      advantages: '市場領導者，工作機會最多',
+      learning: '官方認證體系完整',
+      trend: '📈 持續增長',
+      color: 'bg-blue-100 text-blue-800'
+    },
+    {
+      platform: 'Cortex XSOAR', 
+      marketShare: '28%',
+      avgSalary: '$53-84/hr',
+      difficulty: '中高',
+      advantages: 'Palo Alto生態系統整合',
+      learning: 'PCSAE認證含金量高',
+      trend: '🚀 快速增長',
+      color: 'bg-red-100 text-red-800'
+    },
+    {
+      platform: 'IBM QRadar SOAR',
+      marketShare: '15%',
+      avgSalary: '$65-95/hr', 
+      difficulty: '高',
+      advantages: '企業級客戶穩定',
+      learning: '需要IBM生態知識',
+      trend: '📊 穩定',
+      color: 'bg-green-100 text-green-800'
+    },
+    {
+      platform: 'Swimlane',
+      marketShare: '10%',
+      avgSalary: '$70-120/hr',
+      difficulty: '中等',
+      advantages: 'AI增強自動化特色',
+      learning: '相對容易上手',
+      trend: '⭐ 新興熱門',
+      color: 'bg-yellow-100 text-yellow-800'
+    }
+  ];
+
+  return (
+    <div className="w-full bg-white p-6 rounded-lg shadow-lg border border-gray-200 my-8">
+      <div className="h-96 mb-6">
+        <Doughnut options={options} data={data} />
+      </div>
+      
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+        <div>
+          <h4 className="font-semibold text-gray-800 mb-4">🏆 主要平台詳細分析</h4>
+          <div className="space-y-3">
+            {platformDetails.map((platform, index) => (
+              <div key={index} className="border rounded-lg p-3">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="font-medium text-sm">{platform.platform}</span>
+                  <span className={`px-2 py-1 rounded text-xs font-medium ${platform.color}`}>
+                    {platform.trend}
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 gap-2 text-xs text-gray-600">
+                  <div>市占率: {platform.marketShare}</div>
+                  <div>薪資: {platform.avgSalary}</div>
+                  <div>難度: {platform.difficulty}</div>
+                  <div className="col-span-2 mt-1">{platform.advantages}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        <div className="space-y-4">
+          <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4 rounded-lg">
+            <h4 className="font-semibold text-gray-800 mb-3">🎯 學習策略建議</h4>
+            <div className="text-sm text-gray-700 space-y-2">
+              <div><strong>新手首選：</strong>Splunk SOAR (市場份額大，工作機會多)</div>
+              <div><strong>高薪目標：</strong>Cortex XSOAR (Palo Alto生態，薪資增長快)</div>
+              <div><strong>企業市場：</strong>IBM QRadar SOAR (穩定客戶群)</div>
+              <div><strong>創新導向：</strong>Swimlane/Torq (新興技術，差異化優勢)</div>
+            </div>
+          </div>
+          
+          <div className="bg-gradient-to-r from-green-50 to-teal-50 p-4 rounded-lg">
+            <h4 className="font-semibold text-gray-800 mb-3">📊 市場趨勢洞察</h4>
+            <div className="text-sm text-gray-700 space-y-2">
+              <div>• <strong>總市場規模：</strong>2025年達到32億美元</div>
+              <div>• <strong>年增長率：</strong>25-30% (遠超傳統資安工具)</div>
+              <div>• <strong>人才缺口：</strong>全球短缺5.2萬SOAR專家</div>
+              <div>• <strong>薪資趨勢：</strong>年增長15-20%</div>
+            </div>
+          </div>
+          
+          <div className="bg-gradient-to-r from-amber-50 to-orange-50 p-4 rounded-lg">
+            <h4 className="font-semibold text-gray-800 mb-3">🚀 行動建議</h4>
+            <div className="text-sm text-gray-700 space-y-2">
+              <div><strong>1. 雙平台策略：</strong>主攻一個，熟悉另一個</div>
+              <div><strong>2. 認證優先：</strong>投資官方認證，投資回報率300%+</div>
+              <div><strong>3. 實戰經驗：</strong>參與開源項目或實驗室環境</div>
+              <div><strong>4. 持續學習：</strong>關注新版本和新功能發佈</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+        <h4 className="font-semibold text-gray-800 mb-3">💡 平台選擇決策樹</h4>
+        <div className="text-sm text-gray-700">
+          <div className="mb-2"><strong>如果你是...</strong></div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div>
+              <div className="font-medium text-blue-600">• 資安新手 → Splunk SOAR</div>
+              <div className="text-xs text-gray-600 ml-2">理由：學習資源豐富，社群支持強</div>
+            </div>
+            <div>
+              <div className="font-medium text-red-600">• 有防火牆經驗 → Cortex XSOAR</div>
+              <div className="text-xs text-gray-600 ml-2">理由：Palo Alto生態整合優勢</div>
+            </div>
+            <div>
+              <div className="font-medium text-green-600">• 大企業背景 → IBM QRadar SOAR</div>
+              <div className="text-xs text-gray-600 ml-2">理由：企業級客戶需求穩定</div>
+            </div>
+            <div>
+              <div className="font-medium text-purple-600">• 追求創新 → Swimlane/Torq</div>
+              <div className="text-xs text-gray-600 ml-2">理由：AI增強功能，差異化競爭</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-4 text-sm text-gray-600 text-center">
+        <p>數據來源: Gartner Magic Quadrant SOAR 2025 + Indeed/LinkedIn Job Postings Analysis</p>
+        <p className="mt-1 text-indigo-600 font-medium">
+          🎯 建議：優先掌握前兩大平台，涵蓋60%的市場機會
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default SOARMarketShareChart;

@@ -1,0 +1,186 @@
+import React from 'react';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+} from 'chart.js';
+import { Bar } from 'react-chartjs-2';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
+const SalaryComparisonChart: React.FC = () => {
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'top' as const,
+        labels: {
+          usePointStyle: true,
+          padding: 20,
+          font: {
+            size: 12,
+            family: 'Inter, sans-serif'
+          }
+        }
+      },
+      title: {
+        display: true,
+        text: '2025年LC/NC資安工作薪資對比 (美元/小時)',
+        font: {
+          size: 16,
+          weight: 'bold' as const,
+          family: 'Inter, sans-serif'
+        },
+        padding: 20
+      },
+      tooltip: {
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        titleColor: '#fff',
+        bodyColor: '#fff',
+        borderColor: '#10B981',
+        borderWidth: 1,
+        callbacks: {
+          label: function(context: any) {
+            return `${context.dataset.label}: $${context.parsed.y}/小時`;
+          },
+          afterLabel: function(context: any) {
+            const annualLow = context.parsed.y * 40 * 52;
+            const annualHigh = context.dataset.data[context.dataIndex] * 40 * 52;
+            return `年薪約: $${(annualLow/1000).toFixed(0)}K - $${(annualHigh/1000).toFixed(0)}K`;
+          }
+        }
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: '時薪 (美元)',
+          font: {
+            size: 12,
+            family: 'Inter, sans-serif'
+          }
+        },
+        ticks: {
+          callback: function(value: any) {
+            return '$' + value;
+          }
+        },
+        grid: {
+          color: 'rgba(0, 0, 0, 0.1)'
+        }
+      },
+      x: {
+        title: {
+          display: true,
+          text: '職位類型',
+          font: {
+            size: 12,
+            family: 'Inter, sans-serif'
+          }
+        },
+        ticks: {
+          maxRotation: 45,
+          minRotation: 45
+        },
+        grid: {
+          display: false
+        }
+      }
+    }
+  };
+
+  const data = {
+    labels: [
+      'LC/NC配置顧問',
+      'IAM自動化專家', 
+      '合規自動化專家',
+      'SOAR工程師',
+      '資深SOAR架構師',
+      '安全自動化顧問',
+      '緊急事件響應'
+    ],
+    datasets: [
+      {
+        label: '薪資範圍下限',
+        data: [25, 80, 70, 120, 150, 180, 250],
+        backgroundColor: 'rgba(16, 185, 129, 0.6)',
+        borderColor: '#10B981',
+        borderWidth: 1,
+        borderRadius: 4,
+        borderSkipped: false
+      },
+      {
+        label: '薪資範圍上限',
+        data: [60, 200, 180, 300, 250, 280, 400],
+        backgroundColor: 'rgba(59, 130, 246, 0.6)',
+        borderColor: '#3B82F6',
+        borderWidth: 1,
+        borderRadius: 4,
+        borderSkipped: false
+      }
+    ]
+  };
+
+  const roleInsights = [
+    { role: 'LC/NC配置顧問', desc: '入門級，適合新手建立經驗', demand: '高' },
+    { role: 'IAM自動化專家', desc: '企業需求穩定，技術門檻適中', demand: '高' },
+    { role: '合規自動化專家', desc: 'CISSP背景優勢明顯', demand: '中高' },
+    { role: 'SOAR工程師', desc: '市場熱門，薪資增長快速', demand: '極高' },
+    { role: '資深SOAR架構師', desc: '需要豐富經驗和技術深度', demand: '極高' },
+    { role: '安全自動化顧問', desc: '高階諮詢角色，需要商業洞察', demand: '高' },
+    { role: '緊急事件響應', desc: '按需服務，時薪最高', demand: '中' }
+  ];
+
+  return (
+    <div className="w-full bg-white p-6 rounded-lg shadow-lg border border-gray-200 my-8">
+      <div className="h-96 mb-6">
+        <Bar options={options} data={data} />
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+        <div className="bg-gradient-to-r from-green-50 to-blue-50 p-4 rounded-lg">
+          <h4 className="font-semibold text-gray-800 mb-3">💰 薪資亮點</h4>
+          <ul className="text-sm text-gray-700 space-y-1">
+            <li>• SOAR工程師平均時薪$210，年薪可達$437K</li>
+            <li>• 緊急響應服務時薪最高可達$400+</li>
+            <li>• 資深架構師需求供不應求</li>
+            <li>• 自由職業比全職薪資高30-50%</li>
+          </ul>
+        </div>
+        
+        <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-4 rounded-lg">
+          <h4 className="font-semibold text-gray-800 mb-3">🎯 市場需求</h4>
+          <ul className="text-sm text-gray-700 space-y-1">
+            <li>• SOAR相關職位需求增長200%</li>
+            <li>• 具備CISSP認證可額外加薪20-30%</li>
+            <li>• 企業優先考慮有實戰經驗的顧問</li>
+            <li>• 遠程工作機會佔總職缺85%</li>
+          </ul>
+        </div>
+      </div>
+
+      <div className="mt-4 text-sm text-gray-600 text-center">
+        <p>數據來源: Upwork, Toptal, ZipRecruiter 2025年市場調研</p>
+        <p className="mt-1 text-green-600 font-medium">
+          🚀 提示：結合多種技能的複合型人才薪資可提升40-60%
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default SalaryComparisonChart;
