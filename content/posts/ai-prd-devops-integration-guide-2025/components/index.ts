@@ -15,3 +15,4 @@ export { default as AiDevOpsIntegrationTable } from './AiDevOpsIntegrationTable'
 export { default as FinancialAiDevOpsTable } from './FinancialAiDevOpsTable';
 export { default as QuantitativeBenefitTable } from './QuantitativeBenefitTable';
 export { default as TechnicalChallengesTable } from './TechnicalChallengesTable';
+export { default as MermaidDiagram } from './MermaidDiagram';
