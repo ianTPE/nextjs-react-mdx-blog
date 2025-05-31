@@ -25,6 +25,7 @@ title: '撰寫 Low code/No code 開發專案PRD完整指南（一）',
 ### PRD結構 & 撰寫技巧：
 
 **1. 專案概覽 (Project Overview)**
+
 目標用戶 (Target User)： 誰用？痛點是什麽？（例：小型電商團隊需手動平衡庫存，或是需要積累客服知識）
 
 核心目標 (Core Objectives)： 用1-3句話說明解決什麽問題，帶來什麽價值。（例：通過Zapier+Notion自動化收集客戶表單，減少手動錄入80%時間）
@@ -38,6 +39,7 @@ title: '撰寫 Low code/No code 開發專案PRD完整指南（一）',
 撰寫技巧： 此部分用客戶的語言寫，確保雙方理解一致。可要求客戶用一句話總結“你想解決的最大痛點是什麽？”
 
 **2. 用戶角色與流程 (User Roles & Workflows)**
+
 用戶角色 (User Roles)： 不同用戶權限/視圖（如：管理員、普通用戶、訪客）。
 
 關鍵流程圖 (Key Workflow Diagrams)：
@@ -49,6 +51,7 @@ title: '撰寫 Low code/No code 開發專案PRD完整指南（一）',
 撰寫技巧： 流程圖是溝通神器！用可視化工具快速繪製並與客戶確認，避免文字歧義。
 
 **3. 數據模型 (Data Model - 核心！)**
+
 數據表 (Tables/Collections)： 定義核心數據對象（如：客戶表、訂單表、產品表）。
 
 字段定義 (Fields)： 每個表的字段名、類型、必填/選填、示例值（例：客戶姓名：文本，必填）。
@@ -60,6 +63,7 @@ title: '撰寫 Low code/No code 開發專案PRD完整指南（一）',
 撰寫技巧： 這是PRD基石！務必與客戶逐項確認字段。可使用Airtable/Google Sheet列出字段清單共享。
 
 **4. 用戶界面與交互 (UI/UX - 關鍵交付物)**
+
 核心界面清單 (Screen List)： 列出所有主要頁面（如：儀表盤、列表頁、詳情頁、表單頁）。
 
 低保真線框圖 (Low-Fi Wireframes)：
@@ -74,6 +78,7 @@ title: '撰寫 Low code/No code 開發專案PRD完整指南（一）',
 撰寫技巧： 優先做核心頁面線框。利用低代碼平台原型功能快速演示，比靜態文檔更直觀！
 
 **5. 自動化與業務規則 (Automation & Business Rules)**
+
 工作流定義 (Workflows)：
 - 觸發條件（例：當“狀態”字段變為“已支付”時）
 - 執行動作（例：發送郵件通知客戶，在日歷創建日程）
@@ -87,6 +92,7 @@ title: '撰寫 Low code/No code 開發專案PRD完整指南（一）',
 撰寫技巧： 用“如果-那麽”句式描述規則。錄製平台自動化配置的屏幕片段發給客戶確認。
 
 **6. 集成與擴展 (Integrations & Extensions)**
+
 第三方集成 (Third-Party Integrations)：
 - 需要連接的API（如：支付網關Stripe、郵件SendGrid）。
 - 認證方式（API Key, OAuth）。
@@ -99,6 +105,7 @@ Webhooks： 接收外部事件？觸發外部系統？
 撰寫技巧： 務必確認客戶是否有現成賬號和API權限。集成往往是風險點，提前測試可行性。
 
 **7. 部署與維護 (Deployment & Maintenance)**
+
 環境要求 (Environments)： 需要測試環境嗎？如何同步數據？
 
 上線計劃 (Launch Plan)： 數據遷移？用戶培訓？
@@ -110,6 +117,7 @@ Webhooks： 接收外部事件？觸發外部系統？
 撰寫技巧： 清晰界定專案結束後的責任邊界！在PRD中明確維護條款，避免後續糾紛。
 
 **8. 驗收標準 (Acceptance Criteria - 避免糾紛！)**
+
 量化指標： “系統應支持至少50名並發用戶操作”。
 
 具體場景： “當用戶提交包含無效郵箱的表單時，系統應在輸入框下方顯示紅色錯誤提示‘請輸入有效郵箱地址’”。
@@ -121,6 +129,7 @@ Webhooks： 接收外部事件？觸發外部系統？
 ---
 
 **Freelancer的專屬建議：**
+
 從模板開始，快速迭代： 使用Notion/Airtable的PRD模板庫，避免從零寫。
 
 工具即文檔： 直接用低代碼平台構建原型，原型即部分PRD（如Bubble的設計模式）。
