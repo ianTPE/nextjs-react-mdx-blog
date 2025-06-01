@@ -1,50 +1,46 @@
-"use client";
+'use client';
 
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useState, useRef, type FC } from 'react';
+import mermaid from 'mermaid';
+import type { MermaidConfig } from 'mermaid';
 
 interface MermaidDiagramProps {
   chart: string;
-  className?: string;
+  config?: MermaidConfig;                      
 }
 
-const MermaidDiagram: React.FC<MermaidDiagramProps> = ({ chart, className = "" }) => {
+const MermaidDiagram: FC<MermaidDiagramProps> = ({ chart, config }) => {
   const ref = useRef<HTMLDivElement>(null);
+  const [svg, setSvg] = useState<string>('');
 
+  /* 只在第一次掛載時初始化 Mermaid */
   useEffect(() => {
-    const renderDiagram = async () => {
-      if (ref.current && chart) {
-        try {
-          // 動態導入 mermaid
-          const mermaid = (await import('mermaid')).default;
-          
-          mermaid.initialize({ 
-            startOnLoad: true,
-            theme: 'default',
-            securityLevel: 'loose',
-          });
-          
-          const uniqueId = `mermaid-${Math.random().toString(36).substr(2, 9)}`;
-          
-          const result = await mermaid.render(uniqueId, chart);
-          if (ref.current) {
-            ref.current.innerHTML = result.svg;
-          }
-        } catch (error) {
-          console.error('Mermaid rendering error:', error);
-          if (ref.current) {
-            ref.current.innerHTML = `<p class="text-red-500">圖表渲染錯誤: ${error instanceof Error ? error.message : '未知錯誤'}</p>`;
-          }
-        }
-      }
-    };
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: 'default',
+      securityLevel: 'loose',
+      flowchart: { useMaxWidth: true },
+      ...config,                // 允許外部覆寫
+    });
+  }, [config]);
 
-    renderDiagram();
+  /* 每當 chart 文字變動，就重新渲染一次 */
+  useEffect(() => {
+    if (!chart) return;
+    const id = `mermaid-${Date.now()}`;
+    mermaid
+      .render(id, chart)        // 產生 SVG 字串
+      .then(({ svg }) => setSvg(svg))
+      .catch(console.error);
   }, [chart]);
 
+  /* 把 SVG 塞進容器；寬度 100%、高度自動 */
   return (
-    <div 
-      ref={ref} 
-      className={`flex justify-center my-6 p-4 bg-gray-50 rounded-lg border ${className}`}
+    <div
+      ref={ref}
+      className="w-full overflow-auto"
+      style={{ maxHeight: '80vh' }}
+      dangerouslySetInnerHTML={{ __html: svg }}
     />
   );
 };
