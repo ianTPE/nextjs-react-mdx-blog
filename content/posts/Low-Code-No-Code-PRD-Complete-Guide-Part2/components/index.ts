@@ -20,6 +20,7 @@ export {
 // 導出其他組件
 export { default as MarkdownDisplay } from './MarkdownDisplay';
 export { default as MermaidDiagram } from './MermaidDiagram';
+export { default as TicketDetailMockup } from './react_ui_mockup';
 
 // 導出所有類型
 export type {
