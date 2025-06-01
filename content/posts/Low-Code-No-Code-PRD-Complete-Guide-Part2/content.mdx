@@ -22,14 +22,7 @@ title: '撰寫 Low code/No code 開發專案PRD完整指南（二）',
 
 - **版本歷史** 
 
-  <InteractiveTable
-    columns={[
-      { header: '版本', accessorKey: 'version' },
-      { header: '日期', accessorKey: 'date' },
-      { header: '修改人', accessorKey: 'editor' },
-      { header: '變更說明', accessorKey: 'changes' },
-      { header: '客戶確認簽字', accessorKey: 'customerSignOff' }
-    ]}
+  <VersionHistoryTable
     data={[
       { version: 'v1.0', date: '2025-05-31', editor: '您的名字', changes: '初稿', customerSignOff: '⏳ 待確認' },
       { version: 'v1.1', date: '2025-06-02', editor: '客戶名', changes: '增加X功能需求', customerSignOff: '✅ 已確認' }
@@ -37,14 +30,9 @@ title: '撰寫 Low code/No code 開發專案PRD完整指南（二）',
   />
 
 - **術語表** 
-  <InteractiveTable
-    columns={[
-      { header: '術語', accessorKey: 'term' },
-      { header: '定義', accessorKey: 'definition' },
-      { header: '示例', accessorKey: 'example' }
-    ]}
+  <TermTable
     data={[
-      { term: '"客戶"', definition: '系統中注冊的購買者', example: <>字段：<code>客戶姓名</code></> },
+      { term: '"客戶"', definition: '系統中注冊的購買者', example: '字段：客戶姓名' },
       { term: '"工單狀態"', definition: '問題處理進度（待分配/處理中/已解決）', example: '業務規則約束' }
     ]}
   />
@@ -61,13 +49,7 @@ title: '撰寫 Low code/No code 開發專案PRD完整指南（二）',
 -  數據分散（歷史問題難追溯）
 
 #### 1.2 解決方案價值
-<InteractiveTable
-  columns={[
-    { header: 'KPI', accessorKey: 'kpi' },
-    { header: '當前狀態', accessorKey: 'currentState' },
-    { header: '目標', accessorKey: 'targetState' },
-    { header: '測量方式', accessorKey: 'measurementMethod' }
-  ]}
+<KPITable
   data={[
     { kpi: '問題響應時間', currentState: '24小時', targetState: '≤2小時', measurementMethod: '系統記錄創建時間戳' },
     { kpi: '客服處理效率', currentState: '5單/天', targetState: '15單/天', measurementMethod: '每日關閉工單數' },
@@ -76,13 +58,7 @@ title: '撰寫 Low code/No code 開發專案PRD完整指南（二）',
 />
 
 #### 1.3 平台選型論證
-<InteractiveTable
-  columns={[
-    { header: '需求', accessorKey: 'requirement' },
-    { header: 'Bubble方案', accessorKey: 'bubbleSolution' },
-    { header: '替代方案（Airtable+Zapier）', accessorKey: 'alternativeSolution' },
-    { header: '選擇理由', accessorKey: 'reasonForChoice' }
-  ]}
+<PlatformComparisonTable
   data={[
     { requirement: '客戶門戶', bubbleSolution: '原生支持用戶登錄', alternativeSolution: '需整合Softr額外付費', reasonForChoice: '減少第三方依賴' },
     { requirement: '覆雜狀態流', bubbleSolution: '可視化工作流引擎', alternativeSolution: '依賴多步驟Zap易出錯', reasonForChoice: '維護成本低' },
@@ -95,14 +71,7 @@ title: '撰寫 Low code/No code 開發專案PRD完整指南（二）',
 ### 2. 用戶旅程地圖（體驗層）
 #### 2.1 角色權限矩陣
 
-<InteractiveTable
-  columns={[
-    { header: '功能', accessorKey: 'feature' },
-    { header: '訪客', accessorKey: 'visitor' },
-    { header: '客戶（註冊用戶）', accessorKey: 'registeredUser' },
-    { header: '客服', accessorKey: 'supportAgent' },
-    { header: '管理員', accessorKey: 'admin' }
-  ]}
+<RolePermissionTable
   data={[
     { feature: '提交問題工單', visitor: '✅', registeredUser: '✅', supportAgent: '❌', admin: '❌' },
     { feature: '查看歷史工單', visitor: '❌', registeredUser: '✅（僅自己）', supportAgent: '❌', admin: '❌' },
@@ -129,15 +98,7 @@ title: '撰寫 Low code/No code 開發專案PRD完整指南（二）',
 #### 3.1 數據表規範
 表名：<code>工單（Issues）</code>
 
-<InteractiveTable
-  columns={[
-    { header: '欄位名稱', accessorKey: 'fieldName' },
-    { header: '類型', accessorKey: 'type' },
-    { header: '必填', accessorKey: 'required' },
-    { header: '示例值', accessorKey: 'exampleValue' },
-    { header: '業務規則', accessorKey: 'businessRule' },
-    { header: '平台實現方式', accessorKey: 'platformImplementation' }
-  ]}
+<DataFieldTable
   data={[
     { fieldName: 'issue_id', type: '自動編號', required: '✅', exampleValue: 'INC-20250601-001', businessRule: '格式："INC-年月日-序號"', platformImplementation: 'Bubble自動ID+自定義文字' },
     { fieldName: 'customer_email', type: '郵箱', required: '✅', exampleValue: 'user@domain.com', businessRule: '需驗證格式', platformImplementation: '欄位驗證規則' },
@@ -165,12 +126,7 @@ title: '撰寫 Low code/No code 開發專案PRD完整指南（二）',
 
 4.2 交互規則
 
-<InteractiveTable
-  columns={[
-    { header: '交互事件', accessorKey: 'interactionEvent' },
-    { header: '響應動作', accessorKey: 'responseAction' },
-    { header: '錯誤處理', accessorKey: 'errorHandling' }
-  ]}
+<InteractionEventTable
   data={[
     { interactionEvent: '點擊"儲存"按鈕', responseAction: '驗證必填欄位 → 提交資料 → 顯示Toast提示"儲存成功" → 2秒後自動關閉彈窗', errorHandling: '必填項為空時，在欄位下方顯示紅色錯誤提示' },
     { interactionEvent: '拖拽工單狀態至"已完成"', responseAction: '觸發審批流程 → 發送郵件給客戶確認 → 狀態變更為"待客戶確認"', errorHandling: '未選擇解決原因時阻止拖拽，提示"請填寫原因"' }
@@ -192,12 +148,7 @@ title: '撰寫 Low code/No code 開發專案PRD完整指南（二）',
 
 #### 5.2 業務規則庫
 
-<InteractiveTable
-  columns={[
-    { header: 'ID', accessorKey: 'id' },
-    { header: '規則描述', accessorKey: 'ruleDescription' },
-    { header: '實現方式', accessorKey: 'implementationMethod' }
-  ]}
+<BusinessRuleTable
   data={[
     { id: 'BR01', ruleDescription: '客戶只能修改自己提交的工單', implementationMethod: '資料權限：Owner=Current User' },
     { id: 'BR02', ruleDescription: '已關閉工單不允許新增評論', implementationMethod: '前端隱藏按鈕+後端API攔截' },
@@ -214,28 +165,17 @@ title: '撰寫 Low code/No code 開發專案PRD完整指南（二）',
   - 監聽支付結果: <code>Webhook event: checkout.session.completed</code>  
 - **數據映射:**  
 
-<InteractiveTable
-  columns={[
-    { header: '系統字段', accessorKey: 'systemField' },
-    { header: 'Stripe字段', accessorKey: 'stripeField' },
-    { header: '示例', accessorKey: 'example' }
-  ]}
+<IntegrationMappingTable
   data={[
-    { systemField: <><code>訂單號</code></>, stripeField: <><code>client_reference_id</code></>, example: 'ORD-20250601-001' },
-    { systemField: <><code>支付金額</code></>, stripeField: <><code>amount_total</code></>, example: '1990 (單位：分)' }
+    { systemField: '訂單號', stripeField: 'client_reference_id', example: 'ORD-20250601-001' },
+    { systemField: '支付金額', stripeField: 'amount_total', example: '1990 (單位：分)' }
   ]}
 />
 
 > 🔒 安全要求： 在PRD中注明”客戶需自行保管API密鑰“，避免承擔安全責任。
 
 ### 7. 驗收測試用例（法律依據）
-<InteractiveTable
-  columns={[
-    { header: '用例ID', accessorKey: 'caseId' },
-    { header: '測試場景', accessorKey: 'testScenario' },
-    { header: '預期結果', accessorKey: 'expectedResult' },
-    { header: '測試結果', accessorKey: 'testResult' }
-  ]}
+<TestCaseTable
   data={[
     { caseId: 'TC-101', testScenario: '客戶提交工單時未填寫"問題描述"', expectedResult: '提交按鈕禁用，顯示錯誤提示"該欄位必填"', testResult: '✅/❌' },
     { caseId: 'TC-205', testScenario: '管理員在報表頁選擇日期範圍"2025-06-01至2025-06-30"並點擊匯出', expectedResult: '下載CSV檔案，包含此時間段內所有工單資料', testResult: '✅/❌' },
@@ -245,14 +185,7 @@ title: '撰寫 Low code/No code 開發專案PRD完整指南（二）',
 
 ## 自由職業者高階技巧
 ### 1. PRD與報價聯動
-<InteractiveTable
-  columns={[
-    { header: '模塊', accessorKey: 'moduleName' },
-    { header: 'PRD需求ID', accessorKey: 'prdRequirementId' },
-    { header: '預估工時', accessorKey: 'estimatedHours' },
-    { header: '報價(USD)', accessorKey: 'quoteUsd' },
-    { header: '備注', accessorKey: 'notes' }
-  ]}
+<ProjectModuleTable
   data={[
     { moduleName: '用戶認證', prdRequirementId: 'REQ-001', estimatedHours: '8小時', quoteUsd: '$640', notes: '含短信驗證碼集成' },
     { moduleName: '工單狀態流', prdRequirementId: 'REQ-005', estimatedHours: '12小時', quoteUsd: '$960', notes: '包含3個自動化工作流' }
@@ -262,13 +195,7 @@ title: '撰寫 Low code/No code 開發專案PRD完整指南（二）',
 > 作用： 需求變更時，快速計算成本增減，避免免費加功能。
 
 ### 2. 風險登記冊（展示專業性）
-<InteractiveTable
-  columns={[
-    { header: '風險描述', accessorKey: 'riskDescription' },
-    { header: '概率', accessorKey: 'probability' },
-    { header: '影響', accessorKey: 'impact' },
-    { header: '應對措施', accessorKey: 'mitigation' }
-  ]}
+<RiskTable
   data={[
     { riskDescription: '客戶延遲提供API權限', probability: '高', impact: '中', mitigation: '合同註明"因客戶延遲導致工期順延"' },
     { riskDescription: '平台突然限制關鍵功能（如Bubble API調用次數）', probability: '低', impact: '高', mitigation: '預留備用方案（Webhook轉AWS Lambda）' }
