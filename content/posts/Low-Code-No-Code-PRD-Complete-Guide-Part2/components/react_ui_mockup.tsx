@@ -21,7 +21,7 @@ const TicketDetailMockup = () => {
     <div className="max-w-4xl mx-auto p-6 bg-gray-50 min-h-screen">
       {/* 頁面標題 */}
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">工單詳情頁原型</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">4.1 工單詳情頁原型</h1>
         <p className="text-gray-600">使用 shadcn/ui 組件庫製作的高保真介面原型</p>
       </div>
       
