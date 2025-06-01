@@ -71,7 +71,7 @@ title: '撰寫 Low code/No code 開發專案PRD完整指南（二）',
 | 匯出月度報告 | ❌   | ❌               | ❌   | ✅     |
 
 #### 2.2 核心流程圖解
-```mermaid
+<MermaidDiagram chart={`
 graph TD
   A[客户提交工单] --> B{自动分类规则}
   B -->|标签=“支付问题”| C[分配至财务组]
@@ -81,7 +81,7 @@ graph TD
   E --> F[客服处理并更新状态]
   F --> G[客户收到邮件状态更新]
   G --> H[自动发送CSAT调查]
-```
+`}/>
 
 > 工具推薦： 用Mermaid語法（GitLab/GitHub支持）或Draw.io嵌入可交互流程圖。
 
@@ -97,12 +97,13 @@ graph TD
 | assignee       | 關聯用戶 | ❌   | 客服A@company.com       | 僅能選角色為"客服"的用戶     | 關聯Users表+過濾條件      |
 
 #### 3.2 關係模型
-```mermaid
+<MermaidDiagram chart={`
 erDiagram
   CUSTOMERS ||--o{ ISSUES : "提交"
   ISSUES ||--|{ COMMENTS : "包含"
   AGENTS }|--|{ ISSUES : "處理"
-```
+`}/>
+
 > ⚠️ 避坑提醒： 低代碼平台對關聯數據操作有隱性限制（如Bubble級聯刪除需插件），務必在PRD標注技術約束！
 
 ### 4. 界面需求（UI/UX規格書）
@@ -145,14 +146,14 @@ erDiagram
 
 - **認證方式:** Bearer Token (SK_live_***)  
 - **關鍵接口:**  
-  - 創建支付鏈接: `POST /v1/payment_links`  
-  - 監聽支付結果: `Webhook event: checkout.session.completed`  
+  - 創建支付鏈接: <code>POST /v1/payment_links</code>  
+  - 監聽支付結果: <code>Webhook event: checkout.session.completed</code>  
 - **數據映射:**  
 
 | 系統字段   | Stripe字段              | 示例               |
 | ------ | --------------------- | ---------------- |
-| `訂單號`  | `client_reference_id` | ORD-20250601-001 |
-| `支付金額` | `amount_total`        | 1990 (單位：分)      |
+| <code>訂單號</code>  | <code>client_reference_id</code> | ORD-20250601-001 |
+| <code>支付金額</code> | <code>amount_total</code>        | 1990 (單位：分)      |
 
 > 🔒 安全要求： 在PRD中注明”客戶需自行保管API密鑰“，避免承擔安全責任。
 
@@ -179,14 +180,16 @@ erDiagram
 | 平台突然限制關鍵功能（如Bubble API調用次數） | 低   | 高   | 預留備用方案（Webhook轉AWS Lambda） |
 
 ### 3. 客戶需求確認清單
+<MarkdownDisplay content={`
 - [ ] 數據模型已簽字確認（表結構+字段規則）  
 - [ ] 所有第三方賬號/API密鑰由客戶提供  
 - [ ] 驗收標準包含所有核心場景  
 - [ ] 客戶理解平台限制（如Bubble免費版無自定義域名）  
+`}/>
 
 > 交付前必簽！ 規避“這不是我要的”風險。
 ## 完整PRD模板框架
-```markdown
+<MarkdownDisplay content={`
 # [項目名稱] PRD
 ## 0. 文檔控制
 ## 1. 戰略目標
@@ -214,7 +217,7 @@ erDiagram
 ## 8. 驗收管理
    - 8.1 測試用例
    - 8.2 簽字頁
-```
+`}/>
 
 ## 終極建議
 
