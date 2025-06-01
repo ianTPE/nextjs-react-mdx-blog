@@ -17,6 +17,10 @@ export {
   RiskTable,
 } from './InteractiveTable';
 
+// 導出其他組件
+export { default as MarkdownDisplay } from './MarkdownDisplay';
+export { default as MermaidDiagram } from './MermaidDiagram';
+
 // 導出所有類型
 export type {
   InteractiveTableProps,
