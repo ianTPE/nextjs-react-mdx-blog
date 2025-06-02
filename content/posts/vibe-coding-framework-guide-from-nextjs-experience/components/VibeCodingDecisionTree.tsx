@@ -32,52 +32,91 @@ flowchart TD
 
 export default function VibeCodingDecisionTree() {
   const [isLoaded, setIsLoaded] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
+  const mermaidRef = React.useRef<HTMLDivElement>(null);
+  const hasRendered = React.useRef(false);
 
   React.useEffect(() => {
-    // 初始化 Mermaid
-    mermaid.initialize({
-      startOnLoad: true,
-      theme: 'base',
-      themeVariables: {
-        fontFamily: 'Inter, system-ui, sans-serif',
-        fontSize: '14px',
-        primaryColor: '#10B981',
-        primaryTextColor: '#ffffff',
-        primaryBorderColor: '#059669',
-        lineColor: '#6B7280',
-        secondaryColor: '#F3F4F6',
-        tertiaryColor: '#E5E7EB',
-        background: '#ffffff',
-        mainBkg: '#ffffff',
-        secondBkg: '#F9FAFB',
-        tertiaryBkg: '#F3F4F6'
-      },
-      flowchart: {
-        htmlLabels: true,
-        curve: 'basis',
-        padding: 20,
-        nodeSpacing: 50,
-        rankSpacing: 60
-      }
-    });
-
-    // 渲染圖表
-    const renderChart = async () => {
+    let isMounted = true;
+    
+    const initializeMermaid = async () => {
       try {
-        const element = document.getElementById('mermaid-decision-tree');
-        if (element) {
-          element.innerHTML = '';
-          const { svg } = await mermaid.render('decision-tree', mermaidChart);
-          element.innerHTML = svg;
-          setIsLoaded(true);
+        // 避免重複初始化
+        if (hasRendered.current) return;
+        
+        // 初始化 Mermaid（只執行一次）
+        mermaid.initialize({
+          startOnLoad: false, // 重要：設為 false，手動控制渲染
+          theme: 'base',
+          securityLevel: 'loose', // 允許 HTML 標籤
+          themeVariables: {
+            fontFamily: 'Inter, system-ui, sans-serif',
+            fontSize: '14px',
+            primaryColor: '#10B981',
+            primaryTextColor: '#ffffff',
+            primaryBorderColor: '#059669',
+            lineColor: '#6B7280',
+            secondaryColor: '#F3F4F6',
+            tertiaryColor: '#E5E7EB',
+            background: '#ffffff',
+            mainBkg: '#ffffff',
+            secondBkg: '#F9FAFB',
+            tertiaryBkg: '#F3F4F6'
+          },
+          flowchart: {
+            htmlLabels: true,
+            curve: 'basis',
+            padding: 20,
+            nodeSpacing: 50,
+            rankSpacing: 60
+          }
+        });
+
+        // 渲染圖表
+        if (mermaidRef.current && isMounted) {
+          // 清空容器
+          mermaidRef.current.innerHTML = '';
+          
+          // 創建唯一 ID
+          const chartId = `mermaid-chart-${Date.now()}`;
+          
+          // 渲染 mermaid 圖表
+          const { svg } = await mermaid.render(chartId, mermaidChart);
+          
+          if (mermaidRef.current && isMounted) {
+            mermaidRef.current.innerHTML = svg;
+            setIsLoaded(true);
+            hasRendered.current = true;
+          }
         }
-      } catch (error) {
-        console.error('Mermaid rendering error:', error);
+      } catch (err) {
+        console.error('Mermaid rendering error:', err);
+        if (isMounted) {
+          setError('圖表載入失敗，請重新整理頁面');
+        }
       }
     };
 
-    renderChart();
-  }, []);
+    // 延遲執行，確保 DOM 已經準備好
+    const timer = setTimeout(initializeMermaid, 100);
+
+    return () => {
+      isMounted = false;
+      clearTimeout(timer);
+      // 清理 DOM（但不強制移除，讓 React 自然處理）
+      if (mermaidRef.current) {
+        mermaidRef.current.innerHTML = '';
+      }
+    };
+  }, []); // 空依賴陣列，只執行一次
+
+  if (error) {
+    return (
+      <div className="my-8 p-6 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+        <p className="text-red-700 dark:text-red-400 text-center">{error}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="my-8">
@@ -92,16 +131,18 @@ export default function VibeCodingDecisionTree() {
           </p>
         </div>
         
-        <div 
-          id="mermaid-decision-tree" 
-          className="flex justify-center items-center min-h-[400px] overflow-x-auto"
-        >
-          {!isLoaded && (
+        <div className="flex justify-center items-center min-h-[400px] overflow-x-auto">
+          {!isLoaded && !error && (
             <div className="flex items-center space-x-2 text-gray-500">
               <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
               <span>Loading decision tree...</span>
             </div>
           )}
+          <div 
+            ref={mermaidRef}
+            className="w-full flex justify-center"
+            style={{ minHeight: isLoaded ? 'auto' : '400px' }}
+          />
         </div>
       </div>
 
