@@ -55,13 +55,19 @@ export default function VibeCodingDecisionTree() {
             primaryColor: '#10B981',
             primaryTextColor: '#ffffff',
             primaryBorderColor: '#059669',
-            lineColor: '#6B7280',
+            lineColor: '#374151', // 更深的線條顏色
             secondaryColor: '#F3F4F6',
             tertiaryColor: '#E5E7EB',
             background: '#ffffff',
             mainBkg: '#ffffff',
             secondBkg: '#F9FAFB',
-            tertiaryBkg: '#F3F4F6'
+            tertiaryBkg: '#F3F4F6',
+            // 修正文字顏色問題
+            edgeLabelBackground: '#ffffff',
+            clusterBkg: '#ffffff',
+            altBackground: '#ffffff',
+            nodeTextColor: '#1F2937', // 深色文字
+            textColor: '#1F2937' // 確保文字可見
           },
           flowchart: {
             htmlLabels: true,
@@ -120,6 +126,54 @@ export default function VibeCodingDecisionTree() {
 
   return (
     <div className="my-8">
+      {/* 修正 Mermaid 文字透明問題的 CSS */}
+      <style jsx>{`
+        .mermaid-container .edgeLabel .label {
+          background-color: white !important;
+        }
+        .mermaid-container .edgeLabel .labelBkg {
+          background-color: white !important;
+          opacity: 1 !important;
+        }
+        .mermaid-container .edgeLabel span {
+          color: #1F2937 !important;
+          opacity: 1 !important;
+        }
+        .mermaid-container .edgeLabel p {
+          color: #1F2937 !important;
+          opacity: 1 !important;
+          margin: 0 !important;
+          font-weight: 500 !important;
+        }
+        .mermaid-container svg .edgeLabel foreignObject {
+          opacity: 1 !important;
+        }
+        .mermaid-container svg .edgeLabel foreignObject > div {
+          background-color: white !important;
+          color: #1F2937 !important;
+          opacity: 1 !important;
+        }
+        /* 修正節點內文字 */
+        .mermaid-container .nodeLabel {
+          color: #ffffff !important;
+        }
+        /* 深色模式下的文字修正 */
+        @media (prefers-color-scheme: dark) {
+          .mermaid-container .edgeLabel .labelBkg,
+          .mermaid-container .edgeLabel .label {
+            background-color: #374151 !important;
+          }
+          .mermaid-container .edgeLabel span,
+          .mermaid-container .edgeLabel p {
+            color: #F9FAFB !important;
+          }
+          .mermaid-container svg .edgeLabel foreignObject > div {
+            background-color: #374151 !important;
+            color: #F9FAFB !important;
+          }
+        }
+      `}</style>
+      
       {/* 圖表容器 */}
       <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
         <div className="mb-4">
@@ -140,7 +194,7 @@ export default function VibeCodingDecisionTree() {
           )}
           <div 
             ref={mermaidRef}
-            className="w-full flex justify-center"
+            className="mermaid-container w-full flex justify-center"
             style={{ minHeight: isLoaded ? 'auto' : '400px' }}
           />
         </div>
