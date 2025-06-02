@@ -45,14 +45,7 @@ content/posts/article-name/
 
 基於我的實際使用經驗和測試，這是我的評比結果：
 
-| 框架 | Vibe Coding 友善度 | 學習成本 | 推薦指數 | 實際體驗 |
-|------|-------------------|----------|----------|----------|
-| Next.js (app router) | ⭐⭐⭐⭐⭐ | 中等 | 最推薦 | 完美支援 |
-| Remix | ⭐⭐⭐⭐⭐ | 中等 | 強烈推薦 | 未深度測試 |
-| Nuxt.js | ⭐⭐⭐⭐ | 低 | 推薦 | Vue 生態好選擇 |
-| Astro | ⭐⭐ | 低 | 不適合 | 實測不便 |
-| Gatsby | ⭐⭐ | 高 | 不適合 | 實測不便 |
-| Vite | ⭐ | 高 | 不適合 | 實測不便 |
+<FrameworkComparisonTable />
 
 ## 詳細分析
 
@@ -62,7 +55,7 @@ content/posts/article-name/
 
 我目前的 Next.js 15 專案完美支援了我的 vibe coding 需求：
 
-- **完美的目錄結構**：每個路由都可以有自己的 `components` 資料夾
+- **完美的目錄結構**：每個路由都可以有自己的 <code>components</code> 資料夾
 - **宣告式路由**：檔案結構即路由，意圖明確
 - **Server Components**：組件可以選擇在伺服器或客戶端執行
 - **ESM Metadata**：每個 MDX 檔案都可以有自己的 metadata export
@@ -329,16 +322,7 @@ const router = createBrowserRouter([
 
 ## 基於實際經驗的推薦決策樹
 
-```
-你是 Vibe Coding 開發者
-↓
-你偏好 React 還是 Vue？
-├─ React → 
-│   ├─ 想要最完整的生態系統？ → Next.js (我的選擇)
-│   ├─ 想要簡潔的資料流？ → Remix
-│   └─ 需要最大彈性？ → 繼續用 Next.js
-└─ Vue → Nuxt.js
-```
+<VibeCodingDecisionTree />
 
 ## 實戰建議
 
