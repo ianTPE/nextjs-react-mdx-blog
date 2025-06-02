@@ -65,24 +65,19 @@ export default function CSSDecisionTree() {
               {/* React 子決策 */}
               <div className="relative mt-4">
                 <div className="bg-amber-500 text-white px-6 py-3 rounded-lg text-center text-sm font-medium">
-                  你的主要需求是什麼？
+                  你的開發經驗？
                 </div>
-                {/* 三叉箭頭 */}
+                {/* 雙叉箭頭 */}
                 <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2">
                   <div className="w-0.5 h-4 bg-gray-400 mx-auto"></div>
-                  <div className="w-48 h-0.5 bg-gray-400 absolute top-4 left-1/2 transform -translate-x-1/2"></div>
+                  <div className="w-32 h-0.5 bg-gray-400 absolute top-4 left-1/2 transform -translate-x-1/2"></div>
                   {/* 左箭頭 */}
-                  <div className="absolute top-4 left-1/2 transform -translate-x-24">
+                  <div className="absolute top-4 left-1/2 transform -translate-x-16">
                     <div className="w-0.5 h-4 bg-gray-400"></div>
                     <div className="w-0 h-0 border-l-2 border-r-2 border-t-4 border-l-transparent border-r-transparent border-t-gray-400 transform translate-x-0.5"></div>
                   </div>
-                  {/* 中箭頭 */}
-                  <div className="absolute top-4 left-1/2 transform -translate-x-0.5">
-                    <div className="w-0.5 h-4 bg-gray-400"></div>
-                    <div className="w-0 h-0 border-l-2 border-r-2 border-t-4 border-l-transparent border-r-transparent border-t-gray-400"></div>
-                  </div>
                   {/* 右箭頭 */}
-                  <div className="absolute top-4 left-1/2 transform translate-x-24">
+                  <div className="absolute top-4 left-1/2 transform translate-x-16">
                     <div className="w-0.5 h-4 bg-gray-400"></div>
                     <div className="w-0 h-0 border-l-2 border-r-2 border-t-4 border-l-transparent border-r-transparent border-t-gray-400 transform translate-x-0.5"></div>
                   </div>
@@ -90,13 +85,13 @@ export default function CSSDecisionTree() {
               </div>
               
               {/* React 選項 */}
-              <div className="grid grid-cols-1 gap-4 w-full mt-12">
-                {/* Next.js - 最完整生態 */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full mt-12">
+                {/* Next.js - 新手首選 */}
                 <div className="group relative">
                   <div className="bg-green-500 text-white p-4 rounded-lg text-center shadow-md hover:shadow-lg transition-all transform hover:scale-105 cursor-pointer">
                     <div className="font-bold text-lg">⭐ Next.js</div>
-                    <div className="text-sm mt-1 opacity-90">最完整生態系統</div>
-                    <div className="text-xs mt-1 bg-green-600 rounded px-2 py-1 inline-block">我的選擇 👈</div>
+                    <div className="text-sm mt-1 opacity-90">新手首選，完整生態</div>
+                    <div className="text-xs mt-1 bg-green-600 rounded px-2 py-1 inline-block">最推薦 👈</div>
                   </div>
                   {/* 推薦標籤 */}
                   <div className="absolute -top-2 -right-2 bg-yellow-400 text-yellow-900 text-xs px-2 py-1 rounded-full font-bold">
@@ -107,15 +102,8 @@ export default function CSSDecisionTree() {
                 {/* Remix */}
                 <div className="bg-blue-500 text-white p-4 rounded-lg text-center shadow-md hover:shadow-lg transition-all transform hover:scale-105 cursor-pointer">
                   <div className="font-bold text-lg">🔵 Remix</div>
-                  <div className="text-sm mt-1 opacity-90">簡潔資料流</div>
+                  <div className="text-sm mt-1 opacity-90">創新資料處理模式</div>
                   <div className="text-xs mt-1 bg-blue-600 rounded px-2 py-1 inline-block">強烈推薦</div>
-                </div>
-                
-                {/* Next.js - 最大彈性 */}
-                <div className="bg-green-500 text-white p-4 rounded-lg text-center shadow-md hover:shadow-lg transition-all transform hover:scale-105 cursor-pointer">
-                  <div className="font-bold text-lg">⭐ Next.js</div>
-                  <div className="text-sm mt-1 opacity-90">最大彈性</div>
-                  <div className="text-xs mt-1 bg-green-600 rounded px-2 py-1 inline-block">繼續使用</div>
                 </div>
               </div>
             </div>

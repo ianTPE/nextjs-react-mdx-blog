@@ -104,7 +104,7 @@ const initialNodes: Node[] = [
     id: '5',
     type: 'decision',
     position: { x: 180, y: 450 },
-    data: { label: '你的主要需求？' },
+    data: { label: '你的開發經驗？' },
   },
   {
     id: '6',
@@ -112,8 +112,8 @@ const initialNodes: Node[] = [
     position: { x: 50, y: 580 },
     data: { 
       framework: '⭐ Next.js',
-      description: '最完整生態系統',
-      badge: '我的選擇',
+      description: '新手首選，完整生態',
+      badge: '最推薦',
       level: 'best',
       isRecommended: true,
       recommendLevel: '最推薦'
@@ -122,23 +122,12 @@ const initialNodes: Node[] = [
   {
     id: '7',
     type: 'recommendation',
-    position: { x: 220, y: 580 },
+    position: { x: 320, y: 580 },
     data: { 
       framework: '🔵 Remix',
-      description: '簡潔資料流',
+      description: '創新資料處理模式',
       badge: '強烈推薦',
       level: 'good'
-    },
-  },
-  {
-    id: '8',
-    type: 'recommendation',
-    position: { x: 390, y: 580 },
-    data: { 
-      framework: '⭐ Next.js',
-      description: '最大彈性',
-      badge: '繼續使用',
-      level: 'best'
     },
   },
   {
@@ -194,7 +183,7 @@ const initialEdges: Edge[] = [
     id: 'e5-6',
     source: '5',
     target: '6',
-    label: '最完整生態',
+    label: '新手/想要穩定',
     labelStyle: { fontSize: 10 },
     labelBgStyle: { fill: '#ffffff', fillOpacity: 0.8 },
     style: { stroke: '#10B981', strokeWidth: 2 },
@@ -203,19 +192,10 @@ const initialEdges: Edge[] = [
     id: 'e5-7',
     source: '5',
     target: '7',
-    label: '簡潔資料流',
+    label: '有經驗/喜歡創新',
     labelStyle: { fontSize: 10 },
     labelBgStyle: { fill: '#ffffff', fillOpacity: 0.8 },
     style: { stroke: '#3B82F6', strokeWidth: 2 },
-  },
-  {
-    id: 'e5-8',
-    source: '5',
-    target: '8',
-    label: '最大彈性',
-    labelStyle: { fontSize: 10 },
-    labelBgStyle: { fill: '#ffffff', fillOpacity: 0.8 },
-    style: { stroke: '#10B981', strokeWidth: 2 },
   },
   {
     id: 'e4-9',
