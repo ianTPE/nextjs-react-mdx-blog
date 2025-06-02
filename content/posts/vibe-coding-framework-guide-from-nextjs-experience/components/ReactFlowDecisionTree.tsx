@@ -6,6 +6,7 @@ import {
   MiniMap,
   Controls,
   Background,
+  BackgroundVariant,
   useNodesState,
   useEdgesState,
   addEdge,
@@ -270,7 +271,7 @@ export default function ReactFlowDecisionTree() {
               }}
               className="!bg-gray-50 dark:!bg-gray-800"
             />
-            <Background variant="dot" gap={12} size={1} />
+            <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
           </ReactFlow>
         </div>
       </div>
