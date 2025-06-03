@@ -143,7 +143,7 @@ const initialNodes: Node[] = [
       border: '1px solid #22C55E',
       borderRadius: '8px',
       width: 200,
-      height: 70,
+      height: 80,
     }
   },
   {
@@ -162,7 +162,7 @@ const initialNodes: Node[] = [
       border: '1px solid #22C55E',
       borderRadius: '8px',
       width: 200,
-      height: 70,
+      height: 80,
     }
   },
   {
@@ -181,7 +181,7 @@ const initialNodes: Node[] = [
       border: '1px solid #22C55E',
       borderRadius: '8px',
       width: 200,
-      height: 70,
+      height: 80,
     }
   }
 ];
