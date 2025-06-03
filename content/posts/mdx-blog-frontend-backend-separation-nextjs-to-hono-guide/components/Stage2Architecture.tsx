@@ -86,6 +86,26 @@ const apiTreeData = [
             ]
           },
           {
+            key: 'components-folder',
+            title: <div><FolderIcon />components/</div>,
+            children: [
+              { 
+                key: 'components-list-api', 
+                title: <div><FileIcon type="api" />route.ts - GET /api/components</div> 
+              },
+              {
+                key: 'components-detail-folder',
+                title: <div><FolderIcon />[slug]/</div>,
+                children: [
+                  { 
+                    key: 'components-detail-api', 
+                    title: <div><FileIcon type="api" />route.ts - GET /api/components/[slug]</div> 
+                  }
+                ]
+              }
+            ]
+          },
+          {
             key: 'revalidate-folder',
             title: <div><FolderIcon />revalidate/</div>,
             children: [
@@ -271,10 +291,10 @@ export default function Stage2Architecture() {
         </div>
 
         {/* API Routes 部分架構圖 */}
-        <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 mb-6">
+        <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 mb-4">
           <div className="mb-3">
             <span className="font-semibold text-gray-700">🔗 API Routes 架構</span>
-            <span className="ml-2 text-xs text-gray-500">後端 API 路由處理</span>
+            <span className="ml-2 text-xs text-gray-500">後端 API 路由與組件處理</span>
           </div>
           
           <div className="bg-white p-4 rounded border">
@@ -287,6 +307,17 @@ export default function Stage2Architecture() {
               className="stage2-tree"
               style={{ fontSize: '14px', lineHeight: '1.8' }}
             />
+          </div>
+        </div>
+
+        {/* API 組件處理說明 */}
+        <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+          <div className="font-semibold text-blue-800 mb-2">🛠️ API 組件處理流程</div>
+          <div className="text-sm text-blue-700 space-y-1">
+            <div>• <strong>/api/articles/[slug]</strong>: 返回 MDX 內容 + 組件清單</div>
+            <div>• <strong>/api/components/[slug]</strong>: 返回對應文章的打包組件</div>
+            <div>• <strong>解析組件</strong>: 從 components_bundle 解析出可執行的 React 組件</div>
+            <div>• <strong>安全檢查</strong>: 組件程式碼的安全性驗證和沙盒化</div>
           </div>
         </div>
 
@@ -328,9 +359,10 @@ export default function Stage2Architecture() {
           <div className="font-semibold text-blue-800 mb-2">🔄 數據流向</div>
           <div className="text-sm text-blue-700 space-y-1">
             <div>1. 用戶請求 → /blog/[slug]</div>
-            <div>2. 頁面呼叫 → /api/articles/[slug]</div>
-            <div>3. API 查詢 → 數據庫獲取 MDX</div>
-            <div>4. 內容渲染 → MDXRenderer</div>
+            <div>2. 頁面呼叫 → /api/articles/[slug] (獲取 MDX)</div>
+            <div>3. 頁面呼叫 → /api/components/[slug] (獲取組件)</div>
+            <div>4. API 查詢 → 數據庫獲取內容和組件</div>
+            <div>5. 內容渲染 → MDXRenderer + ComponentLoader</div>
           </div>
         </div>
 
