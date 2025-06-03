@@ -44,22 +44,6 @@ const treeData = [
           }
         ]
       },
-      // API 连接标示
-      {
-        key: 'api-call-indicator',
-        title: (
-          <div className="flex items-center justify-center py-2">
-            <div className="flex items-center gap-2 text-purple-600 bg-purple-50 px-3 py-1 rounded-lg border border-purple-200">
-              <span>↓</span>
-              <span className="font-medium text-sm">API 調用</span>
-              <span>↓</span>
-            </div>
-          </div>
-        ),
-        selectable: false,
-        disabled: true,
-        isLeaf: true
-      },
       {
         key: 'api-section',
         title: <div>🔗 API Routes 部分</div>,
@@ -124,7 +108,7 @@ const treeData = [
         children: [
           { 
             key: 'article-fields', 
-            title: <div className="text-xs">id, slug, title, content, metadata, view_count</div>,
+            title: <div className="text-xs">id (主鍵), slug (唯一), title, content (MDX), metadata (JSON), created_at, updated_at</div>,
             isLeaf: true 
           }
         ]
@@ -135,7 +119,7 @@ const treeData = [
         children: [
           { 
             key: 'tag-fields', 
-            title: <div className="text-xs">id, name, slug, article_count</div>,
+            title: <div className="text-xs">id (主鍵), name, slug (唯一), article_count</div>,
             isLeaf: true 
           }
         ]
@@ -146,11 +130,9 @@ const treeData = [
 
 // 组件样式
 const treeStyles = `
-  .architecture-tree .rc-tree-treenode[data-key="api-connection"] .rc-tree-switcher,
-  .architecture-tree .rc-tree-treenode[data-key="api-call-indicator"] .rc-tree-switcher {
+  .architecture-tree .rc-tree-treenode[data-key="api-connection"] .rc-tree-switcher {
     display: none;
   }
-  .architecture-tree .rc-tree-treenode[data-key="api-call-indicator"] .rc-tree-node-content-wrapper,
   .architecture-tree .rc-tree-treenode[data-key="api-connection"] .rc-tree-node-content-wrapper {
     padding: 0;
   }
