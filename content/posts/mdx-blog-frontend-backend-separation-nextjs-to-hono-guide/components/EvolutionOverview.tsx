@@ -1,9 +1,18 @@
 "use client";
 
-import ReactFlow, { Background, Controls, Node, Edge } from 'reactflow';
-import 'reactflow/dist/style.css';
+import {
+  ReactFlow,
+  Background,
+  Controls,
+  Node,
+  Edge,
+  useNodesState,
+  useEdgesState,
+  Panel
+} from '@xyflow/react';
+import '@xyflow/react/dist/style.css';
 
-const nodes: Node[] = [
+const initialNodes: Node[] = [
   {
     id: 'stage1',
     type: 'input',
@@ -177,7 +186,7 @@ const nodes: Node[] = [
   }
 ];
 
-const edges: Edge[] = [
+const initialEdges: Edge[] = [
   {
     id: 'stage1-trigger1',
     source: 'stage1',
@@ -225,23 +234,30 @@ const edges: Edge[] = [
 ];
 
 export default function EvolutionOverview() {
+  const [nodes, , onNodesChange] = useNodesState(initialNodes);
+  const [edges, , onEdgesChange] = useEdgesState(initialEdges);
   return (
     <div className="w-full bg-white border border-gray-200 rounded-lg overflow-hidden">
       <div className="p-4 bg-gray-50 border-b border-gray-200">
         <h3 className="text-lg font-semibold text-gray-800">MDX 部落格架構演進路線圖</h3>
         <p className="text-sm text-gray-600 mt-1">三階段漸進式升級策略</p>
       </div>
-      <div style={{ width: '100%', height: 450 }}>
-        <ReactFlow 
-          nodes={nodes} 
-          edges={edges} 
+      <div className="w-full h-[600px] rounded-lg border border-gray-200">
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
           fitView
-          nodesDraggable={false}
-          nodesConnectable={false}
           elementsSelectable={false}
         >
           <Background color="#f1f5f9" gap={20} />
           <Controls showInteractive={false} />
+          <Panel position="top-right">
+            <div className="bg-white p-2 rounded shadow text-xs text-gray-600">
+              演進架構圖
+            </div>
+          </Panel>
         </ReactFlow>
       </div>
     </div>

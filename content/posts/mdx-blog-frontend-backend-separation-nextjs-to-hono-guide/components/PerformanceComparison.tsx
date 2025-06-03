@@ -1,9 +1,18 @@
 "use client";
 
-import ReactFlow, { Background, Controls, Node, Edge } from 'reactflow';
-import 'reactflow/dist/style.css';
+import {
+  ReactFlow,
+  Background,
+  Controls,
+  Node,
+  Edge,
+  useNodesState,
+  useEdgesState,
+  Panel
+} from '@xyflow/react';
+import '@xyflow/react/dist/style.css';
 
-const nodes: Node[] = [
+const initialNodes: Node[] = [
   // 指標標題
   {
     id: 'metrics-title',
@@ -318,7 +327,7 @@ const nodes: Node[] = [
   }
 ];
 
-const edges: Edge[] = [
+const initialEdges: Edge[] = [
   // 改進箭頭 - 構建時間
   {
     id: 'build-improve-1',
@@ -365,23 +374,30 @@ const edges: Edge[] = [
 ];
 
 export default function PerformanceComparison() {
+  const [nodes, , onNodesChange] = useNodesState(initialNodes);
+  const [edges, , onEdgesChange] = useEdgesState(initialEdges);
   return (
     <div className="w-full bg-white border border-gray-200 rounded-lg overflow-hidden">
       <div className="p-4 bg-gray-50 border-b border-gray-200">
-        <h3 className="text-lg font-semibold text-gray-800">性能對比分析</h3>
-        <p className="text-sm text-gray-600 mt-1">三個階段的關鍵指標比較</p>
+        <h3 className="text-lg font-semibold text-gray-800">架構演進前後性能比較</h3>
+        <p className="text-sm text-gray-600 mt-1">三階段架構優化效果對比</p>
       </div>
-      <div style={{ width: '100%', height: 380 }}>
-        <ReactFlow 
-          nodes={nodes} 
-          edges={edges} 
+      <div className="w-full h-[500px] rounded-lg border border-gray-200">
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
           fitView
-          nodesDraggable={false}
-          nodesConnectable={false}
           elementsSelectable={false}
         >
-          <Background color="#f8fafc" gap={20} />
+          <Background color="#f1f5f9" gap={20} />
           <Controls showInteractive={false} />
+          <Panel position="top-right">
+            <div className="bg-white p-2 rounded shadow text-xs text-gray-600">
+              性能比較圖
+            </div>
+          </Panel>
         </ReactFlow>
       </div>
     </div>

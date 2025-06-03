@@ -1,9 +1,24 @@
 "use client";
 
-import ReactFlow, { Background, Controls, Node, Edge } from 'reactflow';
-import 'reactflow/dist/style.css';
+import {
+  ReactFlow,
+  Background,
+  Controls,
+  Node,
+  Edge,
+  useNodesState,
+  useEdgesState,
+  Panel
+} from '@xyflow/react';
+import '@xyflow/react/dist/style.css';
 
-const nodes: Node[] = [
+interface CustomNodeData {
+  label: React.ReactNode;
+  style?: React.CSSProperties;
+  [key: string]: unknown;
+}
+
+const initialNodes: Node<CustomNodeData>[] = [
   {
     id: 'nextjs-app',
     type: 'default',
@@ -118,7 +133,7 @@ const nodes: Node[] = [
   }
 ];
 
-const edges: Edge[] = [
+const initialEdges: Edge[] = [
   {
     id: 'app-frontend',
     source: 'nextjs-app',
@@ -154,23 +169,30 @@ const edges: Edge[] = [
 ];
 
 export default function Stage2Architecture() {
+  const [nodes, , onNodesChange] = useNodesState(initialNodes);
+  const [edges, , onEdgesChange] = useEdgesState(initialEdges);
   return (
     <div className="w-full bg-white border border-gray-200 rounded-lg overflow-hidden">
       <div className="p-4 bg-gray-50 border-b border-gray-200">
-        <h3 className="text-lg font-semibold text-gray-800">階段 2：Next.js + API Routes（偽分離）</h3>
-        <p className="text-sm text-gray-600 mt-1">適合：1,000 至 10,000 篇文章</p>
+        <h3 className="text-lg font-semibold text-gray-800">階段 2: 前後端分離架構</h3>
+        <p className="text-sm text-gray-600 mt-1">Next.js + Hono 分離式架構</p>
       </div>
-      <div style={{ width: '100%', height: 450 }}>
-        <ReactFlow 
-          nodes={nodes} 
-          edges={edges} 
+      <div className="w-full h-[400px] rounded-lg border border-gray-200">
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
           fitView
-          nodesDraggable={false}
-          nodesConnectable={false}
           elementsSelectable={false}
         >
-          <Background color="#f1f5f9" gap={20} />
+          <Background color="#f1f5f9" gap={16} />
           <Controls showInteractive={false} />
+          <Panel position="top-right">
+            <div className="bg-white p-2 rounded shadow text-xs text-gray-600">
+              階段 2 架構圖
+            </div>
+          </Panel>
         </ReactFlow>
       </div>
     </div>
