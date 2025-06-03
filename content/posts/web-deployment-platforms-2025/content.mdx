@@ -180,6 +180,8 @@ export default defineEventHandler(async (event) => {
 })
 ```
 
+<FrameworkSupportChart />
+
 ## 性能數據對比：Cloudflare Workers 的壓倒性優勢
 
 根據 2025 年最新的性能測試數據，從全球 15 個位置測量應用響應時間：
@@ -204,12 +206,18 @@ export default defineEventHandler(async (event) => {
 大洋洲（雪梨）       30ms                 200ms     280ms
 ```
 
+<GlobalLatencyChart />
+
 **並發處理能力：**
 - **Cloudflare Workers**：每秒處理 100,000+ 請求（分散在全球節點）
 - Vercel：受 Lambda 並發限制，需要預暖
 - Netlify：受 AWS Lambda 配額限制
 
+<ConcurrencyChart />
+
 這些數據清楚地顯示了 Cloudflare Workers 在性能方面的顛覆性優勢。
+
+<PerformanceComparisonChart />
 
 ## 儲存解決方案：Vercel Blob vs Cloudflare R2
 
@@ -389,6 +397,8 @@ export async function POST(request: Request) {
 - **總計：約 $4,750-9,600/月**
 
 **成本差異高達 100 倍！** 這不是打字錯誤，Cloudflare Workers 的定價模式在大規模應用中具有壓倒性優勢。
+
+<CostComparisonChart />
 
 ## 邊緣計算的未來：Cloudflare Workers 引領革命
 
