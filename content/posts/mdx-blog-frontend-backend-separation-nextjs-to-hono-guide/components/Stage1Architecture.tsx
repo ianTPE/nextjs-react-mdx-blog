@@ -20,7 +20,7 @@ const FileIcon = ({ type }: { type: 'tsx' | 'mdx' | 'other' }) => {
   return <span className="mr-1">{icons[type]}</span>;
 };
 
-// 樹狀結構數據 - 直接從根目錄開始
+// 樹狀結構數據 - 在中間加入分隔線
 const treeData = [
   {
     key: 'app',
@@ -99,6 +99,18 @@ const treeData = [
         ]
       }
     ]
+  },
+  // 分隔線節點
+  {
+    key: 'separator',
+    title: (
+      <div className="py-2">
+        <hr className="border-gray-300 border-dashed" />
+      </div>
+    ),
+    selectable: false,
+    disabled: true,
+    isLeaf: true
   },
   {
     key: 'content',
@@ -228,10 +240,33 @@ export default function Stage1Architecture() {
 
         {/* 文件結構樹 */}
         <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-          <div className="mb-3">
-            <span className="font-semibold text-gray-700">📁 項目文件結構</span>
-            <span className="ml-2 text-xs text-gray-500">點擊文件夾可展開/收起</span>
+          <div className="mb-3 flex items-center justify-between">
+            <div>
+              <span className="font-semibold text-gray-700">📁 項目文件結構</span>
+              <span className="ml-2 text-xs text-gray-500">點擊文件夾可展開/收起</span>
+            </div>
+            <div className="text-xs text-gray-500 flex items-center gap-4">
+              <div className="flex items-center">
+                <span className="w-3 h-3 bg-blue-100 border border-blue-300 rounded mr-1"></span>
+                <span>前端</span>
+              </div>
+              <div className="flex items-center">
+                <span className="w-3 h-3 bg-green-100 border border-green-300 rounded mr-1"></span>
+                <span>內容</span>
+              </div>
+            </div>
           </div>
+          
+          {/* 添加自定義 CSS 來隱藏分隔線的連接線 */}
+          <style jsx>{`
+            .custom-tree .rc-tree-treenode[data-key="separator"] .rc-tree-switcher {
+              display: none;
+            }
+            .custom-tree .rc-tree-treenode[data-key="separator"] .rc-tree-node-content-wrapper {
+              padding: 0;
+            }
+          `}</style>
+          
           <Tree
             treeData={treeData}
             defaultExpandAll={true}
