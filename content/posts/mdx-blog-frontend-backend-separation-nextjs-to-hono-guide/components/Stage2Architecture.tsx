@@ -46,6 +46,51 @@ const frontendTreeData = [
             title: <div><FileIcon type="tsx" />MDXRenderer.tsx</div> 
           }
         ]
+      },
+      {
+        key: 'content-folder',
+        title: <div><FolderIcon />content/ - 本地組件</div>,
+        children: [
+          {
+            key: 'posts-folder',
+            title: <div><FolderIcon />posts/</div>,
+            children: [
+              {
+                key: 'example-post',
+                title: <div><FolderIcon />example-post/</div>,
+                children: [
+                  {
+                    key: 'local-components',
+                    title: <div><FolderIcon />components/ - 文章專用組件</div>,
+                    children: [
+                      { 
+                        key: 'components-index', 
+                        title: <div><FileIcon type="tsx" />index.ts - 組件導出</div> 
+                      },
+                      { 
+                        key: 'custom-chart', 
+                        title: <div><FileIcon type="tsx" />DataChart.tsx - 數據圖表</div> 
+                      },
+                      { 
+                        key: 'api-demo', 
+                        title: <div><FileIcon type="tsx" />APIDemo.tsx - API 演示</div> 
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                key: 'more-posts-fe',
+                title: (
+                  <div className="flex items-center">
+                    <span className="mr-1">⋯</span>
+                    <span className="text-gray-500 italic">更多文章組件...</span>
+                  </div>
+                )
+              }
+            ]
+          }
+        ]
       }
     ]
   }
@@ -234,7 +279,7 @@ export default function Stage2Architecture() {
         <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 mb-4">
           <div className="mb-3">
             <span className="font-semibold text-gray-700">🎨 前端部分架構</span>
-            <span className="ml-2 text-xs text-gray-500">頁面路由與組件</span>
+            <span className="ml-2 text-xs text-gray-500">頁面路由、組件與本地組件</span>
           </div>
           
           <div className="bg-white p-4 rounded border">
@@ -247,6 +292,17 @@ export default function Stage2Architecture() {
               className="stage2-tree"
               style={{ fontSize: '14px', lineHeight: '1.8' }}
             />
+          </div>
+        </div>
+
+        {/* 組件工作方式說明 */}
+        <div className="mb-4 p-4 bg-orange-50 border border-orange-200 rounded-lg">
+          <div className="font-semibold text-orange-800 mb-2">🧩 本地組件運作方式</div>
+          <div className="text-sm text-orange-700 space-y-1">
+            <div>• <strong>數據庫驅動</strong>: MDX 內容從資料庫獲取，而非文件系統</div>
+            <div>• <strong>組件載入</strong>: MDXRenderer 動態載入對應的本地組件</div>
+            <div>• <strong>混合渲染</strong>: 數據庫內容 + 本地組件的完美結合</div>
+            <div>• <strong>性能優化</strong>: 組件按需載入，支援 code splitting</div>
           </div>
         </div>
 
