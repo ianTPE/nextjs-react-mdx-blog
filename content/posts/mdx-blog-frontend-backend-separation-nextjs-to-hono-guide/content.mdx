@@ -96,45 +96,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
 - 需要動態更新內容
 - 希望提供 API 給其他應用使用
 
----
-
-## 階段 2：Next.js + API Routes（偽前後端分離）
-
 <Stage2Architecture />
-
-### 📋 架構演進
-
-將文章內容從文件系統遷移到數據庫，使用 Next.js 的 API Routes 提供 API 端點：
-
-<AsciiDiagram content={`
-┌────────────────────────────────────┐
-│         Next.js 應用程式           │
-├────────────────────────────────────┤
-│ 前端部分：                         │
-│ ├── app/blog/[slug]/page.tsx       │
-│ ├── app/blog/page.tsx              │
-│ └── components/MDXRenderer.tsx     │
-├────────────────────────────────────┤
-│ API 部分：                        │
-│ ├── app/api/articles/route.ts     │
-│ ├── app/api/articles/[slug]/route.ts │
-│ └── app/api/revalidate/route.ts   │
-└────────────────────────────────────┘
-            ↓ API 調用
-┌────────────────────────────────────┐
-│      PostgreSQL/PlanetScale       │
-│ ┌──────────────────────────────────┐ │
-│ │ articles 表                     │ │
-│ │ ├── id (主鍵)                   │ │
-│ │ ├── slug (唯一)                 │ │
-│ │ ├── title                      │ │
-│ │ ├── content (MDX 文本)          │ │
-│ │ ├── metadata (JSON)            │ │
-│ │ ├── created_at                 │ │
-│ │ └── updated_at                 │ │
-│ └──────────────────────────────────┘ │
-└────────────────────────────────────┘
-`} />
 
 ### 🗄 數據庫設計
 
