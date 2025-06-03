@@ -6,6 +6,7 @@ import GlobalLatencyChart from './GlobalLatencyChart';
 import GlobalLatencyTable from './GlobalLatencyTable';
 import ConcurrencyChart from './ConcurrencyChart';
 import FrameworkSupportChart from './FrameworkSupportChart';
+import MarkdownDisplay from './MarkdownDisplay';
 
 export {
   PerformanceComparisonChart,
@@ -13,5 +14,6 @@ export {
   GlobalLatencyChart,
   GlobalLatencyTable,
   ConcurrencyChart,
-  FrameworkSupportChart
+  FrameworkSupportChart,
+  MarkdownDisplay
 };

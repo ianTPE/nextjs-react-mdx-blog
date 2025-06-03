@@ -197,15 +197,6 @@ export default defineEventHandler(async (event) => {
 - Vercel：平均 80-150ms（區域性 Serverless）
 - Netlify：平均 120-200ms（傳統 CDN + Functions）
 
-**全球延遲分佈：**
-```
-地區                 Cloudflare Workers    Vercel    Netlify
-亞洲（東京）         18ms                 120ms     180ms
-歐洲（倫敦）         12ms                 95ms      145ms
-美洲（紐約）         25ms                 65ms      110ms
-大洋洲（雪梨）       30ms                 200ms     280ms
-```
-
 <GlobalLatencyTable />
 
 <GlobalLatencyChart />
@@ -228,7 +219,7 @@ export default defineEventHandler(async (event) => {
 Vercel Blob 實際上是基於 Cloudflare R2 的封裝服務，提供了更簡化的 API 和與 Vercel 平台的深度整合。
 
 **優勢：**
-- 與 Next.js `next/image` 完美整合
+- 與 Next.js <code>next/image</code> 完美整合
 - 簡化的 SDK 和零配置體驗
 - 自動 CDN 分發和優化
 
@@ -635,9 +626,8 @@ async function migrateBlobs() {
   // 實作批量遷移邏輯
 }
 ```
-
-### 測試和驗證
-
+<MarkdownDisplay content={`
+## 測試和驗證
 部署前的檢查清單：
 - [ ] 所有頁面路由正常工作
 - [ ] API 路由功能完整
@@ -646,6 +636,7 @@ async function migrateBlobs() {
 - [ ] 自定義域名配置
 - [ ] SSL 證書自動更新
 - [ ] 性能測試通過
+`}/>
 
 ## 結論：Cloudflare Workers 時代已經到來
 
@@ -703,8 +694,6 @@ async function migrateBlobs() {
 - **開發體驗優越**：Web Standards 讓開發更簡潔
 
 對於追求技術領先的開發者和企業來說，現在投資 Cloudflare Workers 生態系統，就像 2015 年投資 React、2018 年投資 Serverless 一樣——**這不僅僅是技術選擇，更是戰略決策**。
-
-正如用戶在文章開頭提到的：「我之前一直以為 vercel 之後的選擇是 netlify，但看來應該是 cloudflare 才對。」這個觀察不僅準確，而且具有前瞻性。在技術快速演進的今天，**Cloudflare Workers 不是 Vercel 的替代品，而是下一代 Web 部署平台的定義者**。
 
 ---
 
