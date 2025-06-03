@@ -11,85 +11,83 @@ const FileIcon = ({ type }: { type: 'tsx' | 'sql' | 'api' | 'other' }) => {
   return <span className="mr-1">{icons[type]}</span>;
 };
 
-// Next.js 应用程式的树状结构数据
-const nextjsTreeData = [
+// 前端部分的树状结构数据
+const frontendTreeData = [
   {
-    key: 'nextjs-app',
-    title: <div className="font-medium text-gray-800">📝 應用程式組成</div>,
+    key: 'frontend-section',
+    title: <div className="font-semibold text-purple-700">🎨 前端部分</div>,
     children: [
       {
-        key: 'frontend-section',
-        title: <div className="font-semibold text-purple-700">🎨 前端部分</div>,
+        key: 'blog-pages',
+        title: <div><FolderIcon />app/blog/</div>,
         children: [
-          {
-            key: 'blog-pages',
-            title: <div><FolderIcon />app/blog/</div>,
-            children: [
-              { 
-                key: 'blog-list', 
-                title: <div><FileIcon type="tsx" />page.tsx - 文章列表</div> 
-              },
-              {
-                key: 'blog-detail-folder',
-                title: <div><FolderIcon />[slug]/</div>,
-                children: [
-                  { 
-                    key: 'blog-detail', 
-                    title: <div><FileIcon type="tsx" />page.tsx - 文章詳情</div> 
-                  }
-                ]
-              }
-            ]
+          { 
+            key: 'blog-list', 
+            title: <div><FileIcon type="tsx" />page.tsx - 文章列表</div> 
           },
           {
-            key: 'components',
-            title: <div><FolderIcon />components/</div>,
+            key: 'blog-detail-folder',
+            title: <div><FolderIcon />[slug]/</div>,
             children: [
               { 
-                key: 'mdx-renderer', 
-                title: <div><FileIcon type="tsx" />MDXRenderer.tsx</div> 
+                key: 'blog-detail', 
+                title: <div><FileIcon type="tsx" />page.tsx - 文章詳情</div> 
               }
             ]
           }
         ]
       },
       {
-        key: 'api-section',
-        title: <div className="font-semibold text-blue-700">🔗 API Routes 部分</div>,
+        key: 'components',
+        title: <div><FolderIcon />components/</div>,
+        children: [
+          { 
+            key: 'mdx-renderer', 
+            title: <div><FileIcon type="tsx" />MDXRenderer.tsx</div> 
+          }
+        ]
+      }
+    ]
+  }
+];
+
+// API Routes 部分的树状结构数据
+const apiTreeData = [
+  {
+    key: 'api-section',
+    title: <div className="font-semibold text-blue-700">🔗 API Routes 部分</div>,
+    children: [
+      {
+        key: 'api-folder',
+        title: <div><FolderIcon />app/api/</div>,
         children: [
           {
-            key: 'api-folder',
-            title: <div><FolderIcon />app/api/</div>,
+            key: 'articles-folder',
+            title: <div><FolderIcon />articles/</div>,
             children: [
-              {
-                key: 'articles-folder',
-                title: <div><FolderIcon />articles/</div>,
-                children: [
-                  { 
-                    key: 'articles-list-api', 
-                    title: <div><FileIcon type="api" />route.ts - GET /api/articles</div> 
-                  },
-                  {
-                    key: 'articles-detail-folder',
-                    title: <div><FolderIcon />[slug]/</div>,
-                    children: [
-                      { 
-                        key: 'articles-detail-api', 
-                        title: <div><FileIcon type="api" />route.ts - GET /api/articles/[slug]</div> 
-                      }
-                    ]
-                  }
-                ]
+              { 
+                key: 'articles-list-api', 
+                title: <div><FileIcon type="api" />route.ts - GET /api/articles</div> 
               },
               {
-                key: 'revalidate-folder',
-                title: <div><FolderIcon />revalidate/</div>,
+                key: 'articles-detail-folder',
+                title: <div><FolderIcon />[slug]/</div>,
                 children: [
                   { 
-                    key: 'revalidate-api', 
-                    title: <div><FileIcon type="api" />route.ts - POST /api/revalidate</div> 
+                    key: 'articles-detail-api', 
+                    title: <div><FileIcon type="api" />route.ts - GET /api/articles/[slug]</div> 
                   }
                 ]
+              }
+            ]
+          },
+          {
+            key: 'revalidate-folder',
+            title: <div><FolderIcon />revalidate/</div>,
+            children: [
+              { 
+                key: 'revalidate-api', 
+                title: <div><FileIcon type="api" />route.ts - POST /api/revalidate</div> 
               }
             ]
           }
@@ -232,16 +230,36 @@ export default function Stage2Architecture() {
           </div>
         </div>
 
-        {/* Next.js 應用程式架構圖 */}
-        <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 mb-6">
+        {/* 前端部分架構圖 */}
+        <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 mb-4">
           <div className="mb-3">
-            <span className="font-semibold text-gray-700">🏗️ Next.js 應用程式架構</span>
-            <span className="ml-2 text-xs text-gray-500">前端與 API Routes 整合</span>
+            <span className="font-semibold text-gray-700">🎨 前端部分架構</span>
+            <span className="ml-2 text-xs text-gray-500">頁面路由與組件</span>
           </div>
           
           <div className="bg-white p-4 rounded border">
             <Tree
-              treeData={nextjsTreeData}
+              treeData={frontendTreeData}
+              defaultExpandAll={true}
+              selectable={false}
+              showIcon={false}
+              showLine={false}
+              className="stage2-tree"
+              style={{ fontSize: '14px', lineHeight: '1.8' }}
+            />
+          </div>
+        </div>
+
+        {/* API Routes 部分架構圖 */}
+        <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 mb-6">
+          <div className="mb-3">
+            <span className="font-semibold text-gray-700">🔗 API Routes 架構</span>
+            <span className="ml-2 text-xs text-gray-500">後端 API 路由處理</span>
+          </div>
+          
+          <div className="bg-white p-4 rounded border">
+            <Tree
+              treeData={apiTreeData}
               defaultExpandAll={true}
               selectable={false}
               showIcon={false}
