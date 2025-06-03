@@ -86,19 +86,7 @@ const treeData = [
   },
   {
     key: 'api-connection',
-    title: (
-      <div className="flex items-center justify-center py-4">
-        <div className="flex flex-col items-center gap-2">
-          <div className="w-full border-t border-gray-300 border-dashed"></div>
-          <div className="flex items-center gap-2 text-blue-600 bg-blue-50 px-4 py-2 rounded-lg border border-blue-200 shadow-sm">
-            <span className="text-lg">↓</span>
-            <span className="font-semibold text-sm">API 調用</span>
-            <span className="text-lg">↓</span>
-          </div>
-          <div className="w-full border-t border-gray-300 border-dashed"></div>
-        </div>
-      </div>
-    ),
+    title: <div className="api-call-connector">API 調用</div>,
     selectable: false,
     disabled: true,
     isLeaf: true
