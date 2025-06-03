@@ -109,11 +109,11 @@ const treeData = [
           { 
             key: 'article-fields', 
             title: (
-              <div className="text-xs leading-relaxed">
-                <div>id (主鍵), slug (唯一), title</div>
-                <div>content (MDX), metadata (JSON)</div>
-                <div>created_at, updated_at</div>
-              </div>
+              <>
+                <div className="text-xs">id (主鍵), slug (唯一), title</div>
+                <div className="text-xs">content (MDX), metadata (JSON)</div>
+                <div className="text-xs">created_at, updated_at</div>
+              </>
             ),
             isLeaf: true 
           }
@@ -126,10 +126,10 @@ const treeData = [
           { 
             key: 'tag-fields', 
             title: (
-              <div className="text-xs leading-relaxed">
-                <div>id (主鍵), name, slug (唯一)</div>
-                <div>article_count</div>
-              </div>
+              <>
+                <div className="text-xs">id (主鍵), name, slug (唯一)</div>
+                <div className="text-xs">article_count</div>
+              </>
             ),
             isLeaf: true 
           }
@@ -153,15 +153,40 @@ const treeStyles = `
     text-overflow: ellipsis;
     max-width: 400px;
   }
-  /* 允许数据库字段完整显示 */
+
+  /* --- Highly Aggressive Overrides for multi-line database field nodes --- */
+
+  /* 1. On the <li> element (treenode) */
+  .architecture-tree .rc-tree-treenode[data-key="article-fields"],
+  .architecture-tree .rc-tree-treenode[data-key="tag-fields"] {
+    height: auto !important;
+    line-height: initial !important;
+  }
+
+  /* 2. On the direct wrapper of the title content (rc-tree-node-content-wrapper) */
+  .architecture-tree .rc-tree-treenode[data-key="article-fields"] .rc-tree-node-content-wrapper,
+  .architecture-tree .rc-tree-treenode[data-key="tag-fields"] .rc-tree-node-content-wrapper {
+    height: auto !important;
+    line-height: initial !important;
+    padding: 0 !important; /* Remove padding */
+  }
+
+  /* 3. On the <span class="rc-tree-title"> which hosts our custom content */
   .architecture-tree .rc-tree-treenode[data-key="article-fields"] .rc-tree-title,
   .architecture-tree .rc-tree-treenode[data-key="tag-fields"] .rc-tree-title {
-    white-space: normal;
-    overflow: visible;
-    text-overflow: unset;
-    max-width: none;
-    line-height: 1.625; /* Increased from 1.4 to match leading-relaxed */
+    display: block !important; 
+    white-space: normal !important; 
+    overflow: visible !important;
+    text-overflow: unset !important;
+    max-width: none !important;
+    height: auto !important; 
+    line-height: initial !important; /* Neutralize its own line-height */
+    padding: 0 !important; /* Remove padding */
   }
+
+  /* Custom styles for '.rc-tree-title > div' removed. 
+     Relying on Tailwind's 'text-xs' default line-height (1rem) 
+     and the aggressive overrides on parent rc-tree elements. */
 `;
 
 export default function Stage2Architecture() {
