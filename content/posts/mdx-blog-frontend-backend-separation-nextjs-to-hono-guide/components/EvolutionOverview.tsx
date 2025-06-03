@@ -22,7 +22,7 @@ const initialNodes: Node[] = [
         <div className="text-center">
           <div className="font-bold text-lg">階段 1</div>
           <div className="text-sm mt-1">Next.js 單體應用</div>
-          <div className="text-xs text-gray-600 mt-2">
+          <div className="text-xs text-white mt-2">
             • 文件系統驅動<br/>
             • 構建時生成靜態頁面<br/>
             • 適合：少於 1,000 篇文章
@@ -66,7 +66,7 @@ const initialNodes: Node[] = [
         <div className="text-center">
           <div className="font-bold text-lg">階段 2</div>
           <div className="text-sm mt-1">Next.js + API Routes</div>
-          <div className="text-xs text-gray-600 mt-2">
+          <div className="text-xs text-white mt-2">
             • 數據庫驅動<br/>
             • API Routes 處理邏輯<br/>
             • 適合：1,000-10,000 篇
@@ -110,7 +110,7 @@ const initialNodes: Node[] = [
         <div className="text-center">
           <div className="font-bold text-lg">階段 3</div>
           <div className="text-sm mt-1">真正前後端分離</div>
-          <div className="text-xs text-gray-600 mt-2">
+          <div className="text-xs text-white mt-2">
             • Hono 獨立部署<br/>
             • 真正的前後端分離<br/>
             • 適合：10,000+ 篇文章
