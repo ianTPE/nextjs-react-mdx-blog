@@ -15,7 +15,7 @@ const FileIcon = ({ type }: { type: 'tsx' | 'sql' | 'api' | 'other' }) => {
 const nextjsTreeData = [
   {
     key: 'nextjs-app',
-    title: <div className="font-bold text-blue-700 text-base">🏗️ Next.js 應用程式</div>,
+    title: <div className="font-medium text-gray-800">📝 應用程式組成</div>,
     children: [
       {
         key: 'frontend-section',
@@ -218,6 +218,17 @@ export default function Stage2Architecture() {
           <div className="bg-green-50 p-3 rounded-lg border border-green-200">
             <div className="font-semibold text-green-800 mb-1">📦 保持簡單</div>
             <div className="text-green-700 text-xs">仍是單一服務部署</div>
+          </div>
+        </div>
+
+        {/* 項目標題 */}
+        <div className="mb-4 p-4 bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg">
+          <div className="flex items-center">
+            <span className="text-2xl mr-3">🏗️</span>
+            <div>
+              <h4 className="font-bold text-blue-800 text-lg">Next.js 應用程式</h4>
+              <p className="text-sm text-blue-600">假前後端分離，API Routes 處理邏輯</p>
+            </div>
           </div>
         </div>
 
