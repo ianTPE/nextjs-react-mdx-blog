@@ -4,14 +4,14 @@ import React from 'react';
 import Tree from 'rc-tree';
 import 'rc-tree/assets/index.css';
 
-// 簡化的圖標組件
+// 图标组件
 const FolderIcon = () => <span className="mr-1">📁</span>;
 const FileIcon = ({ type }: { type: 'tsx' | 'sql' | 'api' | 'other' }) => {
   const icons = { tsx: '⚛️', sql: '🗄️', api: '🔗', other: '📄' };
   return <span className="mr-1">{icons[type]}</span>;
 };
 
-// 簡化的樹狀結構數據
+// 树状结构数据
 const treeData = [
   {
     key: 'nextjs-app',
@@ -43,6 +43,22 @@ const treeData = [
             ]
           }
         ]
+      },
+      // API 连接标示
+      {
+        key: 'api-call-indicator',
+        title: (
+          <div className="flex items-center justify-center py-2">
+            <div className="flex items-center gap-2 text-purple-600 bg-purple-50 px-3 py-1 rounded-lg border border-purple-200">
+              <span>↓</span>
+              <span className="font-medium text-sm">API 調用</span>
+              <span>↓</span>
+            </div>
+          </div>
+        ),
+        selectable: false,
+        disabled: true,
+        isLeaf: true
       },
       {
         key: 'api-section',
@@ -80,8 +96,20 @@ const treeData = [
     ]
   },
   {
-    key: 'separator',
-    title: <div className="py-1"><hr className="border-gray-300 border-dashed" /></div>,
+    key: 'api-connection',
+    title: (
+      <div className="flex items-center justify-center py-4">
+        <div className="flex flex-col items-center gap-2">
+          <div className="w-full border-t border-gray-300 border-dashed"></div>
+          <div className="flex items-center gap-2 text-blue-600 bg-blue-50 px-4 py-2 rounded-lg border border-blue-200 shadow-sm">
+            <span className="text-lg">↓</span>
+            <span className="font-semibold text-sm">API 調用</span>
+            <span className="text-lg">↓</span>
+          </div>
+          <div className="w-full border-t border-gray-300 border-dashed"></div>
+        </div>
+      </div>
+    ),
     selectable: false,
     disabled: true,
     isLeaf: true
@@ -116,12 +144,17 @@ const treeData = [
   }
 ];
 
-// 簡化的 CSS
+// 组件样式
 const treeStyles = `
-  .simple-tree .rc-tree-treenode[data-key="separator"] .rc-tree-switcher {
+  .architecture-tree .rc-tree-treenode[data-key="api-connection"] .rc-tree-switcher,
+  .architecture-tree .rc-tree-treenode[data-key="api-call-indicator"] .rc-tree-switcher {
     display: none;
   }
-  .simple-tree .rc-tree-title {
+  .architecture-tree .rc-tree-treenode[data-key="api-call-indicator"] .rc-tree-node-content-wrapper,
+  .architecture-tree .rc-tree-treenode[data-key="api-connection"] .rc-tree-node-content-wrapper {
+    padding: 0;
+  }
+  .architecture-tree .rc-tree-title {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -172,7 +205,7 @@ export default function Stage2Architecture() {
             treeData={treeData}
             defaultExpandAll={true}
             selectable={false}
-            className="simple-tree"
+            className="architecture-tree"
             style={{ fontSize: '14px', lineHeight: '1.8' }}
           />
         </div>
