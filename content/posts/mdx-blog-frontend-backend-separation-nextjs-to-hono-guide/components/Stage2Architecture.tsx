@@ -1,41 +1,142 @@
 "use client";
 
-import React from 'react';
-import Tree from 'rc-tree';
-import 'rc-tree/assets/index.css';
+import React, { useState } from 'react';
 
 // 图标组件
-const FolderIcon = () => <span className="mr-1">📁</span>;
+const FolderIcon = () => <span className="mr-2">📁</span>;
 const FileIcon = ({ type }: { type: 'tsx' | 'sql' | 'api' | 'other' }) => {
-  const icons: Record<string, string> = {
-    tsx: '⚛️',
-    sql: '🗄️',
-    api: '🔗',
-    other: '📄'
+  const icons = { tsx: '⚛️', sql: '🗄️', api: '🔗', other: '📄' };
+  return <span className="mr-2">{icons[type]}</span>;
+};
+
+const ChevronDown = () => (
+  <svg className="w-4 h-4 transition-transform duration-200" fill="currentColor" viewBox="0 0 20 20">
+    <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+  </svg>
+);
+
+const ChevronRight = () => (
+  <svg className="w-4 h-4 transition-transform duration-200" fill="currentColor" viewBox="0 0 20 20">
+    <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+  </svg>
+);
+
+// 树节点接口
+interface TreeNode {
+  key: string;
+  title: React.ReactNode;
+  children?: TreeNode[];
+  isLeaf?: boolean;
+  selectable?: boolean;
+  disabled?: boolean;
+}
+
+// 递归树组件
+interface TreeItemProps {
+  node: TreeNode;
+  level: number;
+  defaultExpanded?: boolean;
+}
+
+const TreeItem: React.FC<TreeItemProps> = ({ node, level, defaultExpanded = false }) => {
+  const [isExpanded, setIsExpanded] = useState(defaultExpanded);
+  const hasChildren = node.children && node.children.length > 0;
+  
+  const toggleExpanded = () => {
+    if (hasChildren) {
+      setIsExpanded(!isExpanded);
+    }
   };
-  return <span className="mr-1">{icons[type]}</span>;
+
+  const paddingLeft = level * 20; // 每层缩进 20px
+
+  return (
+    <div className="select-none">
+      {/* 当前节点 */}
+      <div 
+        className={`flex items-center py-1 ${hasChildren ? 'cursor-pointer' : ''} hover:bg-gray-50`}
+        style={{ paddingLeft: `${paddingLeft}px` }}
+        onClick={toggleExpanded}
+      >
+        {/* 展开/收合图标 */}
+        <div className="w-4 h-4 flex items-center justify-center mr-1">
+          {hasChildren ? (
+            isExpanded ? <ChevronDown /> : <ChevronRight />
+          ) : null}
+        </div>
+        
+        {/* 节点内容 */}
+        <div className="flex-1 text-sm leading-relaxed">
+          {node.title}
+        </div>
+      </div>
+      
+      {/* 子节点 */}
+      {hasChildren && isExpanded && (
+        <div>
+          {node.children!.map((child) => (
+            <TreeItem 
+              key={child.key} 
+              node={child} 
+              level={level + 1}
+              defaultExpanded={true}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+// 主树组件
+interface TreeProps {
+  data: TreeNode[];
+  defaultExpandAll?: boolean;
+}
+
+const Tree: React.FC<TreeProps> = ({ data, defaultExpandAll = false }) => {
+  return (
+    <div className="text-gray-700">
+      {data.map((node) => (
+        <TreeItem 
+          key={node.key} 
+          node={node} 
+          level={0}
+          defaultExpanded={defaultExpandAll}
+        />
+      ))}
+    </div>
+  );
 };
 
 // 树状结构数据
-const treeData = [
+const treeData: TreeNode[] = [
   {
     key: 'nextjs-app',
-    title: <div>🏗️ Next.js 應用程式 (前後端混合)</div>,
+    title: <div className="font-medium text-gray-800">🏗️ Next.js 應用程式 (前後端混合)</div>,
     children: [
       {
         key: 'frontend-section',
-        title: <div>🎨 前端部分</div>,
+        title: <div className="font-medium text-purple-700">🎨 前端部分</div>,
         children: [
           {
             key: 'blog-pages',
             title: <div><FolderIcon />app/blog/ - 部落格頁面</div>,
             children: [
-              { key: 'blog-list', title: <div><FileIcon type="tsx" />page.tsx - 文章列表</div> },
+              { 
+                key: 'blog-list', 
+                title: <div><FileIcon type="tsx" />page.tsx - 文章列表</div>,
+                isLeaf: true
+              },
               {
                 key: 'blog-detail-folder',
                 title: <div><FolderIcon />[slug]/ - 動態路由</div>,
                 children: [
-                  { key: 'blog-detail', title: <div><FileIcon type="tsx" />page.tsx - 文章詳情</div> }
+                  { 
+                    key: 'blog-detail', 
+                    title: <div><FileIcon type="tsx" />page.tsx - 文章詳情</div>,
+                    isLeaf: true
+                  }
                 ]
               }
             ]
@@ -44,14 +145,18 @@ const treeData = [
             key: 'components',
             title: <div><FolderIcon />components/ - 共用組件</div>,
             children: [
-              { key: 'mdx-renderer', title: <div><FileIcon type="tsx" />MDXRenderer.tsx</div> }
+              { 
+                key: 'mdx-renderer', 
+                title: <div><FileIcon type="tsx" />MDXRenderer.tsx</div>,
+                isLeaf: true
+              }
             ]
           }
         ]
       },
       {
         key: 'api-section',
-        title: <div>🔗 API Routes 部分</div>,
+        title: <div className="font-medium text-blue-700">🔗 API Routes 部分</div>,
         children: [
           {
             key: 'api-folder',
@@ -61,12 +166,20 @@ const treeData = [
                 key: 'articles-folder',
                 title: <div><FolderIcon />articles/ - 文章 API</div>,
                 children: [
-                  { key: 'articles-list-api', title: <div><FileIcon type="api" />route.ts - GET /api/articles</div> },
+                  { 
+                    key: 'articles-list-api', 
+                    title: <div><FileIcon type="api" />route.ts - GET /api/articles</div>,
+                    isLeaf: true
+                  },
                   {
                     key: 'articles-detail-folder',
                     title: <div><FolderIcon />[slug]/ - 動態 API</div>,
                     children: [
-                      { key: 'articles-detail-api', title: <div><FileIcon type="api" />route.ts - GET /api/articles/[slug]</div> }
+                      { 
+                        key: 'articles-detail-api', 
+                        title: <div><FileIcon type="api" />route.ts - GET /api/articles/[slug]</div>,
+                        isLeaf: true
+                      }
                     ]
                   }
                 ]
@@ -75,7 +188,11 @@ const treeData = [
                 key: 'revalidate-folder',
                 title: <div><FolderIcon />revalidate/ - ISR</div>,
                 children: [
-                  { key: 'revalidate-api', title: <div><FileIcon type="api" />route.ts - POST /api/revalidate</div> }
+                  { 
+                    key: 'revalidate-api', 
+                    title: <div><FileIcon type="api" />route.ts - POST /api/revalidate</div>,
+                    isLeaf: true
+                  }
                 ]
               }
             ]
@@ -86,29 +203,45 @@ const treeData = [
   },
   {
     key: 'api-connection',
-    title: <div className="api-call-connector">API 調用</div>,
+    title: (
+      <div className="flex items-center justify-center py-6">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-full border-t border-gray-300 border-dashed"></div>
+          <div className="flex items-center gap-2 text-blue-600 bg-blue-50 px-4 py-2 rounded-lg border border-blue-200 shadow-sm">
+            <span className="text-lg">↓</span>
+            <span className="font-semibold text-sm">API 調用</span>
+            <span className="text-lg">↓</span>
+          </div>
+          <div className="w-full border-t border-gray-300 border-dashed"></div>
+        </div>
+      </div>
+    ),
     selectable: false,
     disabled: true,
     isLeaf: true
   },
   {
     key: 'database',
-    title: <div>🗄️ 數據庫層 (PostgreSQL)</div>,
+    title: <div className="font-medium text-green-700">🗄️ 數據庫層 (PostgreSQL)</div>,
     children: [
       {
         key: 'articles-table',
         title: <div><FileIcon type="sql" />articles 表</div>,
         children: [
-          {
-            key: 'article-fields',
+          { 
+            key: 'article-fields', 
             title: (
-              <div className="space-y-1">
-                <div className="text-xs">id (主鍵), slug (唯一), title</div>
-                <div className="text-xs">content (MDX), metadata (JSON)</div>
-                <div className="text-xs">created_at, updated_at</div>
+              <div className="text-xs text-gray-600 leading-relaxed bg-gray-50 p-2 rounded border">
+                <div className="mb-1"><strong>主要字段：</strong></div>
+                <div>• id (主鍵) - 文章唯一標識</div>
+                <div>• slug (唯一) - URL 友好標識</div>
+                <div>• title - 文章標題</div>
+                <div>• content (MDX) - 文章內容</div>
+                <div>• metadata (JSON) - 元數據</div>
+                <div>• created_at, updated_at - 時間戳</div>
               </div>
             ),
-            isLeaf: true
+            isLeaf: true 
           }
         ]
       },
@@ -116,15 +249,18 @@ const treeData = [
         key: 'tags-table',
         title: <div><FileIcon type="sql" />tags 表 (可選)</div>,
         children: [
-          {
-            key: 'tag-fields',
+          { 
+            key: 'tag-fields', 
             title: (
-              <div className="space-y-1">
-                <div className="text-xs">id (主鍵), name, slug (唯一)</div>
-                <div className="text-xs">article_count</div>
+              <div className="text-xs text-gray-600 leading-relaxed bg-gray-50 p-2 rounded border">
+                <div className="mb-1"><strong>字段結構：</strong></div>
+                <div>• id (主鍵) - 標籤唯一標識</div>
+                <div>• name - 標籤名稱</div>
+                <div>• slug (唯一) - URL 友好標識</div>
+                <div>• article_count - 文章數量</div>
               </div>
             ),
-            isLeaf: true
+            isLeaf: true 
           }
         ]
       }
@@ -132,61 +268,11 @@ const treeData = [
   }
 ];
 
-// 组件样式覆盖：针对 article-fields 和 tag-fields 这两项做 override
-const treeStyles = `
-  /* 1. 对于要多行显示的 <li> 节点（article-fields、tag-fields）取消固定高度和溢出隐藏 */
-  .architecture-tree .rc-tree-treenode[data-key="article-fields"],
-  .architecture-tree .rc-tree-treenode[data-key="tag-fields"] {
-    height: auto !important;
-    line-height: initial !important;
-  }
-
-  /* 2. 对这个节点里面的 .rc-tree-node-content-wrapper 也设为自适应高度，并且顶部对齐 */
-  .architecture-tree .rc-tree-treenode[data-key="article-fields"] .rc-tree-node-content-wrapper,
-  .architecture-tree .rc-tree-treenode[data-key="tag-fields"] .rc-tree-node-content-wrapper {
-    height: auto !important;
-    align-items: flex-start !important;
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
-  }
-
-  /* 3. 让 .rc-tree-title 本身可以正常换行，不再用单行截断 */
-  .architecture-tree .rc-tree-treenode[data-key="article-fields"] .rc-tree-title,
-  .architecture-tree .rc-tree-treenode[data-key="tag-fields"] .rc-tree-title {
-    display: block !important;
-    white-space: normal !important;
-    overflow: visible !important;
-    text-overflow: unset !important;
-    max-width: none !important;
-  }
-
-  /* 4. 隐藏 api-connection 节点默认的树状开关箭头（因为它本身是“虚线+文字”的装饰，不需要展开折叠箭头） */
-  .architecture-tree .rc-tree-treenode[data-key="api-connection"] .rc-tree-switcher {
-    display: none !important;
-  }
-  .architecture-tree .rc-tree-treenode[data-key="api-connection"] .rc-tree-node-content-wrapper {
-    padding: 0 !important;
-  }
-
-  /* 5. 调整所有节点标题的最大宽度，避免过长内容被截断 */
-  .architecture-tree .rc-tree-title {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 400px;
-  }
-`;
-
 export default function Stage2Architecture() {
   return (
     <div className="w-full bg-white border border-gray-200 rounded-lg overflow-hidden">
-      {/* 把自定义 CSS 插入到页面头部 */}
-      <style dangerouslySetInnerHTML={{ __html: treeStyles }} />
-
       <div className="p-4 bg-gray-50 border-b border-gray-200">
-        <h3 className="text-lg font-semibold text-gray-800">
-          階段 2：Next.js + API Routes（偽前後端分離）
-        </h3>
+        <h3 className="text-lg font-semibold text-gray-800">階段 2：Next.js + API Routes（偽前後端分離）</h3>
         <p className="text-sm text-gray-600 mt-1">
           數據庫驅動，API Routes 處理邏輯
           <span className="ml-2 text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">
@@ -194,7 +280,7 @@ export default function Stage2Architecture() {
           </span>
         </p>
       </div>
-
+      
       <div className="p-6">
         {/* 特點說明 */}
         <div className="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
@@ -214,18 +300,14 @@ export default function Stage2Architecture() {
 
         {/* 架構樹狀圖 */}
         <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-          <div className="mb-3">
+          <div className="mb-4">
             <span className="font-semibold text-gray-700">🏗️ 架構組成</span>
             <span className="ml-2 text-xs text-gray-500">點擊可展開詳細結構</span>
           </div>
-
-          <Tree
-            treeData={treeData}
-            defaultExpandAll={true}
-            selectable={false}
-            className="architecture-tree"
-            style={{ fontSize: '14px', lineHeight: '1.8' }}
-          />
+          
+          <div className="bg-white p-4 rounded border">
+            <Tree data={treeData} defaultExpandAll={true} />
+          </div>
         </div>
 
         {/* 數據流向 */}
