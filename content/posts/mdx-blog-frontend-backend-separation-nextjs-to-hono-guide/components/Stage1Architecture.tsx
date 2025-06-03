@@ -16,9 +16,14 @@ import '@xyflow/react/dist/style.css';
 
 // 自訂 Node 的 data 接口
 interface CustomNodeData {
+  // 這兩行是你真正需要的屬性
   label: React.ReactNode;
   style?: React.CSSProperties;
+
+  // 增加這一行，讓它符合 Record<string, unknown>
+  [key: string]: unknown;
 }
+
 
 // 自訂一個簡單的 node types：只把 data.style 套用到外層 div，並把 label 擺中間
 const nodeTypes = {

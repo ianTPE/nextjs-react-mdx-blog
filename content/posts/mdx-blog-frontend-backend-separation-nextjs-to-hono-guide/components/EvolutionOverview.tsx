@@ -55,7 +55,7 @@ const initialNodes: Node[] = [
       border: '1px solid #F59E0B',
       borderRadius: '8px',
       width: 150,
-      height: 60,
+      height: 65,
     }
   },
   {
@@ -99,7 +99,7 @@ const initialNodes: Node[] = [
       border: '1px solid #F59E0B',
       borderRadius: '8px',
       width: 150,
-      height: 60,
+      height: 65,
     }
   },
   {
