@@ -1,10 +1,12 @@
 "use client";
 
-import React, { useState } from 'react';
+import React from 'react';
+import Tree from 'rc-tree';
+import 'rc-tree/assets/index.css';
 
-// 图标组件
+// 自定義圖標組件
 const FolderIcon = ({ expanded }: { expanded?: boolean }) => (
-  <span className="mr-2">
+  <span className="mr-1">
     {expanded ? '📂' : '📁'}
   </span>
 );
@@ -15,111 +17,11 @@ const FileIcon = ({ type }: { type: 'tsx' | 'mdx' | 'other' }) => {
     mdx: '📝',
     other: '📄'
   };
-  return <span className="mr-2">{icons[type]}</span>;
+  return <span className="mr-1">{icons[type]}</span>;
 };
 
-const ChevronDown = () => (
-  <svg className="w-4 h-4 transition-transform duration-200" fill="currentColor" viewBox="0 0 20 20">
-    <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-  </svg>
-);
-
-const ChevronRight = () => (
-  <svg className="w-4 h-4 transition-transform duration-200" fill="currentColor" viewBox="0 0 20 20">
-    <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-  </svg>
-);
-
-// 树节点接口
-interface TreeNode {
-  key: string;
-  title: React.ReactNode;
-  children?: TreeNode[];
-  isLeaf?: boolean;
-  selectable?: boolean;
-  disabled?: boolean;
-}
-
-// 递归树组件
-interface TreeItemProps {
-  node: TreeNode;
-  level: number;
-  defaultExpanded?: boolean;
-}
-
-const TreeItem: React.FC<TreeItemProps> = ({ node, level, defaultExpanded = false }) => {
-  const [isExpanded, setIsExpanded] = useState(defaultExpanded);
-  const hasChildren = node.children && node.children.length > 0;
-  
-  const toggleExpanded = () => {
-    if (hasChildren) {
-      setIsExpanded(!isExpanded);
-    }
-  };
-
-  const paddingLeft = level * 20; // 每层缩进 20px
-
-  return (
-    <div className="select-none">
-      {/* 当前节点 */}
-      <div 
-        className={`flex items-center py-1 ${hasChildren ? 'cursor-pointer' : ''} hover:bg-gray-50`}
-        style={{ paddingLeft: `${paddingLeft}px` }}
-        onClick={toggleExpanded}
-      >
-        {/* 展开/收合图标 */}
-        <div className="w-4 h-4 flex items-center justify-center mr-1">
-          {hasChildren ? (
-            isExpanded ? <ChevronDown /> : <ChevronRight />
-          ) : null}
-        </div>
-        
-        {/* 节点内容 */}
-        <div className="flex-1 text-sm leading-relaxed">
-          {node.title}
-        </div>
-      </div>
-      
-      {/* 子节点 */}
-      {hasChildren && isExpanded && (
-        <div>
-          {node.children!.map((child) => (
-            <TreeItem 
-              key={child.key} 
-              node={child} 
-              level={level + 1}
-              defaultExpanded={true}
-            />
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
-
-// 主树组件
-interface TreeProps {
-  data: TreeNode[];
-  defaultExpandAll?: boolean;
-}
-
-const Tree: React.FC<TreeProps> = ({ data, defaultExpandAll = false }) => {
-  return (
-    <div className="text-gray-700">
-      {data.map((node) => (
-        <TreeItem 
-          key={node.key} 
-          node={node} 
-          level={0}
-          defaultExpanded={defaultExpandAll}
-        />
-      ))}
-    </div>
-  );
-};
-
-// 树状结构数据
-const treeData: TreeNode[] = [
+// 樹狀結構數據 - 在每個文章目錄下加入 components/
+const treeData = [
   {
     key: 'app',
     title: (
@@ -158,8 +60,7 @@ const treeData: TreeNode[] = [
                     <span className="text-gray-700">page.tsx</span>
                     <span className="ml-2 text-xs text-gray-500">文章詳情頁</span>
                   </div>
-                ),
-                isLeaf: true
+                )
               }
             ]
           },
@@ -171,8 +72,7 @@ const treeData: TreeNode[] = [
                 <span className="text-gray-700">page.tsx</span>
                 <span className="ml-2 text-xs text-gray-500">文章列表頁</span>
               </div>
-            ),
-            isLeaf: true
+            )
           }
         ]
       },
@@ -194,8 +94,7 @@ const treeData: TreeNode[] = [
                 <span className="text-gray-700">MDXRenderer.tsx</span>
                 <span className="ml-2 text-xs text-gray-500">MDX 渲染器</span>
               </div>
-            ),
-            isLeaf: true
+            )
           }
         ]
       }
@@ -205,7 +104,7 @@ const treeData: TreeNode[] = [
   {
     key: 'separator',
     title: (
-      <div className="py-3">
+      <div className="py-2">
         <hr className="border-gray-300 border-dashed" />
       </div>
     ),
@@ -251,8 +150,7 @@ const treeData: TreeNode[] = [
                     <span className="text-gray-700">content.mdx</span>
                     <span className="ml-2 text-xs text-gray-500">文章內容+元數據</span>
                   </div>
-                ),
-                isLeaf: true
+                )
               },
               {
                 key: 'post-1-components',
@@ -272,8 +170,7 @@ const treeData: TreeNode[] = [
                         <span className="text-gray-700">index.ts</span>
                         <span className="ml-2 text-xs text-gray-500">組件導出</span>
                       </div>
-                    ),
-                    isLeaf: true
+                    )
                   },
                   {
                     key: 'post-1-chart',
@@ -283,8 +180,7 @@ const treeData: TreeNode[] = [
                         <span className="text-gray-700">CustomChart.tsx</span>
                         <span className="ml-2 text-xs text-gray-500">自定義圖表</span>
                       </div>
-                    ),
-                    isLeaf: true
+                    )
                   }
                 ]
               }
@@ -308,8 +204,7 @@ const treeData: TreeNode[] = [
                     <span className="text-gray-700">content.mdx</span>
                     <span className="ml-2 text-xs text-gray-500">文章內容+元數據</span>
                   </div>
-                ),
-                isLeaf: true
+                )
               },
               {
                 key: 'post-2-components',
@@ -329,8 +224,7 @@ const treeData: TreeNode[] = [
                         <span className="text-gray-700">index.ts</span>
                         <span className="ml-2 text-xs text-gray-500">組件導出</span>
                       </div>
-                    ),
-                    isLeaf: true
+                    )
                   },
                   {
                     key: 'post-2-widget',
@@ -340,8 +234,7 @@ const treeData: TreeNode[] = [
                         <span className="text-gray-700">InteractiveWidget.tsx</span>
                         <span className="ml-2 text-xs text-gray-500">互動組件</span>
                       </div>
-                    ),
-                    isLeaf: true
+                    )
                   }
                 ]
               }
@@ -351,11 +244,10 @@ const treeData: TreeNode[] = [
             key: 'more-posts',
             title: (
               <div className="flex items-center">
-                <span className="mr-2">⋯</span>
+                <span className="mr-1">⋯</span>
                 <span className="text-gray-500 italic">更多文章...</span>
               </div>
-            ),
-            isLeaf: true
+            )
           }
         ]
       }
@@ -433,9 +325,26 @@ export default function Stage1Architecture() {
             </div>
           </div>
           
-          <div className="bg-white p-4 rounded border">
-            <Tree data={treeData} defaultExpandAll={true} />
-          </div>
+          {/* 添加自定義 CSS 來隱藏分隔線的連接線 */}
+          <style jsx>{`
+            .custom-tree .rc-tree-treenode[data-key="separator"] .rc-tree-switcher {
+              display: none;
+            }
+            .custom-tree .rc-tree-treenode[data-key="separator"] .rc-tree-node-content-wrapper {
+              padding: 0;
+            }
+          `}</style>
+          
+          <Tree
+            treeData={treeData}
+            defaultExpandAll={true}
+            selectable={false}
+            className="custom-tree"
+            style={{
+              fontSize: '14px',
+              lineHeight: '1.6'
+            }}
+          />
         </div>
 
         {/* 組件架構說明 */}
