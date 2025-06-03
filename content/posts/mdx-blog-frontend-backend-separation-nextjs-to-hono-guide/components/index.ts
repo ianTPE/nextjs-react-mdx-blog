@@ -6,6 +6,7 @@ import Stage3Architecture from './Stage3Architecture';
 import EvolutionOverview from './EvolutionOverview';
 import PerformanceComparison from './PerformanceComparison';
 import MarkdownDisplay from './MarkdownDisplay';
+import AsciiDiagram from './AsciiDiagram';
 
 export {
   Stage1Architecture,
@@ -13,5 +14,6 @@ export {
   Stage3Architecture,
   EvolutionOverview,
   PerformanceComparison,
-  MarkdownDisplay
+  MarkdownDisplay,
+  AsciiDiagram
 };
