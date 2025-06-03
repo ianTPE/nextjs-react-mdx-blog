@@ -160,7 +160,7 @@ const treeStyles = `
     overflow: visible;
     text-overflow: unset;
     max-width: none;
-    line-height: 1.4;
+    line-height: 1.625; /* Increased from 1.4 to match leading-relaxed */
   }
 `;
 
