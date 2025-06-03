@@ -325,13 +325,17 @@ export default function Stage1Architecture() {
             </div>
           </div>
           
-          {/* 添加自定義 CSS 來隱藏分隔線的連接線 */}
+          {/* 添加自定義 CSS 來隱藏分隔線的連接線和默認圖標 */}
           <style jsx>{`
             .custom-tree .rc-tree-treenode[data-key="separator"] .rc-tree-switcher {
               display: none;
             }
             .custom-tree .rc-tree-treenode[data-key="separator"] .rc-tree-node-content-wrapper {
               padding: 0;
+            }
+            /* 隱藏 rc-tree 的默認圖標 */
+            .custom-tree .rc-tree-iconEle {
+              display: none;
             }
           `}</style>
           
