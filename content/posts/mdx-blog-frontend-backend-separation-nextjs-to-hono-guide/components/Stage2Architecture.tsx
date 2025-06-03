@@ -108,7 +108,13 @@ const treeData = [
         children: [
           { 
             key: 'article-fields', 
-            title: <div className="text-xs">id (主鍵), slug (唯一), title, content (MDX), metadata (JSON), created_at, updated_at</div>,
+            title: (
+              <div className="text-xs leading-relaxed">
+                <div>id (主鍵), slug (唯一), title</div>
+                <div>content (MDX), metadata (JSON)</div>
+                <div>created_at, updated_at</div>
+              </div>
+            ),
             isLeaf: true 
           }
         ]
@@ -119,7 +125,12 @@ const treeData = [
         children: [
           { 
             key: 'tag-fields', 
-            title: <div className="text-xs">id (主鍵), name, slug (唯一), article_count</div>,
+            title: (
+              <div className="text-xs leading-relaxed">
+                <div>id (主鍵), name, slug (唯一)</div>
+                <div>article_count</div>
+              </div>
+            ),
             isLeaf: true 
           }
         ]
@@ -141,6 +152,15 @@ const treeStyles = `
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 400px;
+  }
+  /* 允许数据库字段完整显示 */
+  .architecture-tree .rc-tree-treenode[data-key="article-fields"] .rc-tree-title,
+  .architecture-tree .rc-tree-treenode[data-key="tag-fields"] .rc-tree-title {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+    max-width: none;
+    line-height: 1.4;
   }
 `;
 
