@@ -8,53 +8,6 @@ interface MarkdownDisplayProps {
   className?: string;
 }
 
-// Function to manually parse and render code blocks
-const renderContentWithCodeBlocks = (content: string) => {
-  if (!content) return null;
-  
-  // Regular expression to match code blocks (```...```)
-  const codeBlockRegex = /```([\s\S]*?)```/g;
-  
-  // Split content by code blocks
-  const parts = content.split(codeBlockRegex);
-  
-  // Render the content parts with appropriate handling
-  return parts.map((part, index) => {
-    // Even indices are regular markdown content
-    if (index % 2 === 0) {
-      return part ? (
-        <ReactMarkdown key={`md-${index}`} remarkPlugins={[remarkGfm]}>
-          {part}
-        </ReactMarkdown>
-      ) : null;
-    } 
-    // Odd indices are code blocks that need special rendering
-    else {
-      return (
-        <pre 
-          key={`code-${index}`}
-          style={{
-            fontFamily: 'SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-            fontSize: '14px',
-            lineHeight: '1.5',
-            whiteSpace: 'pre',
-            overflow: 'auto',
-            padding: '16px',
-            margin: '16px 0',
-            backgroundColor: '#f5f5f5',
-            border: '1px solid #e0e0e0',
-            borderRadius: '4px',
-            color: '#333',
-            tabSize: 2,
-          }}
-        >
-          {part}
-        </pre>
-      );
-    }
-  });
-};
-
 const MarkdownDisplay = ({ content, className = '' }: MarkdownDisplayProps) => {
   return (
     <div className={`markdown-display-container ${className}`}>
@@ -63,6 +16,20 @@ const MarkdownDisplay = ({ content, className = '' }: MarkdownDisplayProps) => {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
         }
         
+        /* ASCII art 樣式 */
+        .ascii-art {
+          font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+          white-space: pre;
+          text-align: left;
+          line-height: 1.2;
+          background-color: #f8f9fa;
+          padding: 1rem;
+          overflow-x: auto;
+          border: 1px solid #e5e7eb;
+          border-radius: 0.25rem;
+          color: #333;
+        }
+
         /* 主要標題樣式 - 風險：技術倡急，失去學習動力 */
         .markdown-display-container h2 {
           background-color: #2563eb;
@@ -237,7 +204,16 @@ const MarkdownDisplay = ({ content, className = '' }: MarkdownDisplayProps) => {
           white-space: pre !important;
         }
       `}</style>
-      {renderContentWithCodeBlocks(content)}
+      <ReactMarkdown 
+        remarkPlugins={[remarkGfm]}
+        components={{
+          // 為我們的代碼塊提供默認處理，不需要自定義處理
+          // 使用者可以在 MDX 中使用 <pre className="ascii-art"> 來格式化 ASCII 圖
+          code: ({children}) => <code>{children}</code>
+        }}
+      >
+        {content}
+      </ReactMarkdown>
     </div>
   );
 };
