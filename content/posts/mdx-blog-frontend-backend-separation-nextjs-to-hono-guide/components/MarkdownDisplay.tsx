@@ -8,6 +8,53 @@ interface MarkdownDisplayProps {
   className?: string;
 }
 
+// Function to manually parse and render code blocks
+const renderContentWithCodeBlocks = (content: string) => {
+  if (!content) return null;
+  
+  // Regular expression to match code blocks (```...```)
+  const codeBlockRegex = /```([\s\S]*?)```/g;
+  
+  // Split content by code blocks
+  const parts = content.split(codeBlockRegex);
+  
+  // Render the content parts with appropriate handling
+  return parts.map((part, index) => {
+    // Even indices are regular markdown content
+    if (index % 2 === 0) {
+      return part ? (
+        <ReactMarkdown key={`md-${index}`} remarkPlugins={[remarkGfm]}>
+          {part}
+        </ReactMarkdown>
+      ) : null;
+    } 
+    // Odd indices are code blocks that need special rendering
+    else {
+      return (
+        <pre 
+          key={`code-${index}`}
+          style={{
+            fontFamily: 'SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+            fontSize: '14px',
+            lineHeight: '1.5',
+            whiteSpace: 'pre',
+            overflow: 'auto',
+            padding: '16px',
+            margin: '16px 0',
+            backgroundColor: '#f5f5f5',
+            border: '1px solid #e0e0e0',
+            borderRadius: '4px',
+            color: '#333',
+            tabSize: 2,
+          }}
+        >
+          {part}
+        </pre>
+      );
+    }
+  });
+};
+
 const MarkdownDisplay = ({ content, className = '' }: MarkdownDisplayProps) => {
   return (
     <div className={`markdown-display-container ${className}`}>
@@ -190,7 +237,7 @@ const MarkdownDisplay = ({ content, className = '' }: MarkdownDisplayProps) => {
           white-space: pre !important;
         }
       `}</style>
-      <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
+      {renderContentWithCodeBlocks(content)}
     </div>
   );
 };
