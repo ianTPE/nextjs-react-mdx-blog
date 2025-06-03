@@ -36,7 +36,7 @@ const initialNodes: Node[] = [
       border: '2px solid #1E40AF',
       borderRadius: '12px',
       width: 200,
-      height: 120,
+      height: 130,
     }
   },
   {
@@ -80,7 +80,7 @@ const initialNodes: Node[] = [
       border: '2px solid #7C3AED',
       borderRadius: '12px',
       width: 200,
-      height: 120,
+      height: 130,
     }
   },
   {
@@ -124,7 +124,7 @@ const initialNodes: Node[] = [
       border: '2px solid #B91C1C',
       borderRadius: '12px',
       width: 200,
-      height: 120,
+      height: 130,
     }
   },
   {
