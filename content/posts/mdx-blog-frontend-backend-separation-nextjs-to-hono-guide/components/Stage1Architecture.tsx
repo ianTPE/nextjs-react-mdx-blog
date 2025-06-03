@@ -20,7 +20,7 @@ const FileIcon = ({ type }: { type: 'tsx' | 'mdx' | 'other' }) => {
   return <span className="mr-1">{icons[type]}</span>;
 };
 
-// 樹狀結構數據 - 在中間加入分隔線
+// 樹狀結構數據 - 在每個文章目錄下加入 components/
 const treeData = [
   {
     key: 'app',
@@ -82,7 +82,7 @@ const treeData = [
           <div className="flex items-center">
             <FolderIcon />
             <span className="font-medium text-blue-600">components/</span>
-            <span className="ml-2 text-xs text-gray-500">共用組件</span>
+            <span className="ml-2 text-xs text-gray-500">全域共用組件</span>
           </div>
         ),
         children: [
@@ -151,6 +151,38 @@ const treeData = [
                     <span className="ml-2 text-xs text-gray-500">文章內容+元數據</span>
                   </div>
                 )
+              },
+              {
+                key: 'post-1-components',
+                title: (
+                  <div className="flex items-center">
+                    <FolderIcon />
+                    <span className="font-medium text-orange-600">components/</span>
+                    <span className="ml-2 text-xs text-gray-500">本文專用組件</span>
+                  </div>
+                ),
+                children: [
+                  {
+                    key: 'post-1-index',
+                    title: (
+                      <div className="flex items-center">
+                        <FileIcon type="tsx" />
+                        <span className="text-gray-700">index.ts</span>
+                        <span className="ml-2 text-xs text-gray-500">組件導出</span>
+                      </div>
+                    )
+                  },
+                  {
+                    key: 'post-1-chart',
+                    title: (
+                      <div className="flex items-center">
+                        <FileIcon type="tsx" />
+                        <span className="text-gray-700">CustomChart.tsx</span>
+                        <span className="ml-2 text-xs text-gray-500">自定義圖表</span>
+                      </div>
+                    )
+                  }
+                ]
               }
             ]
           },
@@ -173,6 +205,38 @@ const treeData = [
                     <span className="ml-2 text-xs text-gray-500">文章內容+元數據</span>
                   </div>
                 )
+              },
+              {
+                key: 'post-2-components',
+                title: (
+                  <div className="flex items-center">
+                    <FolderIcon />
+                    <span className="font-medium text-orange-600">components/</span>
+                    <span className="ml-2 text-xs text-gray-500">本文專用組件</span>
+                  </div>
+                ),
+                children: [
+                  {
+                    key: 'post-2-index',
+                    title: (
+                      <div className="flex items-center">
+                        <FileIcon type="tsx" />
+                        <span className="text-gray-700">index.ts</span>
+                        <span className="ml-2 text-xs text-gray-500">組件導出</span>
+                      </div>
+                    )
+                  },
+                  {
+                    key: 'post-2-widget',
+                    title: (
+                      <div className="flex items-center">
+                        <FileIcon type="tsx" />
+                        <span className="text-gray-700">InteractiveWidget.tsx</span>
+                        <span className="ml-2 text-xs text-gray-500">互動組件</span>
+                      </div>
+                    )
+                  }
+                ]
               }
             ]
           },
@@ -245,7 +309,7 @@ export default function Stage1Architecture() {
               <span className="font-semibold text-gray-700">📁 項目文件結構</span>
               <span className="ml-2 text-xs text-gray-500">點擊文件夾可展開/收起</span>
             </div>
-            <div className="text-xs text-gray-500 flex items-center gap-4">
+            <div className="text-xs text-gray-500 flex items-center gap-3">
               <div className="flex items-center">
                 <span className="w-3 h-3 bg-blue-100 border border-blue-300 rounded mr-1"></span>
                 <span>前端</span>
@@ -253,6 +317,10 @@ export default function Stage1Architecture() {
               <div className="flex items-center">
                 <span className="w-3 h-3 bg-green-100 border border-green-300 rounded mr-1"></span>
                 <span>內容</span>
+              </div>
+              <div className="flex items-center">
+                <span className="w-3 h-3 bg-orange-100 border border-orange-300 rounded mr-1"></span>
+                <span>組件</span>
               </div>
             </div>
           </div>
@@ -279,14 +347,25 @@ export default function Stage1Architecture() {
           />
         </div>
 
+        {/* 組件架構說明 */}
+        <div className="mt-6 p-4 bg-orange-50 border border-orange-200 rounded-lg">
+          <div className="font-semibold text-orange-800 mb-2">🧩 組件架構</div>
+          <div className="text-sm text-orange-700 space-y-1">
+            <div>• <strong>全域組件</strong>: <code className="bg-orange-100 px-1 rounded">app/components/</code> - 所有文章共用</div>
+            <div>• <strong>本地組件</strong>: <code className="bg-orange-100 px-1 rounded">content/posts/[slug]/components/</code> - 文章專用</div>
+            <div>• <strong>Barrel 導出</strong>: <code className="bg-orange-100 px-1 rounded">index.ts</code> 統一導出，MDX 中無需 import</div>
+            <div>• <strong>覆蓋機制</strong>: 本地組件優先於全域組件</div>
+          </div>
+        </div>
+
         {/* 工作流程 */}
         <div className="mt-6 p-4 bg-amber-50 border border-amber-200 rounded-lg">
           <div className="font-semibold text-amber-800 mb-2">⚙️ 工作流程</div>
           <div className="text-sm text-amber-700 space-y-1">
-            <div>1. 在 <code className="bg-amber-100 px-1 rounded">content/posts/</code> 創建 MDX 文件</div>
-            <div>2. 構建時掃描所有文件，生成靜態頁面</div>
-            <div>3. <code className="bg-amber-100 px-1 rounded">getPostBySlug()</code> 讀取文件系統獲取內容</div>
-            <div>4. MDXRenderer 渲染 Markdown + JSX 組件</div>
+            <div>1. 在 <code className="bg-amber-100 px-1 rounded">content/posts/[slug]/</code> 創建文章目錄</div>
+            <div>2. 添加 <code className="bg-amber-100 px-1 rounded">content.mdx</code> 和可選的 <code className="bg-amber-100 px-1 rounded">components/</code></div>
+            <div>3. 構建時掃描所有文件，生成靜態頁面</div>
+            <div>4. MDXRenderer 自動載入本地組件並渲染內容</div>
           </div>
         </div>
 
