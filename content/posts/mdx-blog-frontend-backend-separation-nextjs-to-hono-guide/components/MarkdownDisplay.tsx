@@ -164,6 +164,31 @@ const MarkdownDisplay = ({ content, className = '' }: MarkdownDisplayProps) => {
         .markdown-display-container li::marker {
           content: none;
         }
+        
+        /* Code block styling for ASCII art */
+        .markdown-display-container pre {
+          background-color: #f8f9fa;
+          border: 1px solid #e5e7eb;
+          border-radius: 0.25rem;
+          padding: 1rem;
+          margin: 1rem 0;
+          overflow-x: auto;
+          white-space: pre;
+        }
+        
+        .markdown-display-container code {
+          font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+          font-size: 0.875rem;
+          line-height: 1.5;
+          white-space: pre;
+          display: block;
+          color: #374151;
+        }
+        
+        /* Override any whitespace transformation */
+        .markdown-display-container pre > code {
+          white-space: pre !important;
+        }
       `}</style>
       <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
     </div>
