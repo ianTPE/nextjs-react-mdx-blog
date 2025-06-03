@@ -1,35 +1,37 @@
 "use client";
 
 import React from 'react';
-import ReactFlow, {
+import {
+  ReactFlow,
   Background,
   Controls,
   Node,
   Edge,
-  NodeProps
-} from 'reactflow';
-import 'reactflow/dist/style.css';
+  useNodesState,
+  useEdgesState,
+  Panel
+} from '@xyflow/react';
+import '@xyflow/react/dist/style.css';
 
 // Define custom node types
 interface CustomNodeData {
   label: React.ReactNode;
   style?: React.CSSProperties;
+  [key: string]: unknown; // Add index signature to satisfy TypeScript
 }
 
 const nodeTypes = {
-  default: (props: NodeProps<CustomNodeData>) => {
-    return (
-      <div 
-        style={props.data.style} 
-        className="flex items-center justify-center p-2 text-center"
-      >
-        {props.data.label}
-      </div>
-    );
-  }
+  default: ({ data }: { data: CustomNodeData }) => (
+    <div 
+      style={data.style} 
+      className="flex items-center justify-center p-2 text-center"
+    >
+      {data.label}
+    </div>
+  )
 };
 
-const nodes: Node[] = [
+const initialNodes: Node<CustomNodeData>[] = [
   {
     id: 'nextjs-app',
     type: 'default',
@@ -119,7 +121,7 @@ const nodes: Node[] = [
   }
 ];
 
-const edges: Edge[] = [
+const initialEdges: Edge[] = [
   {
     id: 'app-frontend',
     source: 'nextjs-app',
@@ -146,13 +148,11 @@ const edges: Edge[] = [
   }
 ];
 
-const defaultViewport = { x: 0, y: 0, zoom: 0.8 };
-
-const proOptions = {
-  hideAttribution: true,
-};
-
 const Stage1Architecture = () => {
+  const [nodes, , onNodesChange] = useNodesState(initialNodes);
+  const [edges, , onEdgesChange] = useEdgesState(initialEdges);
+  
+  const proOptions = { hideAttribution: true };
   return (
     <div className="w-full bg-white border border-gray-200 rounded-lg overflow-hidden">
       <div className="p-4 bg-gray-50 border-b border-gray-200">
@@ -164,12 +164,19 @@ const Stage1Architecture = () => {
           nodes={nodes}
           edges={edges}
           nodeTypes={nodeTypes}
-          defaultViewport={defaultViewport}
           proOptions={proOptions}
           fitView
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          defaultViewport={{ x: 0, y: 0, zoom: 0.8 }}
         >
           <Background color="#aaa" gap={16} />
           <Controls />
+          <Panel position="top-right">
+            <div className="bg-white p-2 rounded shadow text-xs text-gray-600">
+              架構圖
+            </div>
+          </Panel>
         </ReactFlow>
       </div>
     </div>
