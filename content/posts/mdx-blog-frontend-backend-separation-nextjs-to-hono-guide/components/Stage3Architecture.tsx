@@ -384,9 +384,21 @@ const treeData = [
   }
 ];
 
+// 自定義 CSS 來隱藏分隔線的樹狀連接線
+const customTreeStyles = `
+  .stage3-custom-tree .rc-tree-treenode[data-key^="separator"] .rc-tree-switcher {
+    display: none;
+  }
+  .stage3-custom-tree .rc-tree-treenode[data-key^="separator"] .rc-tree-node-content-wrapper {
+    padding: 0;
+  }
+`;
+
 export default function Stage3Architecture() {
   return (
     <div className="w-full bg-white border border-gray-200 rounded-lg overflow-hidden">
+      <style dangerouslySetInnerHTML={{ __html: customTreeStyles }} />
+      
       <div className="p-4 bg-gray-50 border-b border-gray-200">
         <h3 className="text-lg font-semibold text-gray-800">階段 3：Next.js 前端 + 獨立 API 層（真正分離）</h3>
         <p className="text-sm text-gray-600 mt-1">
@@ -443,20 +455,11 @@ export default function Stage3Architecture() {
             </div>
           </div>
           
-          <style jsx>{`
-            .custom-tree .rc-tree-treenode[data-key^="separator"] .rc-tree-switcher {
-              display: none;
-            }
-            .custom-tree .rc-tree-treenode[data-key^="separator"] .rc-tree-node-content-wrapper {
-              padding: 0;
-            }
-          `}</style>
-          
           <Tree
             treeData={treeData}
             defaultExpandAll={true}
             selectable={false}
-            className="custom-tree"
+            className="stage3-custom-tree"
             style={{
               fontSize: '14px',
               lineHeight: '1.6'
