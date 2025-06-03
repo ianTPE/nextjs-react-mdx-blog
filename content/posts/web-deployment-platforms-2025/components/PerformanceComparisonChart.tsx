@@ -5,6 +5,7 @@ import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
+  LogarithmicScale,
   BarElement,
   Title,
   Tooltip,
@@ -13,7 +14,7 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, LogarithmicScale, BarElement, Title, Tooltip, Legend);
 
 interface PerformanceData {
   platform: string;
@@ -128,6 +129,7 @@ const PerformanceComparisonChart: React.FC = () => {
       },
       y: {
         type: 'logarithmic' as const,
+        min: 1,
         display: true,
         position: 'left' as const,
         title: {

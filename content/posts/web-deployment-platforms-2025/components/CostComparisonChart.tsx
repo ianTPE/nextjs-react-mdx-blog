@@ -5,6 +5,7 @@ import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
+  LogarithmicScale,
   BarElement,
   LineElement,
   PointElement,
@@ -18,6 +19,7 @@ import { Bar } from 'react-chartjs-2';
 ChartJS.register(
   CategoryScale,
   LinearScale,
+  LogarithmicScale,
   BarElement,
   LineElement,
   PointElement,
@@ -37,9 +39,9 @@ const CostComparisonChart: React.FC = () => {
   const costData: CostData[] = [
     {
       scale: '小型專案\n(<10萬 PV/月)',
-      cloudflareWorkers: 0,
-      vercel: 0,
-      netlify: 0
+      cloudflareWorkers: 1, // 改為 1 而非 0，避免對數刻度問題
+      vercel: 1,
+      netlify: 1
     },
     {
       scale: '中型專案\n(100萬 PV/月)',
@@ -113,6 +115,10 @@ const CostComparisonChart: React.FC = () => {
           label: function(context) {
             const label = context.dataset.label || '';
             const value = context.parsed.y;
+            // 對於小型專案，顯示免費
+            if (context.dataIndex === 0) {
+              return `${label}: 免費`;
+            }
             return `${label}: $${value.toLocaleString()}/月`;
           },
           afterLabel: function(context) {
@@ -143,6 +149,7 @@ const CostComparisonChart: React.FC = () => {
       },
       y: {
         type: 'logarithmic' as const,
+        min: 1,
         title: {
           display: true,
           text: '月度成本 (USD) - 對數刻度'
@@ -152,7 +159,7 @@ const CostComparisonChart: React.FC = () => {
         },
         ticks: {
           callback: function(value) {
-            if (value === 0) return '$0';
+            if (Number(value) === 1) return '免費';
             return '$' + Number(value).toLocaleString();
           }
         }
