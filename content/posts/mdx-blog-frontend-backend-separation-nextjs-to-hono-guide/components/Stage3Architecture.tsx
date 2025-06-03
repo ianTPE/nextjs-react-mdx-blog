@@ -1,12 +1,10 @@
 "use client";
 
-import React from 'react';
-import Tree from 'rc-tree';
-import 'rc-tree/assets/index.css';
+import React, { useState } from 'react';
 
-// 自定義圖標組件
+// 图标组件
 const FolderIcon = ({ expanded }: { expanded?: boolean }) => (
-  <span className="mr-1">
+  <span className="mr-2">
     {expanded ? '📂' : '📁'}
   </span>
 );
@@ -18,11 +16,111 @@ const FileIcon = ({ type }: { type: 'tsx' | 'api' | 'config' | 'other' }) => {
     config: '⚙️',
     other: '📄'
   };
-  return <span className="mr-1">{icons[type]}</span>;
+  return <span className="mr-2">{icons[type]}</span>;
 };
 
-// 階段3架構：完全前後端分離
-const treeData = [
+const ChevronDown = () => (
+  <svg className="w-4 h-4 transition-transform duration-200" fill="currentColor" viewBox="0 0 20 20">
+    <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+  </svg>
+);
+
+const ChevronRight = () => (
+  <svg className="w-4 h-4 transition-transform duration-200" fill="currentColor" viewBox="0 0 20 20">
+    <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+  </svg>
+);
+
+// 树节点接口
+interface TreeNode {
+  key: string;
+  title: React.ReactNode;
+  children?: TreeNode[];
+  isLeaf?: boolean;
+  selectable?: boolean;
+  disabled?: boolean;
+}
+
+// 递归树组件
+interface TreeItemProps {
+  node: TreeNode;
+  level: number;
+  defaultExpanded?: boolean;
+}
+
+const TreeItem: React.FC<TreeItemProps> = ({ node, level, defaultExpanded = false }) => {
+  const [isExpanded, setIsExpanded] = useState(defaultExpanded);
+  const hasChildren = node.children && node.children.length > 0;
+  
+  const toggleExpanded = () => {
+    if (hasChildren) {
+      setIsExpanded(!isExpanded);
+    }
+  };
+
+  const paddingLeft = level * 20; // 每层缩进 20px
+
+  return (
+    <div className="select-none">
+      {/* 当前节点 */}
+      <div 
+        className={`flex items-center py-1 ${hasChildren ? 'cursor-pointer' : ''} hover:bg-gray-50`}
+        style={{ paddingLeft: `${paddingLeft}px` }}
+        onClick={toggleExpanded}
+      >
+        {/* 展开/收合图标 */}
+        <div className="w-4 h-4 flex items-center justify-center mr-1">
+          {hasChildren ? (
+            isExpanded ? <ChevronDown /> : <ChevronRight />
+          ) : null}
+        </div>
+        
+        {/* 节点内容 */}
+        <div className="flex-1 text-sm leading-relaxed">
+          {node.title}
+        </div>
+      </div>
+      
+      {/* 子节点 */}
+      {hasChildren && isExpanded && (
+        <div>
+          {node.children!.map((child) => (
+            <TreeItem 
+              key={child.key} 
+              node={child} 
+              level={level + 1}
+              defaultExpanded={true}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+// 主树组件
+interface TreeProps {
+  data: TreeNode[];
+  defaultExpandAll?: boolean;
+}
+
+const Tree: React.FC<TreeProps> = ({ data, defaultExpandAll = false }) => {
+  return (
+    <div className="text-gray-700">
+      {data.map((node) => (
+        <TreeItem 
+          key={node.key} 
+          node={node} 
+          level={0}
+          defaultExpanded={defaultExpandAll}
+        />
+      ))}
+    </div>
+  );
+};
+
+// 树状结构数据
+const treeData: TreeNode[] = [
   {
     key: 'frontend-service',
     title: (
@@ -53,7 +151,8 @@ const treeData = [
                 <span className="text-gray-700">page.tsx</span>
                 <span className="ml-2 text-xs text-gray-500">文章列表 (呼叫 api.blog.com)</span>
               </div>
-            )
+            ),
+            isLeaf: true
           },
           {
             key: 'blog-detail-folder-fe',
@@ -73,7 +172,8 @@ const treeData = [
                     <span className="text-gray-700">page.tsx</span>
                     <span className="ml-2 text-xs text-gray-500">文章詳情 (跨域 API 呼叫)</span>
                   </div>
-                )
+                ),
+                isLeaf: true
               }
             ]
           }
@@ -97,7 +197,8 @@ const treeData = [
                 <span className="text-gray-700">api.ts</span>
                 <span className="ml-2 text-xs text-gray-500">API 客戶端 (HTTPS 呼叫)</span>
               </div>
-            )
+            ),
+            isLeaf: true
           }
         ]
       },
@@ -120,7 +221,7 @@ const treeData = [
   {
     key: 'separator1',
     title: (
-      <div className="py-2">
+      <div className="py-3">
         <hr className="border-gray-300 border-dashed" />
       </div>
     ),
@@ -158,7 +259,8 @@ const treeData = [
                 <span className="text-gray-700">articles.ts</span>
                 <span className="ml-2 text-xs text-gray-500">文章 CRUD API</span>
               </div>
-            )
+            ),
+            isLeaf: true
           },
           {
             key: 'auth-routes',
@@ -168,7 +270,8 @@ const treeData = [
                 <span className="text-gray-700">auth.ts</span>
                 <span className="ml-2 text-xs text-gray-500">認證 API</span>
               </div>
-            )
+            ),
+            isLeaf: true
           },
           {
             key: 'search-routes',
@@ -178,7 +281,8 @@ const treeData = [
                 <span className="text-gray-700">search.ts</span>
                 <span className="ml-2 text-xs text-gray-500">搜索 API</span>
               </div>
-            )
+            ),
+            isLeaf: true
           },
           {
             key: 'upload-routes',
@@ -188,7 +292,8 @@ const treeData = [
                 <span className="text-gray-700">upload.ts</span>
                 <span className="ml-2 text-xs text-gray-500">文件上傳 API</span>
               </div>
-            )
+            ),
+            isLeaf: true
           }
         ]
       },
@@ -210,7 +315,8 @@ const treeData = [
                 <span className="text-gray-700">auth.ts</span>
                 <span className="ml-2 text-xs text-gray-500">JWT 認證</span>
               </div>
-            )
+            ),
+            isLeaf: true
           },
           {
             key: 'cache-middleware',
@@ -220,7 +326,8 @@ const treeData = [
                 <span className="text-gray-700">cache.ts</span>
                 <span className="ml-2 text-xs text-gray-500">KV 緩存</span>
               </div>
-            )
+            ),
+            isLeaf: true
           },
           {
             key: 'cors-middleware',
@@ -230,7 +337,8 @@ const treeData = [
                 <span className="text-gray-700">cors.ts</span>
                 <span className="ml-2 text-xs text-gray-500">跨域處理</span>
               </div>
-            )
+            ),
+            isLeaf: true
           }
         ]
       },
@@ -264,7 +372,7 @@ const treeData = [
   {
     key: 'separator2',
     title: (
-      <div className="py-2">
+      <div className="py-3">
         <hr className="border-gray-300 border-dashed" />
       </div>
     ),
@@ -299,7 +407,8 @@ const treeData = [
           {
             key: 'pg-tables',
             title: (
-              <div className="text-xs text-gray-600 leading-relaxed">
+              <div className="text-xs text-gray-600 leading-relaxed bg-gray-50 p-2 rounded border">
+                <div className="mb-1"><strong>數據表：</strong></div>
                 <div>• articles, tags, users</div>
                 <div>• 事務支援、關聯查詢</div>
               </div>
@@ -323,7 +432,8 @@ const treeData = [
           {
             key: 'redis-cache',
             title: (
-              <div className="text-xs text-gray-600 leading-relaxed">
+              <div className="text-xs text-gray-600 leading-relaxed bg-gray-50 p-2 rounded border">
+                <div className="mb-1"><strong>緩存策略：</strong></div>
                 <div>• API 響應緩存</div>
                 <div>• 搜索結果緩存</div>
               </div>
@@ -347,7 +457,8 @@ const treeData = [
           {
             key: 'r2-files',
             title: (
-              <div className="text-xs text-gray-600 leading-relaxed">
+              <div className="text-xs text-gray-600 leading-relaxed bg-gray-50 p-2 rounded border">
+                <div className="mb-1"><strong>存儲內容：</strong></div>
                 <div>• 圖片、文件上傳</div>
                 <div>• CDN 加速</div>
               </div>
@@ -371,7 +482,8 @@ const treeData = [
           {
             key: 'es-search',
             title: (
-              <div className="text-xs text-gray-600 leading-relaxed">
+              <div className="text-xs text-gray-600 leading-relaxed bg-gray-50 p-2 rounded border">
+                <div className="mb-1"><strong>搜索功能：</strong></div>
                 <div>• 文章全文搜索</div>
                 <div>• 標籤、分類索引</div>
               </div>
@@ -384,21 +496,9 @@ const treeData = [
   }
 ];
 
-// 自定義 CSS 來隱藏分隔線的樹狀連接線
-const customTreeStyles = `
-  .stage3-custom-tree .rc-tree-treenode[data-key^="separator"] .rc-tree-switcher {
-    display: none;
-  }
-  .stage3-custom-tree .rc-tree-treenode[data-key^="separator"] .rc-tree-node-content-wrapper {
-    padding: 0;
-  }
-`;
-
 export default function Stage3Architecture() {
   return (
     <div className="w-full bg-white border border-gray-200 rounded-lg overflow-hidden">
-      <style dangerouslySetInnerHTML={{ __html: customTreeStyles }} />
-      
       <div className="p-4 bg-gray-50 border-b border-gray-200">
         <h3 className="text-lg font-semibold text-gray-800">階段 3：Next.js 前端 + 獨立 API 層（真正分離）</h3>
         <p className="text-sm text-gray-600 mt-1">
@@ -455,16 +555,9 @@ export default function Stage3Architecture() {
             </div>
           </div>
           
-          <Tree
-            treeData={treeData}
-            defaultExpandAll={true}
-            selectable={false}
-            className="stage3-custom-tree"
-            style={{
-              fontSize: '14px',
-              lineHeight: '1.6'
-            }}
-          />
+          <div className="bg-white p-4 rounded border">
+            <Tree data={treeData} defaultExpandAll={true} />
+          </div>
         </div>
 
         {/* 服務通信 */}
