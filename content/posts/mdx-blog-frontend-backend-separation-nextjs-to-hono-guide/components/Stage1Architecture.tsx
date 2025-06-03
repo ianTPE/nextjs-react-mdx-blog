@@ -20,168 +20,158 @@ const FileIcon = ({ type }: { type: 'tsx' | 'mdx' | 'other' }) => {
   return <span className="mr-1">{icons[type]}</span>;
 };
 
-// 樹狀結構數據
+// 樹狀結構數據 - 直接從根目錄開始
 const treeData = [
   {
-    key: 'nextjs-app',
+    key: 'app',
     title: (
       <div className="flex items-center">
-        <span className="font-bold text-blue-600 text-lg">🏗️ Next.js 應用程式</span>
+        <FolderIcon />
+        <span className="font-semibold text-blue-700">app/</span>
+        <span className="ml-2 text-xs text-gray-500">前端應用路由</span>
       </div>
     ),
     children: [
       {
-        key: 'app',
+        key: 'blog-folder',
         title: (
           <div className="flex items-center">
             <FolderIcon />
-            <span className="font-semibold text-blue-700">app/</span>
-            <span className="ml-2 text-xs text-gray-500">前端應用路由</span>
+            <span className="font-medium text-blue-600">blog/</span>
+            <span className="ml-2 text-xs text-gray-500">部落格頁面</span>
           </div>
         ),
         children: [
           {
-            key: 'blog-folder',
+            key: 'slug-folder',
             title: (
               <div className="flex items-center">
                 <FolderIcon />
-                <span className="font-medium text-blue-600">blog/</span>
-                <span className="ml-2 text-xs text-gray-500">部落格頁面</span>
+                <span className="font-medium text-purple-600 italic">[slug]/</span>
+                <span className="ml-2 text-xs text-gray-500">動態路由</span>
               </div>
             ),
             children: [
               {
-                key: 'slug-folder',
-                title: (
-                  <div className="flex items-center">
-                    <FolderIcon />
-                    <span className="font-medium text-purple-600 italic">[slug]/</span>
-                    <span className="ml-2 text-xs text-gray-500">動態路由</span>
-                  </div>
-                ),
-                children: [
-                  {
-                    key: 'slug-page',
-                    title: (
-                      <div className="flex items-center">
-                        <FileIcon type="tsx" />
-                        <span className="text-gray-700">page.tsx</span>
-                        <span className="ml-2 text-xs text-gray-500">文章詳情頁</span>
-                      </div>
-                    )
-                  }
-                ]
-              },
-              {
-                key: 'blog-page',
+                key: 'slug-page',
                 title: (
                   <div className="flex items-center">
                     <FileIcon type="tsx" />
                     <span className="text-gray-700">page.tsx</span>
-                    <span className="ml-2 text-xs text-gray-500">文章列表頁</span>
+                    <span className="ml-2 text-xs text-gray-500">文章詳情頁</span>
                   </div>
                 )
               }
             ]
           },
           {
-            key: 'components',
+            key: 'blog-page',
             title: (
               <div className="flex items-center">
-                <FolderIcon />
-                <span className="font-medium text-blue-600">components/</span>
-                <span className="ml-2 text-xs text-gray-500">共用組件</span>
+                <FileIcon type="tsx" />
+                <span className="text-gray-700">page.tsx</span>
+                <span className="ml-2 text-xs text-gray-500">文章列表頁</span>
               </div>
-            ),
-            children: [
-              {
-                key: 'mdx-renderer',
-                title: (
-                  <div className="flex items-center">
-                    <FileIcon type="tsx" />
-                    <span className="text-gray-700">MDXRenderer.tsx</span>
-                    <span className="ml-2 text-xs text-gray-500">MDX 渲染器</span>
-                  </div>
-                )
-              }
-            ]
+            )
           }
         ]
       },
       {
-        key: 'content',
+        key: 'components',
         title: (
           <div className="flex items-center">
             <FolderIcon />
-            <span className="font-semibold text-green-700">content/</span>
-            <span className="ml-2 text-xs text-gray-500">文章內容存儲</span>
+            <span className="font-medium text-blue-600">components/</span>
+            <span className="ml-2 text-xs text-gray-500">共用組件</span>
           </div>
         ),
         children: [
           {
-            key: 'posts',
+            key: 'mdx-renderer',
+            title: (
+              <div className="flex items-center">
+                <FileIcon type="tsx" />
+                <span className="text-gray-700">MDXRenderer.tsx</span>
+                <span className="ml-2 text-xs text-gray-500">MDX 渲染器</span>
+              </div>
+            )
+          }
+        ]
+      }
+    ]
+  },
+  {
+    key: 'content',
+    title: (
+      <div className="flex items-center">
+        <FolderIcon />
+        <span className="font-semibold text-green-700">content/</span>
+        <span className="ml-2 text-xs text-gray-500">文章內容存儲</span>
+      </div>
+    ),
+    children: [
+      {
+        key: 'posts',
+        title: (
+          <div className="flex items-center">
+            <FolderIcon />
+            <span className="font-medium text-green-600">posts/</span>
+            <span className="ml-2 text-xs text-gray-500">所有文章</span>
+          </div>
+        ),
+        children: [
+          {
+            key: 'post-1',
             title: (
               <div className="flex items-center">
                 <FolderIcon />
-                <span className="font-medium text-green-600">posts/</span>
-                <span className="ml-2 text-xs text-gray-500">所有文章</span>
+                <span className="font-medium text-green-500 italic">post-1/</span>
+                <span className="ml-2 text-xs text-gray-500">第一篇文章</span>
               </div>
             ),
             children: [
               {
-                key: 'post-1',
+                key: 'post-1-content',
                 title: (
                   <div className="flex items-center">
-                    <FolderIcon />
-                    <span className="font-medium text-green-500 italic">post-1/</span>
-                    <span className="ml-2 text-xs text-gray-500">第一篇文章</span>
-                  </div>
-                ),
-                children: [
-                  {
-                    key: 'post-1-content',
-                    title: (
-                      <div className="flex items-center">
-                        <FileIcon type="mdx" />
-                        <span className="text-gray-700">content.mdx</span>
-                        <span className="ml-2 text-xs text-gray-500">文章內容+元數據</span>
-                      </div>
-                    )
-                  }
-                ]
-              },
-              {
-                key: 'post-2',
-                title: (
-                  <div className="flex items-center">
-                    <FolderIcon />
-                    <span className="font-medium text-green-500 italic">post-2/</span>
-                    <span className="ml-2 text-xs text-gray-500">第二篇文章</span>
-                  </div>
-                ),
-                children: [
-                  {
-                    key: 'post-2-content',
-                    title: (
-                      <div className="flex items-center">
-                        <FileIcon type="mdx" />
-                        <span className="text-gray-700">content.mdx</span>
-                        <span className="ml-2 text-xs text-gray-500">文章內容+元數據</span>
-                      </div>
-                    )
-                  }
-                ]
-              },
-              {
-                key: 'more-posts',
-                title: (
-                  <div className="flex items-center">
-                    <span className="mr-1">⋯</span>
-                    <span className="text-gray-500 italic">更多文章...</span>
+                    <FileIcon type="mdx" />
+                    <span className="text-gray-700">content.mdx</span>
+                    <span className="ml-2 text-xs text-gray-500">文章內容+元數據</span>
                   </div>
                 )
               }
             ]
+          },
+          {
+            key: 'post-2',
+            title: (
+              <div className="flex items-center">
+                <FolderIcon />
+                <span className="font-medium text-green-500 italic">post-2/</span>
+                <span className="ml-2 text-xs text-gray-500">第二篇文章</span>
+              </div>
+            ),
+            children: [
+              {
+                key: 'post-2-content',
+                title: (
+                  <div className="flex items-center">
+                    <FileIcon type="mdx" />
+                    <span className="text-gray-700">content.mdx</span>
+                    <span className="ml-2 text-xs text-gray-500">文章內容+元數據</span>
+                  </div>
+                )
+              }
+            ]
+          },
+          {
+            key: 'more-posts',
+            title: (
+              <div className="flex items-center">
+                <span className="mr-1">⋯</span>
+                <span className="text-gray-500 italic">更多文章...</span>
+              </div>
+            )
           }
         ]
       }
@@ -221,6 +211,17 @@ export default function Stage1Architecture() {
             <div className="font-semibold text-purple-800 mb-1">🔍 SEO 友好</div>
             <div className="text-purple-700 text-xs">
               完全靜態生成，搜索引擎優化
+            </div>
+          </div>
+        </div>
+
+        {/* 項目標題 */}
+        <div className="mb-4 p-4 bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg">
+          <div className="flex items-center">
+            <span className="text-2xl mr-3">🏗️</span>
+            <div>
+              <h4 className="font-bold text-blue-800 text-lg">Next.js 應用程式</h4>
+              <p className="text-sm text-blue-600">單體架構，所有功能集中管理</p>
             </div>
           </div>
         </div>
