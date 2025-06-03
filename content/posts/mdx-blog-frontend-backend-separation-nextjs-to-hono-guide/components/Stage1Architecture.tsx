@@ -1,7 +1,33 @@
 "use client";
 
-import ReactFlow, { Background, Controls, Node, Edge } from 'reactflow';
+import React from 'react';
+import ReactFlow, {
+  Background,
+  Controls,
+  Node,
+  Edge,
+  NodeProps
+} from 'reactflow';
 import 'reactflow/dist/style.css';
+
+// Define custom node types
+interface CustomNodeData {
+  label: React.ReactNode;
+  style?: React.CSSProperties;
+}
+
+const nodeTypes = {
+  default: (props: NodeProps<CustomNodeData>) => {
+    return (
+      <div 
+        style={props.data.style} 
+        className="flex items-center justify-center p-2 text-center"
+      >
+        {props.data.label}
+      </div>
+    );
+  }
+};
 
 const nodes: Node[] = [
   {
@@ -120,26 +146,34 @@ const edges: Edge[] = [
   }
 ];
 
-export default function Stage1Architecture() {
+const defaultViewport = { x: 0, y: 0, zoom: 0.8 };
+
+const proOptions = {
+  hideAttribution: true,
+};
+
+const Stage1Architecture = () => {
   return (
     <div className="w-full bg-white border border-gray-200 rounded-lg overflow-hidden">
       <div className="p-4 bg-gray-50 border-b border-gray-200">
         <h3 className="text-lg font-semibold text-gray-800">階段 1：Next.js 單體應用</h3>
         <p className="text-sm text-gray-600 mt-1">適合：少於 1,000 篇文章</p>
       </div>
-      <div style={{ width: '100%', height: 400 }}>
-        <ReactFlow 
-          nodes={nodes} 
-          edges={edges} 
+      <div style={{ width: '100%', height: '500px' }} className="rounded-lg border border-gray-200">
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          nodeTypes={nodeTypes}
+          defaultViewport={defaultViewport}
+          proOptions={proOptions}
           fitView
-          nodesDraggable={false}
-          nodesConnectable={false}
-          elementsSelectable={false}
         >
-          <Background color="#f1f5f9" gap={20} />
-          <Controls showInteractive={false} />
+          <Background color="#aaa" gap={16} />
+          <Controls />
         </ReactFlow>
       </div>
     </div>
   );
-}
+};
+
+export default Stage1Architecture;
