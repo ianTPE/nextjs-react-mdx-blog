@@ -326,16 +326,19 @@ export default function Stage1Architecture() {
           </div>
           
           {/* 添加自定義 CSS 來隱藏分隔線的連接線和默認圖標 */}
-          <style jsx>{`
+          <style jsx global>{`
             .custom-tree .rc-tree-treenode[data-key="separator"] .rc-tree-switcher {
               display: none;
             }
             .custom-tree .rc-tree-treenode[data-key="separator"] .rc-tree-node-content-wrapper {
               padding: 0;
             }
-            /* 隱藏 rc-tree 的默認圖標 */
-            .custom-tree .rc-tree-iconEle {
-              display: none;
+            /* 隱藏 rc-tree 的默認圖標 - 使用更強的選擇器 */
+            .custom-tree .rc-tree-iconEle,
+            .custom-tree .rc-tree-icon__docu,
+            .custom-tree .rc-tree-icon__open,
+            .custom-tree .rc-tree-icon__close {
+              display: none !important;
             }
           `}</style>
           
@@ -343,6 +346,8 @@ export default function Stage1Architecture() {
             treeData={treeData}
             defaultExpandAll={true}
             selectable={false}
+            showIcon={false}
+            showLine={false}
             className="custom-tree"
             style={{
               fontSize: '14px',
