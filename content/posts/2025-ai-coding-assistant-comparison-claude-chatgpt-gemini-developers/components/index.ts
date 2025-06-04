@@ -5,6 +5,7 @@ import DimensionRadarChart from './DimensionRadarChart';
 import UseCaseChart from './UseCaseChart';
 import TestResultChart from './TestResultChart';
 import AITrendAnalysis from './AITrendAnalysis';
+import AIModeComparison from './AIModeComparison';
 import AIScoreComparisonTable from './AIScoreComparisonTable';
 import ChatGPTScoreComparison from './ChatGPTScoreComparison';
 import GeminiScoreComparison from './GeminiScoreComparison';
@@ -21,6 +22,7 @@ export {
   UseCaseChart,
   TestResultChart,
   AITrendAnalysis,
+  AIModeComparison,
   AIScoreComparisonTable,
   ChatGPTScoreComparison,
   GeminiScoreComparison,
