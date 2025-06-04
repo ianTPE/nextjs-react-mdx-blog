@@ -49,7 +49,7 @@ export default function GeminiScoreComparison() {
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id} className="whitespace-nowrap h-auto py-1 px-4">
+                  <TableHead key={header.id} className="whitespace-nowrap h-auto !py-0 px-4 text-left align-middle font-medium leading-tight">
                     {header.isPlaceholder
                       ? null
                       : flexRender(header.column.columnDef.header, header.getContext())}
@@ -63,7 +63,7 @@ export default function GeminiScoreComparison() {
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="whitespace-nowrap py-1 px-4">
+                    <TableCell key={cell.id} className="whitespace-nowrap !py-0 px-4 align-middle leading-tight">
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
