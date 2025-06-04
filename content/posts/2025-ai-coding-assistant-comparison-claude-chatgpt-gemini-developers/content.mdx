@@ -50,19 +50,15 @@ export const metadata = {
 
 #### 模式選擇決策框架
 
-<MermaidDiagram chart={`
-graph TD
-    A[遇到技術問題] --> B{問題複雜度}
-    B -->|學習新技術| C[Thinking模式]
-    B -->|快速開發| D[普通模式]
-    B -->|架構設計| E[Thinking模式]
-    B -->|緊急修Bug| F[普通模式]
-    
-    C --> G[深度理解原理]
-    D --> H[快速獲得方案]
-    E --> I[詳細分析對比]
-    F --> J[直接解決問題]
-`}/>
+**AI模式選擇流程圖：**
+
+```
+遇到技術問題
+    ├── 學習新技術 → Thinking模式 → 深度理解原理
+    ├── 快速開發 → 普通模式 → 快速獲得方案
+    ├── 架構設計 → Thinking模式 → 詳細分析對比
+    └── 緊急修Bug → 普通模式 → 直接解決問題
+```
 
 **具體場景應用：**
 
@@ -74,21 +70,21 @@ graph TD
 
 ### 2. 精準選擇 AI 工具：場景驅動的決策框架
 
-基於這次深度測試，我整理了一個實用的 AI 選擇決策樹：
+基於這次深度測試，我整理了一個實用的 AI 選擇決策框架：
 
-<MermaidDiagram chart={`  
-graph TD
-    A[技術問題] --> B{問題類型}
-    B -->|學習新技術| C[ChatGPT + Claude]
-    B -->|快速原型| D[Claude + 千問]
-    B -->|企業級架構| E[Gemini + Claude]
-    B -->|標準化開發| F[DeepSeek + Claude]
-    
-    C --> G[ChatGPT 解釋原理<br/>Claude 提供實現]
-    D --> H[千問 梳理流程<br/>Claude 完整實現]
-    E --> I[Gemini 安全設計<br/>Claude 核心實現]
-    F --> J[DeepSeek 標準基線<br/>Claude 優化改進]
-`}/>
+**AI選擇決策樹：**
+
+```
+技術問題
+    ├── 學習新技術 → ChatGPT + Claude
+    │   └── ChatGPT 解釋原理 + Claude 提供實現
+    ├── 快速原型 → Claude + 千問  
+    │   └── 千問 梳理流程 + Claude 完整實現
+    ├── 企業級架構 → Gemini + Claude
+    │   └── Gemini 安全設計 + Claude 核心實現
+    └── 標準化開發 → DeepSeek + Claude
+        └── DeepSeek 標準基線 + Claude 優化改進
+```
 
 **具體選擇策略：**
 
@@ -233,7 +229,9 @@ const finalSolution = combineAndOptimize(solutions);
 
 我對10+個主流AI平台進行了系統性的量化評測，滿分60分（6個維度各10分）：
 
-<OverallAIScoreTable />
+<AIScoreComparison />
+
+<OverallScoreTable />
 
 ### 快速推薦總結
 
@@ -261,9 +259,13 @@ const finalSolution = combineAndOptimize(solutions);
 
 ### 使用場景對照表
 
-<TaskBasedAIToolRecommendationTable />
+<ScenarioRadarChart />
+
+<ScenarioComparisonTable />
 
 ### AI平台發展趨勢分析
+
+<AITrendAnalysis />
 
 **第一梯隊（50分以上）：**
 - **Claude** - 實用性領導者，持續優化代碼生成質量
@@ -328,7 +330,9 @@ const finalSolution = combineAndOptimize(solutions);
 
 ### 頂級平台多維度能力對比
 
-為了更直觀地展示各個頂級AI平台在不同維度上的能力差異，從雷達圖可以看出：
+<DimensionRadarChart />
+
+從雷達圖可以看出：
 - **Claude** 的能力分布最為均衡，在實用性和結構性方面表現突出
 - **ChatGPT** 在技術深度方面與 Claude 持平，各維度發展相對均衡
 - **Gemini** 在技術深度和安全性方面得分最高，但在實用性和創新性方面相對較弱
@@ -338,7 +342,7 @@ const finalSolution = combineAndOptimize(solutions);
 
 **我最喜歡的回答 - 評分：56/60**
 
-<ClaudeDetailedScoreTable />
+<ClaudeDetailedTable />
 
 **優點分析：**
 
@@ -375,8 +379,8 @@ const finalSolution = combineAndOptimize(solutions);
    ```
    
    對比其他平台，Claude 的代碼有幾個亮點：
-   - 包含了 <code>define</code> 配置，考慮到環境變量
-   - 返回了 <code>dependencies</code> 信息，便於依賴管理
+   - 包含了 `define` 配置，考慮到環境變量
+   - 返回了 `dependencies` 信息，便於依賴管理
    - 使用了可選鏈操作符，防止錯誤
 
 3. **特別亮點：管理界面實現**
@@ -411,7 +415,7 @@ const finalSolution = combineAndOptimize(solutions);
 
 **第二喜歡的回答 - 評分：49/60**
 
-<ChatGPTDetailedScoreTable />
+<ChatGPTDetailedTable />
 
 **優點分析：**
 
@@ -429,13 +433,16 @@ const finalSolution = combineAndOptimize(solutions);
    ```
 
 2. **技術方案的對比分析**
-   <TechSolutionComparisonTable />
+   | 方案 | 優點 | 缺點 | 適用場景 |
+   |------|------|------|----------|
+   | @mdx-js/esbuild | 快速、簡潔 | 功能相對簡單 | 中小型項目 |
+   | next-mdx-remote | 功能豐富 | 性能開銷大 | 內容管理系統 |
 
 ### 🥉 第三梯隊：Gemini
 
 **技術深度最強，但可能過於複雜 - 評分：47/60**
 
-<GeminiDetailedScoreTable />
+<GeminiDetailedTable />
 
 **技術深度驚人的細節：**
 
@@ -546,18 +553,16 @@ Claude 明顯從實際開發者角度思考：
 **測試過程：**
 使用各 AI 提供的方案，從零開始搭建一個完整的 MDX 系統，記錄時間和遇到的問題。
 
-**測試結果：**
+<MDXSystemTestChart />
 
-<MDXSystemBuildTestTable />
+<TestResultsTable />
 
 ### 測試場景二：安全性評估
 
 **測試過程：**
 要求各 AI 分析 MDX 系統的安全風險並提供防護方案。
 
-**測試結果：**
-
-<SecurityAssessmentTestTable />
+<SecurityAssessmentTable />
 
 ### 測試場景三：性能優化
 
