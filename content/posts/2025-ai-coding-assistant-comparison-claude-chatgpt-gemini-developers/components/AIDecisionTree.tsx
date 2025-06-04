@@ -7,7 +7,6 @@ import {
   Edge,
   Background,
   BackgroundVariant,
-  MiniMap,
   Controls,
   Position,
 } from '@xyflow/react';
@@ -218,14 +217,6 @@ const AIDecisionTree: React.FC = () => {
             />
             <Controls 
               position="top-right"
-              style={{
-                background: 'white',
-                border: '1px solid #e2e8f0',
-                borderRadius: '8px',
-              }}
-            />
-            <MiniMap 
-              nodeColor={() => '#8B5CF6'}
               style={{
                 background: 'white',
                 border: '1px solid #e2e8f0',
