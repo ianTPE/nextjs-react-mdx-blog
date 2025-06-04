@@ -12,6 +12,8 @@ import ClaudeScoreComparison from './ClaudeScoreComparison';
 import TongyiScoreComparison from './TongyiScoreComparison';
 import DeepSeekScoreComparison from './DeepSeekScoreComparison';
 import GrokScoreComparison from './GrokScoreComparison';
+import MdxJsxConversionStepsTable from './MdxJsxConversionStepsTable';
+import SolutionComparisonTable from './SolutionComparisonTable';
 
 export {
   AIScoreComparison,
@@ -25,5 +27,7 @@ export {
   ClaudeScoreComparison,
   TongyiScoreComparison,
   DeepSeekScoreComparison,
-  GrokScoreComparison
+  GrokScoreComparison,
+  MdxJsxConversionStepsTable,
+  SolutionComparisonTable
 };
