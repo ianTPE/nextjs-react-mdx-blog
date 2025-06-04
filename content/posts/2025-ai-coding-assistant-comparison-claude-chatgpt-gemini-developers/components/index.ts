@@ -15,6 +15,7 @@ import DeepSeekScoreComparison from './DeepSeekScoreComparison';
 import GrokScoreComparison from './GrokScoreComparison';
 import MdxJsxConversionStepsTable from './MdxJsxConversionStepsTable';
 import SolutionComparisonTable from './SolutionComparisonTable';
+import MermaidDiagram from './MermaidDiagram';
 
 export {
   AIScoreComparison,
@@ -31,5 +32,6 @@ export {
   DeepSeekScoreComparison,
   GrokScoreComparison,
   MdxJsxConversionStepsTable,
-  SolutionComparisonTable
+  SolutionComparisonTable,
+  MermaidDiagram
 };
