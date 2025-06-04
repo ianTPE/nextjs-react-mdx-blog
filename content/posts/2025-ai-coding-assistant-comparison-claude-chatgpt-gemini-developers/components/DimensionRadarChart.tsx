@@ -39,14 +39,14 @@ const DimensionRadarChart: React.FC = () => {
     'Claude': [9, 10, 10, 9, 9, 9],
     'ChatGPT': [9, 8, 8, 8, 8, 8],
     'Gemini': [10, 6, 8, 10, 10, 3],
-    '千問': [6, 7, 8, 6, 5, 6],
+    'DeepSeek': [8, 7, 7, 7, 6, 7],
   };
 
   const colors = {
     'Claude': { border: '#8B5CF6', background: 'rgba(139, 92, 246, 0.2)' },
     'ChatGPT': { border: '#06B6D4', background: 'rgba(6, 182, 212, 0.2)' },
     'Gemini': { border: '#F59E0B', background: 'rgba(245, 158, 11, 0.2)' },
-    '千問': { border: '#10B981', background: 'rgba(16, 185, 129, 0.2)' },
+    'DeepSeek': { border: '#6366F1', background: 'rgba(99, 102, 241, 0.2)' },
   };
 
   const datasets = Object.entries(platformData).map(([platform, scores]) => ({

@@ -7,8 +7,7 @@ const OverallScoreTable: React.FC = () => {
     { platform: "Claude", totalScore: "56/60", techDepth: 9, practicality: 10, structure: 10, completeness: 9, security: 9, innovation: 9, recommendation: "⭐⭐⭐⭐⭐" },
     { platform: "ChatGPT", totalScore: "49/60", techDepth: 9, practicality: 8, structure: 8, completeness: 8, security: 8, innovation: 8, recommendation: "⭐⭐⭐⭐" },
     { platform: "Gemini", totalScore: "47/60", techDepth: 10, practicality: 6, structure: 8, completeness: 10, security: 10, innovation: 3, recommendation: "⭐⭐⭐⭐" },
-    { platform: "千問", totalScore: "38/60", techDepth: 6, practicality: 8, structure: 8, completeness: 6, security: 5, innovation: 5, recommendation: "⭐⭐⭐" },
-    { platform: "DeepSeek", totalScore: "36/60", techDepth: 7, practicality: 7, structure: 6, completeness: 7, security: 5, innovation: 4, recommendation: "⭐⭐⭐" },
+    { platform: "DeepSeek", totalScore: "42/60", techDepth: 8, practicality: 7, structure: 7, completeness: 7, security: 6, innovation: 7, recommendation: "⭐⭐⭐⭐" },
     { platform: "Grok", totalScore: "32/60", techDepth: 5, practicality: 7, structure: 6, completeness: 6, security: 4, innovation: 4, recommendation: "⭐⭐" },
     { platform: "豆包", totalScore: "33/60", techDepth: 6, practicality: 6, structure: 4, completeness: 7, security: 5, innovation: 5, recommendation: "⭐⭐" },
     { platform: "Perplexity", totalScore: "28/60", techDepth: 4, practicality: 5, structure: 7, completeness: 6, security: 3, innovation: 3, recommendation: "⭐⭐" },
@@ -34,7 +33,7 @@ const OverallScoreTable: React.FC = () => {
           {scoreData.map((row, index) => (
             <tr key={index} className="even:bg-gray-50 hover:bg-gray-200">
               <td className="border border-gray-300 p-3 text-sm text-gray-800 font-medium">
-                {row.platform === "Claude" || row.platform === "ChatGPT" || row.platform === "Gemini" ? 
+                {row.platform === "Claude" || row.platform === "ChatGPT" || row.platform === "Gemini" || row.platform === "DeepSeek" ? 
                   <strong>{row.platform}</strong> : row.platform}
               </td>
               <td className="border border-gray-300 p-3 text-sm text-gray-600">{row.totalScore}</td>

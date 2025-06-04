@@ -37,8 +37,7 @@ const AITrendAnalysis: React.FC = () => {
     { platform: 'Claude', current: 56, potential: 58, trend: 'rising' },
     { platform: 'ChatGPT', current: 49, potential: 52, trend: 'rising' },
     { platform: 'Gemini', current: 47, potential: 50, trend: 'rising' },
-    { platform: '千問', current: 38, potential: 45, trend: 'rising' },
-    { platform: 'DeepSeek', current: 36, potential: 42, trend: 'rising' },
+    { platform: 'DeepSeek', current: 42, potential: 48, trend: 'rising' },
     { platform: 'Grok', current: 32, potential: 40, trend: 'rising' },
   ];
 
@@ -139,10 +138,8 @@ const AITrendAnalysis: React.FC = () => {
         return '📚 學習首選：技術原理、方案對比';
       case 'Gemini':
         return '🏢 企業級：安全要求高的大型項目';
-      case '千問':
-        return '⚡ 效率工具：快速理解、流程梳理';
       case 'DeepSeek':
-        return '📋 標準化：團隊規範、基線制定';
+        return '🤖 Thinking優勢：邏輯分析、結構化思考';
       case 'Grok':
         return '🎯 簡潔派：快速概覽、重點突出';
       default:

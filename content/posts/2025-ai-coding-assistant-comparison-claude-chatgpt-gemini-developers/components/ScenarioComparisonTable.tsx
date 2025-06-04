@@ -28,7 +28,7 @@ const ScenarioComparisonTable: React.FC = () => {
     { 
       scenario: "⚡ 快速原型", 
       primary: "Claude（普通）", 
-      alternative: "千問", 
+      alternative: "DeepSeek", 
       notRecommended: "Perplexity", 
       modeAdvice: "普通模式" 
     },
@@ -36,15 +36,15 @@ const ScenarioComparisonTable: React.FC = () => {
       scenario: "🔍 技術選型", 
       primary: "ChatGPT（Thinking）", 
       alternative: "Gemini", 
-      notRecommended: "DeepSeek", 
+      notRecommended: "Grok", 
       modeAdvice: "Thinking模式" 
     },
     { 
       scenario: "📋 流程梳理", 
-      primary: "千問", 
+      primary: "DeepSeek（Thinking）", 
       alternative: "Claude", 
       notRecommended: "豆包", 
-      modeAdvice: "普通模式" 
+      modeAdvice: "Thinking模式" 
     },
     { 
       scenario: "🛡️ 安全評估", 

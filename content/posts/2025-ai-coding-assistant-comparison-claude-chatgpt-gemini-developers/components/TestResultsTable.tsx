@@ -26,11 +26,11 @@ const TestResultsTable: React.FC = () => {
       overallRating: "良好" 
     },
     { 
-      platform: "千問", 
-      completionTime: "1.5小時", 
-      issues: "缺少錯誤處理", 
-      codeUsability: "⚠️ 70%可用", 
-      overallRating: "一般" 
+      platform: "DeepSeek", 
+      completionTime: "2.5小時", 
+      issues: "需要小幅調整", 
+      codeUsability: "⚠️ 80%可用", 
+      overallRating: "良好" 
     },
   ];
 
@@ -55,7 +55,7 @@ const TestResultsTable: React.FC = () => {
             {testResultsData.map((row, index) => (
               <tr key={index} className="even:bg-gray-50 hover:bg-gray-200">
                 <td className="border border-gray-300 p-3 text-sm text-gray-800 font-medium">
-                  {row.platform === "Claude" ? <strong>{row.platform}</strong> : row.platform}
+                  {row.platform === "Claude" || row.platform === "DeepSeek" ? <strong>{row.platform}</strong> : row.platform}
                 </td>
                 <td className="border border-gray-300 p-3 text-sm text-gray-600">{row.completionTime}</td>
                 <td className="border border-gray-300 p-3 text-sm text-gray-600">{row.issues}</td>

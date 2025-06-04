@@ -37,7 +37,7 @@ const MDXSystemTestChart: React.FC = () => {
     { platform: 'Claude', buildTime: 2, codeUsability: 100, status: 'excellent' },
     { platform: 'ChatGPT', buildTime: 3, codeUsability: 90, status: 'good' },
     { platform: 'Gemini', buildTime: 4, codeUsability: 85, status: 'good' },
-    { platform: '千問', buildTime: 1.5, codeUsability: 70, status: 'fair' },
+    { platform: 'DeepSeek', buildTime: 2.5, codeUsability: 80, status: 'good' },
   ];
 
   const getTimeColor = (time: number) => {

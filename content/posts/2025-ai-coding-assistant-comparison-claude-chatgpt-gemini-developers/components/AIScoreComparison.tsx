@@ -32,13 +32,12 @@ const AIScoreComparison: React.FC = () => {
   const scoreData: AIScoreData[] = [
     { platform: 'Claude', score: 56, tier: '第一梯隊', color: '#8B5CF6' },
     { platform: 'ChatGPT', score: 49, tier: '第二梯隊', color: '#06B6D4' },
-    { platform: 'Gemini', score: 47, tier: '第三梯隊', color: '#F59E0B' },
-    { platform: '千問', score: 38, tier: '中等表現', color: '#10B981' },
-    { platform: 'DeepSeek', score: 36, tier: '中等表現', color: '#6366F1' },
+    { platform: 'Gemini', score: 47, tier: '第二梯隊', color: '#F59E0B' },
+    { platform: 'DeepSeek', score: 42, tier: '第二梯隊', color: '#6366F1' },
     { platform: 'Grok', score: 32, tier: '中等表現', color: '#EF4444' },
-    { platform: 'Perplexity', score: 28, tier: '表現較差', color: '#F97316' },
+    { platform: '豆包', score: 33, tier: '中等表現', color: '#EC4899' },
     { platform: 'metaso.cn', score: 30, tier: '表現較差', color: '#84CC16' },
-    { platform: '豆包', score: 33, tier: '表現較差', color: '#EC4899' },
+    { platform: 'Perplexity', score: 28, tier: '表現較差', color: '#F97316' },
     { platform: 'Felo', score: 25, tier: '表現較差', color: '#64748B' },
   ];
 
@@ -118,11 +117,11 @@ const AIScoreComparison: React.FC = () => {
           </div>
           <div className="flex items-center">
             <div className="w-3 h-3 bg-cyan-500 rounded mr-2"></div>
-            <span>第二梯隊 (45-49)</span>
+            <span>第二梯隊 (40-49)</span>
           </div>
           <div className="flex items-center">
-            <div className="w-3 h-3 bg-amber-500 rounded mr-2"></div>
-            <span>第三梯隊 (40-44)</span>
+            <div className="w-3 h-3 bg-green-500 rounded mr-2"></div>
+            <span>中等表現 (30-39)</span>
           </div>
         </div>
       </div>
