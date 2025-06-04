@@ -47,15 +47,15 @@ export default function GeminiScoreComparison() {
   });
 
   return (
-    <div className="w-full overflow-x-auto my-6">
-      <table className="min-w-[600px] w-full border-collapse border border-gray-300">
+    <div className="overflow-x-auto my-6">
+      <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm bg-white dark:bg-gray-800">
         <thead>
           {table.getHeaderGroups().map(headerGroup => (
             <tr key={headerGroup.id} className="bg-gray-100">
               {headerGroup.headers.map(header => (
                 <th
                   key={header.id}
-                  className="border border-gray-300 p-3 text-left text-sm font-semibold text-gray-700"
+                  className="p-3 text-left text-sm font-semibold text-gray-700"
                 >
                   {header.isPlaceholder
                     ? null
@@ -75,7 +75,7 @@ export default function GeminiScoreComparison() {
                 {row.getVisibleCells().map(cell => (
                   <td
                     key={cell.id}
-                    className="border border-gray-300 p-3 text-sm text-gray-600"
+                    className="p-3 text-sm text-gray-600"
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
@@ -86,7 +86,7 @@ export default function GeminiScoreComparison() {
             <tr>
               <td
                 colSpan={columns.length}
-                className="h-24 text-center border border-gray-300 p-3 text-sm text-gray-500"
+                className="h-24 text-center p-3 text-sm text-gray-500"
               >
                 沒有結果。
               </td>

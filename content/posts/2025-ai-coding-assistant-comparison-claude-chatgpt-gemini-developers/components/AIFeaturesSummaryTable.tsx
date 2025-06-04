@@ -16,25 +16,25 @@ const data: AIFeature[] = [
 
 export default function AIFeaturesSummaryTable() {
   return (
-    <div className="w-full overflow-x-auto my-6">
-      <table className="min-w-[600px] w-full border-collapse border border-gray-300">
+    <div className="overflow-x-auto my-6">
+      <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm bg-white dark:bg-gray-800">
         <thead>
           <tr className="bg-gray-100">
-            <th className="border border-gray-300 p-3 text-left text-sm font-semibold text-gray-700">AI平台</th>
-            <th className="border border-gray-300 p-3 text-left text-sm font-semibold text-gray-700">特色總結</th>
+            <th className="p-3 text-left text-sm font-semibold text-gray-700">AI平台</th>
+            <th className="p-3 text-left text-sm font-semibold text-gray-700">特色總結</th>
           </tr>
         </thead>
         <tbody>
           {data.length > 0 ? (
             data.map((item, index) => (
               <tr key={index} className="even:bg-gray-50">
-                <td className="border border-gray-300 p-3 text-sm text-gray-600">{item.ai}</td>
-                <td className="border border-gray-300 p-3 text-sm text-gray-600">{item.feature}</td>
+                <td className="p-3 text-sm text-gray-600">{item.ai}</td>
+                <td className="p-3 text-sm text-gray-600">{item.feature}</td>
               </tr>
             ))
           ) : (
             <tr>
-              <td colSpan={2} className="h-24 text-center border border-gray-300 p-3 text-sm text-gray-500">
+              <td colSpan={2} className="h-24 text-center p-3 text-sm text-gray-500">
                 沒有結果。
               </td>
             </tr>

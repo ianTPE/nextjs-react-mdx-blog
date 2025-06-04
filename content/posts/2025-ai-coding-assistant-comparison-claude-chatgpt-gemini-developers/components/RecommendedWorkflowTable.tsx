@@ -15,27 +15,27 @@ const data: WorkflowStep[] = [
 
 export default function RecommendedWorkflowTable() {
   return (
-    <div className="w-full overflow-x-auto my-6">
-      <table className="min-w-[600px] w-full border-collapse border border-gray-300">
+    <div className="overflow-x-auto my-6">
+      <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm bg-white dark:bg-gray-800">
         <thead>
           <tr className="bg-gray-100">
-            <th className="border border-gray-300 p-3 text-left text-sm font-semibold text-gray-700">步驟</th>
-            <th className="border border-gray-300 p-3 text-left text-sm font-semibold text-gray-700">工具</th>
-            <th className="border border-gray-300 p-3 text-left text-sm font-semibold text-gray-700">說明</th>
+            <th className="p-3 text-left text-sm font-semibold text-gray-700">步驟</th>
+            <th className="p-3 text-left text-sm font-semibold text-gray-700">工具</th>
+            <th className="p-3 text-left text-sm font-semibold text-gray-700">說明</th>
           </tr>
         </thead>
         <tbody>
           {data.length > 0 ? (
             data.map((item, index) => (
               <tr key={index} className="even:bg-gray-50">
-                <td className="border border-gray-300 p-3 text-sm text-gray-600">{item.step}</td>
-                <td className="border border-gray-300 p-3 text-sm text-gray-600">{item.tool}</td>
-                <td className="border border-gray-300 p-3 text-sm text-gray-600">{item.description}</td>
+                <td className="p-3 text-sm text-gray-600">{item.step}</td>
+                <td className="p-3 text-sm text-gray-600">{item.tool}</td>
+                <td className="p-3 text-sm text-gray-600">{item.description}</td>
               </tr>
             ))
           ) : (
             <tr>
-              <td colSpan={3} className="h-24 text-center border border-gray-300 p-3 text-sm text-gray-500">
+              <td colSpan={3} className="h-24 text-center p-3 text-sm text-gray-500">
                 沒有結果。
               </td>
             </tr>

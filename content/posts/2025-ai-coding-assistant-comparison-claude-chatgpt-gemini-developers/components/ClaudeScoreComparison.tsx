@@ -47,8 +47,8 @@ export default function ClaudeScoreComparison() {
   });
 
   return (
-    <div className="w-full overflow-x-auto my-6">
-      <table className="min-w-[600px] w-full border-collapse border border-gray-300">
+    <div className="overflow-x-auto my-6">
+      <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm bg-white dark:bg-gray-800">
         <thead>
           {table.getHeaderGroups().map(headerGroup => (
             <tr key={headerGroup.id} className="bg-gray-100">
