@@ -76,7 +76,7 @@ export const ClaudeDetailedScoreTable: React.FC = () => {
           {table.getHeaderGroups().map(headerGroup => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map(header => (
-                <th key={header.id} scope="col" className="px-4 py-3 text-left">
+                <th key={header.id} scope="col" className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-100">
                   {header.isPlaceholder
                     ? null
                     : flexRender(
@@ -92,7 +92,7 @@ export const ClaudeDetailedScoreTable: React.FC = () => {
           {table.getRowModel().rows.map(row => (
             <tr key={row.id} className="hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-colors duration-150">
               {row.getVisibleCells().map(cell => (
-                <td key={cell.id} className="px-4 py-3 whitespace-nowrap">
+                <td key={cell.id} className="whitespace-nowrap py-4 px-3 text-sm text-gray-700 dark:text-gray-300">
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}
