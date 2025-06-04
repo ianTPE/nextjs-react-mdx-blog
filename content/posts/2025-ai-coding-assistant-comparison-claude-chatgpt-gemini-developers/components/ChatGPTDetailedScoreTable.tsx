@@ -70,8 +70,8 @@ export const ChatGPTDetailedScoreTable: React.FC = () => {
   });
 
   return (
-    <div className="my-6 overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm bg-white dark:bg-gray-800">
-      <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+    <div className="overflow-x-auto my-6">
+      <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm bg-white dark:bg-gray-800">
         <thead className="bg-gray-50 dark:bg-gray-700">
           {table.getHeaderGroups().map(headerGroup => (
             <tr key={headerGroup.id}>
