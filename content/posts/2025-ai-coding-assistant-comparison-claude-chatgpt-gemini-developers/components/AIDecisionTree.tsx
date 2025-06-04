@@ -7,6 +7,7 @@ import {
   Edge,
   addEdge,
   Background,
+  BackgroundVariant,
   useNodesState,
   useEdgesState,
   MiniMap,
@@ -313,7 +314,7 @@ const AIDecisionTree: React.FC = () => {
               color="#f1f5f9" 
               gap={20} 
               size={1}
-              variant="dots" 
+              variant={BackgroundVariant.Dots}
             />
             <Controls 
               position="top-right"
