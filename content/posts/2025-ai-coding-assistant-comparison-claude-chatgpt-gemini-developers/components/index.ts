@@ -16,6 +16,14 @@ import GrokScoreComparison from './GrokScoreComparison';
 import MdxJsxConversionStepsTable from './MdxJsxConversionStepsTable';
 import SolutionComparisonTable from './SolutionComparisonTable';
 import MermaidDiagram from './MermaidDiagram';
+import { OverallAIScoreTable } from './OverallAIScoreTable';
+import { TaskBasedAIToolRecommendationTable } from './TaskBasedAIToolRecommendationTable';
+import { ClaudeDetailedScoreTable } from './ClaudeDetailedScoreTable';
+import { ChatGPTDetailedScoreTable } from './ChatGPTDetailedScoreTable';
+import { TechSolutionComparisonTable } from './TechSolutionComparisonTable'; // This is for table #5, distinct from existing SolutionComparisonTable if any
+import { GeminiDetailedScoreTable } from './GeminiDetailedScoreTable';
+import { MDXSystemBuildTestTable } from './MDXSystemBuildTestTable';
+import { SecurityAssessmentTestTable } from './SecurityAssessmentTestTable';
 
 export {
   AIScoreComparison,
@@ -33,5 +41,13 @@ export {
   GrokScoreComparison,
   MdxJsxConversionStepsTable,
   SolutionComparisonTable,
-  MermaidDiagram
+  MermaidDiagram,
+  OverallAIScoreTable,
+  TaskBasedAIToolRecommendationTable,
+  ClaudeDetailedScoreTable,
+  ChatGPTDetailedScoreTable,
+  TechSolutionComparisonTable,
+  GeminiDetailedScoreTable,
+  MDXSystemBuildTestTable,
+  SecurityAssessmentTestTable
 };
