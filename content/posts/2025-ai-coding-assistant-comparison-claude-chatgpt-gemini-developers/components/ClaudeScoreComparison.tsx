@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import {
   Table,
   TableBody,
@@ -6,13 +6,13 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
+} from '@/components/ui/table';
 import {
   useReactTable,
   getCoreRowModel,
   ColumnDef,
   flexRender,
-} from '@tanstack/react-table'
+} from '@tanstack/react-table';
 
 interface Score {
   dimension: string
@@ -21,12 +21,12 @@ interface Score {
 }
 
 const data: Score[] = [
-  { dimension: '技術深度', score: '10/10', comment: '技術分析極其深入，考慮到所有邊緣情況' },
-  { dimension: '實用性', score: '6/10', comment: '過於複雜，實際使用難度大' },
-  { dimension: '結構性', score: '8/10', comment: '結構清晰但信息密度過高' },
-  { dimension: '完整性', score: '10/10', comment: '覆蓋了所有可能的技術細節' },
-  { dimension: '安全性考量', score: '10/10', comment: '安全分析最為詳盡' },
-  { dimension: '創新性', score: '3/10', comment: '技術方案相對保守' },
+  { dimension: '技術深度', score: '9/10', comment: '深入理解 MDX 編譯和 SSR 機制' },
+  { dimension: '實用性', score: '10/10', comment: '代碼可直接運行，結構完整' },
+  { dimension: '結構性', score: '10/10', comment: '層次清晰，邏輯連貫' },
+  { dimension: '完整性', score: '9/10', comment: '涵蓋所有關鍵環節' },
+  { dimension: '安全性考量', score: '9/10', comment: '詳細的安全建議' },
+  { dimension: '創新性', score: '9/10', comment: '提供管理界面等創新建議' },
 ]
 
 const columns: ColumnDef<Score>[] = [
@@ -35,7 +35,7 @@ const columns: ColumnDef<Score>[] = [
   { header: '評語', accessorKey: 'comment' },
 ]
 
-export default function GeminiScoreComparison() {
+export default function ClaudeScoreComparison() {
   const table = useReactTable<Score>({
     data,
     columns,
@@ -80,5 +80,5 @@ export default function GeminiScoreComparison() {
         </Table>
       </div>
     </div>
-  )
+  );
 }

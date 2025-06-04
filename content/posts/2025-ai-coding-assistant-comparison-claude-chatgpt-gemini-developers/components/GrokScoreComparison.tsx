@@ -1,4 +1,6 @@
-import React from 'react'
+'use client';
+
+import React from 'react';
 import {
   Table,
   TableBody,
@@ -6,41 +8,49 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
-import {
-  useReactTable,
-  getCoreRowModel,
-  ColumnDef,
-  flexRender,
-} from '@tanstack/react-table'
+} from '@/components/ui/table';
+import { flexRender, getCoreRowModel, useReactTable, type ColumnDef } from '@tanstack/react-table';
 
 interface Score {
-  dimension: string
-  score: string
-  comment: string
+  dimension: string;
+  score: string;
+  comment: string;
 }
 
 const data: Score[] = [
-  { dimension: '技術深度', score: '10/10', comment: '技術分析極其深入，考慮到所有邊緣情況' },
-  { dimension: '實用性', score: '6/10', comment: '過於複雜，實際使用難度大' },
-  { dimension: '結構性', score: '8/10', comment: '結構清晰但信息密度過高' },
-  { dimension: '完整性', score: '10/10', comment: '覆蓋了所有可能的技術細節' },
-  { dimension: '安全性考量', score: '10/10', comment: '安全分析最為詳盡' },
-  { dimension: '創新性', score: '3/10', comment: '技術方案相對保守' },
-]
+  { dimension: '技術深度', score: '5/10', comment: '深度不夠' },
+  { dimension: '實用性', score: '6/10', comment: '重點突出' },
+  { dimension: '結構性', score: '6/10', comment: '相對簡潔' },
+  { dimension: '完整性', score: '5/10', comment: '細節較少' },
+  { dimension: '安全性考量', score: '5/10', comment: '基本提及' },
+  { dimension: '創新性', score: '5/10', comment: '缺乏創新' },
+];
 
 const columns: ColumnDef<Score>[] = [
-  { header: '維度', accessorKey: 'dimension' },
-  { header: '評分', accessorKey: 'score' },
-  { header: '評語', accessorKey: 'comment' },
-]
+  {
+    accessorKey: 'dimension',
+    header: '維度',
+    // cell: ({ row }) => <div className="font-medium">{row.getValue('dimension')}</div>, // Keep original cell rendering for now
+  },
+  {
+    accessorKey: 'score',
+    header: '評分',
+    // cell: ({ row }) => <div>{row.getValue('score')}</div>, // Keep original cell rendering for now
+  },
+  {
+    accessorKey: 'comment',
+    header: '評語',
+    // cell: ({ row }) => <div className="text-sm text-muted-foreground">{row.getValue('comment')}</div>, // Keep original cell rendering for now
+  },
+];
 
-export default function GeminiScoreComparison() {
+export function GrokScoreComparison() {
   const table = useReactTable<Score>({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-  })
+  });
+
   return (
     <div className="w-full overflow-x-auto my-6">
       <div className="rounded-md border min-w-[600px]">
@@ -80,5 +90,7 @@ export default function GeminiScoreComparison() {
         </Table>
       </div>
     </div>
-  )
+  );
 }
+
+export default GrokScoreComparison;

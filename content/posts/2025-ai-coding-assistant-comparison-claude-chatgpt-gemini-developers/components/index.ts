@@ -8,6 +8,10 @@ import AITrendAnalysis from './AITrendAnalysis';
 import AIScoreComparisonTable from './AIScoreComparisonTable';
 import ChatGPTScoreComparison from './ChatGPTScoreComparison';
 import GeminiScoreComparison from './GeminiScoreComparison';
+import ClaudeScoreComparison from './ClaudeScoreComparison';
+import TongyiScoreComparison from './TongyiScoreComparison';
+import DeepSeekScoreComparison from './DeepSeekScoreComparison';
+import GrokScoreComparison from './GrokScoreComparison';
 
 export {
   AIScoreComparison,
@@ -17,5 +21,9 @@ export {
   AITrendAnalysis,
   AIScoreComparisonTable,
   ChatGPTScoreComparison,
-  GeminiScoreComparison
+  GeminiScoreComparison,
+  ClaudeScoreComparison,
+  TongyiScoreComparison,
+  DeepSeekScoreComparison,
+  GrokScoreComparison
 };
