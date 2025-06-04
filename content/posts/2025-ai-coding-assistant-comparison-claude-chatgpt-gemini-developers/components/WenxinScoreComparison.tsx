@@ -1,10 +1,4 @@
 import React from 'react';
-import {
-  useReactTable,
-  getCoreRowModel,
-  ColumnDef,
-  flexRender,
-} from '@tanstack/react-table';
 
 interface Score {
   dimension: string;
@@ -21,43 +15,35 @@ const data: Score[] = [
   { dimension: '創新性', score: '3/10', comment: '缺乏新意' },
 ];
 
-const columns: ColumnDef<Score>[] = [
-  { header: '維度', accessorKey: 'dimension' },
-  { header: '評分', accessorKey: 'score' },
-  { header: '評語', accessorKey: 'comment' },
-];
-
 export default function WenxinScoreComparison() {
-  const table = useReactTable<Score>({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
-
   return (
-    <table className="min-w-full border-collapse">
-      <thead>
-        {table.getHeaderGroups().map(headerGroup => (
-          <tr key={headerGroup.id}>
-            {headerGroup.headers.map(header => (
-              <th key={header.id} className="border p-2 text-left bg-gray-100">
-                {flexRender(header.column.columnDef.header, header.getContext())}
-              </th>
-            ))}
+    <div className="w-full overflow-x-auto my-6">
+      <table className="min-w-[600px] w-full border-collapse border border-gray-300">
+        <thead>
+          <tr className="bg-gray-100">
+            <th className="border border-gray-300 p-3 text-left text-sm font-semibold text-gray-700">維度</th>
+            <th className="border border-gray-300 p-3 text-left text-sm font-semibold text-gray-700">評分</th>
+            <th className="border border-gray-300 p-3 text-left text-sm font-semibold text-gray-700">評語</th>
           </tr>
-        ))}
-      </thead>
-      <tbody>
-        {table.getRowModel().rows.map(row => (
-          <tr key={row.id}>
-            {row.getVisibleCells().map(cell => (
-              <td key={cell.id} className="border p-2">
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+        </thead>
+        <tbody>
+          {data.length > 0 ? (
+            data.map((item, index) => (
+              <tr key={index} className="even:bg-gray-50">
+                <td className="border border-gray-300 p-3 text-sm text-gray-600">{item.dimension}</td>
+                <td className="border border-gray-300 p-3 text-sm text-gray-600">{item.score}</td>
+                <td className="border border-gray-300 p-3 text-sm text-gray-600">{item.comment}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={3} className="h-24 text-center border border-gray-300 p-3 text-sm text-gray-500">
+                沒有結果。
               </td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>
   );
 }

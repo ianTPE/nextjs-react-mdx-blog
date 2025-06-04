@@ -1,15 +1,6 @@
 'use client';
 
 import React from 'react';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import { flexRender, getCoreRowModel, useReactTable, type ColumnDef } from '@tanstack/react-table';
 
 interface Score {
   dimension: string;
@@ -26,69 +17,35 @@ const data: Score[] = [
   { dimension: '創新性', score: '5/10', comment: '中規中矩，缺乏特色' },
 ];
 
-const columns: ColumnDef<Score>[] = [
-  {
-    accessorKey: 'dimension',
-    header: '維度',
-    // cell: ({ row }) => <div className="font-medium">{row.getValue('dimension')}</div>, // Keep original cell rendering for now
-  },
-  {
-    accessorKey: 'score',
-    header: '評分',
-    // cell: ({ row }) => <div>{row.getValue('score')}</div>, // Keep original cell rendering for now
-  },
-  {
-    accessorKey: 'comment',
-    header: '評語',
-    // cell: ({ row }) => <div className="text-sm text-muted-foreground">{row.getValue('comment')}</div>, // Keep original cell rendering for now
-  },
-];
-
 export function DeepSeekScoreComparison() {
-  const table = useReactTable<Score>({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
-
   return (
     <div className="w-full overflow-x-auto my-6">
-      <div className="rounded-md border min-w-[600px]">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id} className="whitespace-nowrap h-auto !py-0 px-4 text-left align-middle font-medium leading-tight">
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(header.column.columnDef.header, header.getContext())}
-                  </TableHead>
-                ))}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="whitespace-nowrap !py-0 px-4 align-middle leading-tight">
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
-                  沒有結果。
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
+      <table className="min-w-[600px] w-full border-collapse border border-gray-300">
+        <thead>
+          <tr className="bg-gray-100">
+            <th className="border border-gray-300 p-3 text-left text-sm font-semibold text-gray-700">維度</th>
+            <th className="border border-gray-300 p-3 text-left text-sm font-semibold text-gray-700">評分</th>
+            <th className="border border-gray-300 p-3 text-left text-sm font-semibold text-gray-700">評語</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.length > 0 ? (
+            data.map((item, index) => (
+              <tr key={index} className="even:bg-gray-50">
+                <td className="border border-gray-300 p-3 text-sm text-gray-600">{item.dimension}</td>
+                <td className="border border-gray-300 p-3 text-sm text-gray-600">{item.score}</td>
+                <td className="border border-gray-300 p-3 text-sm text-gray-600">{item.comment}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={3} className="h-24 text-center border border-gray-300 p-3 text-sm text-gray-500">
+                沒有結果。
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
     </div>
   );
 }

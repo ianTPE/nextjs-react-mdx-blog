@@ -1,10 +1,4 @@
 import React from 'react';
-import {
-  useReactTable,
-  getCoreRowModel,
-  ColumnDef,
-  flexRender,
-} from '@tanstack/react-table';
 
 interface AIFeature {
   ai: string;
@@ -20,42 +14,33 @@ const data: AIFeature[] = [
   { ai: '通義千問', feature: '結構化輸出，圖文並茂' },
 ];
 
-const columns: ColumnDef<AIFeature>[] = [
-  { header: 'AI平台', accessorKey: 'ai' },
-  { header: '特色總結', accessorKey: 'feature' },
-];
-
 export default function AIFeaturesSummaryTable() {
-  const table = useReactTable<AIFeature>({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
-
   return (
-    <table className="min-w-full border-collapse">
-      <thead>
-        {table.getHeaderGroups().map(headerGroup => (
-          <tr key={headerGroup.id}>
-            {headerGroup.headers.map(header => (
-              <th key={header.id} className="border p-2 text-left bg-gray-100">
-                {flexRender(header.column.columnDef.header, header.getContext())}
-              </th>
-            ))}
+    <div className="w-full overflow-x-auto my-6">
+      <table className="min-w-[600px] w-full border-collapse border border-gray-300">
+        <thead>
+          <tr className="bg-gray-100">
+            <th className="border border-gray-300 p-3 text-left text-sm font-semibold text-gray-700">AI平台</th>
+            <th className="border border-gray-300 p-3 text-left text-sm font-semibold text-gray-700">特色總結</th>
           </tr>
-        ))}
-      </thead>
-      <tbody>
-        {table.getRowModel().rows.map(row => (
-          <tr key={row.id}>
-            {row.getVisibleCells().map(cell => (
-              <td key={cell.id} className="border p-2">
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+        </thead>
+        <tbody>
+          {data.length > 0 ? (
+            data.map((item, index) => (
+              <tr key={index} className="even:bg-gray-50">
+                <td className="border border-gray-300 p-3 text-sm text-gray-600">{item.ai}</td>
+                <td className="border border-gray-300 p-3 text-sm text-gray-600">{item.feature}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={2} className="h-24 text-center border border-gray-300 p-3 text-sm text-gray-500">
+                沒有結果。
               </td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>
   );
 }

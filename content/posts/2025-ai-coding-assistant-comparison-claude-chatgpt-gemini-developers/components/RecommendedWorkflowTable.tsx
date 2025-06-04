@@ -1,10 +1,4 @@
 import React from 'react';
-import {
-  useReactTable,
-  getCoreRowModel,
-  ColumnDef,
-  flexRender,
-} from '@tanstack/react-table';
 
 interface WorkflowStep {
   step: string;
@@ -19,43 +13,35 @@ const data: WorkflowStep[] = [
   { step: '優化階段', tool: 'Claude + 自己思考', description: '結合AI建議與自身經驗進行優化' },
 ];
 
-const columns: ColumnDef<WorkflowStep>[] = [
-  { header: '步驟', accessorKey: 'step' },
-  { header: '工具', accessorKey: 'tool' },
-  { header: '說明', accessorKey: 'description' },
-];
-
 export default function RecommendedWorkflowTable() {
-  const table = useReactTable<WorkflowStep>({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
-
   return (
-    <table className="min-w-full border-collapse">
-      <thead>
-        {table.getHeaderGroups().map(headerGroup => (
-          <tr key={headerGroup.id}>
-            {headerGroup.headers.map(header => (
-              <th key={header.id} className="border p-2 text-left bg-gray-100">
-                {flexRender(header.column.columnDef.header, header.getContext())}
-              </th>
-            ))}
+    <div className="w-full overflow-x-auto my-6">
+      <table className="min-w-[600px] w-full border-collapse border border-gray-300">
+        <thead>
+          <tr className="bg-gray-100">
+            <th className="border border-gray-300 p-3 text-left text-sm font-semibold text-gray-700">步驟</th>
+            <th className="border border-gray-300 p-3 text-left text-sm font-semibold text-gray-700">工具</th>
+            <th className="border border-gray-300 p-3 text-left text-sm font-semibold text-gray-700">說明</th>
           </tr>
-        ))}
-      </thead>
-      <tbody>
-        {table.getRowModel().rows.map(row => (
-          <tr key={row.id}>
-            {row.getVisibleCells().map(cell => (
-              <td key={cell.id} className="border p-2">
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+        </thead>
+        <tbody>
+          {data.length > 0 ? (
+            data.map((item, index) => (
+              <tr key={index} className="even:bg-gray-50">
+                <td className="border border-gray-300 p-3 text-sm text-gray-600">{item.step}</td>
+                <td className="border border-gray-300 p-3 text-sm text-gray-600">{item.tool}</td>
+                <td className="border border-gray-300 p-3 text-sm text-gray-600">{item.description}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={3} className="h-24 text-center border border-gray-300 p-3 text-sm text-gray-500">
+                沒有結果。
               </td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>
   );
 }
