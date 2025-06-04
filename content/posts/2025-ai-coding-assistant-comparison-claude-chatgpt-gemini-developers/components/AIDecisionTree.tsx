@@ -185,33 +185,29 @@ const AIDecisionTree: React.FC = () => {
       id: 'e1-2', 
       source: '1', 
       target: '2', 
+      type: 'default',
       animated: true,
-      style: { stroke: '#8B5CF6', strokeWidth: 2 },
-      markerEnd: { type: MarkerType.ArrowClosed, color: '#8B5CF6' },
     },
     { 
       id: 'e1-3', 
       source: '1', 
       target: '3', 
+      type: 'default',
       animated: true,
-      style: { stroke: '#8B5CF6', strokeWidth: 2 },
-      markerEnd: { type: MarkerType.ArrowClosed, color: '#8B5CF6' },
     },
     { 
       id: 'e1-4', 
       source: '1', 
       target: '4', 
+      type: 'default',
       animated: true,
-      style: { stroke: '#8B5CF6', strokeWidth: 2 },
-      markerEnd: { type: MarkerType.ArrowClosed, color: '#8B5CF6' },
     },
     { 
       id: 'e1-5', 
       source: '1', 
       target: '5', 
+      type: 'default',
       animated: true,
-      style: { stroke: '#8B5CF6', strokeWidth: 2 },
-      markerEnd: { type: MarkerType.ArrowClosed, color: '#8B5CF6' },
     },
 
     // 从场景到AI工具选择
@@ -219,29 +215,25 @@ const AIDecisionTree: React.FC = () => {
       id: 'e2-6', 
       source: '2', 
       target: '6',
-      style: { stroke: '#06B6D4', strokeWidth: 2 },
-      markerEnd: { type: MarkerType.ArrowClosed, color: '#06B6D4' },
+      type: 'default',
     },
     { 
       id: 'e3-7', 
       source: '3', 
       target: '7',
-      style: { stroke: '#8B5CF6', strokeWidth: 2 },
-      markerEnd: { type: MarkerType.ArrowClosed, color: '#8B5CF6' },
+      type: 'default',
     },
     { 
       id: 'e4-8', 
       source: '4', 
       target: '8',
-      style: { stroke: '#F59E0B', strokeWidth: 2 },
-      markerEnd: { type: MarkerType.ArrowClosed, color: '#F59E0B' },
+      type: 'default',
     },
     { 
       id: 'e5-9', 
       source: '5', 
       target: '9',
-      style: { stroke: '#10B981', strokeWidth: 2 },
-      markerEnd: { type: MarkerType.ArrowClosed, color: '#10B981' },
+      type: 'default',
     },
 
     // 从AI工具到详细说明
@@ -249,29 +241,29 @@ const AIDecisionTree: React.FC = () => {
       id: 'e6-10', 
       source: '6', 
       target: '10',
-      style: { stroke: '#94A3B8', strokeWidth: 1, strokeDasharray: '5,5' },
-      markerEnd: { type: MarkerType.ArrowClosed, color: '#94A3B8' },
+      type: 'default',
+      style: { strokeDasharray: '5,5' },
     },
     { 
       id: 'e7-11', 
       source: '7', 
       target: '11',
-      style: { stroke: '#94A3B8', strokeWidth: 1, strokeDasharray: '5,5' },
-      markerEnd: { type: MarkerType.ArrowClosed, color: '#94A3B8' },
+      type: 'default',
+      style: { strokeDasharray: '5,5' },
     },
     { 
       id: 'e8-12', 
       source: '8', 
       target: '12',
-      style: { stroke: '#94A3B8', strokeWidth: 1, strokeDasharray: '5,5' },
-      markerEnd: { type: MarkerType.ArrowClosed, color: '#94A3B8' },
+      type: 'default',
+      style: { strokeDasharray: '5,5' },
     },
     { 
       id: 'e9-13', 
       source: '9', 
       target: '13',
-      style: { stroke: '#94A3B8', strokeWidth: 1, strokeDasharray: '5,5' },
-      markerEnd: { type: MarkerType.ArrowClosed, color: '#94A3B8' },
+      type: 'default',
+      style: { strokeDasharray: '5,5' },
     },
   ];
 
@@ -296,20 +288,31 @@ const AIDecisionTree: React.FC = () => {
         </div>
         
         <div style={{ width: '100%', height: '600px' }}>
-          <ReactFlow
-            nodes={nodes}
-            edges={edges}
-            onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
-            onConnect={onConnect}
-            nodeTypes={nodeTypes}
-            fitView
-            fitViewOptions={{
-              padding: 0.1,
-              includeHiddenNodes: false,
-            }}
-            attributionPosition="bottom-left"
-          >
+            <ReactFlow
+              nodes={nodes}
+              edges={edges}
+              onNodesChange={onNodesChange}
+              onEdgesChange={onEdgesChange}
+              onConnect={onConnect}
+              nodeTypes={nodeTypes}
+              fitView
+              fitViewOptions={{
+                padding: 0.2,
+                minZoom: 0.5,
+                maxZoom: 1.5,
+              }}
+              defaultEdgeOptions={{
+                type: 'default',
+                animated: true,
+                style: { 
+                  strokeWidth: 3,
+                  stroke: '#8b5cf6'
+                },
+              }}
+              connectionLineStyle={{ stroke: '#8b5cf6', strokeWidth: 2 }}
+              attributionPosition="bottom-left"
+              onInit={() => console.log('React Flow initialized with', nodes.length, 'nodes and', edges.length, 'edges')}
+            >
             <Background 
               color="#f1f5f9" 
               gap={20} 
