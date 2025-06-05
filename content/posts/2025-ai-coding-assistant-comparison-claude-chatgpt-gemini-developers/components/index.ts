@@ -20,6 +20,7 @@ import ChatGPTDetailedTable from './ChatGPTDetailedTable';
 import GeminiDetailedTable from './GeminiDetailedTable';
 import TestResultsTable from './TestResultsTable';
 import SecurityAssessmentTable from './SecurityAssessmentTable';
+import TechSolutionComparisonTable from './TechSolutionComparisonTable';
 
 // 其他實用組件
 import MermaidDiagram from './MermaidDiagram';
@@ -47,6 +48,7 @@ export {
   GeminiDetailedTable,
   TestResultsTable,
   SecurityAssessmentTable,
+  TechSolutionComparisonTable,
   
   // 其他組件
   MermaidDiagram
