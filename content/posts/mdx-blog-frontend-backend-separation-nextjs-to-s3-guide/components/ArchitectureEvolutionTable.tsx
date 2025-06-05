@@ -66,11 +66,6 @@ export default function ArchitectureEvolutionTable() {
 
   return (
     <div className="w-full max-w-4xl mx-auto p-6 overflow-x-auto">
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold text-center mb-2">內容管理架構演進階段</h2>
-        <p className="text-muted-foreground text-center">根據文章數量選擇合適的技術架構方案</p>
-      </div>
-
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -109,8 +104,6 @@ export default function ArchitectureEvolutionTable() {
           </TableBody>
         </Table>
       </div>
-
-      <div className="mt-4 text-sm text-muted-foreground text-center">共 {table.getRowModel().rows.length} 個階段</div>
     </div>
   )
 }
