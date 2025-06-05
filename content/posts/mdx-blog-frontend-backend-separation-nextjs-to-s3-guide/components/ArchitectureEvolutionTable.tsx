@@ -85,7 +85,7 @@ function DataTable<T>({ data, columns, title, description }: DataTableProps<T>) 
   });
 
   return (
-    <div className="my-8 overflow-hidden rounded-lg border border-gray-200 shadow-sm">
+    <div className="h-auto overflow-hidden rounded-lg border border-gray-200 shadow-sm">
       <div className="bg-gray-50 px-6 py-4 border-b border-gray-200">
         <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
         {description && (
@@ -123,7 +123,7 @@ function DataTable<T>({ data, columns, title, description }: DataTableProps<T>) 
                 {row.getVisibleCells().map(cell => (
                   <td
                     key={cell.id}
-                    className="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                    className="px-6 py-3 whitespace-nowrap text-sm text-gray-900"
                   >
                     {flexRender(
                       cell.column.columnDef.cell,
