@@ -58,28 +58,30 @@ export default function TechSolutionComparisonTable() {
 
   return (
     <div className="overflow-x-auto my-6">
-      <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 rounded-lg border shadow-sm bg-white dark:bg-gray-800">
-        <thead className="bg-purple-500 dark:bg-purple-700 text-white">
-          {table.getHeaderGroups().map(headerGroup => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map(header => (
-                <th 
-                  key={header.id} 
-                  className="border border-gray-300 p-3 text-left text-sm font-semibold"
-                >
-                  {flexRender(header.column.columnDef.header, header.getContext())}
-                </th>
-              ))}
-            </tr>
-          ))}
+      <table className="min-w-full border-collapse rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm bg-white dark:bg-gray-800">
+        <thead>
+          <tr className="bg-green-50 dark:bg-green-900">
+            {table.getHeaderGroups().map(headerGroup => (
+              <React.Fragment key={headerGroup.id}>
+                {headerGroup.headers.map(header => (
+                  <th 
+                    key={header.id} 
+                    className="p-3 text-left text-sm font-semibold text-green-800 dark:text-green-200"
+                  >
+                    {flexRender(header.column.columnDef.header, header.getContext())}
+                  </th>
+                ))}
+              </React.Fragment>
+            ))}
+          </tr>
         </thead>
-        <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+        <tbody>
           {table.getRowModel().rows.map(row => (
-            <tr key={row.id} className="even:bg-gray-50 hover:bg-gray-200">
+            <tr key={row.id} className="even:bg-gray-50 dark:even:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
               {row.getVisibleCells().map(cell => (
                 <td 
                   key={cell.id} 
-                  className="border border-gray-300 p-3 text-sm text-gray-800"
+                  className="p-3 text-sm text-gray-800 dark:text-gray-200 font-medium"
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>

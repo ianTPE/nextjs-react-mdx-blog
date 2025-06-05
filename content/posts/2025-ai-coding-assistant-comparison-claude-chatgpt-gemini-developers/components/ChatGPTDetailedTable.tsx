@@ -14,20 +14,20 @@ const ChatGPTDetailedTable: React.FC = () => {
 
   return (
     <div className="overflow-x-auto my-6">
-      <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 rounded-lg border shadow-sm bg-white dark:bg-gray-800">
-        <thead className="bg-purple-500 dark:bg-purple-700 text-white">
-          <tr>
-            <th className="border border-gray-300 p-3 text-left text-sm font-semibold text-gray-700">維度</th>
-            <th className="border border-gray-300 p-3 text-left text-sm font-semibold text-gray-700">評分</th>
-            <th className="border border-gray-300 p-3 text-left text-sm font-semibold text-gray-700">評語</th>
+      <table className="min-w-full border-collapse rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm bg-white dark:bg-gray-800">
+        <thead>
+          <tr className="bg-blue-50 dark:bg-blue-900">
+            <th className="p-3 text-left text-sm font-semibold text-blue-800 dark:text-blue-200">維度</th>
+            <th className="p-3 text-left text-sm font-semibold text-blue-800 dark:text-blue-200">評分</th>
+            <th className="p-3 text-left text-sm font-semibold text-blue-800 dark:text-blue-200">評語</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+        <tbody>
           {chatGPTData.map((row, index) => (
-            <tr key={index} className="even:bg-gray-50 hover:bg-gray-200">
-              <td className="border border-gray-300 p-3 text-sm text-gray-800 font-medium">{row.dimension}</td>
-              <td className="border border-gray-300 p-3 text-sm text-gray-600 font-medium">{row.score}</td>
-              <td className="border border-gray-300 p-3 text-sm text-gray-600">{row.comment}</td>
+            <tr key={index} className="even:bg-gray-50 dark:even:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+              <td className="p-3 text-sm text-gray-800 dark:text-gray-200 font-medium">{row.dimension}</td>
+              <td className="p-3 text-sm text-gray-600 dark:text-gray-300 font-medium">{row.score}</td>
+              <td className="p-3 text-sm text-gray-600 dark:text-gray-300">{row.comment}</td>
             </tr>
           ))}
         </tbody>
