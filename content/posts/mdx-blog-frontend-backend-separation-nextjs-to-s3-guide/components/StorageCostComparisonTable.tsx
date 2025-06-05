@@ -83,9 +83,18 @@ interface DataTableProps<T> {
   columns: ColumnDef<T, any>[];
   title: string;
   description?: string;
+  showTitle?: boolean;
+  showDescription?: boolean;
 }
 
-function DataTable<T>({ data, columns, title, description }: DataTableProps<T>) {
+function DataTable<T>({
+  data,
+  columns,
+  title,
+  description,
+  showTitle = true,
+  showDescription = true
+}: DataTableProps<T>) {
   const table = useReactTable({
     data,
     columns,
@@ -93,13 +102,17 @@ function DataTable<T>({ data, columns, title, description }: DataTableProps<T>) 
   });
 
   return (
-    <div className="h-auto overflow-hidden rounded-lg border border-gray-200 shadow-sm">
-      <div className="bg-gray-50 px-6 py-4 border-b border-gray-200">
-        <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
-        {description && (
-          <p className="mt-1 text-sm text-gray-600">{description}</p>
-        )}
-      </div>
+    <div className="h-auto overflow-hidden rounded-lg border border-gray-200 shadow-sm not-prose">
+      { (showTitle && title) || (showDescription && description) ? (
+        <div className="bg-gray-50 px-6 py-4 border-b border-gray-200">
+          {showTitle && title && (
+            <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
+          )}
+          {showDescription && description && (
+            <p className="mt-1 text-sm text-gray-600">{description}</p>
+          )}
+        </div>
+      ) : null}
       
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
@@ -148,7 +161,16 @@ function DataTable<T>({ data, columns, title, description }: DataTableProps<T>) 
   );
 }
 
-export function StorageCostComparisonTable() {
+
+interface StorageCostComparisonTableProps {
+  showTitle?: boolean;
+  showDescription?: boolean;
+}
+
+export function StorageCostComparisonTable({ 
+  showTitle = true, 
+  showDescription = true 
+}: StorageCostComparisonTableProps) {
   return (
     <div className="space-y-4">
       <DataTable
@@ -156,6 +178,8 @@ export function StorageCostComparisonTable() {
         columns={storageColumns}
         title="Cloudflare R2 vs AWS S3 成本比較"
         description="詳細的費用結構對比，突出顯示 R2 的零出流量費用優勢"
+        showTitle={showTitle}
+        showDescription={showDescription}
       />
       
       {/* 成本計算範例 */}

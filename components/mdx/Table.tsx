@@ -24,7 +24,7 @@ type TableRowProps = ComponentPropsWithoutRef<'tr'> & {
 // Table component
 export function Table({ children, className = '', ...props }: TableProps) {
   return (
-    <div className="overflow-x-auto my-4">
+    <div className="overflow-x-auto">
       <table 
         className={`min-w-full border-collapse border-2 border-gray-300 ${className}`}
         {...props}
@@ -57,7 +57,7 @@ export function TBody({ children, className = '', ...props }: TableSectionProps)
 export function Th({ children, className = '', ...props }: TableCellProps) {
   return (
     <th 
-      className={`px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider border-2 border-gray-300 ${className}`}
+      className={`px-6 py-0 text-left text-xs font-medium text-gray-700 uppercase tracking-wider border-2 border-gray-300 ${className}`}
       {...props}
     >
       {children}
@@ -69,7 +69,7 @@ export function Th({ children, className = '', ...props }: TableCellProps) {
 export function Td({ children, className = '', ...props }: TableCellProps) {
   return (
     <td 
-      className={`px-6 py-4 text-sm text-gray-600 border border-gray-300 ${className}`}
+      className={`px-6 py-1 text-sm text-gray-600 border border-gray-300 ${className}`}
       {...props}
     >
       {children}

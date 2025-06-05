@@ -44,13 +44,26 @@ const CodeBlock: FC<CodeBlockProps> = ({ children, className }) => {
             margin: 0,
             paddingLeft: '1.5rem',
           }}>
-            {tokens.map((line, lineIndex) => (
-              <div key={`line-${lineIndex}`} {...getLineProps({ line, key: `line-${lineIndex}` })}>
-                {line.map((token, tokenIndex) => (
-                  <span key={`token-${lineIndex}-${tokenIndex}`} {...getTokenProps({ token, key: tokenIndex })} />
-                ))}
-              </div>
-            ))}
+            {tokens.map((line, lineIndex) => {
+              // Process props from getLineProps
+              const allLineProps = getLineProps({ line, key: `line-${lineIndex}` });
+              const lineProps = { ...allLineProps };
+              delete lineProps.key; // Remove key to avoid spread conflict
+
+              return (
+                <div key={`line-${lineIndex}`} {...lineProps}>
+                  {line.map((token, tokenIndex) => {
+                    // Process props from getTokenProps (already fixed in previous steps)
+                    const allTokenProps = getTokenProps({ token, key: tokenIndex });
+                    const tokenProps = { ...allTokenProps };
+                    delete tokenProps.key;
+                    return (
+                      <span key={`token-${lineIndex}-${tokenIndex}`} {...tokenProps} />
+                    );
+                  })}
+                </div>
+              );
+            })}
           </pre>
         )}
       </Highlight>
