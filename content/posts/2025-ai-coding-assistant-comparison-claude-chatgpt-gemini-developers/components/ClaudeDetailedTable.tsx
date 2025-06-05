@@ -13,31 +13,25 @@ const ClaudeDetailedTable: React.FC = () => {
   ];
 
   return (
-    <div className="w-full overflow-x-auto mt-6">
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-        <div className="bg-purple-50 px-4 py-3 rounded-t-lg border-b border-gray-200">
-          <h4 className="text-lg font-semibold text-purple-800">🥇 Claude (Anthropic) - 詳細評分</h4>
-          <p className="text-sm text-purple-600 mt-1">我最喜歡的回答 - 評分：56/60</p>
-        </div>
-        <table className="min-w-full border-collapse">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="border border-gray-300 p-3 text-left text-sm font-semibold text-gray-700">維度</th>
-              <th className="border border-gray-300 p-3 text-left text-sm font-semibold text-gray-700">評分</th>
-              <th className="border border-gray-300 p-3 text-left text-sm font-semibold text-gray-700">評語</th>
+    <div className="overflow-x-auto my-6">
+      <table className="min-w-full border-collapse rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm bg-white dark:bg-gray-800">
+        <thead>
+          <tr className="bg-purple-50 dark:bg-purple-900">
+            <th className="p-3 text-left text-sm font-semibold text-purple-800 dark:text-purple-200">維度</th>
+            <th className="p-3 text-left text-sm font-semibold text-purple-800 dark:text-purple-200">評分</th>
+            <th className="p-3 text-left text-sm font-semibold text-purple-800 dark:text-purple-200">評語</th>
+          </tr>
+        </thead>
+        <tbody>
+          {claudeData.map((row, index) => (
+            <tr key={index} className="even:bg-gray-50 dark:even:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+              <td className="p-3 text-sm text-gray-800 dark:text-gray-200 font-medium">{row.dimension}</td>
+              <td className="p-3 text-sm text-gray-600 dark:text-gray-300 font-medium">{row.score}</td>
+              <td className="p-3 text-sm text-gray-600 dark:text-gray-300">{row.comment}</td>
             </tr>
-          </thead>
-          <tbody>
-            {claudeData.map((row, index) => (
-              <tr key={index} className="even:bg-gray-50 hover:bg-gray-200">
-                <td className="border border-gray-300 p-3 text-sm text-gray-800 font-medium">{row.dimension}</td>
-                <td className="border border-gray-300 p-3 text-sm text-gray-600 font-medium">{row.score}</td>
-                <td className="border border-gray-300 p-3 text-sm text-gray-600">{row.comment}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
