@@ -65,7 +65,7 @@ export default function ArchitectureEvolutionTable() {
   })
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-6 overflow-x-auto">
+    <div className="w-full max-w-4xl mx-auto overflow-x-auto">
       <div className="rounded-md border">
         <Table>
           <TableHeader>
