@@ -9,6 +9,9 @@
     "lint": "next lint",
     "validate-posts": "node scripts/validate-posts-simple.js",
     "validate-posts-advanced": "node scripts/validate-posts.js",
+    "posts:validate": "tsx scripts/validate-posts-new.ts",
+    "posts:create": "tsx scripts/create-post.ts",
+    "posts:list": "tsx scripts/list-posts.ts",
     "prebuild": "npm run validate-posts"
   },
   "dependencies": {
@@ -58,6 +61,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.3.2",
     "tailwindcss": "^4",
+    "tsx": "^4.19.4",
     "tw-animate-css": "^1.3.0",
     "typescript": "^5"
   }

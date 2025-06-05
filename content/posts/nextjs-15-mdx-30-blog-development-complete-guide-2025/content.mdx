@@ -1,12 +1,3 @@
-export const metadata = {
-  title: 'Next.js 15 + MDX 3.0 部落格開發完整指南：分散式 ESM Metadata 與現代化內容管理 (2025)',
-  date: '2025-05-22',
-  excerpt: '深入剖析 Next.js 15 結合 MDX 3.0 的現代部落格開發流程，從分散式 ESM metadata 管理、local components 到最終頁面渲染的完整技術解析。探索如何在每個 MDX 檔案中使用 ESM export 管理 metadata，提升開發效率與維護性。涵蓋組件架構設計、靜態路由產生、MDX 渲染機制等核心概念，並提供進階優化策略與最佳實踐。',
-  author: 'Ian Chou',
-  tags: ['Next.js', 'MDX', 'React', 'TypeScript', 'Blog Development', 'App Router', 'SSG', 'Component Architecture', 'ESM Metadata', '技術教學'],
-  coverImage: '/images/posts/nextjs-15-mdx-30-blog-development-complete-guide-2025.webp'
-};
-
 在現代前端開發中，Next.js 結合 MDX 已成為建立技術部落格的主流選擇。本文將深入剖析從分散式 ESM metadata、local components 到最終 blog 頁面的完整轉換流程，以實際專案架構為例，逐步拆解每個環節的技術細節。我們將重點探討如何使用 MDX 檔案頂部的 ESM export 來管理 metadata，這種方式相比集中式管理提供了更好的內容內聚性與開發體驗。
 
 ## 目錄
@@ -76,17 +67,6 @@ export const metadata = {
 
 ```mdx
 // content/posts/nextjs-mdx-setup/content.mdx
-export const metadata = {
-  title: 'Next.js + MDX 部落格建置指南',
-  date: '2024-05-21',
-  author: 'Ian Chou',
-  excerpt: 'Complete guide to setting up Next.js with MDX for modern blogging',
-  tags: ['Next.js', 'MDX', 'React'],
-  coverImage: '/images/covers/nextjs-mdx.jpg',
-  readingTime: 8,
-  featured: true,
-  category: 'Frontend Development'
-};
 
 # Next.js + MDX 部落格建置指南
 

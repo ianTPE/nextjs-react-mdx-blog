@@ -1,13 +1,3 @@
-export const metadata = {
-  title: '開始使用 Next.js 15',
-  date: '2025-05-10',
-  excerpt: '學習如何使用 Next.js 15 建立現代化的 React 應用程式，包含 App Router、Server Components 等最新功能。',
-  author: 'Ian Chou',
-  coverImage: '/images/getting-started-with-nextjs.webp',
-  tags: ['Next.js', 'React', 'TypeScript'],
-  readingTime: 15
-};
-
 ## Next.js 15 與 14 版本的主要差異
 
 Next.js 15 在 14 版本的基礎上進行了多項重要改進和功能強化。以下是主要差異：
@@ -226,36 +216,7 @@ Next.js 15 改進了 Metadata API，使 SEO 和社交分享設定更簡單：
 
 ```tsx
 // app/layout.tsx - 改進的 Metadata API
-export const metadata = {
-  metadataBase: new URL('https://mysite.com'),
-  title: {
-    template: '%s | My Website',
-    default: 'My Website',
-  },
-  description: '我的網站描述',
-  openGraph: {
-    type: 'website',
-    images: [
-      {
-        url: '/images/og-image.webp',
-        width: 1200,
-        height: 630,
-        alt: 'My Website',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
-  // 新增：結構化數據支援
-  other: {
-    'google-site-verification': 'verification-code',
-  },
-};
+
 ```
 
 Next.js 15 與 14 相比，增加了更多內置的 metadata 類型，提升了 SEO 優化體驗。

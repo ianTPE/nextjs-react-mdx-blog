@@ -1,15 +1,3 @@
-export const metadata = {
-  title: 'Next.js vs Remix vs Nuxt 2025：組件驅動開發框架完整比較指南（實戰經驗）',
-  date: '2025-06-03',
-  author: 'Ian Chou',
-  excerpt: '基於 Next.js 實戰經驗，深入分析 Next.js、Remix、Nuxt、Astro、Gatsby、Vite 六大框架對 vibe coding 開發模式的支援度，幫助組件導向開發者做出最佳選擇。',
-  tags: ['Next.js', 'React', 'Vue', 'Framework Comparison', 'Vibe Coding', 'Developer Experience'],
-  coverImage: '/images/posts/vibe-coding-framework-guide.webp',
-  readingTime: 12,
-  featured: true,
-  category: 'Frontend Development'
-};
-
 如果你是習慣 **vibe coding**（快速產生大量本地組件）和**宣告式開發**的開發者，選擇適合的框架至關重要。作為一個深度使用 Next.js App Router 建構 MDX blog 的開發者，我將基於實際經驗分析六大主流選擇，幫你找到最適合的工具。
 
 ## 什麼是 Vibe Coding？
@@ -105,13 +93,6 @@ export async function loadLocalComponents(slug: string) {
 **實際使用體驗：**
 
 ```mdx
-export const metadata = {
-  title: 'Data Visualization Example',
-  date: '2025-06-03',
-  author: 'Ian Chou',
-  tags: ['Data', 'Charts'],
-  readingTime: 8
-};
 
 # 資料視覺化範例
 
@@ -356,13 +337,7 @@ export { default as DataTable } from './DataTable';
 3. **使用 ESM metadata**：
 ```typescript
 // content/posts/[slug]/content.mdx
-export const metadata = {
-  title: 'Your Post Title',
-  date: '2025-06-03',
-  author: 'Your Name',
-  tags: ['Next.js', 'React'],
-  readingTime: 10
-};
+
 ```
 
 ### 常見問題解決
