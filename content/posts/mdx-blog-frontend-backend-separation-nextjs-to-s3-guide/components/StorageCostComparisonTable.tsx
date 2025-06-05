@@ -101,7 +101,7 @@ function DataTable<T>({ data, columns, title, description }: DataTableProps<T>) 
         )}
       </div>
       
-      <div className="overflow-x-auto max-h-[calc(100vh-200px)]">
+      <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             {table.getHeaderGroups().map(headerGroup => (
