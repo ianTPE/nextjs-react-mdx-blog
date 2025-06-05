@@ -80,9 +80,9 @@ async function validatePost(slug: string): Promise<ValidationResult> {
     // 3. 驗證 MDX 內容
     await validateMDXContent(slug, result);
 
-  } catch (error) {
+  } catch (error: any) {
     result.valid = false;
-    result.errors.push(`驗證過程發生錯誤: ${error.message}`);
+    result.errors.push(`驗證過程發生錯誤: ${error?.message || String(error)}`);
   }
 
   return result;
@@ -127,8 +127,8 @@ async function validateFileStructure(slug: string, result: ValidationResult): Pr
         result.warnings.push('建議在 components 目錄中添加 index.ts 文件');
       }
     }
-  } catch (error) {
-    result.errors.push(`無法讀取文章目錄: ${error.message}`);
+  } catch (error: any) {
+    result.errors.push(`無法讀取文章目錄: ${error?.message || String(error)}`);
   }
 }
 
@@ -179,9 +179,9 @@ async function validateMetadata(slug: string, result: ValidationResult): Promise
       result.warnings.push('title 超過 60 字符，可能影響 SEO');
     }
 
-  } catch (error) {
+  } catch (error: any) {
     result.valid = false;
-    result.errors.push(`metadata 驗證失敗: ${error.message}`);
+    result.errors.push(`metadata 驗證失敗: ${error?.message || String(error)}`);
   }
 }
 
@@ -209,9 +209,9 @@ async function validateMDXContent(slug: string, result: ValidationResult): Promi
       result.warnings.push('文章缺少標題（Markdown 標題）');
     }
 
-  } catch (error) {
+  } catch (error: any) {
     result.valid = false;
-    result.errors.push(`MDX 內容驗證失敗: ${error.message}`);
+    result.errors.push(`MDX 內容驗證失敗: ${error?.message || String(error)}`);
   }
 }
 

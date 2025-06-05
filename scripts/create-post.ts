@@ -68,7 +68,7 @@ async function collectPostInfo(rl: readline.Interface): Promise<PostConfig> {
   try {
     await fs.access(postDir);
     throw new Error(`文章 slug "${slug}" 已存在`);
-  } catch (error) {
+  } catch (error: any) {
     if (error.code !== 'ENOENT') {
       throw error;
     }
