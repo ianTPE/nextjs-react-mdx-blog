@@ -1,7 +1,7 @@
-import { BlogMetadata, BlogPost } from '@/app/types/blog';
+import type { PostMeta, Post } from '@/types/post';
 
 export interface PostWithContent {
-  metadata: BlogMetadata;
+  metadata: PostMeta;
   content: string;
   rawContent: string;
 }
@@ -11,8 +11,8 @@ export interface PostWithContent {
  */
 class MDXCache {
   private cache = new Map<string, PostWithContent>();
-  private metadataCache = new Map<string, BlogMetadata>();
-  private allPostsCache: BlogPost[] | null = null;
+  private metadataCache = new Map<string, PostMeta>();
+  private allPostsCache: PostMeta[] | null = null;
   private lastModified = new Map<string, number>();
 
   /**
@@ -61,14 +61,14 @@ class MDXCache {
   /**
    * 取得快取的 metadata
    */
-  getMetadata(slug: string): BlogMetadata | null {
+  getMetadata(slug: string): PostMeta | null {
     return this.metadataCache.get(slug) || null;
   }
 
   /**
    * 設定 metadata 快取
    */
-  setMetadata(slug: string, metadata: BlogMetadata): void {
+  setMetadata(slug: string, metadata: PostMeta): void {
     this.metadataCache.set(slug, metadata);
     // 如果快取中有完整的文章，也更新它
     const cachedPost = this.cache.get(slug);
@@ -82,14 +82,14 @@ class MDXCache {
   /**
    * 取得所有文章快取
    */
-  getAllPosts(): BlogPost[] | null {
+  getAllPosts(): PostMeta[] | null {
     return this.allPostsCache;
   }
 
   /**
    * 設定所有文章快取
    */
-  setAllPosts(posts: BlogPost[]): void {
+  setAllPosts(posts: PostMeta[]): void {
     this.allPostsCache = posts;
   }
 

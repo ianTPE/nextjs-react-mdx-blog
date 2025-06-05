@@ -20,15 +20,19 @@ export async function loadPostMetadata(slug: string): Promise<PostMeta | null> {
       return null;
     }
 
-    // 在 Node.js 環境中動態 import（Windows 相容性修正）
-    const metadataUrl = process.platform === 'win32' 
-      ? `file:///${metadataPath.replace(/\\/g, '/')}`
-      : `file://${metadataPath}`;
+    // 讀取文件內容
+    const fileContent = await fs.readFile(metadataPath, 'utf8');
     
-    // 開發環境中清除快取，確保取得最新的 metadata
-    const cacheBustingUrl = `${metadataUrl}?t=${Date.now()}`;
-    const metadataModule = await import(cacheBustingUrl);
-    const metadata = metadataModule.default;
+    // 使用 eval 來執行 TypeScript/JavaScript 代碼
+    // 移除 import 語句和類型註解，只保留純 JavaScript
+    const cleanedContent = fileContent
+      .replace(/import\s+.*?from\s+['"][^'"]*['"];?\s*/g, '') // 移除 import 語句
+      .replace(/:\s*PostMeta/g, '') // 移除類型註解
+      .replace(/export\s+default\s+/, 'return '); // 將 export default 改為 return
+    
+    // 創建一個安全的執行環境，使用 IIFE 避免變量重複聲明問題
+    const evalFunction = new Function(cleanedContent);
+    const metadata = evalFunction();
 
     // 驗證 metadata
     return validateMetadata(metadata, slug);

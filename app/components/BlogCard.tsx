@@ -2,12 +2,12 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { BlogPost } from '../types/blog';
+import type { PostMeta } from '@/types/post';
 import MotionCardStatic from '@/components/animation/MotionCard.static';
 import { authors } from '../data/authors';
 
 interface BlogCardProps {
-  post: BlogPost;
+  post: PostMeta;
 }
 
 export default function BlogCard({ post }: BlogCardProps) {
@@ -21,6 +21,7 @@ export default function BlogCard({ post }: BlogCardProps) {
     // 如果找到作者，返回其頭像；否則返回默認頭像
     return authorEntry ? authorEntry[1].avatar : '/images/author.webp';
   }
+  
   return (
     <MotionCardStatic className="h-full">
       <article className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col h-full">
@@ -45,14 +46,14 @@ export default function BlogCard({ post }: BlogCardProps) {
             <div className="flex items-center gap-2">
               <div className="w-6 h-6 relative rounded-full overflow-hidden">
                 <Image 
-                  src={getAuthorAvatar(post.author)} 
-                  alt={post.author}
+                  src={getAuthorAvatar(post.author || 'Unknown')} 
+                  alt={post.author || 'Unknown'}
                   fill
                   sizes="24px"
                   className="object-cover"
                 />
               </div>
-              <span>{post.author}</span>
+              <span>{post.author || 'Unknown'}</span>
             </div>
             <span className="mx-2">•</span>
             <time dateTime={post.date}>
@@ -63,7 +64,7 @@ export default function BlogCard({ post }: BlogCardProps) {
               })}
             </time>
           </div>
-          <p className="text-gray-700 mb-4 line-clamp-3 flex-grow">{post.excerpt}</p>
+          <p className="text-gray-700 mb-4 line-clamp-3 flex-grow">{post.summary}</p>
           <div className="flex gap-2 flex-wrap">
             {post.tags.map((tag) => (
               <span

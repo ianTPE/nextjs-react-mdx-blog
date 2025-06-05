@@ -1,9 +1,9 @@
 import Image from 'next/image';
-import { BlogMetadata } from '../types/blog';
+import type { PostMeta } from '@/types/post';
 import { authors } from '../data/authors';
 
 interface BlogPostContentProps {
-  metadata: BlogMetadata;
+  metadata: PostMeta;
   children: React.ReactNode;
 }
 
@@ -41,14 +41,14 @@ export default function BlogPostContentStatic({ metadata, children }: BlogPostCo
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 relative rounded-full overflow-hidden">
               <Image 
-                src={getAuthorAvatar(metadata.author)} 
-                alt={metadata.author}
+                src={getAuthorAvatar(metadata.author || 'Unknown')} 
+                alt={metadata.author || 'Unknown'}
                 fill
                 sizes="32px"
                 className="object-cover"
               />
             </div>
-            <span>{metadata.author}</span>
+            <span>{metadata.author || 'Unknown'}</span>
           </div>
           <span>•</span>
           <time dateTime={metadata.date}>
@@ -59,6 +59,9 @@ export default function BlogPostContentStatic({ metadata, children }: BlogPostCo
             })}
           </time>
         </div>
+        {metadata.summary && (
+          <p className="text-gray-600 text-lg mb-4">{metadata.summary}</p>
+        )}
         <div className="flex gap-2 flex-wrap">
           {metadata.tags.map((tag) => (
             <span

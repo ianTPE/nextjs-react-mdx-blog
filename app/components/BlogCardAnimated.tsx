@@ -2,12 +2,12 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { BlogPost } from '@/lib/mdx';
+import type { PostMeta } from '@/types/post';
 import MotionCard from '@/components/animation/MotionCard';
 import { authors } from '@/app/data/authors';
 
 interface BlogCardProps {
-  post: BlogPost;
+  post: PostMeta;
 }
 
 export default function BlogCardAnimated({ post }: BlogCardProps) {
@@ -21,6 +21,7 @@ export default function BlogCardAnimated({ post }: BlogCardProps) {
     // 如果找到作者，返回其頭像；否則返回默認頭像
     return authorEntry ? authorEntry[1].avatar : '/images/author.webp';
   }
+  
   return (
     <MotionCard className="h-full">
       <article className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col h-full">
@@ -48,19 +49,19 @@ export default function BlogCardAnimated({ post }: BlogCardProps) {
               {post.title}
             </Link>
           </h2>
-          <p className="text-gray-700 mb-4 line-clamp-3 flex-grow">{post.excerpt}</p>
+          <p className="text-gray-700 mb-4 line-clamp-3 flex-grow">{post.summary}</p>
           <div className="mt-auto pt-4 border-t border-gray-100 flex items-center">
             <div className="w-8 h-8 relative rounded-full overflow-hidden">
               <Image 
-                src={getAuthorAvatar(post.author)} 
-                alt={post.author}
+                src={getAuthorAvatar(post.author || 'Unknown')} 
+                alt={post.author || 'Unknown'}
                 fill
                 sizes="32px"
                 className="object-cover"
               />
             </div>
             <div className="ml-2">
-              <span className="text-sm text-gray-800">{post.author}</span>
+              <span className="text-sm text-gray-800">{post.author || 'Unknown'}</span>
               <time dateTime={post.date} className="text-xs text-gray-500 block">
                 {new Date(post.date).toLocaleDateString('zh-TW', {
                   year: 'numeric',

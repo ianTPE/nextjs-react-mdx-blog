@@ -19,30 +19,29 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     return {};
   }
 
-  const { metadata } = post;
-  const ogImage = metadata.coverImage || '/images/default-og-image.webp';
+  const ogImage = post.coverImage || '/images/default-og-image.webp';
   
   return {
-    title: `${metadata.title} | Citrine.top`,
-    description: metadata.excerpt,
+    title: `${post.title} | Citrine.top`,
+    description: post.summary,
     openGraph: {
-      title: metadata.title,
-      description: metadata.excerpt,
+      title: post.title,
+      description: post.summary,
       type: 'article',
-      publishedTime: metadata.date,
-      authors: [metadata.author],
-      tags: metadata.tags,
+      publishedTime: post.date,
+      authors: [post.author || 'Unknown'],
+      tags: post.tags,
       images: [{
         url: ogImage,
         width: 1200,
         height: 630,
-        alt: metadata.title
+        alt: post.title
       }]
     },
     twitter: {
       card: 'summary_large_image',
-      title: metadata.title,
-      description: metadata.excerpt,
+      title: post.title,
+      description: post.summary,
       images: [ogImage]
     }
   };
@@ -59,7 +58,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   // 將 MDX 內容渲染成 React 元件
   // 不在服務端加載組件，而是讓 MDXRenderer 在客戶端處理
   return (
-    <BlogPostContentStatic metadata={post.metadata}>
+    <BlogPostContentStatic metadata={post}>
       <MDXRenderer 
         source={post.content} 
         slug={resolvedParams.slug}

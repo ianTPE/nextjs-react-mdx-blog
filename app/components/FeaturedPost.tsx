@@ -2,12 +2,12 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { BlogPost } from '@/lib/mdx';
+import type { PostMeta } from '@/types/post';
 import { motion } from 'framer-motion';
 import { authors } from '@/app/data/authors';
 
 interface FeaturedPostProps {
-  post: BlogPost;
+  post: PostMeta;
 }
 
 export default function FeaturedPost({ post }: FeaturedPostProps) {
@@ -21,6 +21,7 @@ export default function FeaturedPost({ post }: FeaturedPostProps) {
     // 如果找到作者，返回其頭像；否則返回默認頭像
     return authorEntry ? authorEntry[1].avatar : '/images/author.webp';
   }
+  
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -62,21 +63,21 @@ export default function FeaturedPost({ post }: FeaturedPostProps) {
           </h2>
           
           <p className="text-gray-700 mb-6 text-lg line-clamp-3">
-            {post.excerpt}
+            {post.summary}
           </p>
           
           <div className="flex items-center mt-auto">
             <div className="w-10 h-10 relative rounded-full overflow-hidden mr-4">
               <Image 
-                src={getAuthorAvatar(post.author)} 
-                alt={post.author}
+                src={getAuthorAvatar(post.author || 'Unknown')} 
+                alt={post.author || 'Unknown'}
                 fill
                 sizes="40px"
                 className="object-cover"
               />
             </div>
             <div>
-              <div className="font-medium">{post.author}</div>
+              <div className="font-medium">{post.author || 'Unknown'}</div>
               <time dateTime={post.date} className="text-gray-500 text-sm">
                 {new Date(post.date).toLocaleDateString('zh-TW', {
                   year: 'numeric',
