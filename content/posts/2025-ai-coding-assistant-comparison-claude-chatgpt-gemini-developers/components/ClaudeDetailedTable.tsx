@@ -13,7 +13,7 @@ const ClaudeDetailedTable: React.FC = () => {
   ];
 
   return (
-    <div className="w-full overflow-x-auto my-6">
+    <div className="w-full overflow-x-auto mt-6">
       <div className="bg-white rounded-lg shadow-sm border border-gray-200">
         <div className="bg-purple-50 px-4 py-3 rounded-t-lg border-b border-gray-200">
           <h4 className="text-lg font-semibold text-purple-800">🥇 Claude (Anthropic) - 詳細評分</h4>
