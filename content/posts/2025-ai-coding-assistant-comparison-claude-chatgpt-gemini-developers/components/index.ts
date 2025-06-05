@@ -24,6 +24,8 @@ import SecurityAssessmentTable from './SecurityAssessmentTable';
 // 其他實用組件
 import MermaidDiagram from './MermaidDiagram';
 
+export * from './TechSolutionComparisonTable';
+
 export {
   // 核心圖表組件
   AIScoreComparison,

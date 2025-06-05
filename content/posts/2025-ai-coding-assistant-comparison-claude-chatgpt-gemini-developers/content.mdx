@@ -16,15 +16,15 @@ export const metadata = {
 
 ## 前言
 
-最近我在研究一個相當複雜的技術架構：「MDX + React 組件 → 打包成 JS → 存 DB → 由 API Route 發出 → 在 Server Component 還原」的完整 pipeline。這個問題涉及前端打包、後端存儲、API 設計和服務端渲染等多個技術領域，正好是測試各個 AI 平台技術回答能力的絕佳機會。
+最近我在研究一個技術架構：「MDX + React 組件 → 打包成 JS → 存 DB → 由 API Route 發出 → 在 Server Component 還原」的完整 pipeline。這個問題涉及前端打包、後端存儲、API 設計和服務端渲染等多個技術領域。
 
-於是我決定做一個有趣的實驗：在 10+ 個主流 AI 平台上問同樣的問題，看看不同 AI 的回答風格、技術深度和實用性有何差異。結果非常有意思！
+我為了找到最佳答案，在 10 多個 AI 平台上問同樣的問題，看看不同 AI 的回答、技術深度和實用性有何差異。結果非常有意思！
 
-更重要的是，我還發現了一個意外的現象：**同一個AI在不同模式下（如開啟/關閉thinking模式）的表現也差異很大**，這讓AI工具的選擇變得更加複雜但也更加有趣！
+另外，我還發現了一個意外的現象：**同一個AI在不同模式下（如開啟/關閉thinking模式）的表現也差異很大**，這讓AI工具的選擇變得更加複雜！
 
 ## 🔥 對開發者的深度啟示
 
-在深入分析各平台表現之前，讓我先分享最重要的發現和實用技巧。這些是經過實戰驗證的方法論，即使你時間有限，掌握這些也能大幅提升你的AI使用效率。
+在深入分析各平台表現之前，讓我先分享一些重要的發現和實用技巧。這些是實測的結果，即使你時間有限，掌握這些也能大幅提升你的AI使用效率。
 
 ### 1. AI 模式選擇的藝術：同一工具的不同表現
 
@@ -33,8 +33,8 @@ export const metadata = {
 在使用過程中，我發現了一個關鍵問題：**同一個AI在不同模式下（如開啟/關閉thinking模式）給出的答案差異顯著，且各有優劣**。這個發現徹底改變了我對AI工具使用的認知。
 
 **典型案例：DeepSeek的模式差異**
-- **DeepSeek**：thinking模式下邏輯分析能力明顯提升，但普通模式表現平庸
-- **其他平台**：大多數AI在不同模式下也有類似的表現差異
+- **DeepSeek R1：** thinking模式下邏輯分析能力明顯提升，但 v3 普通模式表現平庸
+- **其他平台：** 大多數AI在不同模式下也有類似的表現差異
 
 #### 模式差異實際案例
 
@@ -224,7 +224,7 @@ const finalSolution = combineAndOptimize(solutions);
 我對10+個主流AI平台進行了系統性的量化評測，滿分60分（6個維度各10分）：
 
 <AIScoreComparison />
-
+<br />
 
 <OverallScoreTable />
 
@@ -330,7 +330,6 @@ const finalSolution = combineAndOptimize(solutions);
 <DimensionRadarChart />
 <br />
 
-
 從雷達圖可以看出：
 - **Claude** 的能力分布最為均衡，在實用性和結構性方面表現突出
 - **ChatGPT** 在技術深度方面與 Claude 持平，各維度發展相對均衡
@@ -432,10 +431,8 @@ const finalSolution = combineAndOptimize(solutions);
    ```
 
 2. **技術方案的對比分析**
-   | 方案 | 優點 | 缺點 | 適用場景 |
-   |------|------|------|----------|
-   | @mdx-js/esbuild | 快速、簡潔 | 功能相對簡單 | 中小型項目 |
-   | next-mdx-remote | 功能豐富 | 性能開銷大 | 內容管理系統 |
+
+<TechSolutionComparisonTable />
 
 ### 🥉 第三梯隊：Gemini
 
