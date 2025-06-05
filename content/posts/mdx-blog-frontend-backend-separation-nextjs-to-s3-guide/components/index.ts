@@ -1,4 +1,4 @@
 "use client";
 
-export { ArchitectureEvolutionTable } from './ArchitectureEvolutionTable';
+export { default as ArchitectureEvolutionTable } from './ArchitectureEvolutionTable';
 export { StorageCostComparisonTable } from './StorageCostComparisonTable';
