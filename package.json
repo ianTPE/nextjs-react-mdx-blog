@@ -9,10 +9,11 @@
     "lint": "next lint",
     "validate-posts": "node scripts/validate-posts-simple.js",
     "validate-posts-advanced": "node scripts/validate-posts.js",
+    "validate-posts-production": "node scripts/validate-posts-production.js",
     "posts:validate": "tsx scripts/validate-posts-new.ts",
     "posts:create": "tsx scripts/create-post.ts",
     "posts:list": "tsx scripts/list-posts.ts",
-    "prebuild": "npm run validate-posts"
+    "prebuild": "npm run validate-posts-production"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.0",
