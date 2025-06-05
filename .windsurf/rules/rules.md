@@ -15,28 +15,75 @@ This is a well-structured Next.js blog project leveraging the App Router and MDX
 * **Animations**: Framer Motion
 
 ## Content Structure
-The project organizes blog content and metadata in a clear, scalable folder layout:
+本專案自 2025 年 6 月起，採用獨立 metadata 檔案與純內容分離的架構，提升維護性與型別安全：
 
 ```
 /content
   /posts
     /{slug}
-      content.mdx
+      content.mdx       # 純內容，無 metadata
+      metadata.ts       # 獨立 ESM metadata（TypeScript 格式）
       /components
-        index.ts          # Barrel file for exporting components
+        index.ts        # Barrel file 匯出所有本地組件
         CustomChart.tsx
         ...
-/content/metadata.ts
+/lib
+  metadata-loader.ts    # 載入與驗證 metadata 的工具
+  mdx.ts                # 核心 MDX 處理函式
+/types
+  post.ts               # 型別定義
 ```
 
-* **content.mdx**: Primary Markdown + JSX file for each post.
-* **components**: Local components specific to a particular post (e.g., custom charts, interactive widgets). These are auto-loaded during MDX rendering.
-* **components/index.ts**: Barrel file that exports all local components, enabling cleaner MDX files without imports.
-* **metadata.ts**: Centralized metadata file exporting an array or object containing each post's title, date, summary, tags, and other attributes. Used throughout the site for listing, SEO, sitemap generation, and RSS feeds.
+- **content.mdx**：僅純 Markdown + JSX 內容，不含任何 metadata。
+- **metadata.ts**：每篇文章獨立的 TypeScript metadata 檔案，型別嚴謹，利於靜態分析與 IDE 支援。
+- **components**：文章專屬組件目錄，適合放互動式圖表、特殊元件等。
+- **components/index.ts**：統一匯出本地組件，MDX 渲染時自動注入，無需手動 import。
+- **metadata-loader.ts**：動態載入與驗證 metadata 的工具，確保型別正確。
+- **post.ts**：定義 PostMeta、Post 等型別。
 
-### Why Separate Metadata
-* **Performance**: Avoid reading full MDX files when only metadata is needed.
-* **Tooling Integration**: External tools like sitemap generators or RSS builders can consume metadata directly without parsing MDX.
+#### Metadata 型別定義與範例
+
+```typescript
+// types/post.ts
+export interface PostMeta {
+  slug: string;
+  title: string;
+  date: string;
+  summary: string;
+  tags: string[];
+  published: boolean;
+  author?: string;
+  coverImage?: string;
+}
+
+export interface Post extends PostMeta {
+  content: string;
+}
+```
+
+```typescript
+// content/posts/sample-post/metadata.ts
+import type { PostMeta } from '../../../types/post';
+
+const metadata: PostMeta = {
+  slug: "sample-post",
+  title: "Sample Blog Post",
+  date: "2025-06-05",
+  summary: "A comprehensive guide to...",
+  tags: ["Next.js", "MDX", "React"],
+  author: "Ian Chou",
+  published: true,
+  coverImage: "/images/posts/sample.webp"
+};
+
+export default metadata;
+```
+
+#### 為何拆分 metadata？
+- **效能**：僅需 metadata 時，無需讀取整份 MDX 內容。
+- **型別安全**：完整 TypeScript 支援，減少錯誤。
+- **工具整合**：如 sitemap、RSS、SEO 等可直接消費 metadata。
+- **維護便利**：內容與結構分離，易於 refactor。
 
 ## Component Architecture
 This project supports two categories of MDX components, with a clear override mechanism:
@@ -58,7 +105,14 @@ This project supports two categories of MDX components, with a clear override me
 
 ## Server and Client Components
 
-With Next.js App Router, components are server components by default. For interactive components that require client-side JavaScript, you must mark them as client components:
+- Next.js App Router 預設為 Server Component，需互動的元件必須加上 `"use client"`。
+- 只要有下列情境，務必於檔案最上方加入 `"use client"`：
+  - 使用 Chart.js、Recharts 等前端視覺化函式庫
+  - 操作瀏覽器 API（如 window、document、localStorage）
+  - 使用 React hooks（useState、useEffect、useRef 等）
+  - 需要用戶互動（事件處理、表單等）
+  - 匯入其他 client component
+- 若 `index.ts` barrel file 匯出 client component，亦需加上 `"use client"`。
 
 ```typescript
 // content/posts/[slug]/components/ChartComponent.tsx
@@ -66,19 +120,14 @@ With Next.js App Router, components are server components by default. For intera
 
 import React from 'react';
 import { Chart } from 'chart.js';
-// Component code...
+// ...
 ```
 
-### Rules for Client Components
-
-1. **Always add the "use client" directive** at the top of any file that:
-   * Uses Chart.js, Recharts, or other visualization libraries
-   * Uses browser APIs (window, document, localStorage, etc.)
-   * Contains React hooks (useState, useEffect, useRef, etc.)
-   * Requires user interaction (event handlers, form inputs)
-   * Imports any other client component
-
-2. **Index barrel files must include "use client"** when exporting client components:
+#### 常見錯誤訊息
+- 若忘記標註，Next.js 會出現：
+  - `Functions cannot be passed directly to Client Components unless you explicitly expose it`
+  - `Event handlers cannot be passed to Client Component props`
+  - `React hooks can only be used in Client Components`
    ```typescript
    // content/posts/[slug]/components/index.ts
    "use client";
