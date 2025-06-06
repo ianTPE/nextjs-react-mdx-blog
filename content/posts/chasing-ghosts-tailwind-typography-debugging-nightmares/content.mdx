@@ -91,7 +91,7 @@ export default function SalesTable() {
 
 ```
 
-我使用了 Tailwind 的標準工具類：<code>w-full</code> 讓表格寬度 100%，<code>px-4 py-2</code> 設定合理的內距。理論上，這應該給我一個乾淨、可控的表格佈局。
+我使用了 Tailwind 的標準工具類：<code>w-full</code> 讓表格寬度 100%，<code>px-4 py-2</code> 設定合理的內距。正如您在上面程式碼範例中所見 (第 57 行)，<code>prose</code> 類是套用在包裹整個內容的 <code>&lt;div&gt;</code> 元素上。當時我認為它只影響文字排版，完全沒想到它會對內部的表格「動手腳」。理論上，這一切都應該給我一個乾淨、可控的表格佈局。
 
 ### 奇怪的行為
 
@@ -190,7 +190,7 @@ module.exports = {
 
 ### DevTools 的迷霧
 
-最令人沮喪的是瀏覽器 DevTools 的顯示。當我檢查表格元素時，我看到的是：
+最令人沮喪的是瀏覽器 DevTools 的顯示。當我直接檢查表格元素 (<code>&lt;table&gt;</code>) 時，它的 class 列表裡並沒有 <code>prose</code> 這個字眼，這正是我一直強調「表格上根本沒有 prose」的原因，也是困擾我三個月的謎團核心。我期望看到的是我親手寫下的 Tailwind 工具類：
 
 ```css
 /* 我期望看到的 */
@@ -231,7 +231,7 @@ module.exports = {
 }
 ```
 
-問題是，這些樣式在 DevTools 中並沒有明確標示它們來自 <code>prose</code>。它們混雜在眾多樣式規則中，很容易被忽略。
+問題是，雖然 DevTools 忠實地列出了這些如 <code>.prose table</code>、<code>.prose th</code> 等實際生效的樣式規則，但由於 <code>prose</code> 類本身並不在我正在檢查的 <code>&lt;table&gt;</code> 或 <code>&lt;th&gt;</code> 元素上，而是存在於更上層的父容器，導致我無法直觀地將這些「不速之客」樣式與父層的 <code>prose</code> 類連結起來。它們就這樣混雜在眾多 Tailwind 工具類生成的樣式規則中，像幽靈一樣難以捉摸，極易被忽略。
 
 ## 第四章：真相大白的時刻
 
@@ -359,7 +359,7 @@ Tailwind Typography 的設計初衷是為了解決一個實際問題：當你有
 </div>
 ```
 
-傳統的 Tailwind CSS 會重置所有樣式，所以上面的 HTML 看起來會很醜陋。Typography 插件通過提供 <code>prose</code> 類來解決這個問題，它會自動為子元素應用合理的排版樣式。
+傳統的 Tailwind CSS 會重置所有樣式，所以未經處理的 HTML 內容（例如從 Markdown 文件生成的內容）看起來會非常樸素。Typography 插件通過提供 <code>prose</code> 類來解決這個問題。當您將 <code>prose</code> 類應用到一個父容器元素時，它會自動為該容器內部的所有標準 HTML 子元素——包括段落、標題、列表，以及**本文的主角：表格 (<code>&lt;table&gt;</code>, <code>&lt;th&gt;</code>, <code>&lt;td&gt;</code> 等)**——應用一套精心設計的、美觀的排版樣式。這意味著您無需為每個子元素單獨添加樣式類。
 
 ### prose 對表格的具體影響
 
@@ -438,7 +438,7 @@ Tailwind Typography 的設計初衷是為了解決一個實際問題：當你有
 
 即使使用 DevTools，問題也不容易發現：
 
-1. **樣式混雜**：prose 的樣式混雜在眾多其他樣式中，不容易識別
+1. **樣式混雜與間接影響**：<code>prose</code> 類套用在父容器上，其產生的樣式 (如 <code>.prose table</code>) 雖然會顯示在 DevTools 的計算樣式中，但因為它們並非直接來自被檢查元素 (如 <code>&lt;table&gt;</code>) 自身的 class，而是由父層的 <code>prose</code>「隔空」賦予，這使得它們在眾多 Tailwind 工具類中更難被識別為「元兇」。
 2. **計算樣式的欺騙性**：Computed 標籤顯示的是最終樣式，但不會明確標示樣式來源
 3. **CSS 文件分散**：在生產環境中，CSS 通常被打包和壓縮，很難追蹤樣式來源
 
@@ -447,7 +447,7 @@ Tailwind Typography 的設計初衷是為了解決一個實際問題：當你有
 即使是 Tailwind Typography 的官方文檔，也沒有充分強調這種「副作用」：
 
 - 文檔主要展示的是 prose 如何美化文字內容
-- 對於表格、列表等元素的影響，只是簡單提及
+- 對於表格、列表等重要但非純文字元素的影響，往往只是簡單提及，未能充分警示開發者這種「全局式」套用可能帶來的樣式覆蓋和調試挑戰，尤其是當這些元素本身也有自定義 Tailwind 類時。
 - 缺乏實際的調試指南和最佳實踐
 
 ## 第七章：解決方案和最佳實踐
