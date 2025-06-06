@@ -1,763 +1,172 @@
-## 前言：當 AI 也無能為力
-
-作為一名前端開發者，我以為我已經見過了所有類型的 CSS 陷阱。然而，最近的三個月，我遇到了一個讓我夜不能寐、甚至讓 ChatGPT、DeepSeek、Gemini 和 Claude Sonnet 都束手無策的問題：我的表格莫名其妙地被「某種力量」控制著高度和寬度，而我完全找不到原因。
-
-直到我用 Claude Opus 4 配合瀏覽器工具和 Playwright 進行深度調試，才終於發現罪魁禍首——**Tailwind CSS Typography 插件**，它的 <code>prose</code> 類在幕後默默地改變著我的表格樣式，而我竟然渾然不覺。
-
-這不僅僅是一個技術問題，更是一個關於現代前端開發工具如何在提供便利的同時，也可能成為隱形陷阱的故事。
-
-## 第一章：問題的開始
-
-### 看起來完美的代碼
-
-一切都從一個看似簡單的需求開始：在一個內容管理系統中展示數據表格。我的 TanStack Table 結構很清晰：
-
-```tsx
-import React from "react";
-import {
-  useReactTable,
-  getCoreRowModel,
-  flexRender,
-} from "@tanstack/react-table";
-
-const data = [
-  {
-    name: "產品 A",
-    sales: "$50,000",
-    growth: "+12%",
-  },
-  // 可繼續加更多產品
-];
-
-const columns = [
-  {
-    accessorKey: "name",
-    header: "產品名稱",
-    cell: info => info.getValue(),
-  },
-  {
-    accessorKey: "sales",
-    header: "銷售額",
-    cell: info => info.getValue(),
-  },
-  {
-    accessorKey: "growth",
-    header: "增長率",
-    cell: info => info.getValue(),
-  },
-];
-
-export default function SalesTable() {
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
-
-  return (
-    <div className="prose max-w-none">
-      <h1>數據報告</h1>
-      <p>以下是本月的銷售數據：</p>
-      <table className="w-full">
-        <thead>
-          {table.getHeaderGroups().map(headerGroup => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map(header => (
-                <th className="px-4 py-2" key={header.id}>
-                  {flexRender(
-                    header.column.columnDef.header,
-                    header.getContext()
-                  )}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map(row => (
-            <tr key={row.id}>
-              {row.getVisibleCells().map(cell => (
-                <td className="px-4 py-2" key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
-
-```
-
-我使用了 Tailwind 的標準工具類：<code>w-full</code> 讓表格寬度 100%，<code>px-4 py-2</code> 設定合理的內距。正如您在上面程式碼範例中所見 (第 57 行)，<code>prose</code> 類是套用在包裹整個內容的 <code>&lt;div&gt;</code> 元素上。當時我認為它只影響文字排版，完全沒想到它會對內部的表格「動手腳」。理論上，這一切都應該給我一個乾淨、可控的表格佈局。
-
-### 奇怪的行為
-
-但是當我檢查渲染結果時，發現了令人困惑的現象：
-
-1. **寬度不符預期**：儘管設定了 <code>w-full</code>，表格似乎有自己的想法
-2. **高度異常**：表格行的高度比預期的要高，即使我沒有設定任何高度相關的類
-3. **內距詭異**：雖然我用了 <code>px-4 py-2</code>，但實際的內距感覺更大
-4. **邊框神秘出現**：我沒有設定邊框，但表格卻有微妙的邊框效果
+# 平時很爽的 Vibe Coding，遇到不明原因的問題，就像掉到黑洞裡面
+## 每個 AI 都沒用，讓我痛苦了三個月
 
-更詭異的是，當我把同樣的表格代碼放到其他頁面時，它表現得完全正常。
+兄弟，你知道什麼叫做從天堂掉到地獄嗎？我知道，而且我剛從那裡爬出來。
 
-## 第二章：求助 AI 的徒勞之旅
+三個月前，我還是個快樂的 vibe coder。你懂的，就是那種「欸 Claude，幫我寫個響應式的表格」，然後看著程式碼像變魔術一樣出現在螢幕上。Tailwind 一把罩，AI 當助手，寫 code 就像在寫詩一樣優雅。我甚至開始覺得自己是個藝術家了。
 
-### ChatGPT：第一次求助
+直到那天。
 
-我將問題描述給 ChatGPT，並提供了完整的代碼。它的建議都很合理：
+## 黑洞初現：當表格開始叛變
 
-- 檢查 CSS 特異性問題
-- 確認 Tailwind 類名是否正確
-- 檢查是否有全局 CSS 影響
-- 驗證 HTML 結構
+那是個平凡的週二下午，我正在幫客戶做一個 MDX blog。一切都很順利，直到我發現表格的高度有點... 不太對勁。
 
-我逐一檢查了這些建議，但問題依然存在。ChatGPT 甚至建議我查看 computed styles，但我在 DevTools 中看到的樣式似乎是正確的。
+「沒關係，」我心想，「小 case，調個 padding 就好。」
 
-### DeepSeek：更深入的分析
+結果？表格像是有了自己的意識，你給它 `py-1`，它給你一個超大的空隙。你改成 `py-0.5`，它還是那麼大。TanStack Table 不聽話，Shadcn Table 也跟著造反。我的表格們集體叛變了。
 
-DeepSeek 提供了更技術性的建議：
-
-- 檢查 box-sizing 屬性
-- 查看是否有 inherited styles
-- 確認 CSS Reset 是否正確應用
-- 檢查瀏覽器兼容性問題
-
-我甚至創建了一個最小化的復現案例，但問題依然神秘地存在。
-
-### Gemini：不同的角度
-
-Gemini 從不同角度分析了問題：
-
-- 可能是 CSS-in-JS 問題
-- 檢查是否有動態樣式注入
-- 查看是否有第三方 CSS 框架衝突
-- 驗證 DOM 渲染順序
-
-但是，所有這些建議都指向了錯誤的方向。
+最詭異的是什麼？時好時壞。有時候重新整理頁面就正常了，有時候怎麼刷都沒用。就像薛丁格的表格，你不知道打開瀏覽器時它是死是活。
 
-### Claude Sonnet：接近但未命中
+## AI 大逃殺：當每個模型都讓你失望
 
-Claude Sonnet 甚至提到了 Tailwind Typography，但主要集中在如何自定義 prose 樣式，而不是診斷它是否就是問題的根源。
+### Round 1: Claude Sonnet - 我的老夥伴背叛了我
 
-```javascript
-// Claude Sonnet 建議的自定義配置
-module.exports = {
-  theme: {
-    extend: {
-      typography: {
-        DEFAULT: {
-          css: {
-            'table': {
-              'width': '100%',
-            },
-            'th': {
-              'padding': '0.5rem',
-            },
-            'td': {
-              'padding': '0.5rem',
-            },
-          },
-        },
-      },
-    },
-  },
-}
-```
-
-這個建議很有用，但它假設我知道問題是出在 Typography 上——而我當時根本沒有意識到這一點。
-
-## 第三章：夜不能寐的調試歲月
-
-### 深夜的探索
-
-在接下來的三個月裡，我嘗試了無數種方法：
-
-**1. 逐行刪除代碼**
-我系統性地刪除了每一行 CSS 和 HTML，試圖找到引起問題的確切代碼。但問題是，當我刪除了 <code>prose</code> 類後，雖然表格問題解決了，但整個文章的排版卻亂了——我以為 prose 只是用來美化文字的。
-
-**2. 瀏覽器戰爭**
-我在 Chrome、Firefox、Safari、Edge 上測試，問題在所有瀏覽器上都存在，這排除了瀏覽器特定問題的可能性。
-
-**3. 版本回退**
-我嘗試回退到舊版本的 Tailwind CSS，甚至考慮從頭重建整個項目。
-
-**4. 社區求助**
-我在 Stack Overflow、Reddit、GitHub Issues 上發布了問題，但得到的回答都是常見的調試建議，沒有人指出真正的原因。
-
-### DevTools 的迷霧
-
-最令人沮喪的是瀏覽器 DevTools 的顯示。當我直接檢查表格元素 (<code>&lt;table&gt;</code>) 時，它的 class 列表裡並沒有 <code>prose</code> 這個字眼，這正是我一直強調「表格上根本沒有 prose」的原因，也是困擾我三個月的謎團核心。我期望看到的是我親手寫下的 Tailwind 工具類：
-
-```css
-/* 我期望看到的 */
-.w-full {
-  width: 100%;
-}
-.px-4 {
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-.py-2 {
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-}
-```
-
-但實際應用的樣式卻包含了許多我不認識的規則：
-
-```css
-/* 實際應用的樣式（我當時不知道來源） */
-.prose table {
-  width: 100%;
-  table-layout: auto;
-  text-align: left;
-  margin-top: 2em;
-  margin-bottom: 2em;
-  font-size: 0.875em;
-  line-height: 1.7142857;
-}
-
-.prose th {
-  border-bottom-width: 1px;
-  border-bottom-color: #d1d5db;
-  padding-left: 0.5714286em;
-  padding-right: 0.5714286em;
-  padding-top: 0.5714286em;
-  padding-bottom: 0.5714286em;
-}
-```
-
-問題是，雖然 DevTools 忠實地列出了這些如 <code>.prose table</code>、<code>.prose th</code> 等實際生效的樣式規則，但由於 <code>prose</code> 類本身並不在我正在檢查的 <code>&lt;table&gt;</code> 或 <code>&lt;th&gt;</code> 元素上，而是存在於更上層的父容器，導致我無法直觀地將這些「不速之客」樣式與父層的 <code>prose</code> 類連結起來。它們就這樣混雜在眾多 Tailwind 工具類生成的樣式規則中，像幽靈一樣難以捉摸，極易被忽略。
-
-## 第四章：真相大白的時刻
-
-### Claude Opus 4 + Browser Tools 的威力
-
-當我最終決定使用 Claude Opus 4 配合瀏覽器工具和 Playwright 進行自動化調試時，轉機出現了。我寫了一個自動化腳本來系統性地檢查每個 CSS 規則的來源：
-
-```javascript
-// 自動化檢查樣式來源的腳本
-const { chromium } = require('playwright');
-
-(async () => {
-  const browser = await chromium.launch();
-  const page = await browser.newPage();
-  await page.goto('http://localhost:3000/problematic-page');
-  
-  // 獲取表格的所有計算樣式
-  const tableStyles = await page.evaluate(() => {
-    const table = document.querySelector('table');
-    const computedStyles = window.getComputedStyle(table);
-    const rules = [];
-    
-    for (let i = 0; i < computedStyles.length; i++) {
-      const prop = computedStyles[i];
-      const value = computedStyles.getPropertyValue(prop);
-      rules.push({ property: prop, value });
-    }
-    
-    return rules;
-  });
-  
-  // 檢查每個樣式規則的來源
-  for (const rule of tableStyles) {
-    console.log(`${rule.property}: ${rule.value}`);
-  }
-  
-  await browser.close();
-})();
-```
-
-### 關鍵發現
-
-當我運行這個腳本時，我終於看到了完整的樣式繼承鏈。更重要的是，我使用了 Playwright 的 <code>locator.evaluateAll()</code> 方法來檢查所有匹配的 CSS 規則及其來源檔案：
-
-```javascript
-const cssRules = await page.locator('table').evaluateAll(elements => {
-  const element = elements[0];
-  const sheets = Array.from(document.styleSheets);
-  const matchingRules = [];
-  
-  sheets.forEach(sheet => {
-    try {
-      const rules = Array.from(sheet.cssRules || sheet.rules);
-      rules.forEach(rule => {
-        if (rule.selectorText && element.matches(rule.selectorText)) {
-          matchingRules.push({
-            selector: rule.selectorText,
-            cssText: rule.cssText,
-            href: sheet.href
-          });
-        }
-      });
-    } catch (e) {
-      // 跨域 CSS 規則
-    }
-  });
-  
-  return matchingRules;
-});
-```
-
-這時，我看到了令人震驚的結果：
-
-```javascript
-[
-  {
-    selector: ".prose table",
-    cssText: ".prose table { width: 100%; table-layout: auto; ... }",
-    href: "http://localhost:3000/_next/static/css/app.css"
-  },
-  {
-    selector: ".prose th",
-    cssText: ".prose th { border-bottom-width: 1px; ... }",
-    href: "http://localhost:3000/_next/static/css/app.css"
-  }
-  // ... 更多 prose 相關規則
-]
-```
-
-**真相大白**：所有這些神秘的樣式都來自 <code>.prose</code> 選擇器！
-
-### 恍然大悟的瞬間
-
-回頭看我的 HTML 結構：
-
-```html
-<article class="prose max-w-none">
-  <!-- 我的表格在這裡 -->
-  <table class="w-full">
-    <!-- ... -->
-  </table>
-</article>
-```
-
-原來，<code>prose</code> 類不僅僅影響文字排版，它還會對**所有子元素**應用預設樣式，包括表格、列表、圖片等等。而 Tailwind Typography 的文檔雖然提到了這一點，但在實際使用中，很容易忽略這個「副作用」。
-
-## 第五章：理解 Tailwind Typography 的工作原理
-
-### 深入 prose 的內部
-
-Tailwind Typography 的設計初衷是為了解決一個實際問題：當你有一段來自 CMS 或 Markdown 的 HTML 內容時，如何讓它看起來美觀而專業？
-
-```html
-<!-- 來自 Markdown 的典型輸出 -->
-<div>
-  <h1>標題</h1>
-  <p>段落內容...</p>
-  <ul>
-    <li>列表項目</li>
-  </ul>
-  <table>
-    <tr><th>表頭</th></tr>
-    <tr><td>數據</td></tr>
-  </table>
+Claude Sonnet 是我的主力，我們一起寫過無數專案。但這次，它徹底讓我失望了。
+
+「MDX 的 Markdown table 顯示不出來？」它說，「試試轉成 TanStack Table 吧！」
+
+我：好！
+*10 分鐘後*
+我：不行欸，高度還是怪怪的。
+
+Claude：「那試試調整 line-height？」
+
+我試了。沒用。
+
+Claude：「要不要改用原生 HTML table？」
+
+我開始懷疑人生。
+
+### Round 2: ChatGPT - 分析很專業，答案很離譜
+
+「ChatGPT o3 你好貴，」我一邊掏錢一邊想，「你總該給我個答案吧？」
+
+GPT 給了我一個三千字的分析，從 CSS box model 講到瀏覽器渲染機制，聽起來超專業。結果呢？它建議我用 `!important` 覆蓋所有樣式。
+
+我：？？？
+
+這就像醫生跟你說：「你頭痛是吧？把頭砍掉就不痛了。」
+
+### Round 3: 其他 AI 們的奇幻冒險
+
+- **Gemini**：很努力，一直在原地踏步。「試試看這個... 不行？那試試那個...」無限循環。
+- **DeepSeek**：偶爾會有神來一筆，但大部分時間都在胡說八道。有次它建議我用 jQuery。jQuery！2025 年了兄弟！
+- **Windsurf SWE-1**：完全沒力，感覺像是在敷衍我。
+
+每換一個 AI，我的焦慮就增加一分。因為沒有找到正確答案，人會開始懷疑自己。是不是我太笨了？是不是這個問題根本無解？
+
+## 看到表格會怕：PTSD 發作期
+
+到了第二個月，我已經對表格產生了生理性的恐懼。客戶說要加表格，我的手會開始發抖。
+
+最慘的是什麼？當你找不到問題根源時，你只能不斷地瞎猜。我試過：
+- 重寫整個組件（三次）
+- 換 CSS framework（差點換成 Bootstrap，還好理智阻止了我）
+- 懷疑是 Next.js 的問題
+- 懷疑是 MDX 的問題
+- 懷疑是瀏覽器的問題
+- 懷疑人生
+
+Browser DevTools 看不出任何異常，Computed Style 顯示一切正常，但表格就是有多餘的空隙。這種感覺就像你明明聽到房間裡有蚊子，但就是找不到牠在哪裡。
+
+## MCP 是好工具，但當時的我還不知道
+
+其實 Model Context Protocol 的工具早就在那裡了。Playwright、Puppeteer、Browser-tools... 但當時的我就像個拿著 iPhone 12 還在找公共電話的原始人。
+
+我甚至沒想到可以讓 AI 直接看網頁、直接操作瀏覽器。我還在那邊複製貼上程式碼，像個傻子。
+
+## Claude Opus 4：巨人登場
+
+第三個月，我已經快崩潰了。有篇文章二十幾個表格，每次調整完發現內容要修改，表格全部要重做。三天沒睡覺，我覺得自己快不行了。
+
+就在這時，Claude Opus 4 橫空出世。
+
+「Opus 只能用在刀口上，」我告訴自己。Claude Pro 的訂閱，Opus 只能用幾次。但我已經沒有選擇了。
+
+我打開 MCP 的瀏覽器工具，讓 Opus 開始工作。
+
+二十分鐘過去了...
+
+然後，奇蹟發生了。
+
+## 真相大白：原來是 prose 在搞鬼
+
+> 「我找到問題了！問題出在 `tbody` 上的 `divide-y` 類別，它為每個 `tr` 添加了 1px 的下邊框，這導致了額外的高度。」
+
+但這還不是全部。Opus 繼續挖掘：
+
+> 「主要問題有兩個：
+> 1. **`prose` 類別的影響**：表格在 `prose` 容器內，這會影響表格的樣式
+> 2. **`divide-y` 邊框**：`tbody` 上的 `divide-y` 類別為每行添加了 1px 的邊框」
+
+prose？PROSE？！
+
+我花了三個月，測試了無數個 AI，寫了上萬行程式碼，原來問題就是一個該死的 `prose` 類別？
+
+原來 Tailwind Typography 的 `prose` 會自動為所有內部元素加上「優美」的排版樣式，包括更大的 line-height、額外的 padding... 這就是為什麼我的表格總是有莫名其妙的空隙！
+
+解決方案簡單到讓人想哭：
+
+```jsx
+<div className="my-8 ... not-prose">
+  <!-- 表格內容 -->
 </div>
 ```
 
-傳統的 Tailwind CSS 會重置所有樣式，所以未經處理的 HTML 內容（例如從 Markdown 文件生成的內容）看起來會非常樸素。Typography 插件通過提供 <code>prose</code> 類來解決這個問題。當您將 <code>prose</code> 類應用到一個父容器元素時，它會自動為該容器內部的所有標準 HTML 子元素——包括段落、標題、列表，以及**本文的主角：表格 (<code>&lt;table&gt;</code>, <code>&lt;th&gt;</code>, <code>&lt;td&gt;</code> 等)**——應用一套精心設計的、美觀的排版樣式。這意味著您無需為每個子元素單獨添加樣式類。
+就這樣。`not-prose`。五個字母。解決了我三個月的噩夢。
 
-### prose 對表格的具體影響
+## 終於可以睡個好覺：但故事還沒結束
 
-經過深入研究，我發現 <code>prose</code> 對表格的影響包括：
+找到答案的那個晚上，我睡了 12 個小時。醒來後，我把所有舊表格都翻出來測試。果然，加上 `not-prose` 後，世界恢復了正常。
 
-```css
-.prose table {
-  width: 100%;
-  table-layout: auto;
-  text-align: left;
-  margin-top: 2em;
-  margin-bottom: 2em;
-  font-size: 0.875em; /* 14px，比正常文字小 */
-  line-height: 1.7142857;
-}
+我甚至想過要不要直接改 `tailwind.config`，一勞永逸。但測試後發現，這樣會破壞其他地方的樣式。我也想過要不要直接卸載 Typography plugin，但... MDX 太好用了，Markdown 文章是主流，AI 能快速產生 markdown 和 React 組件。Typography 不能卸載。
 
-.prose thead {
-  border-bottom-width: 1px;
-  border-bottom-color: rgb(209 213 219);
-}
+這就是取捨。就像 vibe coding 本身一樣 - 它給你速度和創造力，但有時候也會讓你掉進莫名其妙的坑裡。
 
-.prose th {
-  color: rgb(17 24 39);
-  font-weight: 600;
-  vertical-align: bottom;
-  padding-left: 0.5714286em;  /* 8px */
-  padding-right: 0.5714286em; /* 8px */
-  padding-top: 0.5714286em;   /* 8px */
-  padding-bottom: 0.5714286em; /* 8px */
-}
+## 黑洞啟示錄
 
-.prose td {
-  vertical-align: baseline;
-  padding-left: 0.5714286em;  /* 8px */
-  padding-right: 0.5714286em; /* 8px */
-  padding-top: 0.5714286em;   /* 8px */
-  padding-bottom: 0.5714286em; /* 8px */
-}
-```
+經過這次經歷，我學到了幾件事：
 
-**關鍵發現**：
-1. **字體大小被強制設為 0.875em**，這會使表格內容比周圍文字小
-2. **內距被重新定義**，覆蓋了我的 <code>px-4 py-2</code> 設定
-3. **邊框自動添加**，即使我沒有設定
-4. **margin 自動添加**，影響表格與其他元素的間距
+1. **表格只是小問題**。真正的問題是當你不知道問題在哪裡時，再強大的 AI 也幫不了你。
+2. **Vibe coding 很爽，但基礎還是要有**。開發者工具、CSS、瀏覽器運作原理... 這些老派的知識在關鍵時刻能救你一命。
+3. **工具會進化**。MCP 這類工具的出現，讓 AI 能更直接地理解和操作網頁。未來可能會有更多這樣的突破。
+4. **不要太依賴單一 AI**。每個模型都有盲點，多試幾個，說不定哪個就靈光一現了。
 
-### CSS 特異性的陷阱
+Tailwind 被一些人討厭不是沒有原因的。當你不理解它在背後做了什麼時，debug 就像在黑暗中摸索。但話說回來，哪個工具不是這樣呢？
 
-更進一步的問題是 CSS 特異性。<code>prose</code> 的選擇器具有更高的特異性：
+## 速查手冊（給下一個受害者）
 
-```css
-/* 特異性：0,0,1,1 (class + element) */
-.prose table { }
-.prose th { }
-.prose td { }
+如果你也遇到了 Typography 相關的詭異問題，這裡有個檢查清單：
 
-/* 特異性：0,0,1,0 (只有 class) */
-.w-full { }
-.px-4 { }
-.py-2 { }
-```
+### 症狀
+- 表格、列表或其他元素有莫名的間距
+- 明明設定了樣式但不生效
+- 同樣的組件在不同地方表現不一致
 
-因此，即使我後面添加了 Tailwind 工具類，<code>prose</code> 的樣式仍然會優先生效。
+### 可能的兇手
+- `prose` 類別（幾乎總是它）
+- `prose-lg`、`prose-xl` 等尺寸修飾符
+- 全域的 Typography 設定
 
-## 第六章：為什麼 AI 無法解決這個問題
+### 解決方案
+1. **局部排除**：使用 `not-prose`
+2. **覆蓋特定元素**：`prose-table:p-0`、`prose-td:py-1` 等
+3. **自定義 prose 主題**：在 `tailwind.config.js` 中調整
 
-### 上下文缺失
-
-回想起來，AI 無法解決這個問題的主要原因是**上下文缺失**：
-
-1. **代碼片段化**：我向 AI 展示的通常是問題表格的孤立代碼，而沒有包含完整的 HTML 結構
-2. **症狀描述不準確**：我描述的是「表格樣式異常」，而沒有提到「在 prose 容器內的表格樣式異常」
-3. **預設假設**：AI（和我自己）都預設問題出在表格本身，而不是外層容器
-
-### 調試工具的限制
-
-即使使用 DevTools，問題也不容易發現：
-
-1. **樣式混雜與間接影響**：<code>prose</code> 類套用在父容器上，其產生的樣式 (如 <code>.prose table</code>) 雖然會顯示在 DevTools 的計算樣式中，但因為它們並非直接來自被檢查元素 (如 <code>&lt;table&gt;</code>) 自身的 class，而是由父層的 <code>prose</code>「隔空」賦予，這使得它們在眾多 Tailwind 工具類中更難被識別為「元兇」。
-2. **計算樣式的欺騙性**：Computed 標籤顯示的是最終樣式，但不會明確標示樣式來源
-3. **CSS 文件分散**：在生產環境中，CSS 通常被打包和壓縮，很難追蹤樣式來源
-
-### 文檔和教學的不足
-
-即使是 Tailwind Typography 的官方文檔，也沒有充分強調這種「副作用」：
-
-- 文檔主要展示的是 prose 如何美化文字內容
-- 對於表格、列表等重要但非純文字元素的影響，往往只是簡單提及，未能充分警示開發者這種「全局式」套用可能帶來的樣式覆蓋和調試挑戰，尤其是當這些元素本身也有自定義 Tailwind 類時。
-- 缺乏實際的調試指南和最佳實踐
-
-## 第七章：解決方案和最佳實踐
-
-### 立即解決方案
-
-一旦發現問題根源，解決方案就相對簡單了：
-
-**方案 1：使用 <code>not-prose</code> 類**
-```html
-<article class="prose max-w-none">
-  <h1>數據報告</h1>
-  <p>以下是本月的銷售數據：</p>
-  
-  <div class="not-prose">
-    <table class="w-full">
-      <!-- 表格內容 -->
-    </table>
-  </div>
-</article>
-```
-
-**方案 2：覆蓋 prose 樣式**
-```html
-<article class="prose max-w-none prose-table:table-auto prose-th:p-4 prose-td:p-4">
-  <table class="w-full">
-    <!-- 表格內容 -->
-  </table>
-</article>
-```
-
-**方案 3：配置文件自定義**
+### 偵錯技巧
 ```javascript
-// tailwind.config.js
-module.exports = {
-  theme: {
-    extend: {
-      typography: {
-        DEFAULT: {
-          css: {
-            table: {
-              fontSize: 'inherit', // 不改變字體大小
-              margin: 0,           // 移除自動邊距
-            },
-            th: {
-              padding: 0,          // 移除預設內距
-            },
-            td: {
-              padding: 0,          // 移除預設內距
-            },
-          },
-        },
-      },
-    },
-  },
-}
+// 在 Console 執行，找出所有使用 prose 的容器
+document.querySelectorAll('[class*="prose"]')
 ```
-
-### 長期最佳實踐
-
-基於這次的經歷，我總結了以下最佳實踐：
-
-**1. 明確 prose 的作用範圍**
-```html
-<!-- 好的做法：明確區分內容區域 -->
-<article>
-  <div class="prose">
-    <h1>文章標題</h1>
-    <p>文章內容...</p>
-  </div>
-  
-  <div class="my-8">
-    <table class="w-full border-collapse">
-      <!-- 自定義表格 -->
-    </table>
-  </div>
-</article>
-
-<!-- 避免：將所有內容都包在 prose 中 -->
-<article class="prose">
-  <h1>文章標題</h1>
-  <p>文章內容...</p>
-  <table><!-- 會被 prose 影響 --></table>
-</article>
-```
-
-**2. 使用組件化的思維**
-```jsx
-// React 組件示例
-function DataTable({ data }) {
-  return (
-    <div className="not-prose">
-      <table className="w-full border-collapse border border-gray-300">
-        {/* 表格內容 */}
-      </table>
-    </div>
-  );
-}
-
-function Article({ content, data }) {
-  return (
-    <article className="prose max-w-none">
-      <div dangerouslySetInnerHTML={{ __html: content }} />
-      <DataTable data={data} />
-    </article>
-  );
-}
-```
-
-**3. 建立調試檢查清單**
-
-當遇到類似問題時，可以按照以下順序檢查：
-<MarkdownDisplay content={`
-- [ ] 檢查元素是否在 <code>prose</code> 容器內
-- [ ] 使用 DevTools 查看所有應用的 CSS 規則
-- [ ] 檢查 CSS 特異性衝突
-- [ ] 驗證 HTML 結構和預期是否一致
-- [ ] 測試移除 <code>prose</code> 類後的表現
-`} />
-
-**4. 自動化檢測**
-
-可以寫一個簡單的 ESLint 規則來檢測潛在問題：
-
-```javascript
-// 自定義 ESLint 規則（概念示例）
-module.exports = {
-  rules: {
-    'prose-table-warning': {
-      create: function(context) {
-        return {
-          JSXElement(node) {
-            if (node.openingElement.name.name === 'table') {
-              // 檢查祖先元素是否有 prose 類
-              let parent = node.parent;
-              while (parent) {
-                if (isProseElement(parent)) {
-                  context.report({
-                    node,
-                    message: '表格在 prose 容器內，可能會受到意外樣式影響'
-                  });
-                  break;
-                }
-                parent = parent.parent;
-              }
-            }
-          }
-        };
-      }
-    }
-  }
-};
-```
-
-## 第八章：更深層的思考
-
-### 現代前端開發的複雜性
-
-這個問題反映了現代前端開發的一個深層問題：**抽象層的副作用**。Tailwind Typography 本身是一個優秀的工具，它解決了實際的問題。但是，當抽象層變得複雜時，它們的行為就不再透明。
-
-類似的例子還有：
-- CSS-in-JS 的樣式優先級問題
-- CSS Modules 的全局樣式洩漏
-- PostCSS 插件的相互影響
-- 瀏覽器前綴的自動添加
-
-### 工具與理解的平衡
-
-這次經歷讓我思考工具與理解之間的平衡：
-
-**工具的好處**：
-- 提高開發效率
-- 減少重複勞動
-- 提供最佳實踐
-- 保證一致性
-
-**工具的陷阱**：
-- 隱藏實現細節
-- 增加調試難度
-- 創造新的複雜性
-- 依賴性問題
-
-### 文檔和教育的重要性
-
-這個問題也暴露了技術文檔和教育的不足：
-
-1. **文檔應該包含「陷阱」章節**：每個工具都應該明確列出常見的誤用和調試方法
-2. **示例應該更全面**：不僅展示理想情況，也要展示複雜場景
-3. **調試指南的必要性**：提供系統性的問題排查流程
-4. **社區知識的整合**：將常見問題和解決方案制度化
-
-## 第九章：給其他開發者的建議
-
-### 如何避免類似問題
-
-**1. 保持懷疑的態度**
-當遇到無法解釋的樣式問題時，不要立即假設是自己的代碼問題。檢查所有可能的樣式來源，包括：
-- 全局 CSS
-- 第三方插件
-- CSS 框架的預設樣式
-- 瀏覽器的預設樣式
-
-**2. 掌握調試工具**
-熟練使用瀏覽器 DevTools 的高級功能：
-- Computed 標籤的樣式來源追蹤
-- CSS 規則的特異性顯示
-- 樣式繼承鏈的查看
-- Performance 標籤的樣式重計算分析
-
-**3. 建立系統性的調試流程**
-```
-1. 重現問題 → 確保問題穩定存在
-2. 隔離變量 → 創建最小復現案例
-3. 檢查外部因素 → CSS 框架、插件、全局樣式
-4. 分析樣式層疊 → 特異性、繼承、覆蓋
-5. 驗證假設 → 逐一測試可能的原因
-6. 記錄解決方案 → 為將來類似問題做準備
-```
-
-**4. 注重團隊知識分享**
-將這類隱蔽問題的解決方案文檔化，避免團隊成員重複踩坑。
-
-### 工具推薦
-
-基於這次經歷，我推薦以下工具來幫助調試類似問題：
-
-**瀏覽器擴展**：
-- CSS Peeper：快速查看頁面使用的樣式
-- WhatFont：識別字體和樣式來源
-- CSS Scan：快速複製元素的完整樣式
-
-**開發工具**：
-- Playwright/Puppeteer：自動化樣式檢查
-- CSS Tree Shaking 分析器：識別未使用的樣式
-- Bundle Analyzer：分析 CSS 包的組成
-
-**VS Code 擴展**：
-- CSS Peek：快速跳轉到樣式定義
-- IntelliSense for CSS：更好的 CSS 類名提示
-- Tailwind CSS IntelliSense：Tailwind 專用提示
-
-## 第十章：總結與反思
-
-### 技術層面的收穫
-
-這三個月的調試之旅，雖然痛苦，但帶來了寶貴的收穫：
-
-1. **對 CSS 層疊規則的深入理解**：特異性、繼承、源順序的細節
-2. **對 Tailwind Typography 工作原理的透徹掌握**：不再是黑盒子
-3. **調試技能的提升**：系統性問題排查的能力
-4. **工具使用的熟練**：DevTools、自動化測試的深度應用
-
-### 對 AI 輔助開發的思考
-
-這次經歷也讓我重新思考 AI 在開發中的角色：
-
-**AI 的優勢**：
-- 快速提供常見問題的解決方案
-- 代碼生成和優化建議
-- 文檔查詢和知識整合
-- 不同技術方案的比較
-
-**AI 的限制**：
-- 缺乏上下文的深入理解
-- 無法進行實時調試和檢查
-- 對複雜問題的分析能力有限
-- 可能被錯誤的假設誤導
-
-**最佳實踐**：
-- 將 AI 作為輔助工具，而不是替代思考
-- 提供完整的上下文信息
-- 驗證 AI 的建議，不盲目採用
-- 結合多種調試手段和工具
-
-### 對 Tailwind Typography 的建議
-
-基於這次經歷，我想對 Tailwind Typography 的維護者提出幾個建議：
-
-1. **改進文檔**：增加「常見陷阱」和「調試指南」章節
-2. **更好的 DevTools 支持**：讓樣式來源更容易識別
-3. **警告系統**：在開發模式下提供樣式衝突的警告
-4. **更精細的控制**：提供更多細粒度的覆蓋選項
-
-### 寫在最後
-
-這個看似簡單的表格樣式問題，讓我經歷了三個月的失眠、挫折、和最終的頓悟。它提醒我們，在這個工具日益複雜的前端世界裡，理解底層原理的重要性從未降低。
-
-每一個抽象層都是一把雙刃劍：它們讓我們能夠更快地構建應用，但也可能隱藏關鍵的實現細節。作為開發者，我們需要在享受工具便利的同時，保持對底層機制的好奇心和理解。
-
-如果你也遇到了類似的問題，希望這篇文章能幫你節省一些夜不能寐的時光。記住，最神秘的 bug 往往有最簡單的原因——關鍵是要從正確的角度去尋找。
-
-最後，感謝 Claude Opus 4 和 Playwright 的組合，讓我最終找到了這個隱藏了三個月的真相。有時候，解決問題需要的不僅僅是更聰明的大腦，還需要更好的工具和更系統的方法。
 
 ---
 
-*這篇文章記錄了一個真實的調試經歷。如果你有類似的故事或更好的解決方案，歡迎分享討論。讓我們一起讓前端開發變得更透明、更可預測。*
+寫到這裡，回想起那三個月的地獄，還是會有點 PTSD。但也慶幸自己撐過來了。
 
-## 延伸閱讀
+**最深的黑暗不是沒有答案，而是不知道問題在哪裡。**
 
-- [Tailwind CSS Typography 官方文檔](https://tailwindcss.com/docs/typography-plugin)
-- [CSS 特異性計算器](https://specificity.keegan.st/)
-- [Chrome DevTools CSS 調試指南](https://developer.chrome.com/docs/devtools/css/)
-- [Playwright 自動化測試文檔](https://playwright.dev/)
+當你在 vibe coding 的天堂飛翔時，記得偶爾低頭看看地面。因為你永遠不知道，下一個 `prose` 什麼時候會出現。
 
-## 相關代碼和工具
+*P.S. 如果這篇文章幫到了你，記得在評論區分享你的血淚史。讓我知道我不是唯一一個被 Tailwind Typography 搞瘋的人。*
 
-文章中提到的調試腳本和工具配置，可以在我的 GitHub 倉庫中找到：
-- [Tailwind Typography 調試工具集](https://github.com/example/typography-debug-tools)
-- [自動化樣式檢查腳本](https://github.com/example/css-debug-automation)
-
----
-
-**標籤**：#TailwindCSS #CSS調試 #前端開發 #Typography #Playwright #AI輔助開發
+*P.P.S. Claude Opus 4，如果你在看這篇文章，謝謝你救了我的命（和工作）。*
