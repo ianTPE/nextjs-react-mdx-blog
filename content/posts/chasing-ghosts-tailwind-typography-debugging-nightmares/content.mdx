@@ -2,7 +2,7 @@
 
 作為一名前端開發者，我以為我已經見過了所有類型的 CSS 陷阱。然而，最近的三個月，我遇到了一個讓我夜不能寐、甚至讓 ChatGPT、DeepSeek、Gemini 和 Claude Sonnet 都束手無策的問題：我的表格莫名其妙地被「某種力量」控制著高度和寬度，而我完全找不到原因。
 
-直到我用 Claude Opus 4 配合瀏覽器工具和 Playwright 進行深度調試，才終於發現罪魁禍首——**Tailwind CSS Typography 插件**，它的 `prose` 類在幕後默默地改變著我的表格樣式，而我竟然渾然不覺。
+直到我用 Claude Opus 4 配合瀏覽器工具和 Playwright 進行深度調試，才終於發現罪魁禍首——**Tailwind CSS Typography 插件**，它的 <code>prose</code> 類在幕後默默地改變著我的表格樣式，而我竟然渾然不覺。
 
 這不僅僅是一個技術問題，更是一個關於現代前端開發工具如何在提供便利的同時，也可能成為隱形陷阱的故事。
 
@@ -36,15 +36,15 @@
 </article>
 ```
 
-我使用了 Tailwind 的標準工具類：`w-full` 讓表格寬度 100%，`px-4 py-2` 設定合理的內距。理論上，這應該給我一個乾淨、可控的表格佈局。
+我使用了 Tailwind 的標準工具類：<code>w-full</code> 讓表格寬度 100%，<code>px-4 py-2</code> 設定合理的內距。理論上，這應該給我一個乾淨、可控的表格佈局。
 
 ### 奇怪的行為
 
 但是當我檢查渲染結果時，發現了令人困惑的現象：
 
-1. **寬度不符預期**：儘管設定了 `w-full`，表格似乎有自己的想法
+1. **寬度不符預期**：儘管設定了 <code>w-full</code>，表格似乎有自己的想法
 2. **高度異常**：表格行的高度比預期的要高，即使我沒有設定任何高度相關的類
-3. **內距詭異**：雖然我用了 `px-4 py-2`，但實際的內距感覺更大
+3. **內距詭異**：雖然我用了 <code>px-4 py-2</code>，但實際的內距感覺更大
 4. **邊框神秘出現**：我沒有設定邊框，但表格卻有微妙的邊框效果
 
 更詭異的是，當我把同樣的表格代碼放到其他頁面時，它表現得完全正常。
@@ -122,7 +122,7 @@ module.exports = {
 在接下來的三個月裡，我嘗試了無數種方法：
 
 **1. 逐行刪除代碼**
-我系統性地刪除了每一行 CSS 和 HTML，試圖找到引起問題的確切代碼。但問題是，當我刪除了 `prose` 類後，雖然表格問題解決了，但整個文章的排版卻亂了——我以為 prose 只是用來美化文字的。
+我系統性地刪除了每一行 CSS 和 HTML，試圖找到引起問題的確切代碼。但問題是，當我刪除了 <code>prose</code> 類後，雖然表格問題解決了，但整個文章的排版卻亂了——我以為 prose 只是用來美化文字的。
 
 **2. 瀏覽器戰爭**
 我在 Chrome、Firefox、Safari、Edge 上測試，問題在所有瀏覽器上都存在，這排除了瀏覽器特定問題的可能性。
@@ -176,7 +176,7 @@ module.exports = {
 }
 ```
 
-問題是，這些樣式在 DevTools 中並沒有明確標示它們來自 `prose`。它們混雜在眾多樣式規則中，很容易被忽略。
+問題是，這些樣式在 DevTools 中並沒有明確標示它們來自 <code>prose</code>。它們混雜在眾多樣式規則中，很容易被忽略。
 
 ## 第四章：真相大白的時刻
 
@@ -219,7 +219,7 @@ const { chromium } = require('playwright');
 
 ### 關鍵發現
 
-當我運行這個腳本時，我終於看到了完整的樣式繼承鏈。更重要的是，我使用了 Playwright 的 `locator.evaluateAll()` 方法來檢查所有匹配的 CSS 規則及其來源檔案：
+當我運行這個腳本時，我終於看到了完整的樣式繼承鏈。更重要的是，我使用了 Playwright 的 <code>locator.evaluateAll()</code> 方法來檢查所有匹配的 CSS 規則及其來源檔案：
 
 ```javascript
 const cssRules = await page.locator('table').evaluateAll(elements => {
@@ -266,7 +266,7 @@ const cssRules = await page.locator('table').evaluateAll(elements => {
 ]
 ```
 
-**真相大白**：所有這些神秘的樣式都來自 `.prose` 選擇器！
+**真相大白**：所有這些神秘的樣式都來自 <code>.prose</code> 選擇器！
 
 ### 恍然大悟的瞬間
 
@@ -281,7 +281,7 @@ const cssRules = await page.locator('table').evaluateAll(elements => {
 </article>
 ```
 
-原來，`prose` 類不僅僅影響文字排版，它還會對**所有子元素**應用預設樣式，包括表格、列表、圖片等等。而 Tailwind Typography 的文檔雖然提到了這一點，但在實際使用中，很容易忽略這個「副作用」。
+原來，<code>prose</code> 類不僅僅影響文字排版，它還會對**所有子元素**應用預設樣式，包括表格、列表、圖片等等。而 Tailwind Typography 的文檔雖然提到了這一點，但在實際使用中，很容易忽略這個「副作用」。
 
 ## 第五章：理解 Tailwind Typography 的工作原理
 
@@ -304,11 +304,11 @@ Tailwind Typography 的設計初衷是為了解決一個實際問題：當你有
 </div>
 ```
 
-傳統的 Tailwind CSS 會重置所有樣式，所以上面的 HTML 看起來會很醜陋。Typography 插件通過提供 `prose` 類來解決這個問題，它會自動為子元素應用合理的排版樣式。
+傳統的 Tailwind CSS 會重置所有樣式，所以上面的 HTML 看起來會很醜陋。Typography 插件通過提供 <code>prose</code> 類來解決這個問題，它會自動為子元素應用合理的排版樣式。
 
 ### prose 對表格的具體影響
 
-經過深入研究，我發現 `prose` 對表格的影響包括：
+經過深入研究，我發現 <code>prose</code> 對表格的影響包括：
 
 ```css
 .prose table {
@@ -347,13 +347,13 @@ Tailwind Typography 的設計初衷是為了解決一個實際問題：當你有
 
 **關鍵發現**：
 1. **字體大小被強制設為 0.875em**，這會使表格內容比周圍文字小
-2. **內距被重新定義**，覆蓋了我的 `px-4 py-2` 設定
+2. **內距被重新定義**，覆蓋了我的 <code>px-4 py-2</code> 設定
 3. **邊框自動添加**，即使我沒有設定
 4. **margin 自動添加**，影響表格與其他元素的間距
 
 ### CSS 特異性的陷阱
 
-更進一步的問題是 CSS 特異性。`prose` 的選擇器具有更高的特異性：
+更進一步的問題是 CSS 特異性。<code>prose</code> 的選擇器具有更高的特異性：
 
 ```css
 /* 特異性：0,0,1,1 (class + element) */
@@ -367,7 +367,7 @@ Tailwind Typography 的設計初衷是為了解決一個實際問題：當你有
 .py-2 { }
 ```
 
-因此，即使我後面添加了 Tailwind 工具類，`prose` 的樣式仍然會優先生效。
+因此，即使我後面添加了 Tailwind 工具類，<code>prose</code> 的樣式仍然會優先生效。
 
 ## 第六章：為什麼 AI 無法解決這個問題
 
@@ -401,7 +401,7 @@ Tailwind Typography 的設計初衷是為了解決一個實際問題：當你有
 
 一旦發現問題根源，解決方案就相對簡單了：
 
-**方案 1：使用 `not-prose` 類**
+**方案 1：使用 <code>not-prose</code> 類**
 ```html
 <article class="prose max-w-none">
   <h1>數據報告</h1>
@@ -505,12 +505,13 @@ function Article({ content, data }) {
 **3. 建立調試檢查清單**
 
 當遇到類似問題時，可以按照以下順序檢查：
-
-- [ ] 檢查元素是否在 `prose` 容器內
+<MarkdownDisplay content={`
+- [ ] 檢查元素是否在 <code>prose</code> 容器內
 - [ ] 使用 DevTools 查看所有應用的 CSS 規則
 - [ ] 檢查 CSS 特異性衝突
 - [ ] 驗證 HTML 結構和預期是否一致
-- [ ] 測試移除 `prose` 類後的表現
+- [ ] 測試移除 <code>prose</code> 類後的表現
+`} />
 
 **4. 自動化檢測**
 
