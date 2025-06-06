@@ -14,6 +14,21 @@ const config: Config = {
       typography: {
         DEFAULT: {
           css: {
+            // 移除表格的預設樣式限制
+            table: {
+              width: '100%',
+              'table-layout': 'auto',
+            },
+            th: {
+                height: 'auto',
+                padding: '0.5rem',
+            },
+            td: {
+                height: 'auto',
+                padding: '0.5rem',
+            },
+            // 移除最大寬度限制
+              maxWidth: 'none',
             // 繁體中文字體堆疊
             fontFamily: [
               'Noto Sans TC', 
