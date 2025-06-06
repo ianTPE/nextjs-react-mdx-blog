@@ -1,1 +1,1 @@
-export * from './MarkdownDisplay';
+export { default as MarkdownDisplay } from './MarkdownDisplay';
