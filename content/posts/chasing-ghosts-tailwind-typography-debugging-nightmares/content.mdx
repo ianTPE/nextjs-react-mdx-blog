@@ -12,28 +12,83 @@
 
 一切都從一個看似簡單的需求開始：在一個內容管理系統中展示數據表格。我的 HTML 結構很清晰：
 
-```html
-<article class="prose max-w-none">
-  <h1>數據報告</h1>
-  <p>以下是本月的銷售數據：</p>
-  
-  <table class="w-full">
-    <thead>
-      <tr>
-        <th class="px-4 py-2">產品名稱</th>
-        <th class="px-4 py-2">銷售額</th>
-        <th class="px-4 py-2">增長率</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class="px-4 py-2">產品 A</td>
-        <td class="px-4 py-2">$50,000</td>
-        <td class="px-4 py-2">+12%</td>
-      </tr>
-    </tbody>
-  </table>
-</article>
+```tsx
+import React from "react";
+import {
+  useReactTable,
+  getCoreRowModel,
+  flexRender,
+} from "@tanstack/react-table";
+
+const data = [
+  {
+    name: "產品 A",
+    sales: "$50,000",
+    growth: "+12%",
+  },
+  // 可繼續加更多產品
+];
+
+const columns = [
+  {
+    accessorKey: "name",
+    header: "產品名稱",
+    cell: info => info.getValue(),
+  },
+  {
+    accessorKey: "sales",
+    header: "銷售額",
+    cell: info => info.getValue(),
+  },
+  {
+    accessorKey: "growth",
+    header: "增長率",
+    cell: info => info.getValue(),
+  },
+];
+
+export default function SalesTable() {
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  });
+
+  return (
+    <div className="prose max-w-none">
+      <h1>數據報告</h1>
+      <p>以下是本月的銷售數據：</p>
+      <table className="w-full">
+        <thead>
+          {table.getHeaderGroups().map(headerGroup => (
+            <tr key={headerGroup.id}>
+              {headerGroup.headers.map(header => (
+                <th className="px-4 py-2" key={header.id}>
+                  {flexRender(
+                    header.column.columnDef.header,
+                    header.getContext()
+                  )}
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody>
+          {table.getRowModel().rows.map(row => (
+            <tr key={row.id}>
+              {row.getVisibleCells().map(cell => (
+                <td className="px-4 py-2" key={cell.id}>
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 ```
 
 我使用了 Tailwind 的標準工具類：<code>w-full</code> 讓表格寬度 100%，<code>px-4 py-2</code> 設定合理的內距。理論上，這應該給我一個乾淨、可控的表格佈局。
