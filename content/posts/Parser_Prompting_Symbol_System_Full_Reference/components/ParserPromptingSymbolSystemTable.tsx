@@ -129,7 +129,7 @@ export const ParserPromptingSymbolSystemTable: React.FC = () => {
   return (
     <div className="overflow-x-auto">
       <div className="my-6 not-prose">
-        <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-700 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm">
+        <table className="min-w-[768px] divide-y divide-slate-200 dark:divide-slate-700 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm">
           <thead className="bg-slate-50 dark:bg-slate-800">
             {table.getHeaderGroups().map(headerGroup => (
               <tr key={headerGroup.id}>
