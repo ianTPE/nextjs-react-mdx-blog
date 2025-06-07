@@ -78,7 +78,7 @@ export const ProseComparisonScoreTable: React.FC = () => {
   });
 
   return (
-    <div className="overflow-x-auto my-6 rounded-md border">
+    <div className="not-prose overflow-x-auto my-6 rounded-md border">
       <Table>
         <TableHeader>
           {tableInstance.getHeaderGroups().map(headerGroup => (
