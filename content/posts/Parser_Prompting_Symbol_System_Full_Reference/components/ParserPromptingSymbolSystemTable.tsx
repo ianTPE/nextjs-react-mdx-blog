@@ -129,12 +129,12 @@ export const ParserPromptingSymbolSystemTable: React.FC = () => {
   });
 
   return (
-    // 修復表格寬度：使用負邊距突破 prose 容器限制，確保完整寬度顯示
-    <div className="not-prose -mx-4 sm:-mx-6 lg:-mx-8 my-8">
-      <div className="w-full max-w-none overflow-x-auto">
+    // 手機優化：外層直接 overflow-x-auto，-mx-4 讓表格貼齊螢幕，table 設 min-w 保證欄位不被壓縮
+    <div className="not-prose overflow-x-auto -mx-4 sm:mx-0 my-8">
+      <div className="w-full max-w-none">
         <div className="min-w-full inline-block align-middle">
           <div className="overflow-hidden border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm">
-            <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-700">
+            <table className="min-w-[600px] sm:min-w-full divide-y divide-slate-200 dark:divide-slate-700">
               <thead className="bg-slate-50 dark:bg-slate-800">
                 {table.getHeaderGroups().map(headerGroup => (
                   <tr key={headerGroup.id}>
