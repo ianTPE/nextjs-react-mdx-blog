@@ -48,7 +48,7 @@ const columns: ColumnDef<ScoreItem, any>[] = [
   }),
   columnHelper.accessor('weight', {
     header: () => '權重',
-    cell: info => <div className="text-center">{info.getValue()}</div>,
+    cell: info => info.getValue(),
     size: 15,
   }),
   columnHelper.accessor('typography', {
@@ -84,7 +84,7 @@ export const ProseComparisonScoreTable: React.FC = () => {
           {tableInstance.getHeaderGroups().map(headerGroup => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map(header => (
-                <TableHead key={header.id} style={{ width: `${header.getSize()}%` }}>
+                <TableHead key={header.id} style={{ width: `${header.getSize()}%` }} className={header.column.id === 'weight' ? 'text-center' : ''}>
                   {header.isPlaceholder
                     ? null
                     : flexRender(
@@ -104,7 +104,7 @@ export const ProseComparisonScoreTable: React.FC = () => {
                 data-state={row.getIsSelected() && 'selected'}
               >
                 {row.getVisibleCells().map(cell => (
-                  <TableCell key={cell.id} style={{ width: `${cell.column.getSize()}%` }}>
+                  <TableCell key={cell.id} style={{ width: `${cell.column.getSize()}%` }} className={cell.column.id === 'weight' ? 'text-center align-middle' : ''}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
