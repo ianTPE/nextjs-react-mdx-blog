@@ -112,8 +112,8 @@ pre[class*="language-"] {
 .not-prose th,
 .not-prose td {
   margin: 0 !important;
-  padding: 0 !important;
-  border: none !important;
+  /* padding: 0 !important;  Let component classes handle padding */
+  /* border: none !important; Let component classes handle borders */
 }
 
 .not-prose {
@@ -129,6 +129,67 @@ pre[class*="language-"] {
   padding: 0 !important;
   line-height: inherit !important;
 }
+
+/* 強制移除 prose 容器的最大寬度限制 */
+.prose {
+  max-width: none !important;
+}
+
+/* 確保 prose 內容充滿父容器寬度 */
+.mdx-content {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+/* The following table overrides were too aggressive and conflicted with shadcn/ui default styling.
+   It's better to let shadcn/ui components and direct Tailwind classes in components manage table appearance.
+   The .not-prose class on the wrapper should prevent prose styles from leaking in.
+
+/* 強制修復表格間距問題 */
+/* .not-prose table th,
+.not-prose table td {
+  padding: 1rem 1.5rem !important;
+  line-height: 1.625 !important;
+} */
+
+/* 確保表格邊框和樣式正確 */
+/* .not-prose table {
+  border-collapse: separate !important; 
+  border-spacing: 0 !important;
+} */
+
+/* 使用更強的選擇器強制顯示表格邊框 */
+/* div.not-prose table tbody tr,
+.not-prose div table tbody tr,
+table tbody tr {
+  border-bottom: 1px solid #94a3b8 !important;
+} */
+
+/* 表格標題行邊框 */
+/* div.not-prose table thead tr,
+.not-prose div table thead tr,
+table thead tr {
+  border-bottom: 2px solid #64748b !important;
+} */
+
+/* 深色模式下的邊框 */
+/* .dark div.not-prose table tbody tr,
+.dark .not-prose div table tbody tr,
+.dark table tbody tr {
+  border-bottom: 1px solid #64748b !important;
+} */
+
+/* .dark div.not-prose table thead tr,
+.dark .not-prose div table thead tr,
+.dark table thead tr {
+  border-bottom: 2px solid #94a3b8 !important;
+} */
+
+/* 最後一行不需要底部邊框 */
+/* table tbody tr:last-child {
+  border-bottom: none !important;
+} */
+
 
 /* Language tag styling */
 pre[class*="language-"] .language-tag {

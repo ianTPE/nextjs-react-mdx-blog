@@ -5,14 +5,14 @@ import { cn } from "@/lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 
 const proseVariants = cva(
-  "prose prose-slate dark:prose-invert max-w-none",
+  "prose dark:prose-invert",
   {
     variants: {
       variant: {
         default: "prose-slate",
-        blog: "prose-slate prose-lg",
-        documentation: "prose-blue prose-sm",
-        minimal: "prose-gray prose-sm"
+        blog: "prose-slate",
+        documentation: "prose-blue",
+        minimal: "prose-gray"
       },
       size: {
         sm: "prose-sm",
@@ -36,7 +36,7 @@ const Prose = React.forwardRef<HTMLDivElement, ProseProps>(
   ({ className, variant, size, ...props }, ref) => {
     return (
       <div
-        className={cn(proseVariants({ variant, size, className }))}
+        className={cn(proseVariants({ variant, size }), "max-w-none", className)}
         ref={ref}
         {...props}
       />

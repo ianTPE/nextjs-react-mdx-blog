@@ -84,7 +84,13 @@ export const ProseComparisonScoreTable: React.FC = () => {
           {tableInstance.getHeaderGroups().map(headerGroup => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map(header => (
-                <TableHead key={header.id} style={{ width: `${header.getSize()}%` }} className={header.column.id === 'weight' ? 'text-center' : ''}>
+                <TableHead 
+                  key={header.id} 
+                  style={{ width: `${header.getSize()}%` }} 
+                  className={`px-6 py-4 text-left align-middle font-medium whitespace-nowrap ${
+                    header.column.id === 'weight' ? 'text-center' : ''
+                  }`}
+                >
                   {header.isPlaceholder
                     ? null
                     : flexRender(
@@ -104,7 +110,13 @@ export const ProseComparisonScoreTable: React.FC = () => {
                 data-state={row.getIsSelected() && 'selected'}
               >
                 {row.getVisibleCells().map(cell => (
-                  <TableCell key={cell.id} style={{ width: `${cell.column.getSize()}%` }} className={cell.column.id === 'weight' ? 'text-center align-middle' : ''}>
+                  <TableCell 
+                    key={cell.id} 
+                    style={{ width: `${cell.column.getSize()}%` }} 
+                    className={`px-6 py-4 align-middle leading-relaxed ${
+                      cell.column.id === 'weight' ? 'text-center' : ''
+                    }`}
+                  >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
@@ -112,7 +124,7 @@ export const ProseComparisonScoreTable: React.FC = () => {
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
+              <TableCell colSpan={columns.length} className="h-24 text-center px-6 py-4">
                 無資料。
               </TableCell>
             </TableRow>
