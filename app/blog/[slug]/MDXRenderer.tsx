@@ -7,6 +7,7 @@ import type { MDXRemoteSerializeResult } from 'next-mdx-remote';
 import defaultMDXComponents from '@/components/mdx/MDXComponents';
 import { Mermaid } from '@/components/mdx/global-components';
 import CodeBlock from '@/components/mdx/CodeBlock';
+import { Prose } from '@/components/ui/prose';
 
 interface MDXRendererProps {
   source: string;
@@ -102,9 +103,9 @@ export default function MDXRenderer({ source, slug }: MDXRendererProps) {
   }
 
   return (
-    // 使用 shadcn-prose 的類名
-    <div className="mdx-content prose max-w-none">
+    // 使用 shadcn-prose 組件替代舊的 prose 類別
+    <Prose variant="blog" size="lg" className="mdx-content max-w-none">
       <MDXRemote {...mdxSource} components={components} />
-    </div>
+    </Prose>
   );
 }

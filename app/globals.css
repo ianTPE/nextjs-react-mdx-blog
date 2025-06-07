@@ -99,16 +99,35 @@ html, body {
   isolation: isolate; /* 創建新的堆疊上下文 */
 }
 
-.prose {
-  max-width: none !important;
-}
-
 /* 代碼塊專用樣式 - 確保只有代碼塊可以滾動 */
 pre[class*="language-"] {
   max-width: 100%;
   overflow-x: auto !important;
   @apply rounded-lg shadow-lg my-8 p-4;
   font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+}
+
+/* 表格樣式覆蓋 - 防止 prose 樣式影響自定義表格 */
+.not-prose table,
+.not-prose th,
+.not-prose td {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+}
+
+.not-prose {
+  /* 移除所有 prose 相關的邊距和樣式 */
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+/* 確保表格容器不會被 prose 樣式影響 */
+.prose .not-prose,
+[class*="prose"] .not-prose {
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: inherit !important;
 }
 
 /* Language tag styling */
