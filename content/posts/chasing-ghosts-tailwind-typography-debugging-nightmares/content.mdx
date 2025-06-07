@@ -12,7 +12,7 @@ Vibe Coding 是很讓人心情愉悅的開發方式。你懂的，就是那種�
 
 「沒關係，」我心想，「小 case，ChatGPT 可以幫我調好。」
 
-結果？表格像是有了自己的意識，你給它 `py-1`，它給你一個超大的空隙。你改成 `py-0.5`，它還是那麼大。TanStack Table 不聽話，Shadcn Table 也是一樣。我的表格們失控了。
+結果？表格像是有了自己的意識，你給它 <code>py-1</code>，它給你一個超大的空隙。你改成 <code>py-0.5</code>，它還是那麼大。TanStack Table 不聽話，Shadcn Table 也是一樣。我的表格們失控了。
 
 最詭異的是什麼？時好時壞。有時候 ChatGPT 可以經過多次修改後表格就正常了，有時候怎麼改都沒用。就像薛丁格的表格，你不知道打開瀏覽器時它是正常還是不正常。
 
@@ -24,8 +24,8 @@ Claude Sonnet 是我的主力，我們一起寫過無數文章。但這次，它
 
 每次我讓它把 Markdown table 轉成 TanStack Table，Table 都會變形。
 
-我：請修正！
-*10 分鐘後*
+我：請修正！<br />
+*10 分鐘後*<br />
 我：不行欸，高度還是不對。
 
 Claude：「那試試調整 line-height？」
@@ -38,9 +38,9 @@ Claude：「要不要改用原生 HTML table？」
 
 ### Round 2: ChatGPT - 分析很專業，答案很離譜
 
-「ChatGPT o3 你好貴，」我一邊用著一邊想，「你應該該給我個不錯的答案吧？」
+「ChatGPT o3 你好貴，」我一邊用著一邊想，「你應該給我個不錯的答案吧？」
 
-GPT 給了我一個三百字的分析，從 CSS box model 講到瀏覽器渲染機制，聽起來超專業。結果呢？它建議我用 `!important` 覆蓋所有樣式。
+GPT 給了我一個三百字的分析，從 CSS box model 講到瀏覽器渲染機制，聽起來超專業。結果呢？它建議我用 <code>!important</code>覆蓋所有樣式。
 
 我：我就照做了！
 
@@ -90,19 +90,19 @@ Browser DevTools 看不出任何異常，Computed Style 顯示一切正常，但
 
 ## 真相大白：原來是 prose 在搞鬼
 
-> 「我找到問題了！問題出在 `tbody` 上的 `divide-y` 類別，它為每個 `tr` 添加了 1px 的下邊框，這導致了額外的高度。」
+> 「我找到問題了！問題出在 <code>tbody</code> 上的 <code>divide-y</code> 類別，它為每個 <code>tr</code> 添加了 1px 的下邊框，這導致了額外的高度。」
 
 但這還不是全部。Opus 繼續挖掘：
 
 > 「主要問題有兩個：
-> 1. **`prose` 類別的影響**：表格在 `prose` 容器內，這會影響表格的樣式
-> 2. **`divide-y` 邊框**：`tbody` 上的 `divide-y` 類別為每行添加了 1px 的邊框」
+> 1. **<code>prose</code> 類別的影響**：表格在 <code>prose</code> 容器內，這會影響表格的樣式
+> 2. **<code>divide-y</code> 邊框**： <code>tbody</code> 上的 <code>divide-y</code> 類別為每行添加了 1px 的邊框」
 
 prose？PROSE？！
 
-我花了三個月，測試了無數個 AI，寫了上萬行程式碼，原來問題就是一個該死的 `prose` 類別？
+我花了三個月，測試了無數個 AI，寫了上萬行程式碼，原來問題就是一個該死的 <code>prose</code> 類別？
 
-原來 Tailwind Typography 的 `prose` 會自動為所有內部元素加上「優美」的排版樣式，包括更大的 line-height、額外的 padding... 這就是為什麼我的表格總是有莫名其妙的空隙！
+原來 Tailwind Typography 的 <code>prose</code> 會自動為所有內部元素加上「優美」的排版樣式，包括更大的 line-height、額外的 padding... 這就是為什麼我的表格總是有莫名其妙的空隙！
 
 解決方案簡單到讓人想哭：
 
@@ -112,11 +112,11 @@ prose？PROSE？！
 </div>
 ```
 
-就這樣。`not-prose`。五個字母。解決了我三個月的噩夢。
+就這樣。<code>not-prose</code>。五個字母。解決了我三個月的噩夢。
 
 ## 終於可以睡個好覺：但故事還沒結束
 
-找到答案的那個晚上，我睡了 12 個小時。醒來後，我把所有舊表格都翻出來測試。果然，加上 `not-prose` 後，世界恢復了正常。
+找到答案的那個晚上，我睡了 12 個小時。醒來後，我把所有舊表格都翻出來測試。果然，加上 <code>not-prose</code> 後，世界恢復了正常。
 
 我甚至想過要不要直接改 `tailwind.config`，一勞永逸。但測試後發現，這樣會破壞其他地方的樣式。我也想過要不要直接卸載 Typography plugin，但... MDX 太好用了，Markdown 文章是主流，AI 能快速產生 markdown 和 React 組件。Typography 不能卸載。
 
@@ -143,14 +143,14 @@ Tailwind 被一些人討厭不是沒有原因的。當你不理解它在背後�
 - 同樣的組件在不同地方表現不一致
 
 ### 可能的兇手
-- `prose` 類別（幾乎總是它）
-- `prose-lg`、`prose-xl` 等尺寸修飾符
+- <code>prose</code> 類別（幾乎總是它）
+- <code>prose-lg</code>、<code>prose-xl</code> 等尺寸修飾符
 - 全域的 Typography 設定
 
 ### 解決方案
-1. **局部排除**：使用 `not-prose`
-2. **覆蓋特定元素**：`prose-table:p-0`、`prose-td:py-1` 等
-3. **自定義 prose 主題**：在 `tailwind.config.js` 中調整
+1. **局部排除**：使用 <code>not-prose</code>
+2. **覆蓋特定元素**： <code>prose-table:p-0</code>、<code>prose-td:py-1</code> 等
+3. **自定義 prose 主題**：在 <code>tailwind.config.js</code> 中調整
 
 ### 偵錯技巧
 ```javascript
@@ -164,7 +164,7 @@ document.querySelectorAll('[class*="prose"]')
 
 **最深的黑暗不是沒有答案，而是不知道問題在哪裡。**
 
-當你在 vibe coding 的天堂飛翔時，記得偶爾低頭看看地面。因為你永遠不知道，下一個 `prose` 什麼時候會出現。
+當你在 vibe coding 的天堂飛翔時，記得偶爾低頭看看地面。因為你永遠不知道，下一個 <code>prose</code> 什麼時候會出現。
 
 *P.S. 如果這篇文章幫到了你，記得在評論區分享你的血淚史。讓我知道我不是唯一一個被 Tailwind Typography 搞瘋的人。*
 
