@@ -11,7 +11,7 @@ This is a well-structured Next.js blog project leveraging the App Router and MDX
 * **React**: Latest stable release
 * **TypeScript**: Latest stable release
 * **MDX**: Latest stable release
-* **Styling**: Tailwind CSS v4
+* **Styling**: Tailwind CSS v4 + shadcn-prose (migrated from @tailwindcss/typography)
 * **Animations**: Framer Motion
 
 ## Content Structure
@@ -84,6 +84,45 @@ export default metadata;
 - **型別安全**：完整 TypeScript 支援，減少錯誤。
 - **工具整合**：如 sitemap、RSS、SEO 等可直接消費 metadata。
 - **維護便利**：內容與結構分離，易於 refactor。
+
+## Typography System (shadcn-prose)
+本專案已於 2025 年 6 月完成從 `@tailwindcss/typography` 遷移至 `shadcn-prose`，提供更好的 React 組件整合與型別安全。
+
+### 核心變更
+- **組件化排版**：從 CSS 類別轉為 React 組件方式
+- **shadcn/ui 整合**：與現有設計系統完美統一
+- **型別安全**：完整 TypeScript 支援
+- **動態配置**：支援 props 傳入與條件式樣式
+
+### 使用方式
+```typescript
+// 舊方式（CSS 類別）
+<div className="prose prose-lg dark:prose-invert max-w-none">
+  {mdxContent}
+</div>
+
+// 新方式（React 組件）
+<Prose variant="blog" size="lg" className="max-w-none">
+  {mdxContent}
+</Prose>
+```
+
+### Prose 組件特性
+- **多種變體**：支援 `default`、`blog`、`documentation` 等風格
+- **尺寸控制**：`sm`、`base`、`lg`、`xl` 大小選項
+- **深色模式**：自動適配 dark/light 主題
+- **響應式**：跨裝置最佳化顯示
+- **可擴展**：易於新增自定義變體
+
+### 重要檔案
+- `/components/ui/prose.tsx`：shadcn-prose 主要組件
+- `/app/blog/[slug]/MDXRenderer.tsx`：已更新使用 Prose 組件
+
+### 開發指引
+- 所有 MDX 內容必須使用 `<Prose>` 組件包裝
+- 可根據內容類型選擇適當的 `variant` 和 `size`
+- 自定義樣式應透過 `className` prop 傳入
+- 維持與 shadcn/ui 設計系統一致性
 
 ## Component Architecture
 This project supports two categories of MDX components, with a clear override mechanism:
@@ -165,54 +204,43 @@ This approach provides several benefits:
 * **Simplified Refactoring**: Component file names can be changed without updating MDX files
 * **Automatic Namespacing**: When MDX is rendered, components are automatically available in the namespace
 
-## MDX Metadata and Usage Example
+## MDX Content and Typography
 
-### ESM Metadata in MDX Files
+### 新架構：獨立 Metadata + Prose 組件
 
-MDX files should use ESM export syntax to define metadata for the post. This metadata is essential for SEO, listing pages, and other site features:
+本專案採用獨立 metadata 檔案與 shadcn-prose 組件，提供更好的維護性與型別安全：
 
-```mdx
-export const metadata = {
-  title: 'Post Title',
-  date: '2025-05-27',
-  excerpt: 'A brief description of the post content that will appear in listings and social media previews.',
-  author: 'Author Name',
-  coverImage: '/images/posts/cover-image.webp',
-  tags: ['Next.js', 'React', 'Tutorial']
-};
-
-# Post Title
-
-Post content starts here...
+#### 檔案結構
+```
+/content/posts/sample-post/
+  metadata.ts     # 獨立 metadata 檔案
+  content.mdx     # 純內容檔案
+  /components/    # 本地組件
+    index.ts      # Barrel file
+    Chart.tsx
 ```
 
-#### Metadata Requirements
+#### Metadata 檔案範例
+```typescript
+// content/posts/sample-post/metadata.ts
+import type { PostMeta } from '../../../types/post';
 
-- **Format**: Must use `export const metadata = { ... };` syntax at the top of the MDX file
-- **Required Fields**: title, date, excerpt, author
-- **Optional Fields**: coverImage, tags, updatedDate, readingTime
-- **Parsing**: This metadata is extracted during build time and made available to page components
-- **Validation**: The build process validates that all required metadata fields are present
-
-#### Important Notes
-
-- Metadata must be defined before any MDX content
-- Do not use traditional frontmatter (---) syntax
-- Field names are case-sensitive
-- Date formats should be ISO-compatible (YYYY-MM-DD)
-
-### Traditional Approach (with imports):
-```mdx
-export const metadata = {
-  title: 'Sample Post Title',
-  date: '2025-05-27',
-  excerpt: 'Sample post description',
-  author: 'Author Name'
+const metadata: PostMeta = {
+  slug: "sample-post",
+  title: "Sample Blog Post",
+  date: "2025-06-05",
+  summary: "A comprehensive guide to...",
+  tags: ["Next.js", "MDX", "React"],
+  author: "Ian Chou",
+  published: true,
+  coverImage: "/images/posts/sample.webp"
 };
 
-import CustomChart from './components/CustomChart'
-import AlertBox from 'components/mdx/global-components/AlertBox'
+export default metadata;
+```
 
+#### 純內容 MDX 檔案
+```mdx
 # Sample Post Title
 
 Here is a post-specific chart:
@@ -222,34 +250,42 @@ And here is a global alert component:
 <AlertBox type="warning">This is a warning message.</AlertBox>
 ```
 
-### Improved Approach (using index.ts barrel file):
-```mdx
-export const metadata = {
-  title: 'Sample Post Title',
-  date: '2025-05-27',
-  excerpt: 'Sample post description',
-  author: 'Author Name',
-  tags: ['Next.js', 'MDX', 'Tutorial']
-};
+#### 優點
+- **純淨內容**：MDX 檔案僅包含內容，無 metadata 雜訊
+- **型別安全**：完整 TypeScript 支援與 IDE 智能提示
+- **渲染性能**：metadata 與內容分離載入，提升效能
+- **組件自動注入**：透過 index.ts barrel file 自動載入本地組件
+- **Typography 組件化**：使用 Prose 組件提供一致的排版
 
-# Sample Post Title
+### Typography 應用
 
-Here is a post-specific chart:
-<CustomChart data={chartData} />
+所有 MDX 內容會自動包裝在 Prose 組件中：
 
-And here is a global alert component:
-<AlertBox type="warning">This is a warning message.</AlertBox>
+```typescript
+// MDXRenderer.tsx 中的應用
+<Prose variant="blog" size="lg" className="max-w-none">
+  <MDXRemote source={mdxSource} components={mergedComponents} />
+</Prose>
 ```
 
-With the barrel file approach, the MDX loader automatically resolves components from the index.ts exports, eliminating the need for explicit imports in the MDX file.
+### 重要提醒
+- **不要在 MDX 檔案中加入 metadata**：使用獨立 metadata.ts 檔案
+- **不要手動 import 組件**：使用 barrel file 模式
+- **Client 組件標記**：互動組件需加上 "use client" 指令
+- **Prose 組件包裝**：所有內容需透過 Prose 組件渲染
 
 ## Key Files
 - `/app/blog/[slug]/page.tsx` - Dynamic routes for blog posts
-- `/app/blog/[slug]/MDXRenderer.tsx` - Client-side MDX rendering
-- `/lib/mdx.ts` - Core content fetching functions
+- `/app/blog/[slug]/MDXRenderer.tsx` - Client-side MDX rendering with Prose component
+- `/lib/mdx.ts` - Core content fetching functions (updated for independent metadata)
+- `/lib/metadata-loader.ts` - **NEW**: Utilities for loading independent metadata files
 - `/lib/mdx-loader.ts` - Custom component loading
-- `/content/metadata.ts` - Blog post metadata storage
+- `/types/post.ts` - **NEW**: TypeScript type definitions for posts
+- `/components/ui/prose.tsx` - **NEW**: shadcn-prose component for typography
+- `/components/mdx/MDXComponents.tsx` - Global MDX component definitions
 - `/content/posts/[slug]/components/index.ts` - Barrel files for local component exports
+- `/content/posts/[slug]/metadata.ts` - **NEW**: Independent metadata files
+- `/content/posts/[slug]/content.mdx` - **UPDATED**: Pure content files without metadata
 
 ## Development Guidelines
 
@@ -286,15 +322,26 @@ With the barrel file approach, the MDX loader automatically resolves components 
 - Be mindful of the client/server boundary to minimize client-side JavaScript
 
 ### MDX Implementation
-- Maintain separation between content and metadata
+- Maintain separation between content and metadata using independent metadata.ts files
+- **Use Prose component** for all MDX content rendering with appropriate variant and size
 - Support both global and local components
 - **Use index.ts barrel files** to export local components for cleaner MDX content
 - **Add "use client" directive** to any component files that use interactive features or browser APIs
 - Process MDX client-side with next-mdx-remote
 - Use proper error handling in MDX rendering
 - Test MDX content with custom components before deployment
-- Avoid imports in MDX files when possible by using the barrel file pattern
+- **Never add metadata to MDX files** - use separate metadata.ts files
+- **Choose appropriate Prose variants**: `blog` for posts, `documentation` for guides, `default` for general content
 - Always run a local build (`next build`) before deployment to catch client/server errors
+
+### Typography System Guidelines
+- **Always use Prose component** for MDX content rendering
+- **Select appropriate variants**: Use `blog` for post content, `documentation` for technical guides
+- **Size recommendations**: Use `lg` for main content, `base` for secondary content, `sm` for captions
+- **Responsive considerations**: Prose component handles mobile optimization automatically
+- **Custom styling**: Pass additional classes via `className` prop, maintain shadcn/ui consistency
+- **Dark mode**: Prose component automatically handles dark/light theme transitions
+- **Accessibility**: Prose component includes built-in accessibility enhancements
 
 ### Accessibility
 - Use semantic HTML elements
@@ -324,6 +371,9 @@ With the barrel file approach, the MDX loader automatically resolves components 
 - Test critical user flows
 - Include mobile and desktop test cases
 - Verify build process for client/server component boundaries
+- **Use validation commands**: `npm run posts:validate` for metadata validation
+- **Interactive post creation**: Use `npm run posts:create` for guided post setup
+- **Build validation**: Automated validation runs during `npm run build`
 
 ### Security
 - Keep dependencies updated
@@ -335,6 +385,12 @@ With the barrel file approach, the MDX loader automatically resolves components 
 - Ensure graceful degradation for older browsers
 
 ### Common Build Issues and Solutions
+
+**✅ Note**: As of June 2025, this project has completed two major migrations:
+1. **Metadata Independence Migration**: All posts use separate metadata.ts files
+2. **Typography System Migration**: All typography uses shadcn-prose components
+
+All 42 posts have been successfully migrated and are building without errors.
 
 1. **Client Component Error**:
    ```
@@ -359,6 +415,18 @@ With the barrel file approach, the MDX loader automatically resolves components 
    Error: Import trace for requested module contains a cycle
    ```
    Solution: Restructure imports to avoid circular dependencies between client and server components.
+
+5. **Metadata Validation Error**:
+   ```
+   Error: Missing required field 'title' in post-slug/metadata.ts
+   ```
+   Solution: Ensure all required fields (title, date, summary, tags, published) are present in metadata.ts files. Use `npm run posts:validate` to check all posts.
+
+6. **Typography Component Error**:
+   ```
+   Error: Cannot find module '@/components/ui/prose'
+   ```
+   Solution: Ensure shadcn-prose component is properly installed and configured. All MDX content must be wrapped in Prose component.
 
 ## Responsive Chart Component Rules
 

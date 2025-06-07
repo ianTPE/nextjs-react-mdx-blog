@@ -5,12 +5,7 @@
 從 <code>@tailwindcss/typography</code> 遷移到 <code>shadcn-prose</code> 是一個重大的架構變更，影響整個部落格的排版系統。
 
 ### 核心變更
-| 項目 | 原始 (Typography) | 新版 (shadcn-prose) |
-|------|------------------|-------------------|
-| 實現方式 | CSS 類名 | React 組件 |
-| 配置位置 | tailwind.config.ts | components/ui/prose.tsx |
-| 樣式應用 | `prose prose-lg dark:prose-invert` | `<Prose>` 組件包裝 |
-| 自定義程度 | Tailwind 配置 | React props + CSS 類 |
+<TypographyVsShadcnProseTable />
 
 ## ✅ 優點分析
 
@@ -96,14 +91,7 @@
 
 ## 📋 決策矩陣
 
-| 考量因素 | 權重 | Typography | shadcn-prose | 推薦 |
-|---------|------|------------|-------------|------|
-| 維護成本 | ⭐⭐⭐ | 8/10 | 7/10 | Typography |
-| 功能靈活性 | ⭐⭐⭐ | 6/10 | 9/10 | **shadcn-prose** |
-| 效能表現 | ⭐⭐ | 9/10 | 8/10 | Typography |
-| 生態整合 | ⭐⭐⭐ | 5/10 | 10/10 | **shadcn-prose** |
-| 學習成本 | ⭐⭐ | 9/10 | 6/10 | Typography |
-| 總分 | - | **7.4/10** | **8.0/10** | **shadcn-prose** |
+<ProseComparisonScoreTable />
 
 ## 🎯 最終建議
 
