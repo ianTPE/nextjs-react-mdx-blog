@@ -1,89 +1,75 @@
 import type { Config } from 'tailwindcss'
-import typography from '@tailwindcss/typography'
 
 const config: Config = {
+  darkMode: "class",  // 修復：移除數組語法
   content: [
     './pages/**/*.{js,ts,jsx,tsx,md,mdx}',
     './components/**/*.{js,ts,jsx,tsx,md,mdx}',
     './content/**/*.{js,ts,jsx,tsx,md,mdx}',
-    // 若使用 app/ 或 src/ 目錄，也要加上
     './app/**/*.{js,ts,jsx,tsx,md,mdx}',
   ],
   theme: {
     extend: {
-      typography: {
-        DEFAULT: {
-          css: {
-            // 移除表格的預設樣式限制
-            table: {
-              width: '100%',
-              'table-layout': 'auto',
-            },
-            th: {
-                height: 'auto',
-                padding: '0.5rem',
-            },
-            td: {
-                height: 'auto',
-                padding: '0.5rem',
-            },
-            // 移除最大寬度限制
-              maxWidth: 'none',
-            // 繁體中文字體堆疊
-            fontFamily: [
-              'Noto Sans TC', 
-              'PingFang TC', 
-              'Microsoft JhengHei',
-              'sans-serif'
-            ].join(','),
-            // 增加行高，使繁體中文更易閱讀
-            lineHeight: '1.8',
-            // 段落樣式優化
-            'p, li': {
-              letterSpacing: '0.01em', // 輕微增加字距
-              fontWeight: '400',
-            },
-            // 標題樣式優化
-            'h1, h2, h3, h4': {
-              fontWeight: '700',
-              letterSpacing: '-0.025em',
-            },
-            // 更好的手機顯示效果
-            fontSize: {
-              base: '16px',
-              lg: '18px',
-              xl: '20px',
-            },
-            // 優化引用塊樣式
-            blockquote: {
-              fontStyle: 'normal',
-              borderLeftWidth: '4px',
-              borderLeftColor: 'rgba(142, 142, 160, 0.4)',
-              fontWeight: '400',
-            },
-          },
-        },
-        // 深色模式特別調整
-        dark: {
-          css: {
-            color: '#E9E9E9',
-            'h1, h2, h3, h4': {
-              color: '#FFFFFF',
-            },
-            blockquote: {
-              borderLeftColor: 'rgba(142, 142, 160, 0.6)',
-              color: '#D1D1D1',
-            },
-            'a, strong': {
-              color: '#FFFFFF',
-            },
-          },
-        },
+      // 繁體中文字體配置
+      fontFamily: {
+        'chinese': [
+          'Noto Sans TC', 
+          'PingFang TC', 
+          'Microsoft JhengHei',
+          'sans-serif'
+        ],
       },
-    },
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)"
+      },
+      colors: {
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))"
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))"
+        },
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))"
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))"
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))"
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))"
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))"
+        },
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        chart: {
+          "1": "hsl(var(--chart-1))",
+          "2": "hsl(var(--chart-2))",
+          "3": "hsl(var(--chart-3))",
+          "4": "hsl(var(--chart-4))",
+          "5": "hsl(var(--chart-5))"
+        }
+      }
+    }
   },
   plugins: [
-    typography,
+    require("tailwindcss-animate")
   ],
 }
 

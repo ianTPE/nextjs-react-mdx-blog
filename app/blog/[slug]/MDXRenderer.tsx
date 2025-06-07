@@ -102,7 +102,8 @@ export default function MDXRenderer({ source, slug }: MDXRendererProps) {
   }
 
   return (
-    <div className="mdx-content prose prose-lg dark:prose-invert max-w-none">
+    // 使用 shadcn-prose 的類名
+    <div className="mdx-content prose max-w-none">
       <MDXRemote {...mdxSource} components={components} />
     </div>
   );

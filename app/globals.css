@@ -1,8 +1,9 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "shadcn-prose";
 
 @custom-variant dark (&:is(.dark *));
-@plugin "@tailwindcss/typography";
+/* 移除了: @plugin "@tailwindcss/typography"; */
 
 /* 引入 Dancing Script 草書字體 */
 @font-face {
@@ -11,6 +12,13 @@
   font-weight: 700;
   font-display: swap;
   src: url(https://fonts.gstatic.com/s/dancingscript/v25/If2cXTr6YS-zF4S-kcSWSVi_sxjsohD9F50Ruu7B1i0HTQ.ttf) format('truetype');
+}
+
+/* 繁體中文字體配置 - 使用 @layer utilities */
+@layer utilities {
+  .font-chinese {
+    font-family: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+  }
 }
 
 /* 草書字體 utility class */
@@ -91,58 +99,14 @@ html, body {
   isolation: isolate; /* 創建新的堆疊上下文 */
 }
 
-/* 確保內容元素不會產生水平溢出但保留其布局寬度 */
-.prose, main {
-  overflow-x: hidden;
+.prose {
+  max-width: none !important;
 }
 
-/* 代碼塊專用样式 - 確保只有代碼塊可以滾動 */
+/* 代碼塊專用樣式 - 確保只有代碼塊可以滾動 */
 pre[class*="language-"] {
   max-width: 100%;
   overflow-x: auto !important;
-}
-
-/* Prose styles for markdown content */
-.prose {
-  @apply text-gray-900 leading-relaxed;
-}
-
-.prose h1 {
-  @apply text-4xl font-bold mb-6 mt-8;
-}
-
-.prose h2 {
-  @apply text-3xl font-bold mb-4 mt-6;
-}
-
-.prose h3 {
-  @apply text-2xl font-bold mb-3 mt-4;
-}
-
-.prose p {
-  @apply mb-6;
-}
-
-/* Inline code - not wrapped in a pre block */
-.prose code:not([class*="language-"]) {
-  @apply bg-gray-100 text-gray-800 px-2 py-1 rounded text-sm font-mono;
-}
-
-/* Dark mode for inline code */
-@media (prefers-color-scheme: dark) {
-  .prose code:not([class*="language-"]) {
-    @apply bg-gray-800 text-gray-200;
-  }
-}
-
-/* Remove default styling from pre blocks because CodeBlock handles the styling */
-.prose pre {
-  @apply p-0 m-0 bg-transparent;
-  overflow-x: auto;
-}
-
-/* Code blocks styling (handled by CodeBlock) */
-pre[class*="language-"] {
   @apply rounded-lg shadow-lg my-8 p-4;
   font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
 }
@@ -155,26 +119,6 @@ pre[class*="language-"] .language-tag {
 /* Line numbers */
 pre[class*="language-"] .line-number {
   @apply inline-block w-8 text-right mr-4 text-gray-500 select-none;
-}
-
-.prose ul, .prose ol {
-  @apply mb-6 pl-6;
-}
-
-.prose ul {
-  @apply list-disc;
-}
-
-.prose ol {
-  @apply list-decimal;
-}
-
-.prose li {
-  @apply mb-2;
-}
-
-.prose blockquote {
-  @apply border-l-4 border-gray-300 pl-4 italic text-gray-700 mb-6;
 }
 
 /* Custom utilities */
@@ -266,5 +210,6 @@ pre[class*="language-"] .line-number {
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
   }
 }

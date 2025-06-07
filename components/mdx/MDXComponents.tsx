@@ -4,6 +4,12 @@ import React, { type ComponentType, type ReactNode } from 'react';
 import CodeBlock from './CodeBlock';
 import { Table, THead, TBody, Th, Td, Tr } from './Table';
 import AlertComponent from './global-components/Alert';  // 重命名導入以避免名稱衝突
+import { 
+  ProseWrapper, 
+  BreakoutContainer, 
+  FullWidth, 
+  MediumWidth 
+} from './global-components/ProseControl';
 
 type ComponentProps = {
   children?: ReactNode;
@@ -29,6 +35,11 @@ type MDXComponents = {
     type?: 'info' | 'warning' | 'error' | 'success';
     title?: string;
   }>;
+  // Prose control components - 簡化類型定義
+  ProseWrapper: ComponentType<ComponentProps>;
+  BreakoutContainer: ComponentType<ComponentProps>;
+  FullWidth: ComponentType<ComponentProps>;
+  MediumWidth: ComponentType<ComponentProps>;
 };
 
 // Create a proper pre wrapper that preserves code blocks
@@ -67,6 +78,12 @@ export const mdxComponents: MDXComponents = {
   
   // Custom components
   Alert: AlertComponent,
+  
+  // Prose control components
+  ProseWrapper: ProseWrapper as ComponentType<ComponentProps>,
+  BreakoutContainer: BreakoutContainer as ComponentType<ComponentProps>,
+  FullWidth: FullWidth as ComponentType<ComponentProps>,
+  MediumWidth: MediumWidth as ComponentType<ComponentProps>,
 } as const;
 
 export default mdxComponents;

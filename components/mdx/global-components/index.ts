@@ -12,3 +12,10 @@ export { default as YouTube } from './YouTube';
 // 導出 CodeBlock 組件
 export { default as CodeBlock } from '../CodeBlock';
 
+// 導出 Prose 寬度控制組件
+export { 
+  ProseWrapper, 
+  BreakoutContainer, 
+  FullWidth, 
+  MediumWidth 
+} from './ProseControl';
