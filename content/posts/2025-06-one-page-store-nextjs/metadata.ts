@@ -9,7 +9,7 @@ const metadata: PostMeta = {
   tags: ["Next.js", "React", "MDX", "Tailwind CSS", "Shadcn/UI", "TypeScript", "電商", "一頁式網站"],
   published: true,
   author: "Ian Chou",
-  coverImage: "/images/posts/2025-06-one-page-store-nextjs.jpg",
+  coverImage: "/images/posts/2025-06-one-page-store-nextjs.webp",
 };
 
 export default metadata;
