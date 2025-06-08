@@ -104,7 +104,7 @@ npx shadcn@latest add dropdown-menu navigation-menu
 
 ### 步驟 3：配置 MDX 支援
 
-MDX 的配置對於管理產品內容至關重要。建立 `next.config.mjs`：
+MDX 的配置對於管理產品內容至關重要。建立 <code>next.config.mjs</code>：
 
 ```javascript
 import createMDX from '@next/mdx'
@@ -132,7 +132,7 @@ const nextConfig = {
 export default withMDX(nextConfig)
 ```
 
-建立 `mdx-components.tsx` 來定義全域 MDX 元件：
+建立 <code>mdx-components.tsx</code> 來定義全域 MDX 元件：
 
 ```typescript
 import type { MDXComponents } from 'mdx/types'
@@ -199,7 +199,7 @@ src/
 
 ### 步驟 5：定義資料類型
 
-建立 `src/types/index.ts` 來定義專案中使用的所有類型：
+建立 <code>src/types/index.ts</code> 來定義專案中使用的所有類型：
 
 ```typescript
 export interface Product {
@@ -277,7 +277,7 @@ export interface Order {
 
 ### 步驟 6：實作狀態管理
 
-使用 Zustand 建立全域狀態管理，建立 `src/lib/store.ts`：
+使用 Zustand 建立全域狀態管理，建立 <code>src/lib/store.ts</code>：
 
 ```typescript
 import { create } from 'zustand'
@@ -399,7 +399,7 @@ export const useCart = create<CartStore>()(
 
 #### 產品卡片元件
 
-建立 `src/components/store/ProductCard.tsx`：
+建立 <code>src/components/store/ProductCard.tsx</code>：
 
 ```typescript
 'use client'
@@ -551,7 +551,7 @@ export function ProductCard({ product, onQuickView }: ProductCardProps) {
 
 #### 購物車側邊欄元件
 
-建立 `src/components/store/CartSheet.tsx`：
+建立 <code>src/components/store/CartSheet.tsx</code>：
 
 ```typescript
 'use client'
