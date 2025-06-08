@@ -1,10 +1,69 @@
 ## 前言
 
-在 2025 年的網頁開發領域中，打造一個高效能、美觀且功能完整的電商網站已經變得比以往更加重要。隨著技術的快速發展，開發者現在擁有了更強大的工具和框架來建立出色的線上商店。本文將深入探討如何使用 Next.js 14/15、React 19、MDX、Tailwind CSS、Shadcn/UI 和 TypeScript 這套現代化技術堆棧，從零開始打造一個功能完整的一頁式電商網站。
+在 2025 年的網頁開發領域中，打造一個高效能、美觀且功能完整的電商網站已經變得比以往更加重要。但是，什麼才是真正的 **One Page Store**？透過研究 [Whirly Birdie](https://whirlybirdie.com/) 字體展示和 [USB Club Transport](https://usb.club/transport) 這樣的經典案例，我們發現真正的 One Page Store 不僅僅是技術實作，更是一種全新的電商藝術表達形式。
 
-### 為什麼選擇一頁式商店？
+本文將深入探討如何使用 Next.js 14/15、React 19、MDX、Tailwind CSS、Shadcn/UI 和 TypeScript 這套現代化技術堆棧，從零開始打造一個真正意義上的沉浸式 One Page Store。
 
-一頁式商店（One-Page Store）是一種將所有主要功能集中在單一頁面的電商設計模式。這種設計方式能夠提供流暢的使用者體驗，減少頁面載入時間，並提高轉換率。對於產品數量相對較少的品牌或想要快速測試市場反應的新創公司來說，一頁式商店是一個理想的選擇。
+## 🎨 重新定義 One Page Store
+
+### 傳統電商 vs. 真正的 One Page Store
+
+**傳統電商頁面的特點：**
+- 多產品展示目錄
+- 功能性導向設計
+- 標準化佈局模版
+- 理性購買決策流程
+
+**真正的 One Page Store 特色：**
+- **單一產品聚焦** ✨ - 專注一個主打產品的完整故事
+- **沉浸式體驗設計** 🌟 - 創造情感連結和品牌認同
+- **藝術化創意設計** 🎪 - 獨特視覺效果和互動元素
+- **完整情感旅程** 📚 - 從認知到渴望到購買的流暢體驗
+
+### 核心設計理念
+
+真正的 One Page Store 就像是一個**數位產品博物館**，每個元素都是為了一個目標：讓訪客完全沉浸在產品的世界中，從理性認知轉化為情感渴望，最終完成購買行為。
+
+## 🎯 One Page Store 的六大核心特色
+
+### 1. 🎨 單一產品聚焦
+真正的 One Page Store 不是產品目錄，而是一個產品的**完整宇宙**：
+- **深度展示**：從外觀、功能到使用場景的 360 度呈現
+- **品牌塑造**：創造產品的獨特身份和情感價值
+- **故事敘述**：透過設計語言訴說產品背後的故事
+
+### 2. 🌟 沉浸式體驗設計
+創造讓使用者「忘記時間」的體驗：
+- **震撼的 Hero 區塊**：全屏背景、漸變效果、動態文字
+- **情感化文案**：「重新定義你的聆聽體驗」而非「高品質耳機」
+- **視覺衝擊力**：大膽的色彩搭配和版式設計
+
+### 3. 🎪 互動體驗元素
+讓使用者「參與」而非僅僅「瀏覽」：
+- **即時體驗**：點擊按鈕切換產品效果展示
+- **動畫回饋**：滾動視差、淡入淡出、脈衝動畫
+- **感官刺激**：聲音、觸覺回饋（震動）等多感官體驗
+
+### 4. 📚 完整銷售故事
+從注意力到購買的情感旅程：
+1. **吸引注意** → 震撼的視覺和獨特價值主張
+2. **建立需求** → 展示痛點和解決方案
+3. **互動體驗** → 讓用戶「感受」產品價值
+4. **社會證明** → 真實用戶評價和成功案例
+5. **促成購買** → 緊迫感和無風險保證
+
+### 5. ✨ 獨特的設計元素
+區別於普通網頁的藝術化處理：
+- **創意圖標系統**：🔇🔋🎵⚡ 讓功能更生動
+- **漸變文字效果**：重點詞彙使用彩色漸變突出
+- **流暢滾動體驗**：各區塊間的平滑過渡
+- **響應式互動**：根據設備特性優化體驗
+
+### 6. 🛒 無縫購買流程
+消除所有購買摩擦：
+- **一鍵購買**：直接加入購物車並開啟結帳
+- **信任標識**：免費送貨、退款保證、保固承諾
+- **緊迫感設計**：限時特價、庫存提醒、節省金額顯示
 
 ## 技術堆棧深度解析
 
@@ -98,7 +157,7 @@ npx shadcn@latest init
 # 安裝電商網站常用的元件
 npx shadcn@latest add button card dialog sheet badge
 npx shadcn@latest add input label textarea select
-npx shadcn@latest add separator skeleton toast
+npx shadcn@latest add separator skeleton sonner
 npx shadcn@latest add dropdown-menu navigation-menu
 ```
 
@@ -719,108 +778,275 @@ export function CartSheet() {
 }
 ```
 
-### 步驟 8：建立 MDX 產品內容
+### 步驟 8：建立真正的 One Page Store 內容結構
 
-MDX 允許我們在 Markdown 中嵌入 JSX，這對於創建豐富的產品描述特別有用。建立產品 MDX 檔案 <code>src/content/products/wireless-headphones.mdx</code>：
+不同於傳統的產品描述，真正的 One Page Store 需要創造一個**完整的產品宇宙**。我們建立一個沉浸式的耳機體驗頁面：
 
 ```mdx
 ---
-id: "prod_001"
-name: "WaveSound Pro 無線降噪耳機"
-slug: "wavesound-pro-headphones"
+id: "wavesound-pro"
+name: "WaveSound Pro"
+tagline: "重新定義你的聆聽體驗"
+subtitle: "音質革命，從這裡開始"
 price: 299.99
 salePrice: 249.99
-category: "音響設備"
-tags: ["無線", "降噪", "高音質"]
+limitedOffer: "限時特價 - 48 小時內有效"
 inStock: true
-quantity: 50
-images:
-  - "/images/headphones-1.jpg"
-  - "/images/headphones-2.jpg"
-  - "/images/headphones-3.jpg"
-shortDescription: "體驗前所未有的音質，搭載主動降噪技術的頂級無線耳機"
-features:
-  - "40mm 動態驅動單元"
-  - "主動降噪技術 (ANC)"
-  - "30 小時電池續航"
-  - "快速充電功能"
-  - "藍牙 5.0 連接"
-specifications:
-  驅動單元: "40mm 動態驅動"
-  頻率響應: "20Hz - 20kHz"
-  阻抗: "32Ω"
-  靈敏度: "105dB"
-  電池容量: "750mAh"
-  充電時間: "2小時"
-  重量: "250g"
+heroVideo: "/videos/wavesound-hero.mp4"
+heroImage: "/images/wavesound-hero.jpg"
+featureImages:
+  - "/images/anc-demo.jpg"
+  - "/images/battery-life.jpg"
+  - "/images/comfort-design.jpg"
+  - "/images/smart-features.jpg"
+interactiveDemo: true
+theme:
+  primary: "from-purple-600 to-blue-600"
+  accent: "#8B5CF6"
+  background: "#0F0F23"
 ---
 
-import { ProductFeatures } from '@/components/store/ProductFeatures'
-import { TechSpecs } from '@/components/store/TechSpecs'
+import { InteractiveAudioDemo } from '@/components/store/InteractiveAudioDemo'
+import { FeatureShowcase } from '@/components/store/FeatureShowcase'
+import { CustomerReviews } from '@/components/store/CustomerReviews'
+import { PurchaseSection } from '@/components/store/PurchaseSection'
 
-## 沉浸式音質體驗
+# 🎧 沉浸式音質革命
 
-WaveSound Pro 無線降噪耳機採用先進的 **40mm 動態驅動單元**，提供深沉的低音、清晰的中音和明亮的高音。無論是聆聽音樂、觀看電影還是進行視訊會議，都能享受到錄音室級別的音質。
+想像一下，當世界安靜下來，只剩下純粹的音樂在你耳邊流淌...
 
-### 主動降噪技術
+**WaveSound Pro** 不只是一副耳機，它是你進入**另一個世界**的門戶。搭載革命性的主動降噪技術，讓你在喧囂的城市中找到屬於自己的寧靜空間。
 
-搭載最新的 ANC 主動降噪技術，能夠有效消除高達 **95% 的環境噪音**。無論您身處繁忙的街道、吵雜的咖啡廳還是飛機上，都能享受屬於自己的寧靜空間。
+## 🔇 體驗真正的寧靜
 
-<ProductFeatures features={[
+<InteractiveAudioDemo 
+  demoTracks={[
+    { name: '一般模式', file: '/audio/normal-mode.mp3' },
+    { name: '降噪開啟', file: '/audio/anc-mode.mp3' }
+  ]}
+  visualizer={true}
+/>
+
+*點擊上方按鈕，親自體驗降噪技術的神奇效果*
+
+## ✨ 四大核心突破
+
+<FeatureShowcase features={[
   {
-    icon: "🎵",
-    title: "Hi-Res 高解析音質",
-    description: "支援 LDAC 編碼，提供接近無損的音質體驗"
+    emoji: "🔇",
+    title: "AI 智慧降噪",
+    description: "95% 環境噪音消除，讓世界安靜下來",
+    interactive: "hover:scale-105 transform transition-all duration-300",
+    demo: "toggleNoise"
   },
   {
-    icon: "🔋",
+    emoji: "🔋", 
     title: "超長續航",
-    description: "單次充電可連續使用 30 小時，快充 15 分鐘即可使用 5 小時"
+    description: "30 小時不間斷音樂，快充 15 分鐘續航 5 小時",
+    interactive: "animate-pulse",
+    counter: { from: 0, to: 30, suffix: "小時" }
   },
   {
-    icon: "🎤",
-    title: "清晰通話",
-    description: "6 個麥克風陣列搭配 AI 降噪算法，確保通話清晰"
+    emoji: "🎵",
+    title: "Hi-Res 音質",
+    description: "錄音室級別音質，每個細節都清晰可聞",
+    waveform: true
   },
   {
-    icon: "📱",
-    title: "多設備連接",
-    description: "可同時連接兩個藍牙設備，輕鬆切換"
+    emoji: "⚡",
+    title: "瞬間連接",
+    description: "藍牙 5.0 技術，0.1 秒極速配對",
+    animation: "connectDevices"
   }
 ]} />
 
-### 舒適佩戴設計
+## 🌟 真實用戶體驗
 
-採用記憶海綿耳墊和可調節頭帶設計，即使長時間佩戴也不會感到不適。可折疊設計方便攜帶，附贈的硬殼收納盒能夠完美保護您的耳機。
+<CustomerReviews reviews={[
+  {
+    avatar: "/images/user-1.jpg",
+    name: "李小明",
+    rating: 5,
+    comment: "簡直是我用過最棒的耳機！降噪效果讓我在飛機上也能安靜休息。",
+    verified: true,
+    date: "2025-06-01"
+  },
+  {
+    avatar: "/images/user-2.jpg", 
+    name: "陳美麗",
+    rating: 5,
+    comment: "音質超乎想像，聽古典樂的層次感非常豐富，而且戴起來很舒適。",
+    verified: true,
+    date: "2025-05-28"
+  },
+  {
+    avatar: "/images/user-3.jpg",
+    name: "王大衛", 
+    rating: 5,
+    comment: "工作時戴著它，完全沒有外界干擾，效率提升了很多！",
+    verified: true,
+    date: "2025-05-25"
+  }
+]} animated={true} />
 
-### 智慧功能
+## 🛒 立即擁有你的音質革命
 
-- **自適應降噪**：根據環境噪音自動調整降噪強度
-- **環境音模式**：無需摘下耳機即可聽到周圍聲音
-- **觸控操作**：輕觸耳罩即可控制音樂播放和接聽電話
-- **語音助手**：支援 Siri、Google Assistant 和 Alexa
+<PurchaseSection 
+  product={{
+    name: "WaveSound Pro",
+    originalPrice: 299.99,
+    salePrice: 249.99,
+    savings: 50,
+    urgency: "僅剩 23 個 - 48 小時限時特價",
+    guarantees: [
+      "30 天無條件退款",
+      "2 年全球保固", 
+      "免費全球配送"
+    ],
+    bonuses: [
+      "價值 $49 的專業收納盒",
+      "價值 $29 的飛機轉接頭"
+    ]
+  }}
+  urgencyTimer={true}
+  oneClick={true}
+/>
+```
 
-<TechSpecs specs={{
-  "驅動單元": "40mm 動態驅動",
-  "頻率響應": "20Hz - 20kHz",
-  "阻抗": "32Ω",
-  "靈敏度": "105dB",
-  "電池容量": "750mAh",
-  "充電時間": "2小時",
-  "重量": "250g",
-  "藍牙版本": "5.0",
-  "支援編碼": "SBC, AAC, LDAC",
-  "降噪深度": "-35dB"
-}} />
+### 互動式元件實作
 
-### 包裝內容
+讓我們建立幾個關鍵的互動元件來實現真正的 One Page Store 體驗：
 
-- WaveSound Pro 無線耳機 × 1
-- USB-C 充電線 × 1
-- 3.5mm 音源線 × 1
-- 飛機轉接頭 × 1
-- 硬殼收納盒 × 1
-- 使用說明書 × 1
+#### 1. 音質對比體驗元件
+
+```typescript
+// src/components/store/InteractiveAudioDemo.tsx
+'use client'
+
+import { useState, useRef } from 'react'
+import { motion } from 'framer-motion'
+import { Play, Pause, Volume2, VolumeX } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+
+interface AudioDemoProps {
+  demoTracks: { name: string; file: string }[]
+  visualizer?: boolean
+}
+
+export function InteractiveAudioDemo({ demoTracks, visualizer }: AudioDemoProps) {
+  const [activeTrack, setActiveTrack] = useState(0)
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [audioLevel, setAudioLevel] = useState(0)
+  const audioRef = useRef<HTMLAudioElement>(null)
+  
+  const togglePlay = async () => {
+    if (!audioRef.current) return
+    
+    if (isPlaying) {
+      audioRef.current.pause()
+      setIsPlaying(false)
+    } else {
+      await audioRef.current.play()
+      setIsPlaying(true)
+    }
+  }
+  
+  const switchTrack = (index: number) => {
+    setActiveTrack(index)
+    setIsPlaying(false)
+    if (audioRef.current) {
+      audioRef.current.src = demoTracks[index].file
+    }
+  }
+  
+  return (
+    <Card className="p-8 bg-gradient-to-br from-gray-900 to-black text-white">
+      <div className="text-center mb-6">
+        <h3 className="text-2xl font-bold mb-2">🎧 親自體驗音質差異</h3>
+        <p className="text-gray-300">戴上耳機，感受降噪技術的魔力</p>
+      </div>
+      
+      {/* 音軌選擇 */}
+      <div className="flex gap-4 justify-center mb-8">
+        {demoTracks.map((track, index) => (
+          <Button
+            key={index}
+            variant={activeTrack === index ? "default" : "outline"}
+            onClick={() => switchTrack(index)}
+            className={`px-6 py-3 transition-all duration-300 ${
+              activeTrack === index 
+                ? 'bg-purple-600 hover:bg-purple-700 transform scale-105' 
+                : 'border-purple-400 text-purple-400 hover:bg-purple-600/20'
+            }`}
+          >
+            {activeTrack === index && isPlaying ? (
+              <VolumeX className="mr-2 h-4 w-4 animate-pulse" />
+            ) : (
+              <Volume2 className="mr-2 h-4 w-4" />
+            )}
+            {track.name}
+          </Button>
+        ))}
+      </div>
+      
+      {/* 播放控制 */}
+      <div className="flex justify-center mb-6">
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <Button
+            size="lg"
+            onClick={togglePlay}
+            className="w-16 h-16 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+          >
+            {isPlaying ? (
+              <Pause className="h-6 w-6" />
+            ) : (
+              <Play className="h-6 w-6 ml-1" />
+            )}
+          </Button>
+        </motion.div>
+      </div>
+      
+      {/* 視覺化效果 */}
+      {visualizer && (
+        <div className="flex justify-center items-end gap-1 h-16 mb-4">
+          {[...Array(20)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="bg-gradient-to-t from-purple-600 to-blue-400 w-2 rounded-full"
+              style={{
+                height: isPlaying ? `${Math.random() * 60 + 10}px` : '10px'
+              }}
+              animate={{
+                height: isPlaying 
+                  ? [`${Math.random() * 60 + 10}px`, `${Math.random() * 60 + 10}px`]
+                  : '10px'
+              }}
+              transition={{
+                duration: 0.5,
+                repeat: isPlaying ? Infinity : 0,
+                ease: "easeInOut"
+              }}
+            />
+          ))}
+        </div>
+      )}
+      
+      <audio
+        ref={audioRef}
+        src={demoTracks[activeTrack]?.file}
+        onEnded={() => setIsPlaying(false)}
+        onTimeUpdate={(e) => {
+          const audio = e.target as HTMLAudioElement
+          setAudioLevel(audio.currentTime / audio.duration * 100)
+        }}
+      />
+    </Card>
+  )
+}
 ```
 
 ### 步驟 9：實作產品載入系統
@@ -894,67 +1120,563 @@ export async function searchProducts(query: string): Promise<Product[]> {
 }
 ```
 
-### 步驟 10：建立主頁面
+#### 2. 震撼的 Hero 區塊元件
 
-整合所有元件，建立 <code>src/app/page.tsx</code>：
+```typescript
+// src/components/store/HeroSection.tsx
+'use client'
+
+import { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
+import { Play, ShoppingCart, Clock, Star } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+
+export function HeroSection() {
+  const [timeLeft, setTimeLeft] = useState({
+    hours: 47,
+    minutes: 32,
+    seconds: 15
+  })
+  
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(prev => {
+        if (prev.seconds > 0) {
+          return { ...prev, seconds: prev.seconds - 1 }
+        } else if (prev.minutes > 0) {
+          return { ...prev, minutes: prev.minutes - 1, seconds: 59 }
+        } else if (prev.hours > 0) {
+          return { hours: prev.hours - 1, minutes: 59, seconds: 59 }
+        }
+        return prev
+      })
+    }, 1000)
+    
+    return () => clearInterval(timer)
+  }, [])
+  
+  return (
+    <section className="relative min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-black overflow-hidden">
+      {/* 背景動態效果 */}
+      <div className="absolute inset-0">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl animate-pulse delay-1000" />
+      </div>
+      
+      <div className="relative z-10 container mx-auto px-4 py-20 text-center text-white">
+        {/* 限時優惠標籤 */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-6"
+        >
+          <Badge className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 text-sm font-bold">
+            ⚡ 限時特價 - 立省 $50！
+          </Badge>
+        </motion.div>
+        
+        {/* 主標題 */}
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="text-6xl md:text-8xl font-black mb-6"
+        >
+          <span className="bg-gradient-to-r from-purple-400 via-pink-500 to-blue-500 bg-clip-text text-transparent">
+            WaveSound
+          </span>
+          <br />
+          <span className="text-white">Pro</span>
+        </motion.h1>
+        
+        {/* 副標題 */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="text-xl md:text-2xl mb-4 font-light"
+        >
+          重新定義你的聆聽體驗
+        </motion.p>
+        
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto"
+        >
+          音質革命，從這裡開始。95% 降噪效果，30 小時續航，讓你沉浸在純粹的音樂世界中。
+        </motion.p>
+        
+        {/* 倒數計時器 */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.8 }}
+          className="flex justify-center gap-4 mb-8"
+        >
+          <div className="bg-black/50 backdrop-blur-md rounded-lg p-4 text-center">
+            <div className="text-3xl font-bold text-red-400">{timeLeft.hours}</div>
+            <div className="text-xs text-gray-400">小時</div>
+          </div>
+          <div className="bg-black/50 backdrop-blur-md rounded-lg p-4 text-center">
+            <div className="text-3xl font-bold text-red-400">{timeLeft.minutes}</div>
+            <div className="text-xs text-gray-400">分鐘</div>
+          </div>
+          <div className="bg-black/50 backdrop-blur-md rounded-lg p-4 text-center">
+            <div className="text-3xl font-bold text-red-400">{timeLeft.seconds}</div>
+            <div className="text-xs text-gray-400">秒</div>
+          </div>
+        </motion.div>
+        
+        {/* 價格展示 */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.0 }}
+          className="mb-8"
+        >
+          <div className="flex items-center justify-center gap-4 mb-4">
+            <span className="text-4xl font-bold text-green-400">$249.99</span>
+            <span className="text-2xl text-gray-500 line-through">$299.99</span>
+            <Badge className="bg-green-600 text-white">省 $50</Badge>
+          </div>
+          <div className="flex items-center justify-center gap-2 text-yellow-400">
+            {[...Array(5)].map((_, i) => (
+              <Star key={i} className="h-5 w-5 fill-current" />
+            ))}
+            <span className="text-white ml-2">4.9/5 (2,847 評價)</span>
+          </div>
+        </motion.div>
+        
+        {/* 行動按鈕 */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.2 }}
+          className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+        >
+          <Button
+            size="lg"
+            className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-4 text-lg font-bold transform hover:scale-105 transition-all duration-300 shadow-lg"
+          >
+            <ShoppingCart className="mr-2 h-5 w-5" />
+            立即購買 - 免費送貨
+          </Button>
+          
+          <Button
+            size="lg"
+            variant="outline"
+            className="border-white text-white hover:bg-white hover:text-black px-8 py-4 text-lg font-semibold"
+          >
+            <Play className="mr-2 h-5 w-5" />
+            觀看展示影片
+          </Button>
+        </motion.div>
+        
+        {/* 信任標識 */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.4 }}
+          className="flex flex-wrap justify-center gap-6 mt-12 text-sm text-gray-400"
+        >
+          <div className="flex items-center gap-2">
+            <Clock className="h-4 w-4" />
+            <span>30 天退貨保證</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <ShoppingCart className="h-4 w-4" />
+            <span>全球免費配送</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Star className="h-4 w-4" />
+            <span>2 年保固</span>
+          </div>
+        </motion.div>
+      </div>
+      
+      {/* 產品圖片 */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.5, duration: 1 }}
+        className="absolute bottom-0 right-0 w-1/2 h-1/2 bg-gradient-to-tl from-purple-500/20 to-transparent"
+      >
+        <img
+          src="/images/wavesound-hero.png"
+          alt="WaveSound Pro"
+          className="w-full h-full object-contain transform rotate-12 hover:rotate-6 transition-transform duration-700"
+        />
+      </motion.div>
+    </section>
+  )
+}
+```
+
+#### 3. 購買轉換區塊元件
+
+```typescript
+// src/components/store/PurchaseSection.tsx
+'use client'
+
+import { useState } from 'react'
+import { motion } from 'framer-motion'
+import { ShoppingCart, Shield, Truck, RotateCcw, Gift, Clock } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { useCart } from '@/lib/store'
+
+interface PurchaseSectionProps {
+  product: {
+    name: string
+    originalPrice: number
+    salePrice: number
+    savings: number
+    urgency: string
+    guarantees: string[]
+    bonuses: string[]
+  }
+  urgencyTimer?: boolean
+  oneClick?: boolean
+}
+
+export function PurchaseSection({ product, urgencyTimer, oneClick }: PurchaseSectionProps) {
+  const [isAdding, setIsAdding] = useState(false)
+  const { addItem, openCart } = useCart()
+  
+  const handlePurchase = async () => {
+    setIsAdding(true)
+    
+    // 模擬加入購物車的過程
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    
+    // 這裡應該加入實際的產品物件
+    // addItem(productData)
+    
+    if (oneClick) {
+      // 直接跳轉到結帳頁面
+      window.location.href = '/checkout'
+    } else {
+      openCart()
+    }
+    
+    setIsAdding(false)
+  }
+  
+  return (
+    <section className="py-20 bg-gradient-to-br from-purple-900 via-black to-gray-900">
+      <div className="container mx-auto px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="max-w-4xl mx-auto"
+        >
+          <Card className="p-8 md:p-12 bg-black/50 backdrop-blur-xl border-purple-500/30 text-white">
+            {/* 緊急性提醒 */}
+            <div className="text-center mb-8">
+              <Badge className="bg-red-600 text-white px-4 py-2 mb-4 animate-pulse">
+                🔥 {product.urgency}
+              </Badge>
+              <h2 className="text-4xl md:text-5xl font-bold mb-4">
+                立即擁有你的
+                <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+                  音質革命
+                </span>
+              </h2>
+            </div>
+            
+            <div className="grid md:grid-cols-2 gap-8 items-center">
+              {/* 左側：價格和保證 */}
+              <div className="space-y-6">
+                {/* 價格展示 */}
+                <div className="text-center md:text-left">
+                  <div className="flex items-baseline gap-4 mb-2">
+                    <span className="text-5xl font-bold text-green-400">
+                      ${product.salePrice}
+                    </span>
+                    <span className="text-2xl text-gray-500 line-through">
+                      ${product.originalPrice}
+                    </span>
+                  </div>
+                  <p className="text-xl text-green-400 font-semibold">
+                    立省 ${product.savings}！
+                  </p>
+                </div>
+                
+                {/* 保證項目 */}
+                <div className="space-y-3">
+                  <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
+                    <Shield className="h-5 w-5 text-green-400" />
+                    無風險保證
+                  </h3>
+                  {product.guarantees.map((guarantee, index) => (
+                    <div key={index} className="flex items-center gap-3">
+                      <div className="w-2 h-2 bg-green-400 rounded-full" />
+                      <span>{guarantee}</span>
+                    </div>
+                  ))}
+                </div>
+                
+                {/* 額外贈品 */}
+                <div className="space-y-3">
+                  <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
+                    <Gift className="h-5 w-5 text-purple-400" />
+                    限時免費贈品
+                  </h3>
+                  {product.bonuses.map((bonus, index) => (
+                    <div key={index} className="flex items-center gap-3">
+                      <div className="w-2 h-2 bg-purple-400 rounded-full" />
+                      <span>{bonus}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              {/* 右側：購買按鈕和特色 */}
+              <div className="space-y-6">
+                {/* 主要購買按鈕 */}
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Button
+                    size="lg"
+                    onClick={handlePurchase}
+                    disabled={isAdding}
+                    className="w-full py-6 text-xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 transform transition-all duration-300 shadow-lg hover:shadow-xl"
+                  >
+                    {isAdding ? (
+                      <div className="flex items-center gap-2">
+                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                        處理中...
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2">
+                        <ShoppingCart className="h-6 w-6" />
+                        {oneClick ? '一鍵購買' : '加入購物車'}
+                      </div>
+                    )}
+                  </Button>
+                </motion.div>
+                
+                {/* 信任標識 */}
+                <div className="grid grid-cols-3 gap-4 text-center">
+                  <div className="flex flex-col items-center gap-2">
+                    <Truck className="h-8 w-8 text-green-400" />
+                    <span className="text-sm">免費送貨</span>
+                  </div>
+                  <div className="flex flex-col items-center gap-2">
+                    <RotateCcw className="h-8 w-8 text-blue-400" />
+                    <span className="text-sm">30天退貨</span>
+                  </div>
+                  <div className="flex flex-col items-center gap-2">
+                    <Shield className="h-8 w-8 text-purple-400" />
+                    <span className="text-sm">2年保固</span>
+                  </div>
+                </div>
+                
+                {/* 社會證明 */}
+                <div className="bg-gray-800/50 rounded-lg p-4 text-center">
+                  <p className="text-sm text-gray-300 mb-2">
+                    已有 <span className="text-green-400 font-bold">12,847</span> 人購買
+                  </p>
+                  <div className="flex justify-center gap-1">
+                    {[...Array(5)].map((_, i) => (
+                      <span key={i} className="text-yellow-400">⭐</span>
+                    ))}
+                    <span className="ml-2 text-sm">4.9/5 平均評分</span>
+                  </div>
+                </div>
+                
+                {urgencyTimer && (
+                  <div className="bg-red-900/30 border border-red-500/50 rounded-lg p-4 text-center">
+                    <div className="flex items-center justify-center gap-2 mb-2">
+                      <Clock className="h-5 w-5 text-red-400" />
+                      <span className="text-red-400 font-bold">限時優惠即將結束</span>
+                    </div>
+                    <p className="text-sm text-gray-300">
+                      錯過這次優惠，下次恢復原價 ${product.originalPrice}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </Card>
+        </motion.div>
+      </div>
+    </section>
+  )
+}
+```
+
+### 步驟 10：建立完整的 One Page Store 頁面
+
+整合所有元件，建立真正的 One Page Store <code>src/app/page.tsx</code>：
 
 ```typescript
 import { Suspense } from 'react'
-import { getAllProducts, getFeaturedProducts } from '@/lib/products'
-import { Header } from '@/components/layout/Header'
-import { Hero } from '@/components/layout/Hero'
-import { ProductGrid } from '@/components/store/ProductGrid'
-import { FeaturedProducts } from '@/components/store/FeaturedProducts'
-import { Newsletter } from '@/components/layout/Newsletter'
-import { Footer } from '@/components/layout/Footer'
-import { CartSheet } from '@/components/store/CartSheet'
-import { SearchCommand } from '@/components/store/SearchCommand'
-import { ProductGridSkeleton } from '@/components/skeletons/ProductGridSkeleton'
+import { HeroSection } from '@/components/store/HeroSection'
+import { InteractiveAudioDemo } from '@/components/store/InteractiveAudioDemo'
+import { FeatureShowcase } from '@/components/store/FeatureShowcase'
+import { CustomerReviews } from '@/components/store/CustomerReviews'
+import { PurchaseSection } from '@/components/store/PurchaseSection'
+import { FAQSection } from '@/components/store/FAQSection'
+import { TrustBadges } from '@/components/store/TrustBadges'
+import { SocialProof } from '@/components/store/SocialProof'
 
-export default async function HomePage() {
-  const [products, featuredProducts] = await Promise.all([
-    getAllProducts(),
-    getFeaturedProducts()
-  ])
-  
+// 產品資料
+const productData = {
+  name: "WaveSound Pro",
+  originalPrice: 299.99,
+  salePrice: 249.99,
+  savings: 50,
+  urgency: "僅剩 23 個 - 48 小時限時特價",
+  guarantees: [
+    "30 天無條件退款",
+    "2 年全球保固", 
+    "免費全球配送"
+  ],
+  bonuses: [
+    "價值 $49 的專業收納盒",
+    "價值 $29 的飛機轉接頭"
+  ]
+}
+
+const audioTracks = [
+  { name: '一般模式', file: '/audio/normal-mode.mp3' },
+  { name: '降噪開啟', file: '/audio/anc-mode.mp3' }
+]
+
+const features = [
+  {
+    emoji: "🔇",
+    title: "AI 智慧降噪",
+    description: "95% 環境噪音消除，讓世界安靜下來",
+    interactive: "hover:scale-105 transform transition-all duration-300",
+    demo: "toggleNoise"
+  },
+  {
+    emoji: "🔋", 
+    title: "超長續航",
+    description: "30 小時不間斷音樂，快充 15 分鐘續航 5 小時",
+    interactive: "animate-pulse",
+    counter: { from: 0, to: 30, suffix: "小時" }
+  },
+  {
+    emoji: "🎵",
+    title: "Hi-Res 音質",
+    description: "錄音室級別音質，每個細節都清晰可聞",
+    waveform: true
+  },
+  {
+    emoji: "⚡",
+    title: "瞬間連接",
+    description: "藍牙 5.0 技術，0.1 秒極速配對",
+    animation: "connectDevices"
+  }
+]
+
+const reviews = [
+  {
+    avatar: "/images/user-1.jpg",
+    name: "李小明",
+    rating: 5,
+    comment: "簡直是我用過最棒的耳機！降噪效果讓我在飛機上也能安靜休息。",
+    verified: true,
+    date: "2025-06-01"
+  },
+  {
+    avatar: "/images/user-2.jpg", 
+    name: "陳美麗",
+    rating: 5,
+    comment: "音質超乎想像，聽古典樂的層次感非常豐富，而且戴起來很舒適。",
+    verified: true,
+    date: "2025-05-28"
+  },
+  {
+    avatar: "/images/user-3.jpg",
+    name: "王大衛", 
+    rating: 5,
+    comment: "工作時戴著它，完全沒有外界干擾，效率提升了很多！",
+    verified: true,
+    date: "2025-05-25"
+  }
+]
+
+export default function OnePageStore() {
   return (
-    <>
-      <Header />
-      <main className="min-h-screen">
-        {/* 主橫幅區域 */}
-        <Hero />
-        
-        {/* 精選產品 */}
-        <section className="container mx-auto px-4 py-12">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold mb-2">精選商品</h2>
-            <p className="text-muted-foreground">探索我們最受歡迎的產品</p>
-          </div>
-          <FeaturedProducts products={featuredProducts} />
-        </section>
-        
-        {/* 所有產品 */}
-        <section className="container mx-auto px-4 py-12" id="products">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold mb-2">所有商品</h2>
-            <p className="text-muted-foreground">瀏覽我們的完整產品系列</p>
-          </div>
-          
-          <Suspense fallback={<ProductGridSkeleton />}>
-            <ProductGrid products={products} />
-          </Suspense>
-        </section>
-        
-        {/* 電子報訂閱 */}
-        <Newsletter />
-      </main>
+    <main className="min-h-screen">
+      {/* 1. 震撼的 Hero 區塊 */}
+      <HeroSection />
       
-      <Footer />
+      {/* 2. 互動式音質體驗 */}
+      <section className="py-20 bg-gray-900">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-white mb-4">
+              🔇 體驗真正的寧靜
+            </h2>
+            <p className="text-xl text-gray-300">
+              親自感受 95% 降噪效果的魔力
+            </p>
+          </div>
+          <InteractiveAudioDemo 
+            demoTracks={audioTracks}
+            visualizer={true}
+          />
+        </div>
+      </section>
       
-      {/* 全域元件 */}
-      <CartSheet />
-      <SearchCommand products={products} />
-    </>
+      {/* 3. 四大核心功能展示 */}
+      <section className="py-20 bg-black">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-white mb-4">
+              ✨ 四大核心突破
+            </h2>
+            <p className="text-xl text-gray-300">
+              革命性技術，重新定義音質體驗
+            </p>
+          </div>
+          <FeatureShowcase features={features} />
+        </div>
+      </section>
+      
+      {/* 4. 社會證明 - 真實用戶評價 */}
+      <section className="py-20 bg-gradient-to-br from-purple-900 to-gray-900">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-white mb-4">
+              🌟 12,847 位用戶的選擇
+            </h2>
+            <p className="text-xl text-gray-300">
+              聽聽他們怎麼說
+            </p>
+          </div>
+          <CustomerReviews reviews={reviews} animated={true} />
+        </div>
+      </section>
+      
+      {/* 5. 社會證明數據 */}
+      <SocialProof />
+      
+      {/* 6. FAQ 常見問題 */}
+      <FAQSection />
+      
+      {/* 7. 最終購買轉換區 */}
+      <PurchaseSection 
+        product={productData}
+        urgencyTimer={true}
+        oneClick={true}
+      />
+      
+      {/* 8. 信任標識 */}
+      <TrustBadges />
+    </main>
   )
 }
 ```
@@ -1165,7 +1887,7 @@ const nextConfig = {
 }
 ```
 
-## 進階功能實作
+## 🚀 One Page Store 進階優化技巧
 
 ### 1. 即時搜尋功能
 
@@ -1320,98 +2042,486 @@ export function ProductFilters({
 
 ## 最佳實踐與技巧
 
-### 1. 程式碼組織
+### 1. 心理學導向的轉換優化
 
-保持程式碼的模組化和可維護性：
+真正的 One Page Store 不只是技術實作，更是心理學的應用：
 
-- **元件分離**：將大型元件拆分成更小的、可重用的部分
-- **自訂 Hooks**：抽取共用邏輯到自訂 Hooks 中
-- **類型安全**：充分利用 TypeScript 的類型系統
-- **命名規範**：使用一致的命名規範（如 PascalCase 用於元件，camelCase 用於函數）
-
-### 2. 效能監控
-
-使用 Next.js 內建的效能分析工具：
+#### 稀缺性和緊迫感
 
 ```typescript
-// 在 next.config.mjs 中啟用分析
-const nextConfig = {
-  // ... 其他配置
+// 動態庫存顯示元件
+export function InventoryCounter({ initialStock, productName }: InventoryCounterProps) {
+  const [stock, setStock] = useState(initialStock)
+  const [recentPurchases, setRecentPurchases] = useState(0)
   
-  // 啟用效能分析
-  analytics: {
-    enabled: true,
-  },
+  useEffect(() => {
+    // 模擬實時購買
+    const interval = setInterval(() => {
+      if (Math.random() < 0.3) { // 30% 機率有人購買
+        setStock(prev => Math.max(0, prev - 1))
+        setRecentPurchases(prev => prev + 1)
+      }
+    }, 30000) // 每 30 秒檢查一次
+    
+    return () => clearInterval(interval)
+  }, [])
   
-  // Web Vitals 報告
-  experimental: {
-    webVitalsAttribution: ['CLS', 'LCP', 'FCP', 'FID', 'TTFB'],
-  },
+  return (
+    <div className="bg-red-900/20 border border-red-500/50 rounded-lg p-4 text-center">
+      <p className="text-red-400 font-bold mb-2">
+        ⚠️ 僅剩 {stock} 個！
+      </p>
+      <p className="text-sm text-gray-300">
+        過去 1 小時內已有 {recentPurchases} 人購買 {productName}
+      </p>
+    </div>
+  )
 }
 ```
 
-### 3. 無障礙設計
-
-確保網站對所有使用者都是可訪問的：
+#### 社會證明動態顯示
 
 ```typescript
-// 使用語意化 HTML 和 ARIA 屬性
-<nav role="navigation" aria-label="主導航">
-  <ul>
-    {navItems.map((item) => (
-      <li key={item.id}>
-        <Link 
-          href={item.href}
-          aria-current={pathname === item.href ? 'page' : undefined}
-        >
-          {item.label}
-        </Link>
-      </li>
-    ))}
-  </ul>
-</nav>
-
-// 確保互動元素有適當的焦點樣式
-<Button 
-  className="focus:ring-2 focus:ring-primary focus:ring-offset-2"
-  aria-label="加入購物車"
->
-  <ShoppingCart className="h-4 w-4" aria-hidden="true" />
-  加入購物車
-</Button>
+// 實時購買通知
+export function LivePurchaseNotifications() {
+  const [notifications, setNotifications] = useState<PurchaseNotification[]>([])
+  
+  const mockPurchases = [
+    { name: '李小明', location: '台北', time: '剛剛' },
+    { name: '陳美麗', location: '高雄', time: '3 分鐘前' },
+    { name: '王大衛', location: '台中', time: '5 分鐘前' }
+  ]
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const randomNotification = mockPurchases[Math.floor(Math.random() * mockPurchases.length)]
+      setNotifications(prev => [randomNotification, ...prev.slice(0, 2)])
+    }, 45000) // 每 45 秒顯示一次
+    
+    return () => clearInterval(interval)
+  }, [])
+  
+  return (
+    <div className="fixed bottom-4 left-4 z-50 space-y-2">
+      <AnimatePresence>
+        {notifications.map((notification, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, x: -100 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -100 }}
+            className="bg-green-600 text-white p-3 rounded-lg shadow-lg max-w-sm"
+          >
+            <p className="text-sm">
+              🎉 {notification.name} 在 {notification.location} {notification.time}購買了 WaveSound Pro
+            </p>
+          </motion.div>
+        ))}
+      </AnimatePresence>
+    </div>
+  )
+}
 ```
 
-## 部署與上線
+### 2. 情感連結設計模式
 
-### Vercel 部署
+創造情感共鳴的設計元素：
 
-Vercel 是部署 Next.js 應用程式的最佳選擇，提供自動化部署和優化：
+#### 故事化的產品介紹
 
-1. 將程式碼推送到 GitHub
-2. 在 Vercel 上匯入專案
-3. 設置環境變數
-4. 自動部署完成
+```typescript
+// 故事化卷軸元件
+export function StoryScrollSection() {
+  const storySteps = [
+    {
+      title: "🌃 凌晨 3 點的靈感",
+      content: "在這個安靜的深夜，我們的工程師正在細心調整每一個音頻參數...",
+      image: "/images/story-1.jpg",
+      emotion: "curiosity"
+    },
+    {
+      title: "🎵 第一次轟動",
+      content: "當第一首測試音樂播放時，整個實驗室都陷入了青靜...",
+      image: "/images/story-2.jpg",
+      emotion: "wonder"
+    },
+    {
+      title: "🎆 你的新世界",
+      content: "現在，這個技術奇蹟就在你的手中，等待開啟一個全新的音質世界...",
+      image: "/images/story-3.jpg",
+      emotion: "excitement"
+    }
+  ]
+  
+  return (
+    <section className="py-20">
+      {storySteps.map((step, index) => (
+        <motion.div
+          key={index}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+          className="min-h-screen flex items-center justify-center relative overflow-hidden"
+        >
+          <div className="container mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
+            <div className="space-y-6">
+              <h2 className="text-4xl font-bold text-white">{step.title}</h2>
+              <p className="text-xl text-gray-300 leading-relaxed">{step.content}</p>
+            </div>
+            <div className="relative">
+              <img 
+                src={step.image} 
+                alt={step.title}
+                className="rounded-2xl shadow-2xl transform hover:scale-105 transition-transform duration-700"
+              />
+            </div>
+          </div>
+        </motion.div>
+      ))}
+    </section>
+  )
+}
+```
 
-### 效能監控和分析
+#### 感官互動設計
 
-部署後，使用以下工具監控網站效能：
+```typescript
+// 觸覺回饋元件
+export function HapticFeedbackButton({ children, intensity = 'medium', ...props }: HapticButtonProps) {
+  const triggerHaptic = (type: 'light' | 'medium' | 'heavy') => {
+    if ('vibrate' in navigator) {
+      const patterns = {
+        light: [10],
+        medium: [20],
+        heavy: [30, 10, 30]
+      }
+      navigator.vibrate(patterns[type])
+    }
+  }
+  
+  return (
+    <Button
+      {...props}
+      onMouseDown={() => triggerHaptic(intensity)}
+      className={`transform active:scale-95 transition-all duration-150 ${props.className}`}
+    >
+      {children}
+    </Button>
+  )
+}
 
-- **Vercel Analytics**：內建的效能分析
-- **Google Analytics 4**：使用者行為分析
-- **Sentry**：錯誤追蹤和效能監控
+// 聲音回饋系統
+export function AudioFeedbackProvider({ children }: { children: React.ReactNode }) {
+  const playSound = (type: 'click' | 'success' | 'hover') => {
+    const audio = new Audio(`/sounds/${type}.mp3`)
+    audio.volume = 0.3
+    audio.play().catch(() => {}) // 忽略錯誤，有些瀏覽器需要用戶互動
+  }
+  
+  return (
+    <div 
+      onMouseDown={() => playSound('click')}
+      onMouseEnter={() => playSound('hover')}
+    >
+      {children}
+    </div>
+  )
+}
+```
 
-## 結論
+### 3. 互動式產品展示
 
-使用 Next.js、React、MDX、Tailwind CSS、Shadcn/UI 和 TypeScript 建立一頁式電商網站，不僅能夠提供優秀的使用者體驗，還能確保開發效率和程式碼品質。透過本文詳細的步驟指南和最佳實踐，你現在擁有了建立現代化電商網站所需的所有知識和工具。
+讓用戶「體驗」而非「觀看」產品：
 
-這套技術堆棧的優勢在於：
+```typescript
+// 360° 產品展示器
+export function Product360Viewer({ images }: Product360ViewerProps) {
+  const [currentAngle, setCurrentAngle] = useState(0)
+  const [isRotating, setIsRotating] = useState(false)
+  
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isRotating) return
+    
+    const rect = e.currentTarget.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const percentage = x / rect.width
+    const angle = Math.floor(percentage * 360)
+    const imageIndex = Math.floor((angle / 360) * images.length)
+    
+    setCurrentAngle(imageIndex)
+  }
+  
+  return (
+    <div 
+      className="relative w-full h-96 cursor-grab active:cursor-grabbing"
+      onMouseDown={() => setIsRotating(true)}
+      onMouseUp={() => setIsRotating(false)}
+      onMouseLeave={() => setIsRotating(false)}
+      onMouseMove={handleMouseMove}
+    >
+      <img 
+        src={images[currentAngle]} 
+        alt={`產品視角 ${currentAngle}`}
+        className="w-full h-full object-contain transition-opacity duration-100"
+      />
+      
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/50 text-white px-3 py-1 rounded-full text-sm">
+        🔄 拖曳查看 360° 視角
+      </div>
+    </div>
+  )
+}
+```
 
-1. **開發效率**：完善的開發工具和元件庫大幅提升開發速度
-2. **效能優異**：Next.js 的優化功能確保網站載入快速
-3. **SEO 友好**：伺服器端渲染和結構化資料提升搜尋引擎排名
-4. **易於維護**：TypeScript 和模組化設計讓程式碼更容易維護
-5. **擴展性強**：可以輕鬆添加新功能和整合第三方服務
+## 🏆 One Page Store 最佳實踐指南
 
-隨著電商市場的持續成長，掌握這些現代化的開發技術將讓你在競爭中保持領先。無論是建立新的電商品牌，還是為現有業務開發線上銷售管道，這套技術堆棧都能滿足你的需求。
+### 1. 設計心理學原則
 
-記住，成功的電商網站不僅需要優秀的技術實作，還需要持續的優化和改進。定期收集使用者回饋，分析網站數據，並根據市場變化調整策略，才能確保你的一頁式商店在激烈的市場競爭中脫穎而出。
+應用用戶心理學原則提升轉換率：
+
+#### 認知偏差的運用
+
+- **錯失厭避** (Loss Aversion)：強調「節省」而非「優惠」
+- **社會證明** (Social Proof)：實時購買通知和評價數量
+- **稀缺性** (Scarcity)：限量和倒數計時
+- **錨定效應** (Anchoring)：先顯示高價，再顯示優惠價
+
+#### 情感設計模式
+
+```typescript
+// 情感觸發器元件
+const emotionalTriggers = {
+  curiosity: {
+    headline: "你能在 95% 的噪音中聽到什麼？",
+    color: "purple",
+    animation: "pulse"
+  },
+  urgency: {
+    headline: "僅剩 23 個，錯過就要等下次！",
+    color: "red",
+    animation: "shake"
+  },
+  belonging: {
+    headline: "加入 12,847 位音樂愛好者的選擇",
+    color: "blue",
+    animation: "glow"
+  }
+}
+```
+
+### 2. 性能與轉換優化
+
+針對 One Page Store 的特殊需求優化：
+
+#### 關鍵指標 (KPIs) 監控
+
+```typescript
+// 轉換漏斗分析
+const conversionFunnel = {
+  landingView: 100,      // 著陸頁海查看
+  featureExplore: 60,    // 功能探索
+  interactionDemo: 40,   // 互動測試
+  reviewsRead: 30,       // 閱讀評價
+  purchaseIntent: 15,    // 點擊購買
+  checkoutComplete: 8    // 完成購買
+}
+
+// 熱力圖分析
+const heatmapTracking = {
+  heroSection: 'primary-cta-clicks',
+  audioDemo: 'demo-interaction-time',
+  features: 'feature-hover-duration',
+  reviews: 'review-scroll-depth',
+  purchase: 'purchase-button-attention'
+}
+```
+
+### 3. A/B 測試策略
+
+持續優化轉換率的測試方法：
+
+#### 關鍵元素測試
+
+```typescript
+// A/B 測試配置
+const abTestVariants = {
+  heroHeadline: {
+    A: "重新定義你的聆聽體驗",
+    B: "一次性解決所有噪音問題",
+    C: "為什麼 12,847 人選擇 WaveSound Pro？"
+  },
+  primaryCTA: {
+    A: "立即購買",
+    B: "開始你的完美音質之旅",
+    C: "只要 $249，改變你的世界"
+  },
+  socialProof: {
+    A: "已有 12,847 人購買",
+    B: "4.9/5 星級評價，2,847 則評論",
+    C: "現在就有 234 人正在瀏覽這個頁面"
+  }
+}
+
+// 動態分流系統
+export function useABTest(testName: string) {
+  const [variant, setVariant] = useState<string>('A')
+  
+  useEffect(() => {
+    // 根據用戶 ID 或隨機分配變體
+    const userVariant = getUserVariant(testName)
+    setVariant(userVariant)
+    
+    // 記錄分流事件
+    trackEvent('ab_test_assignment', {
+      testName,
+      variant: userVariant,
+      timestamp: Date.now()
+    })
+  }, [testName])
+  
+  return variant
+}
+```
+
+### 4. 無障礙與包容性設計
+
+確保所有用戶都能享受完美體驗：
+
+#### 多媒體內容的替代方案
+
+```typescript
+// 觸覺回饋的替代方案
+export function AccessibleAudioDemo({ tracks }: AudioDemoProps) {
+  const [transcript, setTranscript] = useState('')
+  const [isHighContrast, setIsHighContrast] = useState(false)
+  
+  return (
+    <div className={`audio-demo ${isHighContrast ? 'high-contrast' : ''}`}>
+      {/* 視覺指示器取代音頻 */}
+      <div className="visual-indicator" aria-live="polite">
+        <div className="volume-bars">
+          {[...Array(10)].map((_, i) => (
+            <div 
+              key={i} 
+              className={`bar ${isPlaying && i < volume * 10 ? 'active' : ''}`}
+              style={{ height: `${(i + 1) * 10}%` }}
+            />
+          ))}
+        </div>
+      </div>
+      
+      {/* 字幕和譯本 */}
+      <div className="transcript-section">
+        <h3>音頻內容描述</h3>
+        <p>{transcript}</p>
+      </div>
+      
+      {/* 高對比度模式 */}
+      <button 
+        onClick={() => setIsHighContrast(!isHighContrast)}
+        aria-label="切換高對比度模式"
+      >
+        {isHighContrast ? '關閉' : '開啟'}高對比度
+      </button>
+    </div>
+  )
+}
+
+// 焦點管理
+export function FocusManager({ children }: { children: React.ReactNode }) {
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Tab 鍵管理
+      if (e.key === 'Tab') {
+        const focusableElements = document.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        )
+        // 實作循環焦點邏輯
+      }
+    }
+    
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [])
+  
+  return <div role="main">{children}</div>
+}
+```
+
+## 🚀 部署與性能優化
+
+### Vercel 部署：專為 One Page Store 優化
+
+Vercel 是部署 Next.js 應用程式的最佳選擇，特別適合 One Page Store 的需求：
+
+1. **全球 CDN 加速**：確保全球用戶都能快速訪問
+2. **自動圖片優化**：對於大量產品圖片至關重要
+3. **即時部署**：快速更新優惠和產品資訊
+4. **A/B 測試支持**：優化轉換率
+
+### 性能監控與轉換率優化
+
+對於 One Page Store，關鍵指標不只是技術性能：
+
+- **Core Web Vitals**：影響 SEO 和使用者體驗
+- **互動元素效能**：音頻播放、動畫效果的流暢度
+- **轉換漏斗分析**：從訪問到購買的每個步驟
+- **用戶行為熱力圖**：了解用戶在頁面上的互動節點
+
+## 🎆 結論：你已經掌握了真正的 One Page Store 精髓
+
+透過這篇文章，我們不僅學會了如何使用 Next.js、React、MDX、Tailwind CSS、Shadcn/UI 和 TypeScript 建立技術上先進的網站，更重要的是，我們重新定義了什麼才是**真正的 One Page Store**。
+
+### 🎨 從技術實作到藝術創造
+
+不同於傳統的電商網站，One Page Store 是一個**整合的藝術作品**：
+
+- **單一產品聚焦** → 像 Whirly Birdie 專注於字體的美學展示
+- **沉浸式體驗** → 像 USB Club Transport 創造的視覺震撼
+- **情感連結** → 從理性認知轉化為情感渴望
+- **完整故事** → 每個元素都為購買轉換服務
+
+### 💪 技術堆棧的最佳實踐
+
+我們選擇的這套技術堆棧完美平衡了：
+
+1. **開發效率** 🚀 - Shadcn/UI 和 Tailwind 讓設計實作飛快
+2. **效能優異** ⚡ - Next.js 確保每個互動都流暢無礙
+3. **型別安全** 🔒 - TypeScript 避免生產環境錯誤
+4. **內容管理** 📝 - MDX 讓產品故事生動有趣
+5. **擴展性強** 🌱 - 模組化設計支持未來成長
+
+### 🎯 定制化建議
+
+根據你的產品類型，可以進一步優化：
+
+**技術產品**：
+- 加強互動展示（像我們的耳機音質對比）
+- 詳細的技術規格和測試數據
+
+**生活用品**：
+- 著重生活場景展示
+- 真實用戶使用影片
+
+**服務產品**：
+- 案例研究和成果展示
+- 客戶證言影片
+
+### 🚀 下一步行動指南
+
+1. **立即開始**：使用我們提供的代碼模版建立你的第一個 One Page Store
+2. **分析競品**：研究 Whirly Birdie、USB Club Transport 等成功案例
+3. **測試優化**：持續 A/B 測試不同的設計元素
+4. **收集回饋**：定期分析用戶行為和轉換數據
+
+### 🌟 最終思考
+
+在 2025 年，成功的電商不再只是關於「賣東西」，而是關於「創造體驗」。One Page Store 代表了電商的未來：
+
+- **品牌故事化** → 每個產品都是一個宇宙
+- **技術藝術化** → 代碼成為創意表達的工具
+- **互動體驗化** → 用戶不再是觀眾，而是參與者
+
+當你掌握了這些技能和理念，你就不只是在建立一個網站，而是在創造一個**數位體驗藝術作品**。這就是真正的 One Page Store 的魅力所在 —— 它讓每一次訪問都成為一次難忘的旅程。
+
+**現在，開始創造你的數位傳奇吧！** 🚀✨
