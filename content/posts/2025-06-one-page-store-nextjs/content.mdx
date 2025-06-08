@@ -721,7 +721,7 @@ export function CartSheet() {
 
 ### 步驟 8：建立 MDX 產品內容
 
-MDX 允許我們在 Markdown 中嵌入 JSX，這對於創建豐富的產品描述特別有用。建立產品 MDX 檔案 `src/content/products/wireless-headphones.mdx`：
+MDX 允許我們在 Markdown 中嵌入 JSX，這對於創建豐富的產品描述特別有用。建立產品 MDX 檔案 <code>src/content/products/wireless-headphones.mdx</code>：
 
 ```mdx
 ---
@@ -825,7 +825,7 @@ WaveSound Pro 無線降噪耳機採用先進的 **40mm 動態驅動單元**，�
 
 ### 步驟 9：實作產品載入系統
 
-建立 `src/lib/products.ts` 來處理 MDX 產品檔案的載入：
+建立 <code>src/lib/products.ts</code> 來處理 MDX 產品檔案的載入：
 
 ```typescript
 import fs from 'fs'
@@ -896,7 +896,7 @@ export async function searchProducts(query: string): Promise<Product[]> {
 
 ### 步驟 10：建立主頁面
 
-整合所有元件，建立 `src/app/page.tsx`：
+整合所有元件，建立 <code>src/app/page.tsx</code>：
 
 ```typescript
 import { Suspense } from 'react'
@@ -1102,7 +1102,7 @@ export function ProductJsonLd({ product }: { product: Product }) {
 
 #### 環境變數設置
 
-建立 `.env.local`：
+建立 <code>.env.local</code>：
 
 ```env
 # API 端點
@@ -1122,7 +1122,7 @@ NEXT_PUBLIC_IMAGE_CDN=https://cdn.yourstore.com
 
 #### 建置優化配置
 
-更新 `next.config.mjs`：
+更新 <code>next.config.mjs</code>：
 
 ```javascript
 const nextConfig = {
