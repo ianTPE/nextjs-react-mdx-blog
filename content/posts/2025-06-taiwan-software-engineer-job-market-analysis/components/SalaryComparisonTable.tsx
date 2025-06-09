@@ -83,7 +83,7 @@ export function SalaryComparisonTable() {
   });
 
   return (
-    <div className="w-full overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm my-6">
+    <div className="not-prose w-full overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm my-6">
       <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
         <TableHeader className="bg-gray-50 dark:bg-gray-800">
           {table.getHeaderGroups().map(headerGroup => (
