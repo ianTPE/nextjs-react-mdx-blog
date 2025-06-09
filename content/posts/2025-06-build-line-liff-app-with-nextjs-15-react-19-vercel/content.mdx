@@ -35,22 +35,7 @@ npx @line/create-liff-app@latest my-liff-app
 ? Which package manager do you want to use? › npm
 ```
 
-### 2. 升級到 Next.js 15 和 React 19
-
-由於 <code>@line/create-liff-app</code> 可能還沒有預設使用最新版本，我們需要手動升級：
-
-```bash
-cd my-liff-app
-npm install next@latest react@latest react-dom@latest
-```
-
-如果遇到相依性警告，可以使用 <code>--force</code> 旗標：
-
-```bash
-npm install next@latest react@latest react-dom@latest --force
-```
-
-### 3. 更新 next.config.js 為 TypeScript
+### 2. 更新 next.config.js 為 TypeScript
 
 Next.js 15 支援 TypeScript 配置檔，讓我們將 <code>next.config.js</code> 改為 <code>next.config.ts</code>：
 
