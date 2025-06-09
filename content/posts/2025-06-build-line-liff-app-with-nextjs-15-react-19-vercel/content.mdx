@@ -1,0 +1,796 @@
+# 使用 Next.js 15 + React 19 + Vercel 極速打造 LINE LIFF 應用程式
+
+## 前言
+
+隨著 LINE 在台灣的普及率持續攀升，LINE Front-end Framework (LIFF) 成為開發者打造與 LINE 深度整合的網頁應用程式的利器。在 2025 年的今天，結合最新的 Next.js 15、React 19、以及 Vercel 部署平台，我們可以用前所未有的效率和性能打造出色的 LIFF 應用程式。
+
+本文將帶您一步步使用最新版本的工具，從零開始建立一個現代化的 LINE LIFF 應用程式。
+
+## 技術堆疊概覽
+
+在開始之前，讓我們先了解本次教學將使用的技術堆疊：
+
+- **@line/create-liff-app** (v1.1.5)：LINE 官方提供的 LIFF 應用程式腳手架工具
+- **@line/liff** (v2.26.1)：最新版 LIFF SDK
+- **Next.js 15**：支援 React 19 的全端 React 框架
+- **React 19**：帶來 Server Components 和新鉤子的最新版本
+- **App Router**：Next.js 的新一代路由系統
+- **TypeScript**：提供型別安全的開發體驗
+- **Vercel**：專為 Next.js 優化的部署平台
+
+## 建立開發環境
+
+### 1. 使用 Create LIFF App 快速開始
+
+首先，我們使用 LINE 官方提供的 `@line/create-liff-app` 來建立專案：
+
+```bash
+npx @line/create-liff-app@latest my-liff-app
+```
+
+執行後會出現一系列問題，以下是推薦的選擇：
+
+```
+? Which template do you want to use? › nextjs
+? JavaScript or TypeScript? › TypeScript
+? Please enter your LIFF ID: › [輸入您的 LIFF ID，稍後可修改]
+? Which package manager do you want to use? › npm
+```
+
+### 2. 升級到 Next.js 15 和 React 19
+
+由於 `create-liff-app` 可能還沒有預設使用最新版本，我們需要手動升級：
+
+```bash
+cd my-liff-app
+npm install next@latest react@latest react-dom@latest
+```
+
+如果遇到相依性警告，可以使用 `--force` 旗標：
+
+```bash
+npm install next@latest react@latest react-dom@latest --force
+```
+
+### 3. 更新 next.config.js 為 TypeScript
+
+Next.js 15 支援 TypeScript 配置檔，讓我們將 `next.config.js` 改為 `next.config.ts`：
+
+```typescript
+// next.config.ts
+import type { NextConfig } from 'next';
+
+const nextConfig: NextConfig = {
+  reactStrictMode: true,
+  // 啟用實驗性功能（如果需要）
+  experimental: {
+    // 為認證錯誤提供更好的支援
+    authInterrupts: true,
+  },
+};
+
+export default nextConfig;
+```
+
+## 設定 LIFF 環境
+
+### 1. 在 LINE Developers 建立 LIFF 應用程式
+
+1. 登入 [LINE Developers Console](https://developers.line.biz/)
+2. 建立新的 Provider（如果還沒有的話）
+3. 建立 LINE Login Channel
+4. 在 LIFF 標籤中點擊「Add」
+5. 設定以下資訊：
+   - **LIFF app name**：您的應用程式名稱
+   - **Size**：選擇 Full（全螢幕）
+   - **Endpoint URL**：暫時填入 `https://example.com`（稍後會更新）
+   - **Scope**：勾選需要的權限（建議至少選擇 profile）
+
+### 2. 更新環境變數
+
+在專案根目錄建立 `.env.local` 檔案：
+
+```env
+NEXT_PUBLIC_LIFF_ID=您的_LIFF_ID
+```
+
+## 實作 LIFF Provider（App Router 版本）
+
+### 1. 建立 LIFF Provider 元件
+
+建立 `app/providers/LiffProvider.tsx`：
+
+```tsx
+'use client';
+
+import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import { Liff } from '@line/liff';
+
+interface LiffContextType {
+  liff: Liff | null;
+  liffError: string | null;
+  isLoggedIn: boolean;
+  isInClient: boolean;
+  isReady: boolean;
+}
+
+const LiffContext = createContext<LiffContextType>({
+  liff: null,
+  liffError: null,
+  isLoggedIn: false,
+  isInClient: false,
+  isReady: false,
+});
+
+export const useLiff = () => useContext(LiffContext);
+
+interface LiffProviderProps {
+  children: React.ReactNode;
+  liffId: string;
+}
+
+export const LiffProvider: React.FC<LiffProviderProps> = ({ children, liffId }) => {
+  const [liff, setLiff] = useState<Liff | null>(null);
+  const [liffError, setLiffError] = useState<string | null>(null);
+  const [isReady, setIsReady] = useState(false);
+
+  const initLiff = useCallback(async () => {
+    try {
+      const liffModule = await import('@line/liff');
+      const liffInstance = liffModule.default;
+      
+      console.log('初始化 LIFF...');
+      await liffInstance.init({ liffId });
+      console.log('LIFF 初始化成功');
+      
+      setLiff(liffInstance);
+      setIsReady(true);
+    } catch (error) {
+      console.error('LIFF 初始化失敗:', error);
+      setLiffError((error as Error).toString());
+      setIsReady(true);
+    }
+  }, [liffId]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      initLiff();
+    }
+  }, [initLiff]);
+
+  const value = {
+    liff,
+    liffError,
+    isLoggedIn: liff?.isLoggedIn() || false,
+    isInClient: liff?.isInClient() || false,
+    isReady,
+  };
+
+  return <LiffContext.Provider value={value}>{children}</LiffContext.Provider>;
+};
+```
+
+### 2. 更新 Root Layout
+
+更新 `app/layout.tsx`：
+
+```tsx
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import './globals.css';
+import { LiffProvider } from './providers/LiffProvider';
+
+const inter = Inter({ subsets: ['latin'] });
+
+export const metadata: Metadata = {
+  title: 'My LIFF App',
+  description: '使用 Next.js 15 和 React 19 打造的 LIFF 應用程式',
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="zh-TW">
+      <body className={inter.className}>
+        <LiffProvider liffId={process.env.NEXT_PUBLIC_LIFF_ID || ''}>
+          {children}
+        </LiffProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+## 建立 LIFF 功能元件
+
+### 1. 使用者資料元件
+
+建立 `app/components/UserProfile.tsx`：
+
+```tsx
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useLiff } from '../providers/LiffProvider';
+import { Profile } from '@liff/get-profile';
+
+export function UserProfile() {
+  const { liff, isLoggedIn, isReady } = useLiff();
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (isReady && isLoggedIn && liff) {
+      fetchProfile();
+    }
+  }, [isReady, isLoggedIn, liff]);
+
+  const fetchProfile = async () => {
+    if (!liff) return;
+    
+    setLoading(true);
+    try {
+      const userProfile = await liff.getProfile();
+      setProfile(userProfile);
+    } catch (error) {
+      console.error('無法取得使用者資料:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleLogin = () => {
+    if (liff) {
+      liff.login();
+    }
+  };
+
+  const handleLogout = () => {
+    if (liff) {
+      liff.logout();
+      window.location.reload();
+    }
+  };
+
+  if (!isReady) {
+    return <div>載入中...</div>;
+  }
+
+  if (!isLoggedIn) {
+    return (
+      <div className="text-center p-8">
+        <p className="mb-4">請先登入 LINE</p>
+        <button
+          onClick={handleLogin}
+          className="bg-green-500 text-white px-6 py-2 rounded-md hover:bg-green-600 transition"
+        >
+          使用 LINE 登入
+        </button>
+      </div>
+    );
+  }
+
+  if (loading) {
+    return <div>載入使用者資料...</div>;
+  }
+
+  return (
+    <div className="text-center p-8">
+      {profile && (
+        <div className="mb-6">
+          <img
+            src={profile.pictureUrl}
+            alt="Profile"
+            className="w-24 h-24 rounded-full mx-auto mb-4"
+          />
+          <h2 className="text-xl font-bold">{profile.displayName}</h2>
+          <p className="text-gray-600 text-sm">{profile.userId}</p>
+          {profile.statusMessage && (
+            <p className="text-gray-500 mt-2">{profile.statusMessage}</p>
+          )}
+        </div>
+      )}
+      <button
+        onClick={handleLogout}
+        className="bg-red-500 text-white px-6 py-2 rounded-md hover:bg-red-600 transition"
+      >
+        登出
+      </button>
+    </div>
+  );
+}
+```
+
+### 2. LIFF 功能展示元件
+
+建立 `app/components/LiffFeatures.tsx`：
+
+```tsx
+'use client';
+
+import { useState } from 'react';
+import { useLiff } from '../providers/LiffProvider';
+
+export function LiffFeatures() {
+  const { liff, isInClient } = useLiff();
+  const [scanResult, setScanResult] = useState<string>('');
+
+  const sendMessage = async () => {
+    if (!liff || !liff.isInClient()) {
+      alert('此功能只能在 LINE 應用程式內使用');
+      return;
+    }
+
+    try {
+      await liff.sendMessages([
+        {
+          type: 'text',
+          text: '這是從 LIFF 應用程式發送的訊息！',
+        },
+      ]);
+      alert('訊息已發送');
+    } catch (error) {
+      console.error('發送訊息失敗:', error);
+      alert('發送訊息失敗');
+    }
+  };
+
+  const scanCode = async () => {
+    if (!liff || !liff.isInClient()) {
+      alert('此功能只能在 LINE 應用程式內使用');
+      return;
+    }
+
+    try {
+      const result = await liff.scanCodeV2();
+      setScanResult(result.value || '無法讀取');
+    } catch (error) {
+      console.error('掃描失敗:', error);
+      alert('掃描失敗');
+    }
+  };
+
+  const shareMessage = async () => {
+    if (!liff) return;
+
+    try {
+      await liff.shareTargetPicker([
+        {
+          type: 'text',
+          text: '來自 LIFF 應用程式的分享訊息！',
+        },
+      ]);
+    } catch (error) {
+      console.error('分享失敗:', error);
+      alert('分享失敗');
+    }
+  };
+
+  return (
+    <div className="p-8">
+      <h2 className="text-2xl font-bold mb-6">LIFF 功能展示</h2>
+      
+      <div className="space-y-4">
+        <div>
+          <button
+            onClick={sendMessage}
+            disabled={!isInClient}
+            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition disabled:bg-gray-400"
+          >
+            發送訊息到聊天室
+          </button>
+          {!isInClient && (
+            <p className="text-sm text-gray-500 mt-1">僅限 LINE 應用程式內使用</p>
+          )}
+        </div>
+
+        <div>
+          <button
+            onClick={scanCode}
+            disabled={!isInClient}
+            className="bg-purple-500 text-white px-4 py-2 rounded-md hover:bg-purple-600 transition disabled:bg-gray-400"
+          >
+            掃描 QR Code
+          </button>
+          {scanResult && (
+            <p className="mt-2 p-2 bg-gray-100 rounded">掃描結果：{scanResult}</p>
+          )}
+        </div>
+
+        <div>
+          <button
+            onClick={shareMessage}
+            className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
+          >
+            分享訊息
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+### 3. 主頁面整合
+
+更新 `app/page.tsx`：
+
+```tsx
+import { UserProfile } from './components/UserProfile';
+import { LiffFeatures } from './components/LiffFeatures';
+
+export default function Home() {
+  return (
+    <main className="min-h-screen bg-gray-50">
+      <div className="max-w-4xl mx-auto py-8">
+        <h1 className="text-3xl font-bold text-center mb-8">
+          My LIFF App
+        </h1>
+        
+        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+          <UserProfile />
+        </div>
+        
+        <div className="bg-white rounded-lg shadow-md p-6">
+          <LiffFeatures />
+        </div>
+      </div>
+    </main>
+  );
+}
+```
+
+## 利用 React 19 新功能
+
+### 1. 使用 Server Components 優化效能
+
+建立 `app/components/ServerInfo.tsx`：
+
+```tsx
+// 這是一個 Server Component（預設）
+async function getServerData() {
+  // 模擬從伺服器取得資料
+  const data = {
+    serverTime: new Date().toISOString(),
+    version: '1.0.0',
+  };
+  return data;
+}
+
+export default async function ServerInfo() {
+  const data = await getServerData();
+  
+  return (
+    <div className="bg-blue-50 p-4 rounded-md">
+      <h3 className="font-semibold mb-2">伺服器資訊</h3>
+      <p className="text-sm">時間：{data.serverTime}</p>
+      <p className="text-sm">版本：{data.version}</p>
+    </div>
+  );
+}
+```
+
+### 2. 使用 useActionState 處理表單
+
+建立 `app/components/ContactForm.tsx`：
+
+```tsx
+'use client';
+
+import { useActionState } from 'react';
+import { sendMessage } from '../actions/contact';
+
+const initialState = {
+  message: '',
+  error: '',
+};
+
+export function ContactForm() {
+  const [state, formAction, isPending] = useActionState(
+    sendMessage,
+    initialState
+  );
+
+  return (
+    <form action={formAction} className="space-y-4">
+      <div>
+        <label htmlFor="name" className="block text-sm font-medium">
+          姓名
+        </label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          required
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+        />
+      </div>
+      
+      <div>
+        <label htmlFor="message" className="block text-sm font-medium">
+          訊息
+        </label>
+        <textarea
+          id="message"
+          name="message"
+          required
+          rows={4}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+        />
+      </div>
+      
+      <button
+        type="submit"
+        disabled={isPending}
+        className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 disabled:bg-gray-400"
+      >
+        {isPending ? '傳送中...' : '傳送訊息'}
+      </button>
+      
+      {state.error && (
+        <p className="text-red-600 text-sm">{state.error}</p>
+      )}
+      {state.message && (
+        <p className="text-green-600 text-sm">{state.message}</p>
+      )}
+    </form>
+  );
+}
+```
+
+建立對應的 Server Action `app/actions/contact.ts`：
+
+```typescript
+'use server';
+
+export async function sendMessage(prevState: any, formData: FormData) {
+  const name = formData.get('name') as string;
+  const message = formData.get('message') as string;
+  
+  // 這裡可以整合 LINE Notify 或其他通知服務
+  console.log('收到聯絡訊息:', { name, message });
+  
+  // 模擬 API 呼叫
+  await new Promise(resolve => setTimeout(resolve, 1000));
+  
+  return {
+    message: '訊息已成功送出！',
+    error: '',
+  };
+}
+```
+
+## 部署到 Vercel
+
+### 1. 準備部署
+
+確保您的專案已經推送到 GitHub：
+
+```bash
+git init
+git add .
+git commit -m "Initial commit"
+git branch -M main
+git remote add origin https://github.com/您的帳號/my-liff-app.git
+git push -u origin main
+```
+
+### 2. 在 Vercel 部署
+
+1. 前往 [Vercel](https://vercel.com) 並使用 GitHub 帳號登入
+2. 點擊「New Project」
+3. 匯入您的 GitHub repository
+4. 設定環境變數：
+   - 新增 `NEXT_PUBLIC_LIFF_ID` 並填入您的 LIFF ID
+5. 點擊「Deploy」
+
+### 3. 更新 LIFF Endpoint URL
+
+部署完成後，複製 Vercel 提供的網址（例如：`https://my-liff-app.vercel.app`），回到 LINE Developers Console 更新 LIFF 的 Endpoint URL。
+
+## 本地開發技巧
+
+### 1. 使用 ngrok 進行本地測試
+
+由於 LIFF 需要 HTTPS，我們可以使用 ngrok 來建立安全通道：
+
+```bash
+# 安裝 ngrok
+npm install -g ngrok
+
+# 啟動 Next.js 開發伺服器
+npm run dev
+
+# 在另一個終端機視窗執行
+ngrok http 3000
+```
+
+將 ngrok 提供的 HTTPS 網址更新到 LIFF 的 Endpoint URL，即可在 LINE 應用程式內測試。
+
+### 2. 偵錯模式
+
+建立 `app/components/DebugInfo.tsx`：
+
+```tsx
+'use client';
+
+import { useLiff } from '../providers/LiffProvider';
+
+export function DebugInfo() {
+  const { liff, isInClient, isLoggedIn, liffError } = useLiff();
+  
+  if (process.env.NODE_ENV === 'production') {
+    return null;
+  }
+  
+  return (
+    <div className="fixed bottom-4 right-4 bg-black text-white p-4 rounded-lg text-xs max-w-xs">
+      <h4 className="font-bold mb-2">LIFF Debug</h4>
+      <p>環境: {isInClient ? 'LINE App' : 'External Browser'}</p>
+      <p>登入狀態: {isLoggedIn ? '已登入' : '未登入'}</p>
+      <p>LIFF 版本: {liff?.getVersion() || 'N/A'}</p>
+      <p>語言: {liff?.getLanguage() || 'N/A'}</p>
+      {liffError && <p className="text-red-400">錯誤: {liffError}</p>}
+    </div>
+  );
+}
+```
+
+## 最佳實踐
+
+### 1. 錯誤處理
+
+建立統一的錯誤處理機制：
+
+```tsx
+// app/utils/liff-error-handler.ts
+export function handleLiffError(error: unknown): string {
+  if (error instanceof Error) {
+    // 根據錯誤類型提供友善的錯誤訊息
+    if (error.message.includes('INIT_FAILED')) {
+      return 'LIFF 初始化失敗，請檢查網路連線';
+    }
+    if (error.message.includes('UNAUTHORIZED')) {
+      return '權限不足，請重新登入';
+    }
+    return error.message;
+  }
+  return '發生未知錯誤';
+}
+```
+
+### 2. 效能優化
+
+利用 Next.js 15 的新功能：
+
+```tsx
+// 使用 dynamic import 減少初始載入時間
+const LiffFeatures = dynamic(
+  () => import('./components/LiffFeatures').then(mod => mod.LiffFeatures),
+  { 
+    loading: () => <p>載入功能中...</p>,
+    ssr: false // LIFF 功能只在客戶端執行
+  }
+);
+```
+
+### 3. 型別安全
+
+建立專屬的型別定義：
+
+```typescript
+// app/types/liff.ts
+import { Liff } from '@line/liff';
+
+export interface LiffContextType {
+  liff: Liff | null;
+  liffError: string | null;
+  isLoggedIn: boolean;
+  isInClient: boolean;
+  isReady: boolean;
+}
+
+export interface LiffMessage {
+  type: 'text' | 'image' | 'video';
+  text?: string;
+  originalContentUrl?: string;
+  previewImageUrl?: string;
+}
+```
+
+## 進階功能
+
+### 1. 整合 LINE Pay
+
+```tsx
+// app/components/LinePayButton.tsx
+'use client';
+
+import { useLiff } from '../providers/LiffProvider';
+
+export function LinePayButton({ amount, orderId }: { amount: number; orderId: string }) {
+  const { liff, isInClient } = useLiff();
+  
+  const handlePayment = async () => {
+    if (!liff || !isInClient) {
+      alert('請在 LINE 應用程式內使用 LINE Pay');
+      return;
+    }
+    
+    // 呼叫後端 API 建立 LINE Pay 交易
+    const response = await fetch('/api/linepay/create', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ amount, orderId }),
+    });
+    
+    const { paymentUrl } = await response.json();
+    
+    // 導向 LINE Pay 付款頁面
+    liff.openWindow({
+      url: paymentUrl,
+      external: true,
+    });
+  };
+  
+  return (
+    <button
+      onClick={handlePayment}
+      className="bg-green-600 text-white px-6 py-3 rounded-lg font-semibold"
+    >
+      使用 LINE Pay 付款
+    </button>
+  );
+}
+```
+
+### 2. Rich Menu 整合
+
+```tsx
+// app/hooks/useRichMenu.ts
+import { useEffect } from 'react';
+import { useLiff } from '../providers/LiffProvider';
+
+export function useRichMenu(richMenuId: string) {
+  const { liff, isInClient } = useLiff();
+  
+  useEffect(() => {
+    if (liff && isInClient && richMenuId) {
+      // 切換 Rich Menu
+      liff.switchRichMenu(richMenuId);
+    }
+  }, [liff, isInClient, richMenuId]);
+}
+```
+
+## 結語
+
+透過本教學，您已經學會如何使用最新的技術堆疊建立一個功能完整的 LINE LIFF 應用程式。結合 Next.js 15 的強大功能、React 19 的創新特性，以及 Vercel 的便利部署，開發 LIFF 應用程式變得前所未有的簡單和高效。
+
+### 重點回顧
+
+1. **使用 @line/create-liff-app** 快速建立專案基礎
+2. **升級到最新版本**確保使用最新功能和效能優化
+3. **App Router 整合**充分利用 Server Components 的優勢
+4. **React 19 新功能**如 useActionState 簡化表單處理
+5. **Vercel 部署**實現零配置的全球部署
+
+### 下一步
+
+- 探索更多 LIFF API 功能，如藍牙連接、地理位置等
+- 整合後端服務，建立完整的應用程式生態系
+- 優化使用者體驗，加入更多互動功能
+- 實作進階的安全機制，保護使用者資料
+
+希望這篇教學對您有所幫助，祝您開發愉快！如有任何問題，歡迎在留言區討論。
+
+## 參考資源
+
+- [LINE Developers Documentation](https://developers.line.biz/en/docs/liff/)
+- [Next.js 15 Documentation](https://nextjs.org/docs)
+- [React 19 Release Notes](https://react.dev/blog)
+- [Vercel Documentation](https://vercel.com/docs)
+- [範例程式碼 GitHub Repository](#)
