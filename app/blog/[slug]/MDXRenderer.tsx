@@ -1,8 +1,7 @@
 'use client';
 
 import React from 'react';
-import { MDXRemote } from 'next-mdx-remote';
-import type { MDXRemoteSerializeResult } from 'next-mdx-remote';
+import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 import defaultMDXComponents from '@/components/mdx/MDXComponents';
 import { Mermaid } from '@/components/mdx/global-components';
 import CodeBlock from '@/components/mdx/CodeBlock';
