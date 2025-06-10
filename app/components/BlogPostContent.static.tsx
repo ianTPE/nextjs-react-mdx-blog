@@ -1,28 +1,34 @@
 import Image from 'next/image';
-import type { PostMeta } from '@/types/post';
+import type { PostMeta, Heading } from '@/types/post';
 import { authors } from '../data/authors';
+import Toc from './Toc';
 
 interface BlogPostContentProps {
   metadata: PostMeta;
+  headings: Heading[];
   children: React.ReactNode;
 }
 
 // 根據作者名稱獲取頭像
 function getAuthorAvatar(authorName: string): string {
-  // 查找作者ID
-  const authorEntry = Object.entries(authors).find(([_, author]) => 
+  const author = Object.values(authors).find(author => 
     author.name === authorName || ('chineseName' in author && author.chineseName === authorName)
   );
   
-  // 如果找到作者，返回其頭像；否則返回默認頭像
-  return authorEntry ? authorEntry[1].avatar : '/images/author.webp';
+  return author ? author.avatar : '/images/author.webp';
 }
 
-export default function BlogPostContentStatic({ metadata, children }: BlogPostContentProps) {
+export default function BlogPostContentStatic({ metadata, headings, children }: BlogPostContentProps) {
   return (
     <article className="max-w-4xl mx-auto px-4 py-8">
       <header className="mb-8">
         <h1 className="text-4xl font-bold mb-4">{metadata.title}</h1>
+        {headings.length > 0 && (
+          <div className="mb-8 p-4 border rounded-lg bg-gray-50">
+            <h2 className="text-2xl font-bold mb-4">目錄</h2>
+            <Toc headings={headings} />
+          </div>
+        )}
         {metadata.coverImage && (
           <div
             className="relative w-full h-72 mb-6 rounded-lg overflow-hidden transition-transform duration-300 hover:scale-102"

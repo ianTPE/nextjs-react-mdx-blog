@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
-import type { PostMeta, Post } from '@/types/post';
+import { serialize } from 'next-mdx-remote/serialize';
+import type { PostMeta, Post, Heading } from '@/types/post';
 import { loadPostMetadata, loadAllPostsMetadata, postExists as checkPostExists } from './metadata-loader';
 
 const postsDirectory = path.join(process.cwd(), 'content/posts');
@@ -57,16 +58,13 @@ export async function getAllPosts(): Promise<PostMeta[]> {
  */
 export async function getPostBySlug(slug: string): Promise<Post | null> {
   try {
-    // 獲取 metadata
     const metadata = await loadPostMetadata(slug);
     if (!metadata) {
       console.warn(`Metadata not found for post: ${slug}`);
       return null;
     }
 
-    // 讀取 MDX 文件內容
     const contentPath = path.join(postsDirectory, slug, 'content.mdx');
-    
     if (!fs.existsSync(contentPath)) {
       console.warn(`Content file not found: ${contentPath}`);
       return null;
@@ -74,9 +72,20 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
 
     const content = fs.readFileSync(contentPath, 'utf8');
 
+    const mdxSource = await serialize(content, {
+      parseFrontmatter: false,
+      mdxOptions: {
+        development: process.env.NODE_ENV === 'development',
+      },
+    });
+
+    // The remark-extract-headings plugin adds the headings to the file's data property
+    const headings = (mdxSource.frontmatter.headings as Heading[]) || [];
+
     return {
       ...metadata,
-      content
+      source: mdxSource,
+      headings,
     };
   } catch (error) {
     console.error(`Failed to load post ${slug}:`, error);

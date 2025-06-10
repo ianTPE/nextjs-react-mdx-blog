@@ -55,13 +55,18 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     notFound();
   }
 
-  // 將 MDX 內容渲染成 React 元件
-  // 不在服務端加載組件，而是讓 MDXRenderer 在客戶端處理
+  let postComponents = {};
+  try {
+    postComponents = await import(`@/content/posts/${resolvedParams.slug}/components/index`);
+  } catch {
+    // No custom components for this post, which is fine.
+  }
+
   return (
-    <BlogPostContentStatic metadata={post}>
+    <BlogPostContentStatic metadata={post} headings={post.headings}>
       <MDXRenderer 
-        source={post.content} 
-        slug={resolvedParams.slug}
+        source={post.source} 
+        components={postComponents}
       />
     </BlogPostContentStatic>
   );

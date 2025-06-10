@@ -391,7 +391,7 @@ Design:
         return "role_prompting"  # 最省錢
     
     if task_complexity > 0.8:
-        if time_sensitive:
+                if 'time_sensitive' in locals() and time_sensitive: # 警告: 'time_sensitive' 未在此處定義
             return "structured_cot"  # 平衡選擇
         else:
             return "tree_of_thought"  # 最佳效果
@@ -399,8 +399,25 @@ Design:
     if task_complexity < 0.3:
         return "zero_shot_cot"  # 簡單有效
     
-    return "exemplar_selection_knn"  # 通用選擇`}
+    return "role_prompting" # 新增預設回傳路徑
+`}
 </CodeBlock>
+
+---
+
+## 結論與下一步
+
+掌握高級提示工程是提升AI協作效率的關鍵。本文介紹的14種技術各有優劣，關鍵在於根據您的具體任務、預算和時間限制，做出明智的選擇。
+
+從簡單且經濟實惠的 **Role Prompting** 開始，逐步嘗試 **SCoT** 和 **ToT** 等更複雜的技術，您將會發現AI的潛力遠超想像。
+
+<Alert>
+  <AlertDescription>
+    <strong>立即開始實踐吧！</strong> 選擇一個您正在進行的編程任務，嘗試用今天學到的至少三種技術來優化您的提示，並在團隊中分享您的發現。
+  </AlertDescription>
+</Alert>
+    
+
 
 ---
 

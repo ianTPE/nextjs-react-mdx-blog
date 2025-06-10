@@ -1,17 +1,19 @@
 import type { NextConfig } from "next";
 import createMDX from '@next/mdx';
 import path from 'path';
-import remarkSlug from 'remark-slug';
-import remarkToc from 'remark-toc';
+import rehypeSlug from 'rehype-slug';
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import remarkExtractHeadings from './lib/remark-extract-headings.mjs';
 
 const withMDX = createMDX({
   extension: /\.mdx?$/,
   options: {
     // 可以在這裡加入 MDX 的相關設定
     providerImportSource: '@mdx-js/react',
-    remarkPlugins: [
-      remarkSlug,
-      [remarkToc, { heading: '目錄', tight: true }]
+    remarkPlugins: [remarkExtractHeadings],
+    rehypePlugins: [
+      rehypeSlug,
+      [rehypeAutolinkHeadings, { behavior: 'wrap' }]
     ],
   }
 });
