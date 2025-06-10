@@ -1,12 +1,8 @@
 import type { NextConfig } from "next";
 import createMDX from '@next/mdx';
 import path from 'path';
-import type { Node } from 'unist';
-
-// Define a more specific node type that includes children
-interface MdxNode extends Node {
-  children?: Array<{ type: string; value: string }>;
-}
+import remarkSlug from 'remark-slug';
+import remarkToc from 'remark-toc';
 
 const withMDX = createMDX({
   extension: /\.mdx?$/,
@@ -14,17 +10,8 @@ const withMDX = createMDX({
     // 可以在這裡加入 MDX 的相關設定
     providerImportSource: '@mdx-js/react',
     remarkPlugins: [
-      () => (tree: any) => {
-        // 行號格式化
-        const onVisitLine = (node: MdxNode) => {
-          // 防止空行被移除
-          if (node.children && node.children.length === 0) {
-            node.children = [{ type: 'text', value: ' ' }];
-          }
-        };
-        
-        return tree;
-      }
+      remarkSlug,
+      [remarkToc, { heading: '目錄', tight: true }]
     ],
   }
 });

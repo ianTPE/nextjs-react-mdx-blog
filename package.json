@@ -48,6 +48,8 @@
     "react-markdown": "^10.1.0",
     "react-tweet": "^3.2.2",
     "remark-gfm": "^4.0.1",
+    "remark-slug": "^7.0.1",
+    "remark-toc": "^9.0.0",
     "shadcn-prose": "^1.0.8",
     "tailwind-merge": "^3.3.0",
     "tailwindcss-animate": "^1.0.7"
