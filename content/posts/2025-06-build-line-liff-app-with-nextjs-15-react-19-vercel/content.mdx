@@ -688,11 +688,14 @@ const LiffFeatures = dynamic(
 );
 ```
 
-### 3. 型別安全
+#### Next.js 15 App Router 與 Server/Client Components 實戰
 
-建立專屬的型別定義：
+Next.js 15 推出的 App Router 架構，讓開發者可以更靈活地混用 Server Components 與 Client Components，達到效能與互動性的最佳平衡。
 
-```typescript
+**Server Component（預設）：**
+只在伺服器執行，可直接存取資料庫、API，不會被送到瀏覽器端。
+
+```tsx
 // app/types/liff.ts
 import { Liff } from '@line/liff';
 
