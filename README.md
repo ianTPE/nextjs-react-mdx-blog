@@ -67,7 +67,6 @@ npm start
 │           └── components/    # 文章專用組件
 ├── lib/                   # 工具函數
 │   ├── metadata-loader.ts # metadata 加載器
-│   ├── mdx-new.ts        # 新的 MDX 處理器
 │   └── mdx.ts            # 傳統 MDX 處理器
 ├── scripts/               # 工具腳本
 │   ├── validate-posts-new.ts  # 文章驗證
