@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 import defaultMDXComponents from '@/components/mdx/MDXComponents';

@@ -1,8 +1,8 @@
 import { notFound } from 'next/navigation';
 import { getPostBySlug, getAllPosts } from '@/lib/mdx';
+import { Metadata } from 'next';
 import BlogPostContentStatic from '@/app/components/BlogPostContent.static';
 import MDXRenderer from './MDXRenderer';
-import { Metadata } from 'next';
 
 export async function generateStaticParams() {
   const posts = await getAllPosts();
