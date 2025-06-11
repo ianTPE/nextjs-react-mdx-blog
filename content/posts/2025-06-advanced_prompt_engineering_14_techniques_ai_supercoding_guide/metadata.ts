@@ -15,7 +15,7 @@ const metadata: PostMeta = {
     "Claude",
   ],
   published: true,
-  author: "AI Engineering Team",
+  author: "Ian Chou",
   coverImage:
     "/images/posts/2025-06-advanced-prompt-engineering-14-techniques-guide.webp",
 };
