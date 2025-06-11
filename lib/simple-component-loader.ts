@@ -12,9 +12,12 @@ import * as globalComponents from '@/components/mdx/global-components';
 
 /**
  * 靜態組件映射
- * 通過腳本自動掃描生成，只包含真正有組件導出的文章（23篇）
+ * 通過腳本自動掃描生成，只包含真正有組件導出的文章（24篇）
  */
 const componentMappings: Record<string, () => Promise<any>> = {
+  '2025-06-nextjs-mdx-universal-component-loader-system': () =>
+    import('../content/posts/2025-06-nextjs-mdx-universal-component-loader-system/components/index'),
+
   '2025-06-shadcn-prose-migration-guide': () =>
     import('../content/posts/2025-06-shadcn-prose-migration-guide/components/index'),
 
@@ -178,9 +181,9 @@ export function getPostsWithCustomComponents(): string[] {
 // 工具函數：獲取統計信息
 export function getComponentStats() {
   return {
-    totalPosts: 50, // 總文章數
+    totalPosts: 51, // 總文章數 (更新)
     postsWithComponents: Object.keys(componentMappings).length,
-    postsWithoutComponents: 50 - Object.keys(componentMappings).length,
+    postsWithoutComponents: 51 - Object.keys(componentMappings).length,
     componentMappings: Object.keys(componentMappings)
   };
 }
