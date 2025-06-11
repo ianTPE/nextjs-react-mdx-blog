@@ -3,13 +3,7 @@ import { getPostBySlug, getAllPosts } from '@/lib/mdx';
 import { Metadata } from 'next';
 import BlogPostContentStatic from '@/app/components/BlogPostContent.static';
 import MDXRenderer from './MDXRenderer';
-
-// 手動導入特定文章的組件來測試
-import { 
-  MDXSystemTestChart,
-  TestResultsTable,
-  SecurityAssessmentTable 
-} from '../../../content/posts/2025-ai-coding-assistant-comparison-claude-chatgpt-gemini-developers/components/index';
+import { loadPostComponents } from '@/lib/simple-component-loader';
 
 export async function generateStaticParams() {
   const posts = await getAllPosts();
@@ -62,28 +56,18 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     notFound();
   }
 
-  let postComponents = {};
+  // 使用通用組件加載器
+  const componentResult = await loadPostComponents(resolvedParams.slug);
   
-  // 特定文章的組件處理
-  if (resolvedParams.slug === '2025-ai-coding-assistant-comparison-claude-chatgpt-gemini-developers') {
-    postComponents = {
-      MDXSystemTestChart,
-      TestResultsTable,
-      SecurityAssessmentTable
-    };
-  } else {
-    try {
-      postComponents = await import(`../../../content/posts/${resolvedParams.slug}/components/index`);
-    } catch {
-      // No custom components for this post, which is fine.
-    }
+  if (process.env.NODE_ENV === 'development') {
+    console.log(`[${resolvedParams.slug}] Loaded ${Object.keys(componentResult.components).length} components (${componentResult.loadedFrom})`);
   }
 
   return (
     <BlogPostContentStatic metadata={post} headings={post.headings}>
       <MDXRenderer 
         source={post.source} 
-        components={postComponents}
+        components={componentResult.components}
       />
     </BlogPostContentStatic>
   );
