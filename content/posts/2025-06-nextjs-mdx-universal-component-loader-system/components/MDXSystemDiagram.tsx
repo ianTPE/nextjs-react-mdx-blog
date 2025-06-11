@@ -173,16 +173,16 @@ const MDXSystemDiagram: React.FC = () => {
               <div className="code-header" style={styles.codeHeader}>
                 📁 目錄結構
               </div>
-              <pre style={styles.pre}><code>{`content/posts/                                              
-├── article-1/                                              
-│   ├── content.mdx                                         
-│   ├── metadata.ts                                         
-│   └── components/                                         
-│       ├── index.ts           ← 組件導出文件                
-│       ├── CustomChart.tsx                                 
-│       └── DataTable.tsx                                   
-└── article-2/                                              
-    ├── content.mdx                                         
+              <pre style={styles.pre}><code>{`content/posts/
+├── article-with-components/
+│   ├── content.mdx
+│   ├── metadata.ts
+│   └── components/
+│       ├── index.ts           ← 組件導出文件
+│       ├── CustomChart.tsx
+│       └── DataTable.tsx
+└── article-without-components/
+    ├── content.mdx
     └── metadata.ts             ← 無組件目錄`}</code></pre>
             </div>
           </div>
