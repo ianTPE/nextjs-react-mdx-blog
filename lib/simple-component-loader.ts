@@ -27,6 +27,9 @@ const componentMappings: Record<string, () => Promise<any>> = {
   '2025-backend-development-low-code-market-guide-187-billion-opportunity': () =>
     import('../content/posts/2025-backend-development-low-code-market-guide-187-billion-opportunity/components/index'),
 
+  '2025-freelancer-guide-low-code-no-code-development-applications-ranking': () =>
+    import('../content/posts/2025-freelancer-guide-low-code-no-code-development-applications-ranking/components/index'),
+
   '2025-low-code-cybersecurity-freelance-guide-soar-engineer-remote-work': () =>
     import('../content/posts/2025-low-code-cybersecurity-freelance-guide-soar-engineer-remote-work/components/index'),
 
