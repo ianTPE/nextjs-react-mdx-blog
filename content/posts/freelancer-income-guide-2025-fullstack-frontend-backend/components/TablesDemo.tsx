@@ -1,3 +1,4 @@
+"use client";
 import React from 'react';
 import PlatformComparisonTable from './PlatformComparisonTable';
 import TechDirectionIncomeTable from './TechDirectionIncomeTable';

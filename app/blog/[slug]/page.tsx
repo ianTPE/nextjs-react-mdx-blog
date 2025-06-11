@@ -4,6 +4,13 @@ import { Metadata } from 'next';
 import BlogPostContentStatic from '@/app/components/BlogPostContent.static';
 import MDXRenderer from './MDXRenderer';
 
+// 手動導入特定文章的組件來測試
+import { 
+  MDXSystemTestChart,
+  TestResultsTable,
+  SecurityAssessmentTable 
+} from '../../../content/posts/2025-ai-coding-assistant-comparison-claude-chatgpt-gemini-developers/components/index';
+
 export async function generateStaticParams() {
   const posts = await getAllPosts();
   return posts.map((post) => ({
@@ -56,10 +63,20 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   }
 
   let postComponents = {};
-  try {
-    postComponents = await import(`@/content/posts/${resolvedParams.slug}/components/index`);
-  } catch {
-    // No custom components for this post, which is fine.
+  
+  // 特定文章的組件處理
+  if (resolvedParams.slug === '2025-ai-coding-assistant-comparison-claude-chatgpt-gemini-developers') {
+    postComponents = {
+      MDXSystemTestChart,
+      TestResultsTable,
+      SecurityAssessmentTable
+    };
+  } else {
+    try {
+      postComponents = await import(`../../../content/posts/${resolvedParams.slug}/components/index`);
+    } catch {
+      // No custom components for this post, which is fine.
+    }
   }
 
   return (

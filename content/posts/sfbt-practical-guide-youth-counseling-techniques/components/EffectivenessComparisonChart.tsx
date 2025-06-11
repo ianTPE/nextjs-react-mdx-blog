@@ -96,7 +96,7 @@ const EffectivenessComparisonChart = () => {
               ...options.plugins.legend,
               labels: {
                 font: {
-                  size: window.innerWidth < 640 ? 12 : 14
+                  size: typeof window !== 'undefined' && window.innerWidth < 640 ? 12 : 14
                 }
               }
             }
@@ -106,7 +106,7 @@ const EffectivenessComparisonChart = () => {
             x: {
               ticks: {
                 font: {
-                  size: window.innerWidth < 640 ? 10 : 12
+                  size: typeof window !== 'undefined' && window.innerWidth < 640 ? 10 : 12
                 }
               }
             },
@@ -115,7 +115,7 @@ const EffectivenessComparisonChart = () => {
               ticks: {
                 ...options.scales.y.ticks,
                 font: {
-                  size: window.innerWidth < 640 ? 10 : 12
+                  size: typeof window !== 'undefined' && window.innerWidth < 640 ? 10 : 12
                 }
               }
             }

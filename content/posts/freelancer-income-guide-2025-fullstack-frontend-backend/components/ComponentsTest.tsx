@@ -1,3 +1,4 @@
+"use client";
 // 組件導入測試文件
 import React from 'react';
 

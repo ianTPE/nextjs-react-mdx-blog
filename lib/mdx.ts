@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { serialize } from 'next-mdx-remote/serialize';
+
 import type { PostMeta, Post, Heading } from '@/types/post';
 import { loadPostMetadata, loadAllPostsMetadata, postExists as checkPostExists } from './metadata-loader';
 
@@ -72,19 +72,12 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
 
     const content = fs.readFileSync(contentPath, 'utf8');
 
-    const mdxSource = await serialize(content, {
-      parseFrontmatter: false,
-      mdxOptions: {
-        development: process.env.NODE_ENV === 'development',
-      },
-    });
-
-    // The remark-extract-headings plugin adds the headings to the file's data property
-    const headings = (mdxSource.frontmatter.headings as Heading[]) || [];
+    // TODO: Re-implement headings extraction without serialize
+    const headings: Heading[] = []; // Temporary empty array
 
     return {
       ...metadata,
-      source: mdxSource,
+      source: content, // Return raw content
       headings,
     };
   } catch (error) {

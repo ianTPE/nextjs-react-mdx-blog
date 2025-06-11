@@ -23,8 +23,8 @@ export const getPostComponents = cache(async (slug: string) => {
 
     // 嘗試導入局部組件
     try {
-      // 使用動態導入但避免序列化問題
-      const postComponentsModule = await import(`@content/posts/${slug}/components/index`);
+      // 使用動態導入但避免序列化問題 - 需要使用相對路徑而不是別名
+      const postComponentsModule = await import(`../content/posts/${slug}/components/index`);
       
       // 只提取組件名稱，避免序列化函數
       const componentNames = Object.keys(postComponentsModule).filter(key => key !== 'default');

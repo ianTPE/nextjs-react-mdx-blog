@@ -1,3 +1,4 @@
+"use client";
 import { Bar, Radar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,

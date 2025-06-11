@@ -1,3 +1,4 @@
+"use client";
 import React from 'react';
 import type { FC } from 'react';
 import MarketGrowthComparisonChart from './MarketGrowthComparisonChart';

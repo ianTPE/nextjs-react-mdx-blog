@@ -10,8 +10,7 @@ import TestResultChart from './TestResultChart';
 import UseCaseChart from './UseCaseChart';
 
 // React Flow 組件
-import AIDecisionTree from './AIDecisionTree';
-
+export { default as AIDecisionTree } from './AIDecisionTree';
 // Table 組件 - 實際使用的表格
 import OverallScoreTable from './OverallScoreTable';
 import ScenarioComparisonTable from './ScenarioComparisonTable';
@@ -36,9 +35,6 @@ export {
   ScenarioRadarChart,
   TestResultChart,
   UseCaseChart,
-  
-  // React Flow 組件
-  AIDecisionTree,
   
   // 表格組件
   OverallScoreTable,

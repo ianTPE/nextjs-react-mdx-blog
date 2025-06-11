@@ -9,7 +9,7 @@ export interface PostMeta {
   coverImage?: string;
 }
 
-import type { MDXRemoteSerializeResult } from 'next-mdx-remote';
+
 
 export interface Heading {
   level: number;
@@ -18,6 +18,6 @@ export interface Heading {
 }
 
 export interface Post extends PostMeta {
-  source: MDXRemoteSerializeResult;
+  source: string;
   headings: Heading[];
 }
