@@ -30,13 +30,15 @@ function scanPostComponents() {
       try {
         const indexContent = fs.readFileSync(indexFile, 'utf8');
         
-        // 檢查是否有export語句（更嚴格的檢查）
-        const hasExports = indexContent.includes('export') && 
-                          !indexContent.trim().startsWith('/**') && 
-                          !indexContent.includes('we\'re not exporting any specific components') &&
-                          !indexContent.includes('這裡將導出此文章的自定義組件') &&
-                          !/^\s*\/\//.test(indexContent.trim()) && // 不以註釋開始
-                          indexContent.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '').trim().length > 0; // 移除註釋後有內容
+        // 更嚴格的導出檢查：只有真正的 export 語句才算有效
+        const cleanContent = indexContent
+          .replace(/\/\*[\s\S]*?\*\//g, '') // 移除塊註釋
+          .replace(/\/\/.*$/gm, ''); // 移除行註釋
+        
+        const hasExports = /export\s+\{[^}]+\}/.test(cleanContent) || // export { ... }
+                          /export\s+default/.test(cleanContent) || // export default
+                          /export\s+const|let|var|function|class/.test(cleanContent) || // export const/let/var/function/class
+                          /export\s+\*/.test(cleanContent); // export *
         
         if (hasExports) {
           console.log(`✅ ${postSlug}: 有組件導出`);

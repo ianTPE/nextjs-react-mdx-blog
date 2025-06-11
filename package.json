@@ -13,7 +13,10 @@
     "posts:validate": "tsx scripts/validate-posts-new.ts",
     "posts:create": "tsx scripts/create-post.ts",
     "posts:list": "tsx scripts/list-posts.ts",
-    "prebuild": "npm run validate-posts-production"
+    "components:scan": "node scripts/scan-components.js",
+    "components:update": "node scripts/update-component-mappings.js",
+    "components:sync": "npm run components:update && npm run validate-posts-production",
+    "prebuild": "node scripts/smart-prebuild.js && npm run validate-posts-production"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.0",
