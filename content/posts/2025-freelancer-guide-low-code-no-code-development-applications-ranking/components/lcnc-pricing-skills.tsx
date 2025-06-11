@@ -7,7 +7,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 // Register Chart.js components and plugins
 Chart.register(...registerables, ChartDataLabels);
 
-const PricingAndSkills = () => {
+const LcncPricingSkills = () => {
   const chartRef = useRef<HTMLCanvasElement | null>(null);
   const chartInstance = useRef<Chart | null>(null);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
@@ -329,4 +329,4 @@ const PricingAndSkills = () => {
   );
 };
 
-export default PricingAndSkills;
+export default LcncPricingSkills;

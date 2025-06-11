@@ -1,3 +1,5 @@
+"use client";
+
 // Export all components from this directory
 export { default as LcncAdoptionTrends } from './lcnc-adoption-trends';
 export { default as LcncPricingSkills } from './lcnc-pricing-skills';

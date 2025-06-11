@@ -45,7 +45,7 @@ const COLORS = [
   '#A4DE6C', '#D0ED57', '#83a6ed', '#8dd1e1', '#ffc658', '#d0ed57'
 ];
 
-const MarketTrendsAndAdoption = () => {
+const LcncAdoptionTrends = () => {
   const lineChartRef = useRef<HTMLCanvasElement | null>(null);
   const pieChartRef = useRef<HTMLCanvasElement | null>(null);
   const barChartRef = useRef<HTMLCanvasElement | null>(null);
@@ -543,4 +543,4 @@ const MarketTrendsAndAdoption = () => {
   );
 };
 
-export default MarketTrendsAndAdoption;
+export default LcncAdoptionTrends;

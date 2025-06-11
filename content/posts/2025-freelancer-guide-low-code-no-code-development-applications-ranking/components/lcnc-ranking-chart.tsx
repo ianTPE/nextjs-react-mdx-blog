@@ -61,7 +61,7 @@ const getMobileName = (name: string) => {
   return nameMap[name] || name;
 };
 
-const RankingChart = () => {
+const LcncRankingChart = () => {
   const chartRef = useRef<HTMLCanvasElement | null>(null);
   const chartInstance = useRef<Chart | null>(null);
   const [isMobile, setIsMobile] = useState(false);
@@ -206,4 +206,4 @@ const RankingChart = () => {
   );
 };
 
-export default RankingChart;
+export default LcncRankingChart;
