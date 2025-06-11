@@ -1,8 +1,0 @@
-{
-  "name": "test-lifecycle",
-  "scripts": {
-    "prebuild": "echo '🔥 prebuild 自動執行了！'",
-    "build": "echo '🚀 主要的 build 命令'",
-    "postbuild": "echo '✅ postbuild 自動執行了！'"
-  }
-}

@@ -26,13 +26,21 @@ const nextConfig: NextConfig = {
     // 如果 ESLint 錯誤阻止構建，請設置為 false
     ignoreDuringBuilds: true,
   },
-  // 添加 webpack 配置以支持內容目錄路徑解析
-  webpack: (config) => {
-    // 添加路徑別名，使 @content 指向 content 目錄
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      '@content': path.join(process.cwd(), 'content'),
-    };
+  // Turbopack 配置 (已穩定)
+  turbopack: {
+    resolveAlias: {
+      '@content': './content',
+    },
+  },
+  // 添加 webpack 配置以支持內容目錄路徑解析（Webpack 模式時使用）
+  webpack: (config, { dev }) => {
+    // 只在 webpack 模式下設置別名
+    if (!dev || !process.env.TURBOPACK) {
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        '@content': path.join(process.cwd(), 'content'),
+      };
+    }
     
     return config;
   },

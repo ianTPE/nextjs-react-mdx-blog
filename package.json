@@ -3,8 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbo",
+    "dev:webpack": "next dev",
     "build": "next build",
+    "build:turbo": "next build --turbo",
     "start": "next start",
     "lint": "next lint",
     "validate-posts": "node scripts/validate-posts-simple.js",
