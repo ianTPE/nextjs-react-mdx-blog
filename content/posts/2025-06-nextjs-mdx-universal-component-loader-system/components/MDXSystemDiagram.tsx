@@ -146,15 +146,7 @@ const MDXSystemDiagram: React.FC = () => {
           transform: translateY(-5px);
         }
         
-        .code-header::before {
-          content: "";
-          width: 12px;
-          height: 12px;
-          border-radius: 50%;
-          background: #ff5f56;
-          margin-right: 8px;
-          box-shadow: 18px 0 0 #ffbd2e, 36px 0 0 #27ca3f;
-        }
+
         
         .flow-step-li::before {
           content: "•";
