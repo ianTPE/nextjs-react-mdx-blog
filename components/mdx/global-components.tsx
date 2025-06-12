@@ -8,3 +8,5 @@
 
 // Export your components here
 export { default as Mermaid } from './Mermaid';
+export { AdvantagesTable } from './global-components/AdvantagesTable';
+export { ToolsTable } from './global-components/ToolsTable';
