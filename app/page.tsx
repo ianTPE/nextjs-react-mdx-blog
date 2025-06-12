@@ -76,7 +76,7 @@ export default async function Home() {
         <MotionContainer className="grid grid-cols-2 md:grid-cols-5 gap-4 px-4" delay={0.3}>
           <TechStackIcon 
             name="Next.js" 
-            version="v15.3.2" 
+            version="v15.3.3" 
             icon="/images/nextjs-icon.svg" 
             color="bg-black"
           />
