@@ -109,7 +109,7 @@ export function RiskTable() {
   })
 
   return (
-    <div className="rounded-md border">
+    <div className="rounded-md border not-prose">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (

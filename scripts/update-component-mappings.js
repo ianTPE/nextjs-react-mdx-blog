@@ -26,9 +26,14 @@ function scanAndUpdateMappings() {
   // 掃描有組件的文章
   for (const postSlug of postDirs) {
     const componentsDir = path.join(postsDirectory, postSlug, 'components');
-    const indexFile = path.join(componentsDir, 'index.ts');
+    const indexFileTsx = path.join(componentsDir, 'index.tsx');
+    const indexFileTs = path.join(componentsDir, 'index.ts');
     
-    if (fs.existsSync(componentsDir) && fs.existsSync(indexFile)) {
+    // Check for either .ts or .tsx extension
+    const indexFileExists = fs.existsSync(indexFileTsx) || fs.existsSync(indexFileTs);
+    const indexFile = fs.existsSync(indexFileTsx) ? indexFileTsx : indexFileTs;
+    
+    if (fs.existsSync(componentsDir) && indexFileExists) {
       try {
         const indexContent = fs.readFileSync(indexFile, 'utf8');
         

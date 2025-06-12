@@ -22,6 +22,7 @@ const geistMono = Geist_Mono({
 const fontClasses = `${geistSans.variable} ${geistMono.variable} antialiased`;
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://citrine.top'),
   title: "Citrine.top",
   description: "分享技術心得、開發經驗，以及生活中的點點滴滴。使用 Next.js 15、React 和 MDX 構建的現代化部落格。",
   openGraph: {

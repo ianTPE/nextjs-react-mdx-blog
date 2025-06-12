@@ -8,5 +8,4 @@
 
 // Export your components here
 export { default as Mermaid } from './Mermaid';
-export { AdvantagesTable } from './global-components/AdvantagesTable';
-export { ToolsTable } from './global-components/ToolsTable';
+// Post-specific components should be exported from their respective post component folders
