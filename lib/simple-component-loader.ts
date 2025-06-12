@@ -15,9 +15,12 @@ import * as globalComponents from '@/components/mdx/global-components';
  * 通過腳本自動掃描生成，只包含真正有組件導出的文章（24篇）
  */
 const componentMappings: Record<string, () => Promise<any>> = {
+  '2025-06-line-liff-lowcode-ultimate-guide': () =>
+    import('../content/posts/2025-06-line-liff-lowcode-ultimate-guide/components/index'),
+
   '2025-06-LINE_LIFF_Low_Code_Platform_Business_Guide': () =>
     import('../content/posts/2025-06-LINE_LIFF_Low_Code_Platform_Business_Guide/components/index'),
-    
+
   '2025-06-nextjs-mdx-universal-component-loader-system': () =>
     import('../content/posts/2025-06-nextjs-mdx-universal-component-loader-system/components/index'),
 
@@ -184,9 +187,9 @@ export function getPostsWithCustomComponents(): string[] {
 // 工具函數：獲取統計信息
 export function getComponentStats() {
   return {
-    totalPosts: 51, // 總文章數 (更新)
+    totalPosts: 54, // 總文章數 (更新)
     postsWithComponents: Object.keys(componentMappings).length,
-    postsWithoutComponents: 51 - Object.keys(componentMappings).length,
+    postsWithoutComponents: 54 - Object.keys(componentMappings).length,
     componentMappings: Object.keys(componentMappings)
   };
 }
