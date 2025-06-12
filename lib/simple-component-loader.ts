@@ -15,6 +15,9 @@ import * as globalComponents from '@/components/mdx/global-components';
  * 通過腳本自動掃描生成，只包含真正有組件導出的文章（24篇）
  */
 const componentMappings: Record<string, () => Promise<any>> = {
+  '2025-06-LINE_LIFF_Low_Code_Platform_Business_Guide': () =>
+    import('../content/posts/2025-06-LINE_LIFF_Low_Code_Platform_Business_Guide/components/index'),
+    
   '2025-06-nextjs-mdx-universal-component-loader-system': () =>
     import('../content/posts/2025-06-nextjs-mdx-universal-component-loader-system/components/index'),
 
