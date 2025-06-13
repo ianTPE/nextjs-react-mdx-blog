@@ -73,6 +73,251 @@ C:\Users\iantp\GitHub\2506-line-liff-app\
 └── 配置檔案...
 ```
 
+## 🔧 LINE LIFF SDK 安裝與設置
+
+在開始開發 LIFF 應用之前，我們需要完成 LINE LIFF SDK 的安裝與基本設置。以下是完整的安裝流程：
+
+### 1. 使用 create-liff-app 建立專案
+
+**建立新的 LIFF 專案**：
+```bash
+npx @line/create-liff-app@latest line-liff-app
+```
+
+**互動式設定流程**：
+1. **選擇開發框架** - 選擇 `nextjs`
+2. **選擇語言** - 選擇 `TypeScript`
+3. **輸入 LIFF ID** - 輸入你的 LIFF ID（可稍後設定）
+4. **套件管理器** - 選擇 `npm` 或 `yarn`
+
+### 2. 安裝 LINE LIFF SDK
+
+進入專案目錄並安裝必要的依賴：
+
+```bash
+cd line-liff-app
+
+# 安裝 LINE LIFF SDK
+npm install @line/liff
+
+# 安裝 TypeScript 類型定義（如使用 TypeScript）
+npm install --save-dev @types/node
+
+# 檢查安裝狀態
+npm list @line/liff
+```
+
+### 3. 環境變數設置
+
+在專案根目錄建立 `.env.local` 檔案：
+
+```bash
+# .env.local
+NEXT_PUBLIC_LIFF_ID=your-liff-id-here
+NEXT_PUBLIC_BUBBLE_API_BASE=your-api-base-url
+NEXT_PUBLIC_DEV_MODE=true
+```
+
+### 4. LIFF SDK 初始化
+
+建立 LIFF 初始化 Hook：
+
+```typescript
+// hooks/useLiff.ts
+import { useEffect, useState } from 'react';
+import liff from '@line/liff';
+
+export const useLiff = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [profile, setProfile] = useState(null);
+
+  useEffect(() => {
+    const initializeLiff = async () => {
+      try {
+        await liff.init({ 
+          liffId: process.env.NEXT_PUBLIC_LIFF_ID as string 
+        });
+        
+        console.log('LIFF 初始化成功');
+        
+        // 檢查登入狀態
+        if (liff.isLoggedIn()) {
+          setIsLoggedIn(true);
+          const userProfile = await liff.getProfile();
+          setProfile(userProfile);
+        }
+      } catch (error) {
+        console.error('LIFF 初始化失敗:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    initializeLiff();
+  }, []);
+
+  const login = () => {
+    if (!liff.isLoggedIn()) {
+      liff.login();
+    }
+  };
+
+  const logout = () => {
+    if (liff.isLoggedIn()) {
+      liff.logout();
+    }
+  };
+
+  return {
+    liff,
+    isLoggedIn,
+    isLoading,
+    profile,
+    login,
+    logout,
+    isInClient: liff.isInClient()
+  };
+};
+```
+
+### 5. 在主要組件中使用 LIFF
+
+```typescript
+// app/tea-app/page.tsx
+'use client';
+
+import { useLiff } from '@/hooks/useLiff';
+import { LoadingSpinner } from './components/LoadingSpinner';
+import { TeaAppMain } from './components/TeaAppMain';
+
+export default function TeaAppPage() {
+  const { isLoading, isLoggedIn, login } = useLiff();
+
+  // 載入中狀態
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  // 未登入狀態
+  if (!isLoggedIn) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen p-6">
+        <h2 className="text-2xl font-bold mb-6">歡迎使用茶語時光</h2>
+        <button 
+          onClick={login}
+          className="bg-green-500 text-white px-6 py-3 rounded-lg"
+        >
+          LINE 登入
+        </button>
+      </div>
+    );
+  }
+
+  // 主要應用內容
+  return <TeaAppMain />;
+}
+```
+
+### 6. 用戶資料整合
+
+```typescript
+// 自動取得並同步用戶資料
+const registerUser = useCallback(async () => {
+  if (!liff || !isLoggedIn) return;
+
+  try {
+    const profile = await liff.getProfile();
+    const userData = {
+      line_user_id: profile.userId,
+      display_name: profile.displayName,
+      picture_url: profile.pictureUrl,
+    };
+
+    // 同步到後端系統
+    const response = await fetch('/api/register-user', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(userData),
+    });
+
+    if (response.ok) {
+      console.log('用戶註冊成功');
+    }
+  } catch (error) {
+    console.error('用戶註冊失敗:', error);
+  }
+}, [liff, isLoggedIn]);
+```
+
+### 7. 訊息推播功能
+
+```typescript
+// 發送 LINE 訊息
+const sendLineMessage = async (message: string) => {
+  if (!liff.isInClient()) {
+    console.log('非 LINE 環境，無法發送訊息');
+    return;
+  }
+
+  try {
+    await liff.sendMessages([
+      {
+        type: 'text',
+        text: message
+      }
+    ]);
+    console.log('訊息發送成功');
+  } catch (error) {
+    console.error('訊息發送失敗:', error);
+  }
+};
+
+// 訂單確認後自動發送通知
+const handleOrderSuccess = async (orderData: Order) => {
+  const message = `✅ 訂單確認\n\n📋 訂單編號：${orderData.id}\n🏪 門市：${orderData.store_name}\n⏰ 取餐時間：${orderData.pickup_time}\n💰 總金額：${orderData.total_amount}`;
+  
+  await sendLineMessage(message);
+};
+```
+
+### 8. 開發與除錯
+
+**檢查 LIFF 環境**：
+```typescript
+const debugLiff = () => {
+  console.log('🔍 LIFF 環境檢查:');
+  console.log('- LIFF ID:', process.env.NEXT_PUBLIC_LIFF_ID);
+  console.log('- 是否在 LINE 內:', liff.isInClient());
+  console.log('- 是否已登入:', liff.isLoggedIn());
+  console.log('- 支援的功能:', liff.getContext());
+};
+```
+
+**常見問題解決**：
+
+| 問題 | 解決方法 |
+|------|----------|
+| LIFF 初始化失敗 | 檢查 LIFF ID 是否正確，確認網域已註冊 |
+| 無法取得用戶資料 | 確認已通過 LINE 登入認證 |
+| 訊息發送失敗 | 檢查是否在 LINE 內部瀏覽器環境 |
+| 開發環境測試 | 使用 ngrok 或類似工具建立 HTTPS 環境 |
+
+### 9. 部署前檢查清單
+
+- ✅ LIFF ID 設置正確
+- ✅ 環境變數配置完整
+- ✅ HTTPS 憑證設置
+- ✅ 網域已在 LINE Developers 註冊
+- ✅ API 端點測試通過
+- ✅ 用戶流程測試完成
+
+完成以上設置後，你的 LIFF 應用就能與 LINE 生態系統完美整合，提供用戶無縫的體驗！
+
 ## 🎨 核心功能實現
 
 ### 1. 全域狀態管理 - React Context Pattern
