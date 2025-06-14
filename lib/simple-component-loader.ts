@@ -15,6 +15,9 @@ import * as globalComponents from '@/components/mdx/global-components';
  * 通過腳本自動掃描生成，只包含真正有組件導出的文章（24篇）
  */
 const componentMappings: Record<string, () => Promise<any>> = {
+  '2025-06-from-zero-to-one-build-chayu-time-bubble-tea-booking-system-tech-guide': () =>
+    import('../content/posts/2025-06-from-zero-to-one-build-chayu-time-bubble-tea-booking-system-tech-guide/components/index'),
+
   '2025-06-from-zero-to-one-build-chayu-time-liff-tea-booking-system-complete-tech-guide': () =>
     import('../content/posts/2025-06-from-zero-to-one-build-chayu-time-liff-tea-booking-system-complete-tech-guide/components/index'),
 
@@ -190,9 +193,9 @@ export function getPostsWithCustomComponents(): string[] {
 // 工具函數：獲取統計信息
 export function getComponentStats() {
   return {
-    totalPosts: 55, // 總文章數 (更新)
+    totalPosts: 56, // 總文章數 (更新)
     postsWithComponents: Object.keys(componentMappings).length,
-    postsWithoutComponents: 55 - Object.keys(componentMappings).length,
+    postsWithoutComponents: 56 - Object.keys(componentMappings).length,
     componentMappings: Object.keys(componentMappings)
   };
 }

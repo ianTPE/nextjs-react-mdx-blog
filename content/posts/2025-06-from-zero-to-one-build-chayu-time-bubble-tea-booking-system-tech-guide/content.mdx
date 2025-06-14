@@ -23,15 +23,7 @@
 
 ### 技術特點
 
-```json
-{
-  "database": "內建 PostgreSQL 資料庫",
-  "api": "RESTful API 自動生成",
-  "workflow": "視覺化業務邏輯設計",
-  "integration": "支援第三方 API 整合",
-  "scaling": "自動擴展與負載平衡"
-}
-```
+<BubbleFeatures />
 
 ### 適用場景
 
@@ -55,14 +47,7 @@
 
 #### 1. 創建新應用
 
-```bash
-# 步驟流程
-1. 前往 bubble.io 註冊帳號
-2. Dashboard → "Create new app"
-3. App name: "tea-time-liff-backend"
-4. 選擇 "Web app" 模板
-5. 確認創建
-```
+<SetupSteps />
 
 #### 2. 基本設定配置
 
@@ -114,18 +99,7 @@ interface BubbleUserSchema {
 
 **詳細配置：**
 
-| 欄位名稱 | 類型 | 設定 | 預設值 |
-|---------|------|------|--------|
-| `line_user_id` | text | Required, Unique | - |
-| `display_name` | text | Required | - |
-| `picture_url` | text | Optional | - |
-| `phone_number` | text | Optional | - |
-| `email` | text | Optional | - |
-| `membership_level` | text | Required | "bronze" |
-| `points_balance` | number | Required | 0 |
-| `wallet_balance` | number | Required | 0 |
-| `created_date` | date | Required | Current date/time |
-| `last_login` | date | Required | Current date/time |
+<UserSchemaTable />
 
 ### 2. Product (商品表) 🍵
 
@@ -151,17 +125,7 @@ interface BubbleProductSchema {
 
 **詳細配置：**
 
-| 欄位名稱 | 類型 | 設定 | 預設值 | 備註 |
-|---------|------|------|--------|------|
-| `name` | text | Required | - | 商品名稱 |
-| `price` | number | Required | - | 商品價格 |
-| `category` | text | Required | - | tea/coffee/seasonal/snacks |
-| `description` | text | Optional | - | 商品描述 |
-| `image_url` | text | Optional | - | 商品圖片 URL |
-| `rating` | number | Optional | - | 商品評分 (1-5) |
-| `review_count` | number | Required | 0 | 評價數量 |
-| `preparation_time` | number | Required | 15 | 製作時間（分鐘） |
-| `availability_status` | yes/no | Required | yes | 商品可用性 |
+<ProductSchemaTable />
 
 ### 3. Store (門市表) 🏪
 
@@ -186,16 +150,7 @@ interface BubbleStoreSchema {
 
 **詳細配置：**
 
-| 欄位名稱 | 類型 | 設定 | 預設值 | 備註 |
-|---------|------|------|--------|------|
-| `name` | text | Required | - | 門市名稱 |
-| `address` | text | Required | - | 門市地址 |
-| `phone` | text | Required | - | 門市電話 |
-| `operating_hours` | text | Required | - | 營業時間 |
-| `current_queue_count` | number | Required | 0 | 目前排隊人數 |
-| `average_wait_time` | number | Required | 10 | 平均等待時間（分鐘） |
-| `latitude` | number | Optional | - | 緯度 |
-| `longitude` | number | Optional | - | 經度 |
+<StoreSchemaTable />
 
 ### 4. Order (訂單表) 📋
 
@@ -222,18 +177,7 @@ interface BubbleOrderSchema {
 
 **詳細配置：**
 
-| 欄位名稱 | 類型 | 設定 | 預設值 | 備註 |
-|---------|------|------|--------|------|
-| `user` | User | Required | - | 關聯到 User 表 |
-| `store` | Store | Required | - | 關聯到 Store 表 |
-| `order_items` | text | Required | - | JSON 格式儲存購物車 |
-| `total_amount` | number | Required | - | 訂單總金額 |
-| `payment_method` | text | Required | - | 付款方式 |
-| `order_status` | text | Required | "pending" | 訂單狀態 |
-| `order_type` | text | Required | - | pickup_now/pickup_scheduled |
-| `scheduled_time` | date | Optional | - | 預約時間 |
-| `created_time` | date | Required | Current date/time | 建立時間 |
-| `completed_time` | date | Optional | - | 完成時間 |
+<OrderSchemaTable />
 
 ---
 
@@ -1124,12 +1068,7 @@ App → Data → App data
 
 **傳統後端 vs Bubble：**
 
-| 項目 | 傳統開發 | Bubble 開發 | 節省比例 |
-|------|----------|-------------|----------|
-| 開發時間 | 6-8 週 | 1-2 週 | 75% |
-| 技術要求 | 全端工程師 | 前端工程師 | 50% 人力 |
-| 基礎建設 | 自建伺服器/雲端 | 內建託管 | 80% 維護成本 |
-| 擴展成本 | 線性增長 | 自動擴展 | 60% 擴展成本 |
+<DevelopmentComparisonTable />
 
 ### 營運成本預估
 
