@@ -266,43 +266,6 @@ CREATE INDEX idx_orders_status ON orders(order_status);
 CREATE INDEX idx_orders_created_at ON orders(created_at);
 ```
 
-**訂單商品 JSON 結構：**
-```json
-[
-  {
-    "product_id": 1,
-    "name": "珍珠奶茶",
-    "price": 65,
-    "quantity": 2,
-    "customizations": {
-      "sweetness": "半糖",
-      "ice_level": "少冰",
-      "toppings": ["珍珠", "椰果"]
-    },
-    "subtotal": 130
-  }
-]
-```
-
-### 5. Order_Status_History 訂單狀態歷史表 📊
-
-**建立狀態追蹤表：**
-```sql
-CREATE TABLE order_status_history (
-  id SERIAL PRIMARY KEY,
-  order_id INTEGER NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
-  previous_status VARCHAR(50),
-  new_status VARCHAR(50) NOT NULL,
-  changed_by VARCHAR(100) DEFAULT 'system',
-  notes TEXT,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- 追蹤索引
-CREATE INDEX idx_order_status_history_order_id ON order_status_history(order_id);
-CREATE INDEX idx_order_status_history_created_at ON order_status_history(created_at);
-```
-
 ---
 
 ## ⚙️ 第三步：Xano API 端點開發
@@ -328,15 +291,15 @@ API → Add Endpoint
 **1. Input Validation**
 ```javascript
 // Xano Custom Function
-function validateUserInput(line_user_id, display_name) {
-  if (!line_user_id || line_user_id.length < 10) {
+function validateUserInput(userInputId, displayName) {
+  if (!userInputId || userInputId.length < 10) {
     return {
       error: "Invalid LINE User ID",
       code: "INVALID_LINE_ID"
     };
   }
   
-  if (!display_name || display_name.trim().length < 1) {
+  if (!displayName || displayName.trim().length < 1) {
     return {
       error: "Display name is required",
       code: "INVALID_DISPLAY_NAME"
@@ -356,45 +319,6 @@ Database Request: Query
 └── Variable: existing_user
 ```
 
-**3. Create or Update User**
-```javascript
-// Conditional Logic
-if (existing_user.length === 0) {
-  // Create new user
-  const newUser = await xano.db.users.create({
-    line_user_id: inputs.line_user_id,
-    display_name: inputs.display_name,
-    picture_url: inputs.picture_url || null,
-    membership_level: 'bronze',
-    points_balance: 0,
-    wallet_balance: 0.00,
-    created_at: new Date(),
-    last_login: new Date()
-  });
-  
-  return {
-    success: true,
-    action: 'created',
-    user: newUser,
-    message: 'User registered successfully'
-  };
-} else {
-  // Update existing user
-  const updatedUser = await xano.db.users.update(existing_user[0].id, {
-    display_name: inputs.display_name,
-    picture_url: inputs.picture_url || existing_user[0].picture_url,
-    last_login: new Date()
-  });
-  
-  return {
-    success: true,
-    action: 'updated',
-    user: updatedUser,
-    message: 'User updated successfully'
-  };
-}
-```
-
 #### GET /auth/user/{line_user_id} 👤
 
 **Xano API 設定：**
@@ -405,20 +329,6 @@ API → Add Endpoint
 ├── Authentication: None
 └── URL Parameters:
     └── line_user_id (text, required)
-```
-
-**Function Stack：**
-```
-1. Database Request: Query Single
-   ├── Table: users
-   ├── Filter: line_user_id = {line_user_id}
-   └── Variable: user_data
-
-2. Conditional Response
-   ├── If user_data exists:
-   │   └── Return: user_data with success: true
-   └── If user_data not found:
-       └── Return: {success: false, message: "User not found"}
 ```
 
 ### 2. 商品管理 API
@@ -441,16 +351,16 @@ API → Add Endpoint
 **Function Stack：**
 ```javascript
 // 1. Build Dynamic Query
-function buildProductQuery(category, available_only, limit, offset) {
+function buildProductQuery(category, availableOnly, limit, offset) {
   let filters = [];
   
-  if (available_only) {
+  if (availableOnly) {
     filters.push('availability_status = true');
     filters.push('stock_quantity > 0');
   }
   
   if (category && category !== 'all') {
-    filters.push(`category = '${category}'`);
+    filters.push("category = '" + category + "'");
   }
   
   return {
@@ -460,130 +370,9 @@ function buildProductQuery(category, available_only, limit, offset) {
     sort: 'rating DESC, name ASC'
   };
 }
-
-// 2. Execute Query
-const products = await xano.db.products.findMany({
-  where: queryConditions,
-  limit: limit,
-  offset: offset,
-  orderBy: [
-    { rating: 'desc' },
-    { name: 'asc' }
-  ]
-});
-
-// 3. Add Computed Fields
-const enrichedProducts = products.map(product => ({
-  ...product,
-  is_low_stock: product.stock_quantity <= product.low_stock_threshold,
-  estimated_wait: product.preparation_time,
-  price_formatted: `$${product.price}`
-}));
-
-return {
-  success: true,
-  products: enrichedProducts,
-  total_count: totalCount,
-  page_info: {
-    has_next: offset + limit < totalCount,
-    has_previous: offset > 0,
-    current_page: Math.floor(offset / limit) + 1
-  }
-};
 ```
 
-#### GET /products/categories 📋
-
-**Xano API 設定：**
-```
-API → Add Endpoint
-├── Method: GET
-├── Path: /products/categories
-└── Authentication: None
-```
-
-**Function Stack：**
-```sql
--- Database Request: Custom Query
-SELECT 
-  category,
-  COUNT(*) as product_count,
-  AVG(rating) as avg_rating,
-  MIN(price) as min_price,
-  MAX(price) as max_price
-FROM products 
-WHERE availability_status = true 
-GROUP BY category 
-ORDER BY category;
-```
-
-### 3. 門市管理 API
-
-#### GET /stores 🏪
-
-**Xano API 設定：**
-```
-API → Add Endpoint
-├── Method: GET
-├── Path: /stores
-├── Authentication: None
-└── Query Parameters:
-    ├── latitude (decimal, optional)
-    ├── longitude (decimal, optional)
-    └── radius (integer, default: 5000) # 米
-```
-
-**Function Stack：**
-```javascript
-// 1. Distance Calculation (if location provided)
-function calculateDistance(lat1, lon1, lat2, lon2) {
-  const R = 6371000; // 地球半徑（米）
-  const φ1 = lat1 * Math.PI/180;
-  const φ2 = lat2 * Math.PI/180;
-  const Δφ = (lat2-lat1) * Math.PI/180;
-  const Δλ = (lon2-lon1) * Math.PI/180;
-
-  const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
-            Math.cos(φ1) * Math.cos(φ2) *
-            Math.sin(Δλ/2) * Math.sin(Δλ/2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-
-  return R * c;
-}
-
-// 2. Query Stores with Real-time Data
-const stores = await xano.db.stores.findMany({
-  where: { store_status: 'open' }
-});
-
-// 3. Enrich with Real-time Information
-const enrichedStores = stores.map(store => {
-  const distance = inputs.latitude && inputs.longitude ? 
-    calculateDistance(inputs.latitude, inputs.longitude, store.latitude, store.longitude) : null;
-  
-  return {
-    ...store,
-    distance_meters: distance,
-    distance_formatted: distance ? `${Math.round(distance)}m` : null,
-    estimated_wait_time: calculateWaitTime(store.current_queue_count, store.average_wait_time),
-    is_busy: store.current_queue_count > store.max_concurrent_orders * 0.8,
-    operating_status: getCurrentOperatingStatus(store.operating_hours)
-  };
-});
-
-// 4. Sort by Distance or Name
-const sortedStores = inputs.latitude && inputs.longitude ?
-  enrichedStores.sort((a, b) => (a.distance_meters || Infinity) - (b.distance_meters || Infinity)) :
-  enrichedStores.sort((a, b) => a.name.localeCompare(b.name));
-
-return {
-  success: true,
-  stores: sortedStores,
-  count: sortedStores.length
-};
-```
-
-### 4. 訂單管理 API (核心功能) ⭐
+### 3. 訂單管理 API (核心功能) ⭐
 
 #### POST /orders 📋
 
@@ -627,202 +416,7 @@ async function validateOrderInput(inputs) {
     throw new Error('Store not available');
   }
   
-  // 驗證商品存在且有庫存
-  for (const item of inputs.items) {
-    const product = await xano.db.products.findUnique({
-      where: { id: item.product_id }
-    });
-    
-    if (!product || !product.availability_status) {
-      throw new Error(`Product ${item.name} is not available`);
-    }
-    
-    if (product.stock_quantity < item.quantity) {
-      throw new Error(`Insufficient stock for ${item.name}`);
-    }
-  }
-  
   return { user, store, valid: true };
-}
-```
-
-**2. Payment Processing**
-```javascript
-// Custom Function: Process Payment
-async function processPayment(user, total_amount, payment_method) {
-  switch (payment_method) {
-    case 'wallet':
-      if (user.wallet_balance < total_amount) {
-        throw new Error('Insufficient wallet balance');
-      }
-      
-      await xano.db.users.update(user.id, {
-        wallet_balance: user.wallet_balance - total_amount
-      });
-      break;
-      
-    case 'points':
-      if (user.points_balance < total_amount) {
-        throw new Error('Insufficient points balance');
-      }
-      
-      await xano.db.users.update(user.id, {
-        points_balance: user.points_balance - total_amount
-      });
-      break;
-      
-    case 'linepay':
-    case 'credit':
-      // 這裡會整合外部支付服務
-      // 現階段先標記為待付款
-      break;
-      
-    default:
-      throw new Error('Invalid payment method');
-  }
-  
-  return { success: true };
-}
-```
-
-**3. Order Creation & Stock Update**
-```javascript
-// Transaction: 確保資料一致性
-async function createOrderTransaction(inputs, user, store) {
-  return await xano.db.$transaction(async (tx) => {
-    // 1. 創建訂單
-    const order = await tx.orders.create({
-      data: {
-        user_id: user.id,
-        store_id: store.id,
-        order_items: JSON.stringify(inputs.items),
-        total_amount: inputs.total_amount,
-        payment_method: inputs.payment_method,
-        order_status: 'pending',
-        order_type: inputs.order_type,
-        scheduled_time: inputs.scheduled_time || null,
-        estimated_pickup_time: calculatePickupTime(inputs.order_type, store),
-        created_at: new Date()
-      }
-    });
-    
-    // 2. 更新商品庫存
-    for (const item of inputs.items) {
-      await tx.products.update({
-        where: { id: item.product_id },
-        data: {
-          stock_quantity: {
-            decrement: item.quantity
-          }
-        }
-      });
-    }
-    
-    // 3. 更新門市排隊狀況
-    if (inputs.order_type === 'pickup_now') {
-      await tx.stores.update({
-        where: { id: store.id },
-        data: {
-          current_queue_count: {
-            increment: 1
-          }
-        }
-      });
-    }
-    
-    // 4. 計算並給予點數回饋
-    const pointsEarned = calculatePointsEarned(inputs.total_amount, user.membership_level);
-    await tx.users.update({
-      where: { id: user.id },
-      data: {
-        points_balance: {
-          increment: pointsEarned
-        }
-      }
-    });
-    
-    // 5. 記錄訂單狀態歷史
-    await tx.order_status_history.create({
-      data: {
-        order_id: order.id,
-        previous_status: null,
-        new_status: 'pending',
-        changed_by: 'system',
-        notes: 'Order created',
-        created_at: new Date()
-      }
-    });
-    
-    return {
-      order,
-      points_earned: pointsEarned
-    };
-  });
-}
-```
-
-**4. Response Formation**
-```javascript
-// Final Response
-return {
-  success: true,
-  order: {
-    id: orderResult.order.id,
-    status: orderResult.order.order_status,
-    total_amount: orderResult.order.total_amount,
-    estimated_pickup_time: orderResult.order.estimated_pickup_time,
-    created_at: orderResult.order.created_at
-  },
-  user_updated: {
-    points_balance: updatedUser.points_balance,
-    wallet_balance: updatedUser.wallet_balance,
-    points_earned: orderResult.points_earned
-  },
-  store_info: {
-    name: store.name,
-    address: store.address,
-    current_wait_time: calculateCurrentWaitTime(store)
-  }
-};
-```
-
-#### GET /orders/user/{user_id} 📊
-
-**訂單歷史查詢：**
-```javascript
-// API Function
-async function getUserOrderHistory(user_id, limit = 20, offset = 0) {
-  const orders = await xano.db.orders.findMany({
-    where: { user_id: parseInt(user_id) },
-    include: {
-      store: {
-        select: { name: true, address: true }
-      }
-    },
-    orderBy: { created_at: 'desc' },
-    limit: parseInt(limit),
-    offset: parseInt(offset)
-  });
-  
-  const enrichedOrders = orders.map(order => ({
-    ...order,
-    order_items: JSON.parse(order.order_items),
-    store_name: order.store.name,
-    store_address: order.store.address,
-    status_display: getStatusDisplayText(order.order_status),
-    can_cancel: canCancelOrder(order.order_status, order.created_at),
-    can_modify: canModifyOrder(order.order_status, order.scheduled_time)
-  }));
-  
-  return {
-    success: true,
-    orders: enrichedOrders,
-    pagination: {
-      limit,
-      offset,
-      total: await xano.db.orders.count({ where: { user_id: parseInt(user_id) } })
-    }
-  };
 }
 ```
 
@@ -832,9 +426,9 @@ async function getUserOrderHistory(user_id, limit = 20, offset = 0) {
 
 ### 1. 智慧會員等級系統
 
-#### Database Trigger 自動升級
+#### PostgreSQL 觸發器自動升級
 
-**PostgreSQL 觸發器：**
+**會員升級函數：**
 ```sql
 -- 創建會員升級函數
 CREATE OR REPLACE FUNCTION update_membership_level()
@@ -865,223 +459,80 @@ CREATE TRIGGER trigger_update_membership
 
 ```javascript
 // 計算會員回饋率
-function calculateMembershipBenefits(membership_level, order_amount) {
+function calculateMembershipBenefits(membershipLevel, orderAmount) {
   const benefits = {
     bronze: {
-      points_rate: 0.01,      // 1%
-      discount_rate: 0,       // 無折扣
-      free_delivery: false
+      pointsRate: 0.01,      // 1%
+      discountRate: 0,       // 無折扣
+      freeDelivery: false
     },
     silver: {
-      points_rate: 0.015,     // 1.5%
-      discount_rate: 0.05,    // 5% 折扣
-      free_delivery: true
+      pointsRate: 0.015,     // 1.5%
+      discountRate: 0.05,    // 5% 折扣
+      freeDelivery: true
     },
     gold: {
-      points_rate: 0.02,      // 2%
-      discount_rate: 0.1,     // 10% 折扣
-      free_delivery: true,
-      priority_queue: true
+      pointsRate: 0.02,      // 2%
+      discountRate: 0.1,     // 10% 折扣
+      freeDelivery: true,
+      priorityQueue: true
     }
   };
   
-  const memberBenefits = benefits[membership_level] || benefits.bronze;
+  const memberBenefits = benefits[membershipLevel] || benefits.bronze;
   
   return {
-    points_earned: Math.floor(order_amount * memberBenefits.points_rate),
-    discount_amount: Math.floor(order_amount * memberBenefits.discount_rate),
-    free_delivery: memberBenefits.free_delivery,
-    priority_queue: memberBenefits.priority_queue || false,
-    final_amount: order_amount - Math.floor(order_amount * memberBenefits.discount_rate)
+    pointsEarned: Math.floor(orderAmount * memberBenefits.pointsRate),
+    discountAmount: Math.floor(orderAmount * memberBenefits.discountRate),
+    freeDelivery: memberBenefits.freeDelivery,
+    priorityQueue: memberBenefits.priorityQueue || false,
+    finalAmount: orderAmount - Math.floor(orderAmount * memberBenefits.discountRate)
   };
 }
 ```
 
-### 2. 即時庫存管理系統
-
-#### POST /admin/inventory/update 📦
-
-**庫存更新 API：**
-```javascript
-// Xano Function: Update Inventory
-async function updateInventory(product_id, quantity_change, operation_type) {
-  const product = await xano.db.products.findUnique({
-    where: { id: product_id }
-  });
-  
-  if (!product) {
-    throw new Error('Product not found');
-  }
-  
-  let new_quantity;
-  
-  switch (operation_type) {
-    case 'restock':
-      new_quantity = product.stock_quantity + Math.abs(quantity_change);
-      break;
-    case 'consume':
-      new_quantity = Math.max(0, product.stock_quantity - Math.abs(quantity_change));
-      break;
-    case 'set':
-      new_quantity = Math.max(0, quantity_change);
-      break;
-    default:
-      throw new Error('Invalid operation type');
-  }
-  
-  const updated_product = await xano.db.products.update({
-    where: { id: product_id },
-    data: {
-      stock_quantity: new_quantity,
-      availability_status: new_quantity > 0
-    }
-  });
-  
-  // 低庫存警示
-  if (new_quantity <= product.low_stock_threshold) {
-    await sendLowStockAlert(product, new_quantity);
-  }
-  
-  return {
-    success: true,
-    product: updated_product,
-    previous_quantity: product.stock_quantity,
-    new_quantity: new_quantity,
-    alert_triggered: new_quantity <= product.low_stock_threshold
-  };
-}
-```
-
-#### 自動庫存警示系統
-
-```javascript
-// Custom Function: Low Stock Alert
-async function sendLowStockAlert(product, current_stock) {
-  const alert_data = {
-    product_id: product.id,
-    product_name: product.name,
-    current_stock: current_stock,
-    threshold: product.low_stock_threshold,
-    severity: current_stock === 0 ? 'critical' : 'warning',
-    timestamp: new Date()
-  };
-  
-  // 可以整合外部通知服務
-  // 例如：Slack, Email, LINE Notify 等
-  
-  console.log('Low Stock Alert:', alert_data);
-  
-  return alert_data;
-}
-```
-
-### 3. 動態定價系統
+### 2. 動態定價系統
 
 #### GET /products/dynamic-pricing 💰
 
 **基於需求的動態定價：**
 ```javascript
 // Custom Function: Calculate Dynamic Pricing
-function calculateDynamicPricing(product, current_demand, time_of_day, store_capacity) {
-  const base_price = product.price;
-  let price_multiplier = 1.0;
+function calculateDynamicPricing(product, currentDemand, timeOfDay, storeCapacity) {
+  const basePrice = product.price;
+  let priceMultiplier = 1.0;
   
   // 需求量調整（繁忙時段加價）
-  if (current_demand > store_capacity * 0.8) {
-    price_multiplier += 0.1; // 10% 加價
-  } else if (current_demand < store_capacity * 0.3) {
-    price_multiplier -= 0.05; // 5% 折價
+  if (currentDemand > storeCapacity * 0.8) {
+    priceMultiplier += 0.1; // 10% 加價
+  } else if (currentDemand < storeCapacity * 0.3) {
+    priceMultiplier -= 0.05; // 5% 折價
   }
   
   // 時段調整（尖峰時段）
   const hour = new Date().getHours();
   if ((hour >= 7 && hour <= 9) || (hour >= 17 && hour <= 19)) {
-    price_multiplier += 0.05; // 尖峰時段 5% 加價
+    priceMultiplier += 0.05; // 尖峰時段 5% 加價
   }
   
   // 庫存調整（庫存不足時輕微加價）
-  if (product.stock_quantity < product.low_stock_threshold) {
-    price_multiplier += 0.03; // 3% 加價
+  if (product.stockQuantity < product.lowStockThreshold) {
+    priceMultiplier += 0.03; // 3% 加價
   }
   
-  const dynamic_price = Math.round(base_price * price_multiplier);
+  const dynamicPrice = Math.round(basePrice * priceMultiplier);
   
   return {
-    base_price: base_price,
-    dynamic_price: dynamic_price,
-    multiplier: price_multiplier,
+    basePrice: basePrice,
+    dynamicPrice: dynamicPrice,
+    multiplier: priceMultiplier,
     factors: {
-      demand_adjustment: current_demand > store_capacity * 0.8 ? '+10%' : 
-                        current_demand < store_capacity * 0.3 ? '-5%' : '0%',
-      time_adjustment: ((hour >= 7 && hour <= 9) || (hour >= 17 && hour <= 19)) ? '+5%' : '0%',
-      stock_adjustment: product.stock_quantity < product.low_stock_threshold ? '+3%' : '0%'
+      demandAdjustment: currentDemand > storeCapacity * 0.8 ? '+10%' : 
+                        currentDemand < storeCapacity * 0.3 ? '-5%' : '0%',
+      timeAdjustment: ((hour >= 7 && hour <= 9) || (hour >= 17 && hour <= 19)) ? '+5%' : '0%',
+      stockAdjustment: product.stockQuantity < product.lowStockThreshold ? '+3%' : '0%'
     }
   };
-}
-```
-
-### 4. 智慧排隊預測系統
-
-#### GET /stores/{store_id}/queue-prediction 🔮
-
-**機器學習式等待時間預測：**
-```javascript
-// Custom Function: Predict Wait Time
-function predictWaitTime(store_id, current_queue, historical_data, order_complexity) {
-  // 簡化的預測演算法（實際可整合更複雜的 ML 模型）
-  
-  // 基礎等待時間計算
-  const base_time_per_order = 4; // 基礎 4 分鐘/訂單
-  
-  // 訂單複雜度因子
-  const complexity_factors = {
-    simple: 0.8,    // 簡單飲品
-    medium: 1.0,    // 一般飲品
-    complex: 1.3    // 複雜客製化
-  };
-  
-  // 門市效率因子（基於歷史數據）
-  const store_efficiency = calculateStoreEfficiency(historical_data);
-  
-  // 時段繁忙度
-  const time_factor = getTimeFactor();
-  
-  // 預測計算
-  const predicted_time = Math.ceil(
-    current_queue * 
-    base_time_per_order * 
-    complexity_factors[order_complexity] * 
-    time_factor / 
-    store_efficiency
-  );
-  
-  return {
-    predicted_wait_minutes: predicted_time,
-    confidence_level: calculateConfidence(historical_data),
-    factors: {
-      queue_length: current_queue,
-      store_efficiency: store_efficiency,
-      time_factor: time_factor,
-      complexity: order_complexity
-    },
-    recommendation: predicted_time > 15 ? 
-      'Consider scheduling for later or choose another store' : 
-      'Good time to order'
-  };
-}
-
-// 計算門市效率
-function calculateStoreEfficiency(historical_data) {
-  if (!historical_data || historical_data.length === 0) {
-    return 1.0; // 預設效率
-  }
-  
-  const avg_processing_time = historical_data.reduce((sum, record) => 
-    sum + record.actual_processing_time, 0) / historical_data.length;
-  
-  const standard_processing_time = 4; // 標準時間
-  
-  return standard_processing_time / avg_processing_time;
 }
 ```
 
@@ -1123,33 +574,15 @@ GET    /products/dynamic-pricing    # 動態定價
 # 門市管理
 GET    /stores                      # 門市列表
 GET    /stores/{store_id}           # 門市詳情
-GET    /stores/{store_id}/queue-prediction  # 排隊預測
 
 # 訂單管理
 POST   /orders                      # 創建訂單
 GET    /orders/user/{user_id}       # 用戶訂單歷史
 GET    /orders/{order_id}           # 訂單詳情
 PUT    /orders/{order_id}/status    # 更新訂單狀態
-
-# 庫存管理
-POST   /admin/inventory/update      # 更新庫存
-GET    /admin/inventory/alerts      # 庫存警示
 ```
 
-### 2. Postman Collection 自動匯出
-
-**環境變數設定：**
-```json
-{
-  "xano_base_url": "https://x8ki-letl-twmt.n7.xano.io/api:prod",
-  "xano_dev_url": "https://x8ki-letl-twmt.n7.xano.io/api:dev",
-  "auth_token": "{{jwt_token}}",
-  "test_user_id": "U1234567890abcdef",
-  "test_store_id": 1
-}
-```
-
-### 3. 端到端測試套件
+### 2. 端到端測試套件
 
 **完整測試流程：**
 ```javascript
@@ -1224,44 +657,6 @@ Development → Staging → Production
 }
 ```
 
-### 3. 進階監控整合
-
-**外部監控服務整合：**
-```javascript
-// Webhook 整合 - 系統警示
-async function sendSystemAlert(alert_type, message, severity) {
-  const webhook_configs = {
-    slack: {
-      url: process.env.SLACK_WEBHOOK_URL,
-      format: 'slack'
-    },
-    discord: {
-      url: process.env.DISCORD_WEBHOOK_URL,
-      format: 'discord'
-    },
-    line_notify: {
-      url: 'https://notify-api.line.me/api/notify',
-      token: process.env.LINE_NOTIFY_TOKEN
-    }
-  };
-  
-  // 發送到多個通知管道
-  for (const [service, config] of Object.entries(webhook_configs)) {
-    try {
-      await sendWebhookNotification(config, {
-        alert_type,
-        message,
-        severity,
-        timestamp: new Date(),
-        service: 'Chayu Time Backend'
-      });
-    } catch (error) {
-      console.error(`Failed to send alert to ${service}:`, error);
-    }
-  }
-}
-```
-
 ---
 
 ## 💰 成本與效能分析
@@ -1300,16 +695,6 @@ async function sendSystemAlert(alert_type, message, severity) {
       "優先技術支援"
     ],
     "suitable_for": "企業級應用"
-  },
-  "enterprise_plan": {
-    "price": "$149+/month",
-    "features": [
-      "專屬資源配置",
-      "SLA 保證",
-      "自定義整合",
-      "專屬客戶經理"
-    ],
-    "suitable_for": "大型企業應用"
   }
 }
 ```
@@ -1397,38 +782,6 @@ CREATE INDEX idx_orders_deleted_at ON orders(deleted_at);
 }
 ```
 
-**3. 安全性最佳實踐：**
-```javascript
-// JWT Token 管理
-// 輸入參數驗證
-// SQL Injection 防護
-// Rate Limiting 實作
-
-// 範例：JWT 中間件
-function authenticateToken(req, res, next) {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
-  
-  if (!token) {
-    return res.status(401).json({ 
-      success: false, 
-      error: 'Access token required' 
-    });
-  }
-  
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) {
-      return res.status(403).json({ 
-        success: false, 
-        error: 'Invalid or expired token' 
-      });
-    }
-    req.user = user;
-    next();
-  });
-}
-```
-
 ### 團隊協作建議
 
 **角色分工：**
@@ -1450,14 +803,14 @@ function authenticateToken(req, res, next) {
 ### Xano 官方資源
 
 **學習平台：**
-- [Xano University](https://university.xano.com/) - 免費線上課程
-- [Xano Documentation](https://docs.xano.com/) - 完整技術文檔
-- [Xano Community](https://community.xano.com/) - 開發者社群
+- Xano University - 免費線上課程
+- Xano Documentation - 完整技術文檔
+- Xano Community - 開發者社群
 
 **進階資源：**
-- [Xano YouTube Channel](https://youtube.com/@xano) - 視頻教學
-- [Xano Templates](https://xano.com/templates) - 預建模板
-- [Xano Blog](https://xano.com/blog) - 最佳實踐分享
+- Xano YouTube Channel - 視頻教學
+- Xano Templates - 預建模板
+- Xano Blog - 最佳實踐分享
 
 ### 中文學習社群
 
@@ -1469,12 +822,12 @@ function authenticateToken(req, res, next) {
 ### 整合參考資源
 
 **LINE 開發：**
-- [LINE Developers](https://developers.line.biz/) - 官方開發文檔
-- [LIFF Documentation](https://developers.line.biz/en/docs/liff/) - LIFF 整合指南
+- LINE Developers - 官方開發文檔
+- LIFF Documentation - LIFF 整合指南
 
 **PostgreSQL 優化：**
-- [PostgreSQL 官方文檔](https://www.postgresql.org/docs/)
-- [PostgreSQL Performance](https://wiki.postgresql.org/wiki/Performance_Optimization)
+- PostgreSQL 官方文檔
+- PostgreSQL Performance
 
 ---
 
