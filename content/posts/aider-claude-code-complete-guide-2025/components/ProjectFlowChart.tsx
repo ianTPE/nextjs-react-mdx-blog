@@ -1,211 +1,135 @@
-"use client";
+"use client"
 
-import React from 'react';
+import { Card, CardContent } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { ArrowRight, ArrowDown } from "lucide-react"
 
-const ProjectFlowChart: React.FC = () => {
+const ProjectFlowChart = () => {
+  const phases = [
+    {
+      title: "第一階段",
+      color: "bg-blue-500",
+      textColor: "text-white",
+      badgeVariant: "default" as const,
+      steps: ["需求分析", "技術選型", "架構設計", "專案結構"],
+    },
+    {
+      title: "第二階段",
+      color: "bg-red-500",
+      textColor: "text-white",
+      badgeVariant: "destructive" as const,
+      steps: ["資料庫設計", "API 端點", "業務邏輯", "測試用例"],
+    },
+    {
+      title: "第三階段",
+      color: "bg-green-500",
+      textColor: "text-white",
+      badgeVariant: "default" as const,
+      steps: ["單元測試", "API測試", "效能測試", "安全測試"],
+    },
+    {
+      title: "第四階段",
+      color: "bg-yellow-500",
+      textColor: "text-black",
+      badgeVariant: "secondary" as const,
+      steps: ["CI/CD 配置", "容器化", "雲端部署", "監控日誌"],
+    },
+  ]
+
   return (
-    <div className="w-full max-w-4xl mx-auto my-8 px-2 overflow-x-auto">
-      <div className="min-w-[600px] w-full">
-        {/* Flowchart container */}
-        <div className="relative flex flex-col gap-6">
-          
-          {/* Phase 1 */}
-          <div className="w-full">
-            <div className="text-center mb-2 font-semibold bg-gray-100 dark:bg-gray-800 py-1 rounded">第一階段</div>
-            <div className="flex items-center justify-between">
-              {/* Nodes */}
-              <div className="flex-1 flex justify-center">
-                <div className="w-24 h-12 bg-indigo-500 text-white rounded flex items-center justify-center text-sm shadow-md">
-                  需求分析
-                </div>
+    <div className="w-full max-w-6xl mx-auto p-6">
+      <div className="relative">
+        {phases.map((phase, phaseIndex) => (
+          <div key={phaseIndex} className="relative">
+            {/* Phase Content */}
+            <div className="space-y-4 py-6">
+              {/* Phase Title */}
+              <div className="text-center">
+                <Badge variant={phase.badgeVariant} className="text-lg px-4 py-2">
+                  {phase.title}
+                </Badge>
               </div>
-              
-              <div className="flex-1 flex justify-center">
-                <div className="w-24 h-12 bg-indigo-500 text-white rounded flex items-center justify-center text-sm shadow-md">
-                  技術選型
-                </div>
-              </div>
-              
-              <div className="flex-1 flex justify-center">
-                <div className="w-24 h-12 bg-indigo-500 text-white rounded flex items-center justify-center text-sm shadow-md">
-                  架構設計
-                </div>
-              </div>
-              
-              <div className="flex-1 flex justify-center">
-                <div className="w-24 h-12 bg-indigo-500 text-white rounded flex items-center justify-center text-sm shadow-md">
-                  專案結構
-                </div>
-              </div>
-            </div>
-            
-            {/* Arrows */}
-            <div className="relative h-4">
-              <div className="absolute top-1/2 left-[12.5%] right-[12.5%] h-0.5 bg-gray-400"></div>
-              <div className="absolute top-0 left-[25%] w-0.5 h-4 bg-gray-400"></div>
-              <div className="absolute top-0 left-[50%] w-0.5 h-4 bg-gray-400"></div>
-              <div className="absolute top-0 left-[75%] w-0.5 h-4 bg-gray-400"></div>
-              <div className="absolute top-0 right-[25%] w-2 h-2 border-t-2 border-r-2 border-gray-400 transform rotate-45 translate-x-1 -translate-y-1"></div>
-              <div className="absolute top-0 right-[50%] w-2 h-2 border-t-2 border-r-2 border-gray-400 transform rotate-45 translate-x-1 -translate-y-1"></div>
-              <div className="absolute top-0 right-[75%] w-2 h-2 border-t-2 border-r-2 border-gray-400 transform rotate-45 translate-x-1 -translate-y-1"></div>
-            </div>
-          </div>
-          
-          {/* Connector between Phase 1 and Phase 2 */}
-          <div className="relative h-10 flex justify-end pr-[25%]">
-            <div className="absolute top-0 right-[25%] w-0.5 h-full bg-gray-400"></div>
-            <div className="absolute bottom-0 right-[25%] left-[12.5%] h-0.5 bg-gray-400"></div>
-            <div className="absolute bottom-0 left-[12.5%] w-0.5 h-1/2 bg-gray-400"></div>
-            <div className="absolute bottom-0 left-[12.5%] w-2 h-2 border-b-2 border-l-2 border-gray-400 transform -rotate-45 -translate-x-1 translate-y-1"></div>
-          </div>
-          
-          {/* Phase 2 */}
-          <div className="w-full">
-            <div className="text-center mb-2 font-semibold bg-gray-100 dark:bg-gray-800 py-1 rounded">第二階段</div>
-            <div className="flex items-center justify-between">
-              <div className="flex-1 flex justify-center">
-                <div className="w-24 h-12 bg-red-500 text-white rounded flex items-center justify-center text-sm shadow-md">
-                  資料庫設計
-                </div>
-              </div>
-              
-              <div className="flex-1 flex justify-center">
-                <div className="w-24 h-12 bg-red-500 text-white rounded flex items-center justify-center text-sm shadow-md">
-                  API 端點
-                </div>
-              </div>
-              
-              <div className="flex-1 flex justify-center">
-                <div className="w-24 h-12 bg-red-500 text-white rounded flex items-center justify-center text-sm shadow-md">
-                  業務邏輯
-                </div>
-              </div>
-              
-              <div className="flex-1 flex justify-center">
-                <div className="w-24 h-12 bg-red-500 text-white rounded flex items-center justify-center text-sm shadow-md">
-                  測試用例
-                </div>
-              </div>
-            </div>
-            
-            {/* Arrows */}
-            <div className="relative h-4">
-              <div className="absolute top-1/2 left-[12.5%] right-[12.5%] h-0.5 bg-gray-400"></div>
-              <div className="absolute top-0 left-[25%] w-0.5 h-4 bg-gray-400"></div>
-              <div className="absolute top-0 left-[50%] w-0.5 h-4 bg-gray-400"></div>
-              <div className="absolute top-0 left-[75%] w-0.5 h-4 bg-gray-400"></div>
-              <div className="absolute top-0 right-[25%] w-2 h-2 border-t-2 border-r-2 border-gray-400 transform rotate-45 translate-x-1 -translate-y-1"></div>
-              <div className="absolute top-0 right-[50%] w-2 h-2 border-t-2 border-r-2 border-gray-400 transform rotate-45 translate-x-1 -translate-y-1"></div>
-              <div className="absolute top-0 right-[75%] w-2 h-2 border-t-2 border-r-2 border-gray-400 transform rotate-45 translate-x-1 -translate-y-1"></div>
-            </div>
-          </div>
-          
-          {/* Connector between Phase 2 and Phase 3 */}
-          <div className="relative h-10 flex justify-end pr-[25%]">
-            <div className="absolute top-0 right-[25%] w-0.5 h-full bg-gray-400"></div>
-            <div className="absolute bottom-0 right-[25%] left-[12.5%] h-0.5 bg-gray-400"></div>
-            <div className="absolute bottom-0 left-[12.5%] w-0.5 h-1/2 bg-gray-400"></div>
-            <div className="absolute bottom-0 left-[12.5%] w-2 h-2 border-b-2 border-l-2 border-gray-400 transform -rotate-45 -translate-x-1 translate-y-1"></div>
-          </div>
-          
-          {/* Phase 3 */}
-          <div className="w-full">
-            <div className="text-center mb-2 font-semibold bg-gray-100 dark:bg-gray-800 py-1 rounded">第三階段</div>
-            <div className="flex items-center justify-between">
-              <div className="flex-1 flex justify-center">
-                <div className="w-24 h-12 bg-green-500 text-white rounded flex items-center justify-center text-sm shadow-md">
-                  單元測試
-                </div>
-              </div>
-              
-              <div className="flex-1 flex justify-center">
-                <div className="w-24 h-12 bg-green-500 text-white rounded flex items-center justify-center text-sm shadow-md">
-                  API測試
-                </div>
-              </div>
-              
-              <div className="flex-1 flex justify-center">
-                <div className="w-24 h-12 bg-green-500 text-white rounded flex items-center justify-center text-sm shadow-md">
-                  效能測試
-                </div>
-              </div>
-              
-              <div className="flex-1 flex justify-center">
-                <div className="w-24 h-12 bg-green-500 text-white rounded flex items-center justify-center text-sm shadow-md">
-                  安全測試
-                </div>
-              </div>
-            </div>
-            
-            {/* Arrows */}
-            <div className="relative h-4">
-              <div className="absolute top-1/2 left-[12.5%] right-[12.5%] h-0.5 bg-gray-400"></div>
-              <div className="absolute top-0 left-[25%] w-0.5 h-4 bg-gray-400"></div>
-              <div className="absolute top-0 left-[50%] w-0.5 h-4 bg-gray-400"></div>
-              <div className="absolute top-0 left-[75%] w-0.5 h-4 bg-gray-400"></div>
-              <div className="absolute top-0 right-[25%] w-2 h-2 border-t-2 border-r-2 border-gray-400 transform rotate-45 translate-x-1 -translate-y-1"></div>
-              <div className="absolute top-0 right-[50%] w-2 h-2 border-t-2 border-r-2 border-gray-400 transform rotate-45 translate-x-1 -translate-y-1"></div>
-              <div className="absolute top-0 right-[75%] w-2 h-2 border-t-2 border-r-2 border-gray-400 transform rotate-45 translate-x-1 -translate-y-1"></div>
-            </div>
-          </div>
-          
-          {/* Connector between Phase 3 and Phase 4 */}
-          <div className="relative h-10 flex justify-end pr-[25%]">
-            <div className="absolute top-0 right-[25%] w-0.5 h-full bg-gray-400"></div>
-            <div className="absolute bottom-0 right-[25%] left-[12.5%] h-0.5 bg-gray-400"></div>
-            <div className="absolute bottom-0 left-[12.5%] w-0.5 h-1/2 bg-gray-400"></div>
-            <div className="absolute bottom-0 left-[12.5%] w-2 h-2 border-b-2 border-l-2 border-gray-400 transform -rotate-45 -translate-x-1 translate-y-1"></div>
-          </div>
-          
-          {/* Phase 4 */}
-          <div className="w-full">
-            <div className="text-center mb-2 font-semibold bg-gray-100 dark:bg-gray-800 py-1 rounded">第四階段</div>
-            <div className="flex items-center justify-between">
-              <div className="flex-1 flex justify-center">
-                <div className="w-24 h-12 bg-yellow-500 text-black rounded flex items-center justify-center text-sm shadow-md">
-                  CI/CD 配置
-                </div>
-              </div>
-              
-              <div className="flex-1 flex justify-center">
-                <div className="w-24 h-12 bg-yellow-500 text-black rounded flex items-center justify-center text-sm shadow-md">
-                  容器化
-                </div>
-              </div>
-              
-              <div className="flex-1 flex justify-center">
-                <div className="w-24 h-12 bg-yellow-500 text-black rounded flex items-center justify-center text-sm shadow-md">
-                  雲端部署
-                </div>
-              </div>
-              
-              <div className="flex-1 flex justify-center">
-                <div className="w-24 h-12 bg-yellow-500 text-black rounded flex items-center justify-center text-sm shadow-md">
-                  監控日誌
-                </div>
-              </div>
-            </div>
-            
-            {/* Arrows */}
-            <div className="relative h-4">
-              <div className="absolute top-1/2 left-[12.5%] right-[12.5%] h-0.5 bg-gray-400"></div>
-              <div className="absolute top-0 left-[25%] w-0.5 h-4 bg-gray-400"></div>
-              <div className="absolute top-0 left-[50%] w-0.5 h-4 bg-gray-400"></div>
-              <div className="absolute top-0 left-[75%] w-0.5 h-4 bg-gray-400"></div>
-              <div className="absolute top-0 right-[25%] w-2 h-2 border-t-2 border-r-2 border-gray-400 transform rotate-45 translate-x-1 -translate-y-1"></div>
-              <div className="absolute top-0 right-[50%] w-2 h-2 border-t-2 border-r-2 border-gray-400 transform rotate-45 translate-x-1 -translate-y-1"></div>
-              <div className="absolute top-0 right-[75%] w-2 h-2 border-t-2 border-r-2 border-gray-400 transform rotate-45 translate-x-1 -translate-y-1"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      {/* Mobile optimization note */}
-      <div className="text-xs text-gray-500 text-center mt-3 md:hidden">
-        橫向滑動查看完整流程圖
-      </div>
-    </div>
-  );
-};
 
-export default ProjectFlowChart;
+              {/* Phase Steps */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                {phase.steps.map((step, stepIndex) => (
+                  <div key={stepIndex} className="relative">
+                    <Card className="w-full">
+                      <CardContent className="p-4">
+                        <div
+                          className={`${phase.color} ${phase.textColor} rounded-lg p-3 text-center font-medium text-sm`}
+                        >
+                          {step}
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    {/* Arrow between steps (not after last step) */}
+                    {stepIndex < phase.steps.length - 1 && (
+                      <div className="hidden md:block absolute top-1/2 -right-2 transform -translate-y-1/2 z-10">
+                        <div className="bg-white rounded-full p-1">
+                          <ArrowRight className="h-4 w-4 text-gray-500" />
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Mobile: Arrow below each step except last */}
+                    {stepIndex < phase.steps.length - 1 && (
+                      <div className="md:hidden flex justify-center py-2">
+                        <ArrowDown className="h-4 w-4 text-gray-400" />
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Curved connector to next phase */}
+            {phaseIndex < phases.length - 1 && (
+              <div className="relative h-24 w-full">
+                {/* Desktop curved connector */}
+                <div className="hidden md:block absolute inset-0">
+                  <svg width="100%" height="100%" viewBox="0 0 400 150" className="overflow-visible">
+                    <defs>
+                      <marker
+                        id={`arrowhead-${phaseIndex}`}
+                        markerWidth="10"
+                        markerHeight="7"
+                        refX="9"
+                        refY="3.5"
+                        orient="auto"
+                      >
+                        <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280" />
+                      </marker>
+                    </defs>
+                    <path
+                      d="M 690 10 L 690 75 L -270 75 L -270 140"
+                      stroke="#6b7280"
+                      strokeWidth="2.5"
+                      fill="none"
+                      markerEnd={`url(#arrowhead-${phaseIndex})`}
+                    />
+                  </svg>
+                </div>
+
+                {/* Mobile simple connector */}
+                <div className="md:hidden flex justify-center items-center h-full">
+                  <div className="flex flex-col items-center space-y-2">
+                    <div className="w-px h-6 bg-gray-300"></div>
+                    <ArrowDown className="h-5 w-5 text-gray-500" />
+                    <div className="w-px h-6 bg-gray-300"></div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Mobile optimization note */}
+      <div className="text-xs text-gray-500 text-center mt-6 md:hidden">在手機上垂直顯示流程</div>
+    </div>
+  )
+}
+
+export default ProjectFlowChart
