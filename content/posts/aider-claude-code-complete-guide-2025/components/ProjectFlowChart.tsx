@@ -71,7 +71,7 @@ const ProjectFlowChart: React.FC = () => {
               
               <div className="flex-1 flex justify-center">
                 <div className="w-24 h-12 bg-red-500 text-white rounded flex items-center justify-center text-sm shadow-md">
-                  API設計
+                  API 端點
                 </div>
               </div>
               
@@ -163,7 +163,7 @@ const ProjectFlowChart: React.FC = () => {
             <div className="flex items-center justify-between">
               <div className="flex-1 flex justify-center">
                 <div className="w-24 h-12 bg-yellow-500 text-black rounded flex items-center justify-center text-sm shadow-md">
-                  CI/CD
+                  CI/CD 配置
                 </div>
               </div>
               
