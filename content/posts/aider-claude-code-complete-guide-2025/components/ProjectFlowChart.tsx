@@ -54,7 +54,7 @@ const ProjectFlowChart = () => {
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 {phase.steps.map((step, stepIndex) => (
                   <div key={stepIndex} className="relative">
-                    <Card className="w-full">
+                    <Card className="w-full not-prose">
                       <CardContent className="p-4">
                         <div
                           className={`${phase.color} ${phase.textColor} rounded-lg p-3 text-center font-medium text-sm`}
