@@ -1,14 +1,80 @@
-> 當終端中的對話式程式設計遇上 Anthropic 的程式碼智慧體，一個全新的程式設計時代正在到來。
+> 當終端中的對話式程式設計遇上 Anthropic 的程式碼智慧體和 OpenAI 的多模態代理，一個全新的程式設計時代正在到來。
 
 ## 引言：程式設計範式的革命性轉變
 
-2025年，我們正站在 AI 程式設計工具發展的重要節點上。傳統的 IDE 外掛和程式碼補全工具已經無法滿足現代開發者對效率和智慧化的需求。在這個背景下，兩個革命性的工具脫穎而出：**Aider.chat** 作為終端中的 AI 結對程式設計助手，以及 **Claude Code** 作為 Anthropic 官方打造的命令列程式碼智慧體。
+2025年，我們正站在 AI 程式設計工具發展的重要節點上。傳統的 IDE 外掛和程式碼補全工具已經無法滿足現代開發者對效率和智慧化的需求。在這個背景下，三個革命性的工具脫穎而出：**Aider.chat** 作為終端中的 AI 結對程式設計助手、**Claude Code** 作為 Anthropic 官方打造的命令列程式碼智慧體，以及 **OpenAI Codex CLI** 作為首個真正支援多模態輸入的終端程式設計代理。
 
-當這兩個工具結合使用時，它們不僅僅是簡單的 1+1=2，而是創造了一種全新的程式設計體驗——從需求討論到程式碼實現，從測試到部署，從單檔案編輯到整個程式碼庫的重構，都可以透過自然語言對話來完成。
+當這三個工具結合使用時，它們不僅僅是簡單的 1+1+1=3，而是創造了一種全新的程式設計體驗——從視覺設計稿到程式碼實現，從對話迭代到深度重構，從單檔案編輯到整個程式碼庫的系統整合，都可以透過自然語言對話來完成。
 
-根據最新的統計資料，Aider 目前能夠編寫其每個版本中約 70% 的新程式碼，而 Claude 3.7 Sonnet 在 SWE-bench Verified 上實現了最先進的效能，該基準測試評估 AI 模型解決現實世界軟體問題的能力。這些數字不僅僅是統計，它們代表著 AI 程式設計工具已經從實驗階段進入了生產就緒階段。
+根據最新的統計資料，Aider 目前能夠編寫其每個版本中約 70% 的新程式碼，而 Claude 3.7 Sonnet 在 SWE-bench Verified 上實現了最先進的效能，該基準測試評估 AI 模型解決現實世界軟體問題的能力。同時，OpenAI Codex CLI 的多模態能力正在改變開發者如何將想法轉化為程式碼的方式，從截圖到可執行程式僅需數分鐘。這些數字不僅僅是統計，它們代表著 AI 程式設計工具已經從實驗階段進入了生產就緒階段。
 
 ## Aider.chat：終端中的 AI 結對程式設計革命
+
+### 為什麼選擇 Aider 而非「任何 AI」？
+
+當談到程式設計輔助時，很多人可能會問：「為什麼不直接用 ChatGPT 或其他在線 AI？」這個問題的答案揭示了 Aider.chat 的核心價值所在。
+
+**1. 本地檔案與環境感知**
+
+一般的在線 AI（如 ChatGPT）只能根據你複製貼上的內容進行回答，完全不知道你的專案目錄結構、已有的程式碼、設定檔案。而 Aider 直接在你的專案資料夾中運行，它可以：
+
+- 掃描並理解你的整個程式碼庫結構
+- 讀取現有的 `package.json`、`.gitignore`、配置檔案
+- 分析程式碼風格和架構模式
+- 基於專案上下文生成相容的程式碼
+
+```bash
+# Aider 會自動理解你的專案結構
+cd your-project
+aider
+> 為這個 React 專案新增 TypeScript 支援
+# Aider 知道你已有的依賴、配置，會做出相應調整
+```
+
+**2. 增量式檔案修改（Diff-based）**
+
+Aider 內建檔案 diff 機制，它會清楚顯示要新增或修改的程式碼，讓你審核後再寫入檔案：
+
+```diff
+--- a/package.json
++++ b/package.json
+@@ -10,6 +10,8 @@
+   "scripts": {
+     "dev": "next dev",
++    "lint": "eslint . --fix",
++    "format": "prettier --write 'src/**/*.{js,ts,tsx}'",
+     "build": "next build"
+   }
+```
+
+相比之下，普通 AI 只能給你一大段程式碼，你需要手動複製、整合，容易出錯也難以追蹤變更。
+
+**3. 持續對話＋記憶上下文**
+
+在開發過程中，Aider 能夠：
+- 記住整個專案的上下文
+- 理解之前的修改歷史
+- 根據專案結構提供相關建議
+
+```bash
+aider
+> 新增使用者認證功能
+# 稍後...
+> 為剛才的認證功能新增測試
+# Aider 記得之前的實現，會新增對應的測試
+```
+
+**4. 自動版本控制整合**
+
+Aider 的每次修改都會自動建立有意義的 Git 提交：
+
+```bash
+# Aider 自動產生的提交訊息範例
+git log --oneline
+ab12cd3 Add user authentication with JWT tokens
+9ef4567 Implement password hashing and validation
+2345abc Add user registration endpoint
+```
 
 ### 核心理念與設計哲學
 
@@ -30,15 +96,186 @@ Aider 的工作機制可以概括為以下幾個步驟：
 3. **自然語言互動**：開發者用自然語言描述需求，Aider 理解意圖並產生程式碼
 4. **版本控制整合**：每次修改自動建立 Git 提交，便於回滾和版本管理
 
+### Aider 的實際使用方式
+
+與一般的認知不同，Aider 並不是一個「專案產生器」，而是一個「程式碼對話助手」。以下是正確的使用方式：
+
+**新專案開發流程：**
+
+```bash
+# 1. 手動建立專案目錄
+mkdir my-new-project
+cd my-new-project
+git init
+
+# 2. 啟動 Aider
+aider --model sonnet
+
+# 3. 透過對話漸進式建立專案
+> 建立一個 React + TypeScript 專案的基本結構
+> 新增 package.json 和 tsconfig.json
+> 建立 src 目錄和入口檔案
+```
+
+**既有專案維護流程：**
+
+```bash
+# 1. 進入既有專案
+cd existing-project
+
+# 2. 只加入需要修改的檔案
+aider src/components/UserForm.jsx src/api/userService.js
+
+# 3. 描述需要的變更
+> 為 UserForm 新增表單驗證功能，並更新 userService 以支援新的 API 端點
+```
+
+**為什麼這樣設計比「任何 AI」更有優勢？**
+
+1. **智慧檔案管理**：只加入需要修改的檔案，Aider 會自動拉取相關檔案作為上下文
+2. **避免 Token 浪費**：不像其他 AI 需要你複製整個檔案內容
+3. **審核式修改**：每次變更都以 diff 形式展示，你可以確認後再應用
+4. **自動備份**：每次修改都會建立 Git commit，隨時可以回滾
+
+**常見誤解澄清：**
+
+⚠️ **錯誤理解**：「Aider 可以一鍵產生完整專案」  
+✅ **正確理解**：Aider 是一個對話式程式碼編輯器，需要你一步步引導
+
+⚠️ **錯誤理解**：「任何 AI 都可以做同樣的事」  
+✅ **正確理解**：Aider 的本地檔案感知和 Git 整合是其他 AI 無法比擬的
+
+⚠️ **錯誤理解**：「使用 Aider 會被 AI 控制」  
+✅ **正確理解**：你可以在任何時候拒絕、修改或回滾 Aider 的建議
+
 ### 實際效能表現
 
 根據社群回饋和基準測試，Aider 在程式碼編輯能力方面表現出色。在複雜的多語言程式設計練習中，Claude 3.5 Sonnet 透過 Aider 的多語言測量達到了 51.6% 的成功率。這個數字在 AI 程式設計工具中已經非常亮眼，尤其是考慮到這些是複雜的跨語言任務。
 
 - [Aider 官方文件](https://aider.chat/docs/)
 
-## Claude Code：Anthropic 的終端程式設計智慧體
+## OpenAI Codex CLI：終端中的多模態程式設計代理
 
 ### 產品定位與核心優勢
+
+OpenAI Codex CLI 是 OpenAI 在 2025 年 4 月推出的開源命令列程式設計工具，它將最新的 o3 和 o4-mini 推理模型直接帶入你的終端。與其他 AI 程式設計工具不同，Codex CLI 的獨特之處在於其多模態輸入能力和可配置的自動化級別。
+
+**核心特性包括：**
+
+- **多模態輸入支援**：除了文字，還可以傳入截圖、圖表或草圖，讓 AI 根據視覺內容生成程式碼
+- **三種批准模式**：從完全手動控制到全自動化，靈活適應不同使用場景
+- **本地運行**：所有程式碼執行和檔案操作都在本地進行，確保隱私安全
+- **零設置安裝**：通過 npm 一鍵安裝，自動配置 API 認證
+- **安全沙盒**：網路隔離和目錄限制，確保安全執行
+
+### 技術架構與批准模式
+
+Codex CLI 的核心創新在於其智慧批准工作流，讓開發者可以根據任務的複雜度和信任度選擇不同的自動化級別：
+
+**1. Suggest Mode（建議模式，預設）**
+```bash
+codex
+> 重構這個函式以提高效能
+# Codex 會顯示建議的變更，需要你確認後才執行
+```
+
+- 所有檔案變更和命令執行都需要明確批准
+- 適合學習新程式碼庫或進行重要修改
+- 最安全的使用模式
+
+**2. Auto Edit Mode（自動編輯模式）**
+```bash
+codex --approval-mode auto-edit
+> 為所有 Python 檔案添加型別提示
+# Codex 會自動修改檔案，但執行命令前會詢問
+```
+
+- 自動進行檔案編輯，但命令執行需要批准
+- 適合大規模重構或批次修改
+- 在效率和安全間取得平衡
+
+**3. Full Auto Mode（完全自動化模式）**
+```bash
+codex --approval-mode full-auto "建立一個 Flask TODO 應用程式"
+# Codex 會在沙盒環境中自動完成整個任務
+```
+
+- 在安全沙盒中完全自主工作
+- 網路隔離，只能訪問 OpenAI API
+- 適合原型開發和實驗性任務
+
+### 多模態輸入的突破性應用
+
+Codex CLI 最令人驚豔的功能是其多模態輸入能力。你可以：
+
+**從截圖生成程式碼：**
+```bash
+codex "根據這個設計稿實現網頁" --attach design.png
+# Codex 會分析圖片並生成對應的 HTML/CSS 程式碼
+```
+
+**從手繪草圖構建 UI：**
+```bash
+codex "實現這個手繪的使用者介面" --attach sketch.jpg
+# 能夠理解手繪圖並轉換為可執行的程式碼
+```
+
+**結合文字和圖像說明：**
+```bash
+codex "參考這個架構圖，實現微服務系統" --attach architecture.png
+# 理解複雜的技術圖表並生成對應的實現
+```
+
+### 安裝配置與使用指南
+
+**快速安裝：**
+```bash
+# 安裝 Codex CLI
+npm install -g @openai/codex
+
+# 設定 API 金鑰
+export OPENAI_API_KEY="your-api-key-here"
+
+# 開始使用
+codex
+```
+
+**進階配置：**
+
+Codex CLI 支援豐富的配置選項，可以透過 `~/.codex/config.yaml` 進行客製化：
+
+```yaml
+model: "o4-mini"  # 或 o3 獲得更強推理能力
+approval_mode: "suggest"
+quiet: false
+notify: true
+
+providers:
+  openai:
+    api_key: "your-key"
+    base_url: "https://api.openai.com/v1"
+```
+
+**專案特定指令：**
+
+可以在專案根目錄建立 `AGENTS.md` 檔案，提供專案特定的上下文和指令：
+
+```markdown
+# 專案指令
+
+這是一個使用 Next.js 和 TypeScript 的電商平台。
+
+## 編碼規範
+- 使用 ESLint 和 Prettier
+- 元件使用函式式寫法
+- 狀態管理使用 Zustand
+
+## 測試要求
+- 所有新功能都要有測試
+- 使用 Jest 和 React Testing Library
+```
+
+## Claude Code：Anthropic 的終端程式設計智慧體
 
 Claude Code 是 Anthropic 官方推出的命令列程式設計工具，它將 Claude Sonnet 4 直接嵌入到你的終端中，具有深度的程式碼庫感知能力，並能夠直接在你的環境中編輯檔案和執行命令。
 
@@ -67,17 +304,17 @@ Claude Code 適用於 Claude Opus 4、Claude Sonnet 4 和 Claude Haiku 3.5 模�
 
 最新的 Claude 4 系列模型在程式設計能力上有了顯著提升。Claude Opus 4 和 Claude Sonnet 4 都經過調優以在程式設計任務上表現出色，這使它們非常適合編寫和編輯程式碼。
 
-## 兩者結合：1+1>2 的協同效應
+## 三者結合：1+1+1>3 的協同效應
 
 ### 互補性分析
 
-Aider.chat 和 Claude Code 雖然都是基於 AI 的程式設計工具，但它們在設計理念和使用場景上有著明顯的互補性：
+Aider.chat、Claude Code 和 OpenAI Codex CLI 在設計理念和使用場景上有著明顯的互補性：
 
 **Aider.chat 的優勢：**
-- 輕量級、回應快速
+- 輕量級、回應快速，適合迭代開發
 - 多模型支援，可根據任務選擇最適合的模型
-- 成熟的社群生態系統
-- 靈活的配置選項
+- 成熟的社群生態系統和 Git 整合
+- 精細的檔案編輯控制
 
 **Claude Code 的優勢：**
 - 官方支援，與 Claude 模型深度整合
@@ -85,40 +322,164 @@ Aider.chat 和 Claude Code 雖然都是基於 AI 的程式設計工具，但它�
 - 端到端的工作流自動化
 - 企業級安全和合規性支援
 
-### 協同工作流設計
+**OpenAI Codex CLI 的優勢：**
+- 多模態輸入能力（截圖、草圖轉程式碼）
+- 可配置的自動化級別（從建議到全自動）
+- 精細的安全沙盒機制
+- 最新的 o3/o4-mini 模型技術
 
-在實際開發中，兩者可以形成完美的協同工作流：
+### 最佳混合使用策略
+
+這三個工具的組合可以形成完美的開發工作流：
 
 <MermaidDiagram chart={`
 flowchart TD
-   A[開始新專案] --> B{任務類型？}
-   B -->|快速原型| C[使用 Aider.chat]
-   B -->|複雜開發| D[使用 Claude Code]
-   B -->|混合任務| E[組合使用]
+   A[開始新任務] --> B{任務類型？}
+   B -->|快速原型| C[使用 Codex CLI]
+   B -->|迭代開發| D[使用 Aider.chat]
+   B -->|複雜系統| E[使用 Claude Code]
+   B -->|多模態任務| F[組合使用]
    
-   C --> F[多輪對話迭代]
-   F --> G[快速驗證想法]
-   G --> H{需要深度開發？}
-   H -->|是| D
-   H -->|否| I[完成任務]
+   C --> G[多模態輸入原型]
+   G --> H[自動化實現]
+   H --> I{需要精細調整？}
+   I -->|是| D
+   I -->|否| J[完成任務]
    
-   D --> J[深度程式碼理解]
-   J --> K[多檔案協同編輯]
-   K --> L[自動化測試]
-   L --> M[Git 工作流整合]
-   M --> N[自動建立 PR]
-   N --> I
+   D --> K[多輪對話迭代]
+   K --> L[精細程式碼編輯]
+   L --> M{需要深度重構？}
+   M -->|是| E
+   M -->|否| J
    
-   E --> O[Aider 處理探索階段]
-   O --> P[Claude Code 處理實現階段]
-   P --> Q[兩者協同維護]
-   Q --> I
+   E --> N[深度程式碼理解]
+   N --> O[多檔案協同編輯]
+   O --> P[自動化測試]
+   P --> Q[Git 工作流整合]
+   Q --> J
+   
+   F --> R[Codex 處理視覺輸入]
+   R --> S[Aider 進行精細調整]
+   S --> T[Claude Code 進行系統整合]
+   T --> J
    
    style C fill:#667eea
    style D fill:#ff6b6b
    style E fill:#2ecc71
-   style I fill:#f1c40f
+   style F fill:#9b59b6
+   style J fill:#f1c40f
 `} />
+
+### 具體使用場景與策略
+
+**場景一：從截圖到生產應用程式**
+
+這是三個工具最強大的協同場景：
+
+```bash
+# 第一步：使用 Codex CLI 從設計稿生成初始程式碼
+codex --approval-mode full-auto "根據這個 UI 設計稿建立 React 應用" --attach design.png
+
+# 第二步：使用 Aider 進行精細調整
+aider src/components/
+> 最佳化元件結構，添加 TypeScript 支援和驗證邏輯
+
+# 第三步：使用 Claude Code 進行整合和部署
+claude
+> 為整個應用新增後端 API、測試和 CI/CD 配置
+```
+
+**場景二：複雜特徵開發**
+
+```bash
+# 1. 使用 Codex CLI 進行初始設計和原型
+codex -m o3 --approval-mode suggest
+> 設計一個分散式緩存系統的架構
+
+# 2. 使用 Aider 進行核心實現
+aider --model sonnet cache/
+> 實現分散式緩存的核心演算法機制
+
+# 3. 使用 Claude Code 進行系統整合
+claude
+> 整合監控、日誌和效能分析，編寫完整的系統測試
+```
+
+**場景三：緊急問題修復**
+
+```bash
+# 1. 使用 Claude Code 進行問題診斷
+claude
+> 分析這個效能問題的根本原因，提供修復方案
+
+# 2. 使用 Aider 快速實施修復
+aider performance-critical-file.py
+> 基於診斷結果實施修復
+
+# 3. 使用 Codex CLI 驗證修復效果
+codex --approval-mode auto-edit
+> 產生效能測試程式碼，驗證修復效果
+```
+
+### 工具選擇決策樹
+
+<MermaidDiagram chart={`
+flowchart TB
+    subgraph "工具選擇決策樹"
+        Start([開始選擇]) --> Q1{有視覺輸入？}
+        
+        Q1 -->|有截圖/草圖| Q2{需要精細控制？}
+        Q1 -->|只有文字| Q3{任務複雜度？}
+        
+        Q2 -->|需要| R1[Codex CLI 生成 + Aider 精修]
+        Q2 -->|不需要| R2[Codex CLI Full Auto]
+        
+        Q3 -->|簡單編輯| Q4{需要多模型？}
+        Q3 -->|中等複雜| Q5{團隊協作？}
+        Q3 -->|高度複雜| R6[Claude Code 主導]
+        
+        Q4 -->|需要| R3[Aider + 多模型]
+        Q4 -->|不需要| R4[Codex CLI Suggest]
+        
+        Q5 -->|小團隊| R5[Aider + Codex CLI]
+        Q5 -->|大團隊| R6
+        
+        R1 --> Success([開始使用])
+        R2 --> Success
+        R3 --> Success
+        R4 --> Success
+        R5 --> Success
+        R6 --> Success
+    end
+    
+    style Start fill:#2ecc71
+    style Success fill:#f1c40f
+    style R1 fill:#9b59b6
+    style R2 fill:#3498db
+    style R3 fill:#ff6b6b
+    style R4 fill:#667eea
+    style R5 fill:#e67e22
+    style R6 fill:#2ecc71
+`} />
+
+### 日常工作流建議
+
+**上午（探索與原型階段）**
+- 使用 Codex CLI 進行快速想法驗證
+- 多模態輸入適合對設計稿進行原型開發
+
+**下午（實現與精修階段）**
+- 使用 Aider 進行精細的程式碼編輯和迭代
+- 多模型支援讓你選擇最適合的 AI
+
+**晚上（整合與部署階段）**
+- 使用 Claude Code 進行系統整合和完整性檢查
+- 自動化測試和部署流程
+
+**特殊情況**
+- 緊急修復：直接使用 Aider 快速定位和修復
+- 學習新技術：使用 Codex CLI 的 Suggest 模式學習
+- 代碼審查：使用 Claude Code 進行深度分析
 
 **1. 探索與原型階段（Aider 主導）**
 - 使用 Aider 進行快速的想法驗證和原型開發
@@ -142,17 +503,26 @@ flowchart TD
 
 <ProjectFlowChart />
 
-**第一階段：專案架構設計（Aider）**
+**第一階段：專案架構設計與初始化**
+
+首先需要澄清一個常見的誤解：Aider 並沒有 `aider init` 這個命令。Aider 的工作方式是在既有的專案目錄中運行，或者先建立一個新的目錄。
+
+讓我們看看正確的工作流程：
 
 ```bash
-# 啟動 Aider 並指定使用 Claude Sonnet
+# 先建立專案目錄和 Git 儲存庫
+mkdir user_management_api
+cd user_management_api
+git init
+
+# 在專案目錄中啟動 Aider
 aider --model sonnet --api-key anthropic=<YOUR_KEY>
 
-# 在 Aider 中進行架構討論
-> 我想開發一個使用者管理系統的 RESTful API，使用 FastAPI 框架，包含使用者註冊、登入、權限管理功能。請幫我設計專案結構和核心模組。
+# 在 Aider 中進行架構討論和檔案建立
+> 我想開發一個使用者管理系統的 RESTful API，使用 FastAPI 框架，包含使用者註冊、登入、權限管理功能。請先建立專案結構和核心檔案。
 ```
 
-Aider 會基於對話產生完整的專案結構：
+Aider 會一步步建立檔案和專案結構：
 
 ```
 user_management_api/
@@ -179,6 +549,12 @@ user_management_api/
 ├── requirements.txt
 └── README.md
 ```
+
+**Aider 的檔案建立特性：**
+- 一次只建立必要的檔案，避免資訊過載
+- 每個檔案都會顯示 diff 供你審核
+- 自動建立有意義的 Git 提交
+- 根據專案上下文生成相容的程式碼
 
 **第二階段：核心功能實現（Claude Code）**
 
@@ -378,6 +754,24 @@ export DEEPSEEK_API_KEY="your_deepseek_key_here"
     temperature: 0.1
     max_tokens: 4000
 ```
+
+### 重要提醒：Aider 的正確使用方式
+
+安裝完成後，請記住：
+
+1. **Aider 不是專案產生器**：沒有 `aider init` 這樣的命令
+2. **正確的啟動方式**：
+   ```bash
+   # 新專案：先建立目錄
+   mkdir my-project && cd my-project && git init
+   aider
+   
+   # 既有專案：直接在專案目錄中啟動
+   cd existing-project
+   aider
+   ```
+3. **智慧加入檔案**：只加入需要編輯的檔案，讓 Aider 自動處理上下文
+4. **審核機制**：每次變更都會顯示 diff，你有完全的控制權
 
 ### Claude Code 安裝配置
 
