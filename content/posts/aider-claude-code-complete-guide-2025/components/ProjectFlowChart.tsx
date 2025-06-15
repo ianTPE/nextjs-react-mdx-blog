@@ -89,7 +89,7 @@ const ProjectFlowChart = () => {
               <div className="relative h-24 w-full">
                 {/* Desktop curved connector */}
                 <div className="hidden md:block absolute inset-0">
-                  <svg width="100%" height="100%" viewBox="0 0 400 150" className="overflow-visible">
+                  <svg width="100%" height="100%" viewBox="0 0 1080 150" className="overflow-visible">
                     <defs>
                       <marker
                         id={`arrowhead-${phaseIndex}`}
@@ -103,7 +103,7 @@ const ProjectFlowChart = () => {
                       </marker>
                     </defs>
                     <path
-                      d="M 690 10 L 690 75 L -270 75 L -270 140"
+                      d="M 1030 10 L 1030 75 L 50 75 L 50 140"
                       stroke="#6b7280"
                       strokeWidth="2.5"
                       fill="none"
