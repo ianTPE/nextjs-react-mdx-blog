@@ -50,7 +50,7 @@ export default function BubbleXanoComparisonTable() {
   ];
 
   return (
-    <div className="w-full overflow-x-auto">
+    <div className="not-prose w-full overflow-x-auto">
       <Table>
         <TableHeader>
           <TableRow>
