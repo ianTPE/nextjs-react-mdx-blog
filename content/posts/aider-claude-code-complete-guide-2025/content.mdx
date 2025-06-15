@@ -19,7 +19,7 @@
 一般的在線 AI（如 ChatGPT）只能根據你複製貼上的內容進行回答，完全不知道你的專案目錄結構、已有的程式碼、設定檔案。而 Aider 直接在你的專案資料夾中運行，它可以：
 
 - 掃描並理解你的整個程式碼庫結構
-- 讀取現有的 `package.json`、`.gitignore`、配置檔案
+- 讀取現有的 <code>package.json</code>、<code>.gitignore</code>、配置檔案
 - 分析程式碼風格和架構模式
 - 基於專案上下文生成相容的程式碼
 
@@ -82,7 +82,7 @@ Aider.chat 是一個運行在終端中的 AI 對話式程式設計助手，它�
 
 **核心特性包括：**
 
-- **多模型支援**：Aider 與 Claude 3.7 Sonnet、DeepSeek R1 & Chat V3、OpenAI o1、o3-mini & GPT-4o 配合效果最佳，但幾乎可以連接任何 LLM，包括本地模型
+- **多模型支援**：Aider 與 Claude 4.0 Sonnet、DeepSeek R1 & Chat V3、OpenAI o1、o3-mini & GPT-4o 配合效果最佳，但幾乎可以連接任何 LLM，包括本地模型
 - **智慧程式碼庫映射**：Aider 製作整個程式碼庫的地圖，這幫助它在大型專案中很好地工作
 - **廣泛的語言支援**：Aider 適用於大多數流行的程式語言：python、javascript、rust、ruby、go、cpp、php、html、css 等數十種
 - **自動版本控制**：Aider 自動提交更改並產生合理的提交訊息
@@ -274,6 +274,9 @@ providers:
 - 所有新功能都要有測試
 - 使用 Jest 和 React Testing Library
 ```
+
+**官方資源：**
+- [OpenAI Codex CLI GitHub](https://github.com/openai/codex) - 官方開源專案與最新功能
 
 ## Claude Code：Anthropic 的終端程式設計智慧體
 
@@ -505,7 +508,7 @@ flowchart TB
 
 **第一階段：專案架構設計與初始化**
 
-首先需要澄清一個常見的誤解：Aider 並沒有 `aider init` 這個命令。Aider 的工作方式是在既有的專案目錄中運行，或者先建立一個新的目錄。
+首先需要澄清一個常見的誤解：Aider 並沒有 <code>aider init</code> 這個命令。Aider 的工作方式是在既有的專案目錄中運行，或者先建立一個新的目錄。
 
 讓我們看看正確的工作流程：
 
@@ -741,7 +744,7 @@ export DEEPSEEK_API_KEY="your_deepseek_key_here"
 
 **進階配置檔案**
 
-建立 `.aider.model.settings.yml` 檔案進行精細化配置：
+建立 <code>.aider.model.settings.yml</code> 檔案進行精細化配置：
 
 ```yaml
 - name: anthropic/claude-3-7-sonnet
@@ -759,7 +762,7 @@ export DEEPSEEK_API_KEY="your_deepseek_key_here"
 
 安裝完成後，請記住：
 
-1. **Aider 不是專案產生器**：沒有 `aider init` 這樣的命令
+1. **Aider 不是專案產生器**：沒有 <code>aider init</code> 這樣的命令
 2. **正確的啟動方式**：
    ```bash
    # 新專案：先建立目錄
