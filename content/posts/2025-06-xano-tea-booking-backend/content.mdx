@@ -48,13 +48,7 @@
 
 #### 1. 創建新專案
 
-```bash
-# Xano 專案創建流程
-1. 註冊 Xano 帳號 → https://xano.com
-2. 建立新 Instance：chayu-time-backend
-3. 選擇 Region：Asia-Pacific (最佳延遲)
-4. 初始化資料庫與 API 端點
-```
+<XanoSetupSteps />
 
 #### 2. 環境配置
 
@@ -388,7 +382,7 @@ if (existing_user.length === 0) {
 }
 ```
 
-#### GET `/auth/user/{line_user_id}`
+ <SimpleAPIEndpoint method="GET" path="/auth/user/{line_user_id}" />
 
 **Xano API 設定：**
 ```
@@ -779,7 +773,7 @@ return {
 };
 ```
 
-#### GET `/orders/user/{user_id}`
+ <SimpleAPIEndpoint method="GET" path="/orders/user/{user_id}" />
 
 **訂單歷史查詢：**
 ```javascript
@@ -1015,7 +1009,7 @@ function calculateDynamicPricing(product, current_demand, time_of_day, store_cap
 
 ### 4. 智慧排隊預測系統
 
-#### GET `/stores/{store_id}/queue-prediction` 🔮
+ <SimpleAPIEndpoint method="GET" path="/stores/{store_id}/queue-prediction" />
 
 **機器學習式等待時間預測：**
 ```javascript
@@ -1265,42 +1259,7 @@ async function sendSystemAlert(alert_type, message, severity) {
 
 ### Xano 定價方案詳細分析
 
-```json
-{
-  "starter_plan": {
-    "price": "$39/month",
-    "features": [
-      "無限 API 請求",
-      "PostgreSQL 資料庫",
-      "5GB 檔案存儲",
-      "基礎監控"
-    ],
-    "suitable_for": "小型到中型應用"
-  },
-  "professional_plan": {
-    "price": "$99/month", 
-    "features": [
-      "進階功能支援",
-      "多環境管理",
-      "進階監控與分析",
-      "優先技術支援"
-    ],
-    "suitable_for": "企業級應用"
-  },
-  "enterprise_plan": {
-    "price": "$149+/month",
-    "features": [
-      "專屬資源配置",
-      "SLA 保證",
-      "自定義整合",
-      "專屬客戶經理"
-    ],
-    "suitable_for": "大型企業應用"
-  }
-}
-```
-
----
+<XanoPricingTable />
 
 ## 🏆 專案成果總結
 
