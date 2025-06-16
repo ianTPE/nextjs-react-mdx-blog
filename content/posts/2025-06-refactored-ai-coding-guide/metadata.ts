@@ -3,10 +3,10 @@ import type { PostMeta } from '../../../types/post';
 
 const metadata: PostMeta = {
   slug: "2025-06-refactored-ai-coding-guide",
-  title: "傳統思維解禁了，讓你去到以前無法到達的地方：AI 編程工具",
+  title: "人類拓展認知的新外骨骼—從思維盲點到智慧擴展的演化之路：AI編程助手",
   date: "2025-06-16",
-  summary: "將 AI 工具比作人類的「衣服」，探討 Aider、Codex CLI、Claude Code 如何擴展開發者的認知邊界。從「認知天氣」選擇合適工具，到能力邊界的突破，深度分享 AI 如何讓我們到達思維無法獨自抵達的地方。",
-  tags: ["AI", "編程工具", "Claude", "Aider", "Codex", "認知擴展", "開發者哲學", "工具選擇", "能力邊界", "技術思維"],
+  summary: "當70%程式由AI編寫時，我們如何用「思考-理解-創造」三位一體工作流征服未知技術領域",
+  tags: ["AI編程助手", "認知外骨骼", "人機協作", "開發者哲學", "認知主權", "工具進化", "分散式認知", "腦機共生", "技術民主化", "創新思維"],
   published: true,
   author: "Ian Chou",
   coverImage: "/images/posts/ai-coding-tools-experience.webp",
