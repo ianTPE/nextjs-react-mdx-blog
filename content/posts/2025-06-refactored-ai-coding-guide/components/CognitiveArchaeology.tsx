@@ -24,7 +24,7 @@ const CognitiveArchaeology: React.FC = () => {
                 <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
                   <span className="text-sm font-bold">📋</span>
                 </div>
-                <h4 className="font-bold text-lg">問題界定</h4>
+                <h4 className="not-prose font-bold text-lg">問題界定</h4>
               </div>
             </div>
             <div className="p-4 space-y-3">
@@ -59,7 +59,7 @@ const CognitiveArchaeology: React.FC = () => {
                 <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
                   <span className="text-sm font-bold">🔄</span>
                 </div>
-                <h4 className="font-bold text-lg">方案演進</h4>
+                <h4 className="not-prose font-bold text-lg">方案演進</h4>
               </div>
             </div>
             <div className="p-4 space-y-4">
@@ -100,7 +100,7 @@ const CognitiveArchaeology: React.FC = () => {
                 <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
                   <span className="text-sm font-bold">🔍</span>
                 </div>
-                <h4 className="font-bold text-lg">知識盲點與解決</h4>
+                <h4 className="not-prose font-bold text-lg">知識盲點與解決</h4>
               </div>
             </div>
             <div className="p-4 space-y-4">
@@ -134,7 +134,7 @@ const CognitiveArchaeology: React.FC = () => {
                 <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
                   <span className="text-sm font-bold">⚠️</span>
                 </div>
-                <h4 className="font-bold text-lg">風險預警</h4>
+                <h4 className="not-prose font-bold text-lg">風險預警</h4>
               </div>
             </div>
             <div className="p-4 space-y-4">
