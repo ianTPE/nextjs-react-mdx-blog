@@ -12,7 +12,7 @@ const CognitiveArchaeology: React.FC = () => {
             <div className="w-6 h-6 bg-amber-600 rounded-full flex items-center justify-center">
               <span className="text-white text-xs font-bold">🏛️</span>
             </div>
-            <h3 className="text-lg font-bold text-amber-800">[認知考古] WebSocket聊天室架構決策</h3>
+            <h3 className="not-prose text-lg font-bold text-amber-800">[認知考古] WebSocket聊天室架構決策</h3>
           </div>
         </div>
 
