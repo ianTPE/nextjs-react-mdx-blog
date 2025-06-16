@@ -261,7 +261,7 @@ const ProjectMemoryMap: React.FC = () => {
                       onMouseLeave={() => setHoveredNode(null)}
                     >
                       {/* Node Header */}
-                      <div className="flex items-center gap-3 mb-3">
+                      <div className="not-prose flex items-center gap-3 mb-3">
                         <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
                           hoveredNode === node.id ? 'bg-white shadow-md' : 'bg-white/70'
                         }`}>

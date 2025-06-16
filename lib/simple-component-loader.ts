@@ -30,11 +30,20 @@ const componentMappings: Record<string, () => Promise<any>> = {
   '2025-06-nextjs-mdx-universal-component-loader-system': () =>
     import('../content/posts/2025-06-nextjs-mdx-universal-component-loader-system/components/index'),
 
+  '2025-06-refactored-ai-coding-guide': () =>
+    import('../content/posts/2025-06-refactored-ai-coding-guide/components/index'),
+
   '2025-06-shadcn-prose-migration-guide': () =>
     import('../content/posts/2025-06-shadcn-prose-migration-guide/components/index'),
 
+  '2025-06-supabase-tea-booking-guide': () =>
+    import('../content/posts/2025-06-supabase-tea-booking-guide/components/index'),
+
   '2025-06-taiwan-software-engineer-job-market-analysis': () =>
     import('../content/posts/2025-06-taiwan-software-engineer-job-market-analysis/components/index'),
+
+  '2025-06-xano-tea-booking-backend': () =>
+    import('../content/posts/2025-06-xano-tea-booking-backend/components/index'),
 
   '2025-ai-coding-assistant-comparison-claude-chatgpt-gemini-developers': () =>
     import('../content/posts/2025-ai-coding-assistant-comparison-claude-chatgpt-gemini-developers/components/index'),
@@ -193,9 +202,9 @@ export function getPostsWithCustomComponents(): string[] {
 // 工具函數：獲取統計信息
 export function getComponentStats() {
   return {
-    totalPosts: 56, // 總文章數 (更新)
+    totalPosts: 59, // 總文章數 (更新)
     postsWithComponents: Object.keys(componentMappings).length,
-    postsWithoutComponents: 56 - Object.keys(componentMappings).length,
+    postsWithoutComponents: 59 - Object.keys(componentMappings).length,
     componentMappings: Object.keys(componentMappings)
   };
 }
