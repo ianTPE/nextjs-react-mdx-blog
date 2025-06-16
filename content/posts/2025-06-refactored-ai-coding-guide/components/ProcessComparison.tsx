@@ -206,15 +206,15 @@ const ProcessComparison: React.FC = () => {
                 <ul className="text-sm text-gray-600 space-y-1">
                   {processIndex === 0 ? (
                     <>
-                      <li>• 依賴個人經驗和知識</li>
-                      <li>• 線性思考過程</li>
-                      <li>• 單一解決方案</li>
+                      <li>依賴個人經驗和知識</li>
+                      <li>線性思考過程</li>
+                      <li>單一解決方案</li>
                     </>
                   ) : (
                     <>
-                      <li>• 人機智慧互補</li>
-                      <li>• 並行評估多種方案</li>
-                      <li>• 動態最佳化過程</li>
+                      <li>人機智慧互補</li>
+                      <li>並行評估多種方案</li>
+                      <li>動態最佳化過程</li>
                     </>
                   )}
                 </ul>
@@ -228,15 +228,15 @@ const ProcessComparison: React.FC = () => {
                 <ul className="text-sm text-gray-600 space-y-1">
                   {processIndex === 0 ? (
                     <>
-                      <li>• 受個人認知邊界限制</li>
-                      <li>• 容易陷入思維定式</li>
-                      <li>• 決策風險集中</li>
+                      <li>受個人認知邊界限制</li>
+                      <li>容易陷入思維定式</li>
+                      <li>決策風險集中</li>
                     </>
                   ) : (
                     <>
-                      <li>• 突破個體認知限制</li>
-                      <li>• 風險分散式決策</li>
-                      <li>• 持續學習與優化</li>
+                      <li>突破個體認知限制</li>
+                      <li>風險分散式決策</li>
+                      <li>持續學習與優化</li>
                     </>
                   )}
                 </ul>
