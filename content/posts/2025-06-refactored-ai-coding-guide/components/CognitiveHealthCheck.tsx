@@ -81,7 +81,7 @@ const CognitiveHealthCheck: React.FC = () => {
           <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
             <span className="text-lg">📊</span>
           </div>
-          <h3 className="text-xl font-bold">每月認知健檢表</h3>
+          <h3 className="not-prose text-xl font-bold">每月認知健檢表</h3>
         </div>
         
         {/* Progress Bar */}
