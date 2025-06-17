@@ -108,11 +108,11 @@ wsl -d 您的WSL發行版名稱 -- bash -ic "cd /mnt/c/Users/您的用戶名/Git
 wsl -d Ubuntu -- bash -ic "cd /mnt/c/Users/gogotw/GitHub/mem0/openmemory/api && docker-compose up -d"
 ```
 
-這裡 `-d` 參數表示以後台模式啟動容器，不會佔用終端機視窗。
+這裡 <code>-d</code> 參數表示以後台模式啟動容器，不會佔用終端機視窗。
 
 #### 步驟 3: 創建計劃任務
 
-1. 開啟「任務計劃程序」（Task Scheduler），點擊「創建任務」
+1. 開啟「任務計劃程序」（Task Scheduler），點擊「創建任務」。按下Win+R，輸入taskschd.msc，然後按Enter鍵。
 2. 在「常規」頁簿：
    - 勾選「以最高權限執行」
    - 「配置為」選擇對應的 Windows 版本
