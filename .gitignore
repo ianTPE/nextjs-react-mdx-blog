@@ -1,5 +1,14 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# IDE / Tooling
+.vscode/
+
+# Local Directory for VS Code Extension Claude
+.claude/
+
+# MCP configuration file
+.mcp.json
+
 # dependencies
 /node_modules
 /.pnp
