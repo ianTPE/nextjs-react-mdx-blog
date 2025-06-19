@@ -1,0 +1,15 @@
+{
+  "enabledMcpjsonServers": [
+    "filesystem",
+    "fetch",
+    "google-maps",
+    "playwright",
+    "mcp-cli-exec",
+    "mcp-server-firecrawl",
+    "puppeteer",
+    "stripe",
+    "memory",
+    "Context7",
+    "browser-tools"
+  ]
+}
