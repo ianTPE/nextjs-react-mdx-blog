@@ -77,32 +77,22 @@ export default async function Home() {
           <TechStackIcon 
             name="Next.js" 
             version="v15.3.3" 
-            icon="/images/nextjs-icon.svg" 
-            color="bg-black"
           />
           <TechStackIcon 
             name="React" 
             version="v19" 
-            icon="/images/react-icon.svg" 
-            color="bg-blue-500"
           />
           <TechStackIcon 
             name="Framer Motion" 
             version="v12.10.5" 
-            icon="/images/framer-icon.svg" 
-            color="bg-purple-600"
           />
           <TechStackIcon 
             name="Tailwind CSS" 
             version="v4" 
-            icon="/images/tailwind-icon.svg" 
-            color="bg-teal-500"
           />
           <TechStackIcon 
             name="MDX" 
             version="v3" 
-            icon="/images/mdx-icon.svg" 
-            color="bg-yellow-500"
           />
         </MotionContainer>
       </section>
